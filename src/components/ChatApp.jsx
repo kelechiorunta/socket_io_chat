@@ -223,28 +223,81 @@ const ChatApp = () => {
       console.log('✅ Connected to Socket.IO server');
     });
 
-    socketInstance.on('message', (data) => {
-      setMessages((prev) => [...prev, { text: data, from: 'server' }]);
-    });
+    // socketInstance.on('message', (data) => {
+    //   setMessages((prev) => [...prev, { text: data, from: 'server' }]);
+    // });
 
     return () => socketInstance.disconnect();
-  }, []);
+  }, [socket]);
+    
+    const sendMessage = () => {
+  if (socket && input.trim() && selectedChat) {
+    const payload = {
+      content: input,
+      receiverId: selectedChat._id, // make sure this matches backend user ID
+    };
 
-  const sendMessage = () => {
-    if (socket && input.trim()) {
-      socket.emit('message', input, (ackMessage) => {
-        console.log('Server acknowledged:', ackMessage);
-      });
-      setMessages((prev) => [...prev, { text: input, from: 'client' }]);
-      setInput('');
-    }
-  };
+    socket.emit('sendMessage', payload);
+    setMessages(prev => [...prev, { text: input, from: 'client' }]);
+    setInput('');
+  }
+};
+
+useEffect(() => {
+    // if (socket) {
+    //   socket.on('newMessage', (msg) => {
+    //     console.log('📩 New message received:', msg);
+    //     setMessages(prev => [...prev, { text: msg.content, from: msg.sender === user._id ? 'client' : 'server' }]);
+    //   });
+    // }
+    if (socket && user?._id) {
+        socket.emit('joinChat', { userId: user?._id });
+      }
+  }, [socket, user?._id]);
+  
+//   const sendMessage = () => {
+//     if (socket && input.trim()) {
+//       socket.emit('message', input, (ackMessage) => {
+//         console.log('Server acknowledged:', ackMessage);
+//       });
+//       setMessages((prev) => [...prev, { text: input, from: 'client' }]);
+//       setInput('');
+//     }
+//   };
 
               
-  const handleSelectChat = (chat) => {
-    setSelectedChat(chat);
-    console.log('Selected chat:', chat);
-  };
+//   const handleSelectChat = (chat) => {
+//     setSelectedChat(chat);
+//     console.log('Selected chat:', chat);
+    //   };
+    
+    const handleSelectChat = async (chatUser) => {
+        // if (socket && user?._id) {
+        //     socket.emit('joinChat', { userId: user?._id });
+        //   }
+        setSelectedChat(chatUser);
+      
+        try {
+          const res = await fetch(`http://localhost:7334/api/getChatHistory?userId=${chatUser?._id}`, {
+            method: 'GET',
+            credentials: 'include', // 👈 important for sending cookies
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+      
+          if (!res.ok) {
+            throw new Error('Failed to fetch chat history');
+          }
+      
+          const history = await res.json();
+          setMessages(history.messages);
+        } catch (error) {
+          console.error('Error fetching chat history:', error);
+        }
+      };
+      
+      
 
   return (
     <Container fluid className="bg-dark text-light p-0" style={{ height: 'max-content', overflowY: 'auto', overflowX: 'hidden' }}>
@@ -276,9 +329,14 @@ const ChatApp = () => {
         ) : (
           
              
-        <Col style={{ borderRadius: 20, padding:'auto 100px', width:'100%', display: 'flex',  overflowX: 'hidden', overflowY: 'scroll' }} xs={10} sm={10} md={11} lg className="justify-content-end d-flex flex-column">
-            <ChatHeader chat={selectedChat} pic={data && data.auth} />
-            <ChatBody messages={messages} pic={data && data.auth}/>
+        <Col style={{
+                borderRadius: 20, padding: 'auto 100px', width: '100%',
+                display: 'flex', overflowX: 'hidden', overflowY: 'scroll',
+                maxHeight:'100vh'
+                          }}
+            xs={10} sm={10} md={11} lg className="justify-content-end d-flex flex-column">
+            <ChatHeader chat={selectedChat} pic={data?.auth} />
+            <ChatBody messages={messages} chat={selectedChat} pic={data?.auth}/>
             <ChatInput input={input} setInput={setInput} onSend={sendMessage} />
         </Col>
                 

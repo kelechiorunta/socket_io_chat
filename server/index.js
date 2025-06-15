@@ -18,6 +18,8 @@ import session from 'express-session'
 import authRouter from './router.js';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import ChatMessage from './model/ChatMessage.js';
+import Chat from './model/Chat.js';
 
 connectDB(process.env.MONGO_URI);
 const __filename = fileURLToPath(import.meta.url)
@@ -85,6 +87,7 @@ app.use(passport.session())
 
 app.use('/', authRouter);
 
+
   // Middleware to enable GraphQL Introspection and Client Queries
 app.use(
     '/graphql',
@@ -106,7 +109,7 @@ app.use(
         // },
       };
     })
-  );
+);  
   
 const server = http.createServer(app);
 const io = new Server(server, { cors: corsOption})
@@ -124,34 +127,75 @@ io.on('connection', (socket) => {
     console.log('✅ Client connected:', socket.id);
 
     // When the client sends a message
-    socket.on('message', (data, callback) => {
-        console.log('Received:', data);
-        // callback('Message received successfully');
+    // socket.on('message', (data, callback) => {
+    //     console.log('Received:', data);
+    //     // callback('Message received successfully');
         
-        // Send confirmation back to the same client
-        // socket.emit('message', 'Got your message');
+    //     // Send confirmation back to the same client
+    //     // socket.emit('message', 'Got your message');
 
-        // Broadcast the message to all other clients
-        socket.broadcast.emit('message', data);
-    });
+    //     // Broadcast the message to all other clients
+    //     socket.broadcast.emit('message', data);
+    // });
 
     socket.on('joinChat', ({ userId }) => {
         console.log(`${userId} logged in`);
         socket.data.userId = userId;
         socket.join(userId); // personal room
+    });
+    
+    socket.on('sendMessage', async ({ content, receiverId }) => {
+        const senderId = socket.data.userId;
+      
+        // ✅ Find or create a chat room between the two users
+        let chat = await Chat.findOne({
+          members: { $all: [senderId, receiverId], $size: 2 },
+          isGroup: false
+        });
+      
+        if (!chat) {
+          chat = new Chat({ members: [senderId, receiverId] });
+          await chat.save();
+        }
+      
+        // ✅ Create and save message
+        const chatMessage = new ChatMessage({
+          content,
+          sender: senderId,
+          receiver: receiverId,
+          chat: chat._id,
+        });
+      
+        await chatMessage.save();
+      
+        // ✅ Add message to chat
+        chat.messages.push(chatMessage._id);
+        await chat.save();
+      
+        // ✅ Emit to both users' rooms
+        [senderId, receiverId].forEach(id => {
+          io.to(id).emit('newMessage', {
+            _id: chatMessage._id,
+            chatId: chat._id,
+            sender: senderId,
+            receiver: receiverId,
+            content: chatMessage.content,
+            createdAt: chatMessage.createdAt,
+          });
+        });
       });
     
-    socket.on('sendMessage', async ({ content, receiverId, groupId }) => {
-        const senderId = socket.data.userId;
+    // socket.on('sendMessage', async ({ content, receiverId, groupId }) => {
+    //     const senderId = socket.data.userId;
     
-        // Save message to DB
-        const msg = new Message({ content, sender: senderId, receiver: receiverId, groupId });
-        await msg.save();
+    //     // Save message to DB
+    //     const msg = new Message({ content, sender: senderId, receiver: receiverId, groupId });
+    //     await msg.save();
     
-        // Determine which room to emit to
-        const room = groupId || receiverId;
-        io.to(room).emit('newMessage', msg);
-     });
+    //     // Determine which room to emit to
+    //     const room = groupId || receiverId;
+    //     io.to(room).emit('newMessage', msg);
+    //  });
     
     socket.on('createGroup', ({ groupId, memberIds }) => {
         memberIds.forEach(id => socket.join(id)); // ensures they join their personal rooms
