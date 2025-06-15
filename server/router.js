@@ -5,6 +5,7 @@ import User from './model/User.js';
 import { configureGooglePassport, configureLocalPassport } from './passport.js';
 import { loginSession } from './middleware.js';
 import { isAuthenticatedUser } from './controllers.js';
+import Chat from './model/Chat.js';
 
 const authRouter = express.Router();
 
@@ -65,7 +66,45 @@ authRouter.post('/signin', (req, res, next) => {
     })(req, res, next);
   });
   
-
+  authRouter.get('/api/getChatHistory', async (req, res) => {
+    try {
+        const currentUserId = req.session.user?._id;
+        console.log(currentUserId)
+      if (!currentUserId) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+  
+      const { userId } = req.query;
+      if (!userId) {
+        return res.status(400).json({ error: 'Missing userId in query' });
+      }
+  
+      const chat = await Chat.findOne({
+        members: { $all: [currentUserId, userId], $size: 2 },
+        isGroup: false,
+      })
+        .populate({
+          path: 'messages',
+          model: 'ChatMessage',
+          options: { sort: { createdAt: 1 } }, // Sort messages chronologically
+          populate: {
+            path: 'sender',
+            model: 'User',
+            select: 'username _id',
+          },
+        });
+  
+      if (!chat) {
+        return res.json({ messages: [] });
+      }
+  
+      res.json({ messages: chat.messages });
+    } catch (err) {
+      console.error('❌ Error getting chat history:', err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+  
 authRouter.post("/paystack/webhook", express.json(), (req, res) => {
   const { event, data } = req.body;
 
