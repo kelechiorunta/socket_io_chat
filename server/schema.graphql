@@ -1,0 +1,11 @@
+type Query{
+    users: [User]!
+    auth: User
+}
+
+type User {
+    _id: ID
+    username: String
+    email: String
+    picture: String
+}
