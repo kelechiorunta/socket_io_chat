@@ -9,46 +9,46 @@ export default function ProtectedRoute() {
   const location = useLocation();
   const { loading, error, data } = useQuery(AUTH)
 
-  useEffect(() => {
-    const authStatus = async () => {
-      try {
-        const response = await fetch('http://localhost:7334/isAuthenticated', {
-          credentials: 'include',
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+//   useEffect(() => {
+//     const authStatus = async () => {
+//       try {
+//         const response = await fetch('http://localhost:7334/isAuthenticated', {
+//           credentials: 'include',
+//           method: 'GET',
+//           headers: {
+//             'Content-Type': 'application/json',
+//           },
+//         });
 
-        const data = await response.json();
+//         const data = await response.json();
 
-        if (!response.ok || !data.user) {
-          throw new Error(data.error || 'Unauthorized');
-        }
+//         if (!response.ok || !data.user) {
+//           throw new Error(data.error || 'Unauthorized');
+//         }
 
-        setCurrentUser(data.user);
-        setIsAuthenticated(true);
-      } catch (err) {
-        console.error('Auth check failed:', err);
-        setIsAuthenticated(false);
-        setCurrentUser(null);
-        localStorage.removeItem('entry');
-      }
-    };
+//         setCurrentUser(data.user);
+//         setIsAuthenticated(true);
+//       } catch (err) {
+//         console.error('Auth check failed:', err);
+//         setIsAuthenticated(false);
+//         setCurrentUser(null);
+//         localStorage.removeItem('entry');
+//       }
+//     };
 
-    authStatus();
-  }, []);
+//     authStatus();
+//   }, []);
 
   // Show loading while authentication is being checked
-  if (isAuthenticated === null) {
+  if (loading) {
     return <div>Loading...</div>; // Replace with spinner if needed
   }
 
   // If not authenticated, redirect to login
-  if (!isAuthenticated) {
+  if (error || !data) {
     return <Navigate to="/login" state={{ path: location.pathname }} replace />;
   }
 
   // If authenticated, render child routes
-  return <Outlet context={{ currentUser }} />;
+  return <Outlet context={ data?.auth } />;
 }

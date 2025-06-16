@@ -1,5 +1,4 @@
 import User from "./model/User.js"
-import fetch from 'node-fetch';
 
 const resolvers = {
     Query: {
