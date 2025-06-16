@@ -191,6 +191,14 @@ io.on('connection', (socket) => {
         console.error('❌ sendMessage error:', error);
       }
     });
+
+    socket.on('typing', ({ receiverId }) => {
+        const senderId = socket.data.userId;
+        if (!receiverId || !senderId) return;
+      
+        // Emit 'typing' to the receiver's room
+        io.to(receiverId).emit('typing', { from: senderId });
+    });
   
     socket.on('disconnect', () => {
       console.log('🔴 Client disconnected:', socket.id);

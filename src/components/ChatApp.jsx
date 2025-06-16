@@ -195,12 +195,15 @@ import ChatInput from './ChatInput';
 import IconBar from './IconBar';
 import { AUTH } from '../graphql/queries';
 import { useQuery } from '@apollo/client';
+import debounce from 'lodash.debounce';
+
 
 const ChatApp = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [socket, setSocket] = useState(null);
-  const [selectedChat, setSelectedChat] = useState(null); // ✅ new
+  const [selectedChat, setSelectedChat] = useState(null); 
+  const [typingUserId, setTypingUserId] = useState(null);
   const { data, loading, error } = useQuery(AUTH);
   const user = data?.auth || null
 
@@ -230,6 +233,7 @@ const ChatApp = () => {
     return () => socketInstance.disconnect();
   }, []);
     
+    //Broadcast message to receiver from sender 
 const sendMessage = () => {
   if (socket && input.trim() && selectedChat) {
     const payload = {
@@ -242,6 +246,21 @@ const sendMessage = () => {
     setInput('');
   }
 };
+
+    // Emit typing to the receiver
+    // 🔁 Debounced typing emitter
+const emitTyping = debounce(() => {
+    if (socket && selectedChat?._id && user?._id) {
+        socket.emit('typing', { receiverId: selectedChat._id });
+        console.log("I am typing")
+    }
+}, 500); // Adjust debounce delay as needed
+    
+    const handleTyping = (val) => {
+        setInput(val);
+        emitTyping()
+}
+  
 
 useEffect(() => {
    
@@ -256,10 +275,24 @@ useEffect(() => {
         socket.emit('joinChat', { userId: user?._id });
     }
 
+    if (socket) {
+        socket.on('typing', ({ from }) => {
+            if (from === selectedChat?._id) {
+              setTypingUserId(selectedChat?._id);
+          
+              // Clear typing after a delay (2 seconds)
+              setTimeout(() => {
+                setTypingUserId(null);
+              }, 2000);
+            }
+          });
+          
+    }
+
     return () => {
         socket?.off('newMessage');
     };
-  }, [socket, user?._id]);
+  }, [socket, user?._id, selectedChat?._id]);
   
     
 const handleSelectChat = async (chatUser) => {
@@ -298,7 +331,7 @@ const handleSelectChat = async (chatUser) => {
 
         {/* Sidebar Column */}
         <Col xs={10} sm={10} md={10} lg={4} style={{marginLeft:30, overflowX: 'hidden'}} className="p-0 border-end ">
-          <Sidebar onSelectChat={handleSelectChat} pic={data && data.auth}/>
+                  <Sidebar onSelectChat={handleSelectChat} pic={data && data.auth} typingUserId={ typingUserId} />
         </Col>
 
         {loading ? (
@@ -324,9 +357,9 @@ const handleSelectChat = async (chatUser) => {
                 maxHeight:'100vh'
                           }}
             xs={10} sm={10} md={11} lg className="justify-content-end d-flex flex-column">
-            <ChatHeader chat={selectedChat} pic={data?.auth} selectedUser={selectedChat} />
-            <ChatBody messages={messages} chat={selectedChat} pic={data?.auth}/>
-            <ChatInput input={input} setInput={setInput} onSend={sendMessage} />
+            <ChatHeader chat={selectedChat} pic={data?.auth} selectedUser={selectedChat} typingUserId={typingUserId}/>
+            <ChatBody messages={messages} chat={selectedChat} pic={data?.auth} typingUserId={typingUserId}/>
+            <ChatInput input={input} setInput={handleTyping} onSend={sendMessage} />
         </Col>
                 
           
