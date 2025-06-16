@@ -178,17 +178,17 @@ const Sidebar = ({ onSelectChat, pic }) => {
   );
 
   const cardStyle = {
-    backgroundColor: '#2c2f33',
+    backgroundColor: ' #2c2f33',
     border: 'none',
     marginBottom: '0.5rem',
     cursor: 'pointer',
   };
 
   return (
-    <div className="bg-dark text-light p-3 d-flex flex-column">
+    <div style={{backgroundColor:' #1f1d1d'}} className="bg-dark text-light p-3 d-flex flex-column">
       {/* Top Icons */}
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <div className="fw-bold text-purple">D</div>
+              <div className="fw-bold text-purple">{pic?.username.toUpperCase().slice(0,2)}</div>
         <div className="d-flex gap-2">
           <Sun role="button" />
           <Moon role="button" />
@@ -244,7 +244,7 @@ const Sidebar = ({ onSelectChat, pic }) => {
                   {/* Avatar & Status Dot */}
                   <div className="d-flex align-items-center">
                     <div className="position-relative me-3">
-                      <Avatar src={user?.picture || user.avatar} size={40} />
+                      <Avatar src={user?.picture || './Darshan.png'} size={40} />
                       {user.online && (
                         <span
                           className="position-absolute bottom-0 end-0 translate-middle p-1 bg-success border border-light rounded-circle"
@@ -257,7 +257,7 @@ const Sidebar = ({ onSelectChat, pic }) => {
                     <div>
                       <div className="fw-bold text-white">{user.username}</div>
                       <div className="text-muted small">
-                        {user.typing ? 'Typing...' : user.lastMessage || 'No messages'}
+                        {user.typing ? 'Typing...' : user?.lastMessage || 'No messages'}
                       </div>
                     </div>
                   </div>
