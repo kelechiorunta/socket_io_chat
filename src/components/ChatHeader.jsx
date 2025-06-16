@@ -7,7 +7,7 @@ const ChatHeader = ({ username = "Darshan Zalavadiya", online = true, pic }) => 
     
     return (
         
-        <div className="d-flex align-items-center justify-content-between p-3 border-bottom border-dark bg-dark text-white">
+        <div style={{backgroundColor: ' #1f1d1d'}} className="d-flex align-items-center justify-content-between p-3 border-bottom border-dark bg-dark text-white">
             <div className="d-flex align-items-center">
                 <Image src={pic && pic.picture} alt="Avatar" className="rounded-circle" style={{ width: 40, height: 40, marginRight: 12 }} />
                 <div>

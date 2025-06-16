@@ -123,90 +123,163 @@ io.engine.on('connection_error', (err) => {
     console.error(err.message)
 })
 
+// io.on('connection', (socket) => {
+//     console.log('✅ Client connected:', socket.id);
+
+//     // When the client sends a message
+//     // socket.on('message', (data, callback) => {
+//     //     console.log('Received:', data);
+//     //     // callback('Message received successfully');
+        
+//     //     // Send confirmation back to the same client
+//     //     // socket.emit('message', 'Got your message');
+
+//     //     // Broadcast the message to all other clients
+//     //     socket.broadcast.emit('message', data);
+//     // });
+
+//     socket.on('joinChat', ({ userId }) => {
+//         console.log(`${userId} logged in`);
+//         socket.data.userId = userId;
+//         socket.join(userId); // personal room
+//     });
+    
+//     socket.on('sendMessage', async ({ content, receiverId }) => {
+//         const senderId = socket.data.userId;
+      
+//         // ✅ Find or create a chat room between the two users
+//         let chat = await Chat.findOne({
+//           members: { $all: [senderId, receiverId], $size: 2 },
+//           isGroup: false
+//         });
+      
+//         if (!chat) {
+//           chat = new Chat({ members: [senderId, receiverId] });
+//           await chat.save();
+//         }
+      
+//         // ✅ Create and save message
+//         const chatMessage = new ChatMessage({
+//           content,
+//           sender: senderId,
+//           receiver: receiverId,
+//           chat: chat._id,
+//         });
+      
+//         await chatMessage.save();
+      
+//         // ✅ Add message to chat
+//         chat.messages.push(chatMessage._id);
+//         await chat.save();
+      
+//         // ✅ Emit to both users' rooms
+//         [senderId, receiverId].forEach(id => {
+//           io.to(id).emit('newMessage', {
+//             _id: chatMessage._id,
+//             chatId: chat._id,
+//             sender: senderId,
+//             receiver: receiverId,
+//             content: chatMessage.content,
+//             createdAt: chatMessage.createdAt,
+//           });
+//         });
+//       });
+    
+//     // socket.on('sendMessage', async ({ content, receiverId, groupId }) => {
+//     //     const senderId = socket.data.userId;
+    
+//     //     // Save message to DB
+//     //     const msg = new Message({ content, sender: senderId, receiver: receiverId, groupId });
+//     //     await msg.save();
+    
+//     //     // Determine which room to emit to
+//     //     const room = groupId || receiverId;
+//     //     io.to(room).emit('newMessage', msg);
+//     //  });
+    
+//     socket.on('createGroup', ({ groupId, memberIds }) => {
+//         memberIds.forEach(id => socket.join(id)); // ensures they join their personal rooms
+//         io.emit('groupCreated', { groupId, members: memberIds }); 
+//     });
+
+//     socket.on('disconnect', () => {
+//         console.log('🔴 Client disconnected:', socket.id);
+//     });
+// });
+
 io.on('connection', (socket) => {
     console.log('✅ Client connected:', socket.id);
-
-    // When the client sends a message
-    // socket.on('message', (data, callback) => {
-    //     console.log('Received:', data);
-    //     // callback('Message received successfully');
-        
-    //     // Send confirmation back to the same client
-    //     // socket.emit('message', 'Got your message');
-
-    //     // Broadcast the message to all other clients
-    //     socket.broadcast.emit('message', data);
-    // });
-
+  
     socket.on('joinChat', ({ userId }) => {
-        console.log(`${userId} logged in`);
-        socket.data.userId = userId;
-        socket.join(userId); // personal room
+      if (!userId) return;
+      console.log(`${userId} joined chat`);
+      socket.data.userId = userId;
+      socket.join(userId); // Join personal room
     });
-    
+  
     socket.on('sendMessage', async ({ content, receiverId }) => {
-        const senderId = socket.data.userId;
-      
-        // ✅ Find or create a chat room between the two users
+      const senderId = socket.data.userId;
+      if (!senderId || !receiverId || !content) return;
+  
+      try {
+        // ✅ Find or create chat
         let chat = await Chat.findOne({
           members: { $all: [senderId, receiverId], $size: 2 },
-          isGroup: false
-        });
-      
+          isGroup: false,
+        }).populate({
+            path: 'messages',
+            model: 'ChatMessage',
+            options: { sort: { createdAt: 1 } }, // Sort messages chronologically
+            populate: {
+              path: 'sender receiver',
+              model: 'User',
+              select: 'username _id picture',
+            },
+          });
+  
         if (!chat) {
-          chat = new Chat({ members: [senderId, receiverId] });
+          chat = new Chat({ members: [senderId, receiverId], isGroup: false });
           await chat.save();
         }
-      
-        // ✅ Create and save message
-        const chatMessage = new ChatMessage({
-          content,
+  
+        // ✅ Create chat message
+        let message = new ChatMessage({
+          chat: chat._id,
           sender: senderId,
           receiver: receiverId,
-          chat: chat._id,
+          content,
         });
-      
-        await chatMessage.save();
-      
-        // ✅ Add message to chat
-        chat.messages.push(chatMessage._id);
+  
+        await message.save();
+  
+        // ✅ Add message to chat document
+        chat.messages.push(message._id);
         await chat.save();
-      
-        // ✅ Emit to both users' rooms
-        [senderId, receiverId].forEach(id => {
+  
+        // ✅ Populate sender before emitting
+          message = await message.populate({ path:'sender receiver', select: 'username picture'});
+  
+        // ✅ Broadcast to both sender and receiver
+        [senderId, receiverId].forEach((id) => {
           io.to(id).emit('newMessage', {
-            _id: chatMessage._id,
+            _id: message._id,
             chatId: chat._id,
-            sender: senderId,
-            receiver: receiverId,
-            content: chatMessage.content,
-            createdAt: chatMessage.createdAt,
+            sender: message.sender, // { _id, username }
+            receiver: message.receiver,
+            content: message.content,
+            createdAt: message.createdAt,
           });
         });
-      });
-    
-    // socket.on('sendMessage', async ({ content, receiverId, groupId }) => {
-    //     const senderId = socket.data.userId;
-    
-    //     // Save message to DB
-    //     const msg = new Message({ content, sender: senderId, receiver: receiverId, groupId });
-    //     await msg.save();
-    
-    //     // Determine which room to emit to
-    //     const room = groupId || receiverId;
-    //     io.to(room).emit('newMessage', msg);
-    //  });
-    
-    socket.on('createGroup', ({ groupId, memberIds }) => {
-        memberIds.forEach(id => socket.join(id)); // ensures they join their personal rooms
-        io.emit('groupCreated', { groupId, members: memberIds }); 
+      } catch (error) {
+        console.error('❌ sendMessage error:', error);
+      }
     });
-
+  
     socket.on('disconnect', () => {
-        console.log('🔴 Client disconnected:', socket.id);
+      console.log('🔴 Client disconnected:', socket.id);
     });
 });
-
+  
 server.listen(PORT, () => {
   console.log(`WebSocket server listening on ws://localhost:${PORT}`);
 });

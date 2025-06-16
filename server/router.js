@@ -88,9 +88,9 @@ authRouter.post('/signin', (req, res, next) => {
           model: 'ChatMessage',
           options: { sort: { createdAt: 1 } }, // Sort messages chronologically
           populate: {
-            path: 'sender',
+            path: 'sender receiver',
             model: 'User',
-            select: 'username _id',
+            select: 'username _id picture',
           },
         });
   
