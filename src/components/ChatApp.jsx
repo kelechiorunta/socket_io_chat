@@ -228,7 +228,7 @@ const ChatApp = () => {
     // });
 
     return () => socketInstance.disconnect();
-  }, [socket]);
+  }, []);
     
     const sendMessage = () => {
   if (socket && input.trim() && selectedChat) {
@@ -238,44 +238,33 @@ const ChatApp = () => {
     };
 
     socket.emit('sendMessage', payload);
-    setMessages(prev => [...prev, { text: input, from: 'client' }]);
+    // setMessages(prev => [...prev, { text: input, from: 'client' }]);
     setInput('');
   }
 };
 
 useEffect(() => {
-    // if (socket) {
-    //   socket.on('newMessage', (msg) => {
-    //     console.log('📩 New message received:', msg);
-    //     setMessages(prev => [...prev, { text: msg.content, from: msg.sender === user._id ? 'client' : 'server' }]);
-    //   });
-    // }
+   
+    if (socket) {
+        socket.on('newMessage', (msg) => {
+        console.log('📩 New message received:', msg);
+        setMessages((prev) => [...prev, msg]);
+        });
+    }
+      
     if (socket && user?._id) {
         socket.emit('joinChat', { userId: user?._id });
-      }
+    }
+
+    return () => {
+        socket?.off('newMessage');
+    };
   }, [socket, user?._id]);
   
-//   const sendMessage = () => {
-//     if (socket && input.trim()) {
-//       socket.emit('message', input, (ackMessage) => {
-//         console.log('Server acknowledged:', ackMessage);
-//       });
-//       setMessages((prev) => [...prev, { text: input, from: 'client' }]);
-//       setInput('');
-//     }
-//   };
-
-              
-//   const handleSelectChat = (chat) => {
-//     setSelectedChat(chat);
-//     console.log('Selected chat:', chat);
-    //   };
     
-    const handleSelectChat = async (chatUser) => {
-        // if (socket && user?._id) {
-        //     socket.emit('joinChat', { userId: user?._id });
-        //   }
-        setSelectedChat(chatUser);
+const handleSelectChat = async (chatUser) => {
+       
+    setSelectedChat(chatUser);
       
         try {
           const res = await fetch(`http://localhost:7334/api/getChatHistory?userId=${chatUser?._id}`, {
