@@ -1,8 +1,9 @@
 import React from 'react';
 import { Video, Phone } from 'lucide-react';
 import { Container, Image } from 'react-bootstrap';
+import Avatar from './Avatar';
 
-const ChatHeader = ({ username = "Darshan Zalavadiya", online = true, pic, selectedUser }) => {
+const ChatHeader = ({ username = "Darshan Zalavadiya", online = true, pic, selectedUser, typingUserId }) => {
      
     
     return (
@@ -15,6 +16,23 @@ const ChatHeader = ({ username = "Darshan Zalavadiya", online = true, pic, selec
                     <div style={{ fontSize: '0.8rem', color: '#00e676' }}>{online ? 'Online' : 'Offline'}</div>
                 </div>
             </div>
+            {/* {typingUserId && (
+                                    <div className="d-flex align-items-center gap-2 mb-2 justify-content-start">
+                                        <Avatar src={selectedUser?.picture || './Darshan.png'} size={32} />
+                                        <div
+                                        className="px-3 py-2 rounded-pill"
+                                        style={{
+                                            backgroundColor: '#3a3b3c',
+                                            color: '#ccc',
+                                            fontStyle: 'italic',
+                                            fontSize: '0.9rem',
+                                            maxWidth: '60%',
+                                        }}
+                                        >
+                                        typing...
+                                        </div>
+                                    </div>
+                                    )} */}
             <div className="d-flex gap-3">
                 <Video className="text-white" />
                 <Phone className="text-white" />
