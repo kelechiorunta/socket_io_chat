@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from './Avatar';
 
-const ChatBody = ({ messages = [], pic, chat }) => {
+const ChatBody = ({ messages = [], pic, chat, typingUserId }) => {
+    
+
     return (
         <div
             className="flex-grow-1 px-4 py-3"
