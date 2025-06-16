@@ -230,7 +230,7 @@ const ChatApp = () => {
     return () => socketInstance.disconnect();
   }, []);
     
-    const sendMessage = () => {
+const sendMessage = () => {
   if (socket && input.trim() && selectedChat) {
     const payload = {
       content: input,
@@ -324,7 +324,7 @@ const handleSelectChat = async (chatUser) => {
                 maxHeight:'100vh'
                           }}
             xs={10} sm={10} md={11} lg className="justify-content-end d-flex flex-column">
-            <ChatHeader chat={selectedChat} pic={data?.auth} />
+            <ChatHeader chat={selectedChat} pic={data?.auth} selectedUser={selectedChat} />
             <ChatBody messages={messages} chat={selectedChat} pic={data?.auth}/>
             <ChatInput input={input} setInput={setInput} onSend={sendMessage} />
         </Col>
