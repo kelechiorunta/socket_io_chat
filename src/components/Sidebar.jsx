@@ -164,7 +164,7 @@ import {
 import Avatar from './Avatar';
 import Button from './Button';
 
-const Sidebar = ({ onSelectChat, pic }) => {
+const Sidebar = ({ onSelectChat, pic, typingUserId }) => {
   const navigate = useNavigate();
   const { loading, error, data } = useQuery(GET_CONTACTS);
   const [tab, setTab] = useState('all');
@@ -256,8 +256,8 @@ const Sidebar = ({ onSelectChat, pic }) => {
                     {/* Username & Message */}
                     <div>
                       <div className="fw-bold text-white">{user.username}</div>
-                      <div className="text-muted small">
-                        {user.typing ? 'Typing...' : user?.lastMessage || 'No messages'}
+                            <div style={{ width: 100, color: typingUserId===user._id && ' #00e575' }} className={`small`}>
+                        {typingUserId===user._id ? 'Typing...' : user?.lastMessage || 'No messages'}
                       </div>
                     </div>
                   </div>
