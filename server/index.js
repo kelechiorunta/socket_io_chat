@@ -114,6 +114,7 @@ app.use(
 const server = http.createServer(app);
 const io = new Server(server, { cors: corsOption})
 // const ws = new WebSocketServer({ server });
+const onlineUsers = new Map();
 
 io.engine.on('connection', (socket) => {
     console.log(socket?.request?.url)
@@ -125,6 +126,24 @@ io.engine.on('connection_error', (err) => {
 
 io.on('connection', (socket) => {
     console.log('✅ Client connected:', socket.id);
+
+    socket.on('isLoggedIn', ({ userId }) => {
+        socket.data.userId = userId; // Store on socket
+        onlineUsers.set(userId, socket.id); // Mark user as online
+        console.log(onlineUsers)
+        // Notify others that this user is online (if needed)
+        socket.broadcast.emit('userOnline', { userId });
+    });
+    
+    socket.on('isOnline', ({ receiverId }) => {
+        const senderId = socket.data.userId;
+        if (!receiverId || !senderId) return;
+    
+        const receiverSocketId = onlineUsers.get(receiverId);
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit('isConnected', { currentUser: senderId });
+        }
+    })
   
     socket.on('joinChat', ({ userId }) => {
       if (!userId) return;
@@ -201,7 +220,12 @@ io.on('connection', (socket) => {
     });
   
     socket.on('disconnect', () => {
-      console.log('🔴 Client disconnected:', socket.id);
+        console.log('🔴 Client disconnected:', socket.id);
+        const userId = socket.data.userId;
+    if (userId) {
+      onlineUsers.delete(userId);
+      socket.broadcast.emit('userOffline', { userId });
+    }
     });
 });
   
