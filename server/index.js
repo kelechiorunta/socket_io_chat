@@ -128,11 +128,16 @@ io.on('connection', (socket) => {
     console.log('✅ Client connected:', socket.id);
 
     socket.on('isLoggedIn', ({ userId }) => {
-        socket.data.userId = userId; // Store on socket
-        onlineUsers.set(userId, socket.id); // Mark user as online
-        console.log(onlineUsers)
-        // Notify others that this user is online (if needed)
+        socket.data.userId = userId;
+        onlineUsers.set(userId, socket.id);
+        console.log(onlineUsers);
+    
+        // Notify others this user came online
         socket.broadcast.emit('userOnline', { userId });
+    
+        // ✅ Send current online users to the newly logged-in user
+        const otherOnlineUsers = [...onlineUsers.keys()].filter((id) => id !== userId);
+        socket.emit('currentlyOnline', { userIds: otherOnlineUsers });
     });
     
     socket.on('isOnline', ({ receiverId }) => {
