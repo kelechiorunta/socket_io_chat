@@ -185,7 +185,7 @@
 
 // export default ChatApp;
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo, useMemo } from 'react';
 import { io } from 'socket.io-client';
 import { Container, Row, Col, Card, Placeholder } from 'react-bootstrap';
 import Sidebar from './Sidebar';
@@ -205,8 +205,12 @@ const ChatApp = () => {
   const [socket, setSocket] = useState(null);
   const [selectedChat, setSelectedChat] = useState(null); 
   const [typingUserId, setTypingUserId] = useState(null);
-  const [onlineUser, setOnlineUser] = useState(null)
-  const { data, loading, error } = useQuery(AUTH);
+  const [onlineUsers, setOnlineUsers] = useState(new Set());
+
+//   const [onlineUser, setOnlineUser] = useState(null)
+    const { data, loading, error } = useQuery(AUTH, {
+      fetchPolicy: 'network-only'
+  });
   const user = data?.auth || null
 
   useEffect(() => {
@@ -225,10 +229,9 @@ const ChatApp = () => {
     setSocket(socketInstance);
 
     socketInstance.on('connect', () => {
-      console.log('✅ Connected to Socket.IO server');
+        console.log('✅ Connected to Socket.IO server');
+        
     });
-
-    
     // socketInstance.on('message', (data) => {
     //   setMessages((prev) => [...prev, { text: data, from: 'server' }]);
     // });
@@ -264,50 +267,132 @@ const emitTyping = debounce(() => {
         emitTyping()
 }
   
-
+useEffect(() => {
+    if (!socket || !user || !onlineUsers) return;
+  
+    onlineUsers.forEach((u) => {
+      socket.emit('isOnline', { receiverId: u._id });
+    });
+  }, [socket, user, onlineUsers]);
+  
+    
+// useEffect(() => {
+//     if (!socket || !user?._id) return;
+  
+//     // 1. Emit that the user has logged in
+//     socket.emit('isLoggedIn', { userId: user._id });
+  
+//     // 2. Listen for messages
+//     socket.on('newMessage', (msg) => {
+//       console.log('📩 New message received:', msg);
+//       setMessages((prev) => [...prev, msg]);
+//     });
+  
+//     socket.on('userOnline', ({ userId }) => {
+//         setOnlineUsers((prev) => new Set(prev).add(userId));
+//       });
+      
+//       socket.on('userOffline', ({ userId }) => {
+//         setOnlineUsers((prev) => {
+//           const updated = new Set(prev);
+//           updated.delete(userId);
+//           return updated;
+//         });
+//       });
+      
+//       socket.on('isConnected', ({ currentUser }) => {
+//         setOnlineUsers((prev) => new Set(prev).add(currentUser));
+//       });
+      
+//     // // 3. Listen for online status updates
+//     // socket.on('userOnline', ({ userId }) => {
+//     //   if (userId === user?._id || userId === selectedChat?._id) {
+//     //     setOnlineUser(userId);
+//     //     console.log(`${userId} is now online`);
+//     //   }
+//     // });
+  
+//     // socket.on('userOffline', ({ userId }) => {
+//     //   if (userId === selectedChat?._id) {
+//     //     setOnlineUser(null);
+//     //     console.log(`${userId} went offline`);
+//     //   }
+//     // });
+  
+//     // // 4. Listen for direct isConnected confirmation
+//     // socket.on('isConnected', ({ currentUser }) => {
+//     //   if (currentUser === user?._id || currentUser === selectedChat?._id) {
+//     //     setOnlineUser(currentUser);
+//     //     console.log(`${currentUser} is currently online`);
+//     //   }
+//     // });
+  
+//     // 5. Join chat room and check online status
+//     socket.emit('joinChat', { userId: user._id });
+  
+//     if (selectedChat?._id) {
+//       socket.emit('isOnline', { receiverId: selectedChat._id});
+//     }
+  
+//     // 6. Typing listener
+//     socket.on('typing', ({ from }) => {
+//       if (from === selectedChat?._id) {
+//         setTypingUserId(from);
+//         setTimeout(() => setTypingUserId(null), 2000);
+//       }
+//     });
+  
+//     // Cleanup
+//     return () => {
+//       socket.off('newMessage');
+//       socket.off('userOnline');
+//       socket.off('userOffline');
+//       socket.off('isConnected');
+//       socket.off('typing');
+//     };
+    //   }, [socket, user?._id, selectedChat?._id, onlineUsers]);
+    
+    const memoisedUsers = useMemo(() => {
+        setOnlineUsers(onlineUsers);
+    },[onlineUsers])
+  
 useEffect(() => {
     if (!socket || !user?._id) return;
   
-    // 1. Emit that the user has logged in
+    // Emit login status and join
     socket.emit('isLoggedIn', { userId: user._id });
-  
-    // 2. Listen for messages
-    socket.on('newMessage', (msg) => {
-      console.log('📩 New message received:', msg);
-      setMessages((prev) => [...prev, msg]);
-    });
-  
-    // 3. Listen for online status updates
-    socket.on('userOnline', ({ userId }) => {
-      if (userId === selectedChat?._id) {
-        setOnlineUser(userId);
-        console.log(`${userId} is now online`);
-      }
-    });
-  
-    socket.on('userOffline', ({ userId }) => {
-      if (userId === selectedChat?._id) {
-        setOnlineUser(null);
-        console.log(`${userId} went offline`);
-      }
-    });
-  
-    // 4. Listen for direct isConnected confirmation
-    socket.on('isConnected', ({ currentUser }) => {
-      if (currentUser === selectedChat?._id) {
-        setOnlineUser(currentUser);
-        console.log(`${currentUser} is currently online`);
-      }
-    });
-  
-    // 5. Join chat room and check online status
     socket.emit('joinChat', { userId: user._id });
   
     if (selectedChat?._id) {
       socket.emit('isOnline', { receiverId: selectedChat._id });
     }
   
-    // 6. Typing listener
+    // Set up listeners ONCE
+    socket.on('newMessage', (msg) => {
+      console.log('📩 New message received:', msg);
+      setMessages((prev) => [...prev, msg]);
+    });
+  
+    socket.on('userOnline', ({ userId }) => {
+      setOnlineUsers((prev) => new Set(prev).add(userId));
+    });
+  
+    socket.on('currentlyOnline', ({ userIds }) => {
+        setOnlineUsers(new Set(userIds));
+    });
+    
+    socket.on('userOffline', ({ userId }) => {
+      setOnlineUsers((prev) => {
+        const updated = new Set(prev);
+        updated.delete(userId);
+        return updated;
+      });
+    });
+  
+    socket.on('isConnected', ({ currentUser }) => {
+      setOnlineUsers((prev) => new Set(prev).add(currentUser));
+    });
+  
     socket.on('typing', ({ from }) => {
       if (from === selectedChat?._id) {
         setTypingUserId(from);
@@ -315,7 +400,6 @@ useEffect(() => {
       }
     });
   
-    // Cleanup
     return () => {
       socket.off('newMessage');
       socket.off('userOnline');
@@ -323,7 +407,19 @@ useEffect(() => {
       socket.off('isConnected');
       socket.off('typing');
     };
+  }, [selectedChat?._id, socket, user?._id ]); // ✅ Run only once
+  
+  // Then use separate effects for `user` or `selectedChat` dependent emissions:
+  useEffect(() => {
+    if (!socket || !user?._id || selectedChat?._id) return;
+    socket.emit('isLoggedIn', { userId: user._id || selectedChat._id });
+    socket.emit('joinChat', { userId: user._id || selectedChat._id });
   }, [socket, user?._id, selectedChat?._id]);
+  
+  useEffect(() => {
+    if (!socket || !selectedChat?._id) return;
+    socket.emit('isOnline', { receiverId: selectedChat._id });
+  }, [socket, selectedChat?._id]);
   
   
     
@@ -363,7 +459,9 @@ const handleSelectChat = async (chatUser) => {
 
         {/* Sidebar Column */}
         <Col xs={10} sm={10} md={10} lg={4} style={{marginLeft:30, overflowX: 'hidden'}} className="p-0 border-end ">
-                  <Sidebar onSelectChat={handleSelectChat} pic={data && data.auth} typingUserId={ typingUserId} onlineUser={onlineUser} />
+                  <Sidebar onSelectChat={handleSelectChat} pic={data && data.auth}
+                      selectedChat={selectedChat}
+                      typingUserId={typingUserId} onlineUsers={onlineUsers} />
         </Col>
 
         {loading ? (
@@ -391,7 +489,7 @@ const handleSelectChat = async (chatUser) => {
             xs={10} sm={10} md={11} lg className="justify-content-end d-flex flex-column">
                               <ChatHeader chat={selectedChat} pic={data?.auth} selectedUser={selectedChat}
                                   typingUserId={typingUserId}
-                                  onlineUser={onlineUser} />
+                                  onlineUsers={onlineUsers} />
             <ChatBody messages={messages} chat={selectedChat} pic={data?.auth} typingUserId={typingUserId}/>
             <ChatInput input={input} setInput={handleTyping} onSend={sendMessage} />
         </Col>
@@ -405,5 +503,5 @@ const handleSelectChat = async (chatUser) => {
   );
 };
 
-export default ChatApp;
+export default memo(ChatApp);
 
