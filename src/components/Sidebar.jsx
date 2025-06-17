@@ -164,7 +164,7 @@ import {
 import Avatar from './Avatar';
 import Button from './Button';
 
-const Sidebar = ({ onSelectChat, pic, typingUserId }) => {
+const Sidebar = ({ onSelectChat, pic, typingUserId, onlineUser }) => {
   const navigate = useNavigate();
   const { loading, error, data } = useQuery(GET_CONTACTS);
   const [tab, setTab] = useState('all');
@@ -244,7 +244,13 @@ const Sidebar = ({ onSelectChat, pic, typingUserId }) => {
                   {/* Avatar & Status Dot */}
                   <div className="d-flex align-items-center">
                     <div className="position-relative me-3">
-                      <Avatar src={user?.picture || './Darshan.png'} size={40} />
+                            <Avatar src={user?.picture || './Darshan.png'} size={40} />
+                            <div style={{
+                                position: 'absolute', top: 0, bottom:0,
+                                borderRadius: '50%', width: 10, height: 10,
+                                backgroundColor: onlineUser === user._id ?
+                                    ' #00e575'  : 'white'
+                            }}></div>
                       {user.online && (
                         <span
                           className="position-absolute bottom-0 end-0 translate-middle p-1 bg-success border border-light rounded-circle"

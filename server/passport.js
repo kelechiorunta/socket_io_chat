@@ -33,14 +33,14 @@ export const configureLocalPassport = (passport) => {
 
     passport.use(passport.serializeUser((user, done) => {
         done(null, user.id); // or user._id depending on your DB
-        console.log(user.id)
+        // console.log(user.id)
         }),
     
     passport.deserializeUser(async (id, done) => {
         try {
             const user = await User.findById(id); // or your user model
             done(null, user);
-            console.log("serialized", user)
+            // console.log("serialized", user)
         } catch (err) {
             done(err);
         }
@@ -95,14 +95,14 @@ export const configureGooglePassport = (passport) => {
 
      passport.use(passport.serializeUser((user, done) => {
         done(null, user.id); // or user._id depending on your DB
-        console.log(user.id)
+        // console.log(user.id)
         }),
     
     passport.deserializeUser(async (id, done) => {
         try {
             const user = await User.findById(id); // or your user model
             done(null, user);
-            console.log("serialized", user)
+            // console.log("serialized", user)
         } catch (err) {
             done(err);
         }
