@@ -3,7 +3,7 @@ import { Video, Phone } from 'lucide-react';
 import { Container, Image } from 'react-bootstrap';
 import Avatar from './Avatar';
 
-const ChatHeader = ({ username = "Darshan Zalavadiya", online = true, pic, selectedUser, typingUserId }) => {
+const ChatHeader = ({ username = "Darshan Zalavadiya", online = true, onlineUser, pic, selectedUser, typingUserId }) => {
      
     
     return (
@@ -13,7 +13,7 @@ const ChatHeader = ({ username = "Darshan Zalavadiya", online = true, pic, selec
                 <Image src={selectedUser && selectedUser.picture} alt="Avatar" className="rounded-circle" style={{ width: 40, height: 40, marginRight: 12 }} />
                 <div>
                     <div className="fw-bold">{selectedUser && selectedUser.username}</div>
-                    <div style={{ fontSize: '0.8rem', color: '#00e676' }}>{online ? 'Online' : 'Offline'}</div>
+                    <div style={{ fontSize: '0.8rem', color: '#00e676' }}>{onlineUser===selectedUser?._id ? 'Online' : 'Offline'}</div>
                 </div>
             </div>
             {/* {typingUserId && (

@@ -196,6 +196,7 @@ import IconBar from './IconBar';
 import { AUTH } from '../graphql/queries';
 import { useQuery } from '@apollo/client';
 import debounce from 'lodash.debounce';
+// import socketInstance from './socket_client.js';
 
 
 const ChatApp = () => {
@@ -204,6 +205,7 @@ const ChatApp = () => {
   const [socket, setSocket] = useState(null);
   const [selectedChat, setSelectedChat] = useState(null); 
   const [typingUserId, setTypingUserId] = useState(null);
+  const [onlineUser, setOnlineUser] = useState(null)
   const { data, loading, error } = useQuery(AUTH);
   const user = data?.auth || null
 
@@ -226,6 +228,7 @@ const ChatApp = () => {
       console.log('✅ Connected to Socket.IO server');
     });
 
+    
     // socketInstance.on('message', (data) => {
     //   setMessages((prev) => [...prev, { text: data, from: 'server' }]);
     // });
@@ -263,40 +266,69 @@ const emitTyping = debounce(() => {
   
 
 useEffect(() => {
-   
-    if (socket) {
-        socket.on('newMessage', (msg) => {
-        console.log('📩 New message received:', msg);
-        setMessages((prev) => [...prev, msg]);
-        });
+    if (!socket || !user?._id) return;
+  
+    // 1. Emit that the user has logged in
+    socket.emit('isLoggedIn', { userId: user._id });
+  
+    // 2. Listen for messages
+    socket.on('newMessage', (msg) => {
+      console.log('📩 New message received:', msg);
+      setMessages((prev) => [...prev, msg]);
+    });
+  
+    // 3. Listen for online status updates
+    socket.on('userOnline', ({ userId }) => {
+      if (userId === selectedChat?._id) {
+        setOnlineUser(userId);
+        console.log(`${userId} is now online`);
+      }
+    });
+  
+    socket.on('userOffline', ({ userId }) => {
+      if (userId === selectedChat?._id) {
+        setOnlineUser(null);
+        console.log(`${userId} went offline`);
+      }
+    });
+  
+    // 4. Listen for direct isConnected confirmation
+    socket.on('isConnected', ({ currentUser }) => {
+      if (currentUser === selectedChat?._id) {
+        setOnlineUser(currentUser);
+        console.log(`${currentUser} is currently online`);
+      }
+    });
+  
+    // 5. Join chat room and check online status
+    socket.emit('joinChat', { userId: user._id });
+  
+    if (selectedChat?._id) {
+      socket.emit('isOnline', { receiverId: selectedChat._id });
     }
-      
-    if (socket && user?._id) {
-        socket.emit('joinChat', { userId: user?._id });
-    }
-
-    if (socket) {
-        socket.on('typing', ({ from }) => {
-            if (from === selectedChat?._id) {
-              setTypingUserId(selectedChat?._id);
-          
-              // Clear typing after a delay (2 seconds)
-              setTimeout(() => {
-                setTypingUserId(null);
-              }, 2000);
-            }
-          });
-          
-    }
-
+  
+    // 6. Typing listener
+    socket.on('typing', ({ from }) => {
+      if (from === selectedChat?._id) {
+        setTypingUserId(from);
+        setTimeout(() => setTypingUserId(null), 2000);
+      }
+    });
+  
+    // Cleanup
     return () => {
-        socket?.off('newMessage');
+      socket.off('newMessage');
+      socket.off('userOnline');
+      socket.off('userOffline');
+      socket.off('isConnected');
+      socket.off('typing');
     };
   }, [socket, user?._id, selectedChat?._id]);
   
+  
     
 const handleSelectChat = async (chatUser) => {
-       
+   
     setSelectedChat(chatUser);
       
         try {
@@ -331,7 +363,7 @@ const handleSelectChat = async (chatUser) => {
 
         {/* Sidebar Column */}
         <Col xs={10} sm={10} md={10} lg={4} style={{marginLeft:30, overflowX: 'hidden'}} className="p-0 border-end ">
-                  <Sidebar onSelectChat={handleSelectChat} pic={data && data.auth} typingUserId={ typingUserId} />
+                  <Sidebar onSelectChat={handleSelectChat} pic={data && data.auth} typingUserId={ typingUserId} onlineUser={onlineUser} />
         </Col>
 
         {loading ? (
@@ -357,7 +389,9 @@ const handleSelectChat = async (chatUser) => {
                 maxHeight:'100vh'
                           }}
             xs={10} sm={10} md={11} lg className="justify-content-end d-flex flex-column">
-            <ChatHeader chat={selectedChat} pic={data?.auth} selectedUser={selectedChat} typingUserId={typingUserId}/>
+                              <ChatHeader chat={selectedChat} pic={data?.auth} selectedUser={selectedChat}
+                                  typingUserId={typingUserId}
+                                  onlineUser={onlineUser} />
             <ChatBody messages={messages} chat={selectedChat} pic={data?.auth} typingUserId={typingUserId}/>
             <ChatInput input={input} setInput={handleTyping} onSend={sendMessage} />
         </Col>
