@@ -9,6 +9,9 @@ const userSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now },
     picture: { type: String, required: false, default: '' },
     lastMessage: { type: String, required: false, default: '' },
+    lastMessageCount: { type: Number, required: false, default: 0 },
+    isOnline: { type: Boolean, required: false, default: null },
+    unread: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UnreadMsg' }],
     token: { type: String, required: false },
     otp: {
         type: String,

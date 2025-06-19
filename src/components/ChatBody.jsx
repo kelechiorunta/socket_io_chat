@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Avatar from './Avatar';
 
 const ChatBody = ({ messages = [], pic, chat, typingUserId }) => {
+    const chatEndRef = useRef(null);
+    const scrollToBottom = () => {
+        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      };
     
-
+      useEffect(scrollToBottom, [messages]);
     return (
         <div
             className="flex-grow-1 px-4 py-3"
@@ -44,6 +48,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUserId }) => {
                     </div>
                 </div>
             ))}
+            <div ref={chatEndRef} />
         </div>
     );
 };

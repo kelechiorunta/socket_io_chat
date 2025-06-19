@@ -16,7 +16,13 @@ const client = new ApolloClient({
         credentials: 'include', // ✅ This ensures cookies are sent
     }), // change this to match your deployment
    
-  cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+        typePolicies: {
+          User: {
+            keyFields: ['_id'], // Must match what’s used in your backend
+          },
+        },
+      }),
 });
 
 export default client;
