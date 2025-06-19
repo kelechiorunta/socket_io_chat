@@ -3,9 +3,34 @@ type Query{
     auth: User
 }
 
+type Mutation {
+  markMessagesAsRead(senderId: ID!): Boolean
+}
+
 type User {
     _id: ID
     username: String
     email: String
     picture: String
+    lastMessage: String
+    lastMessageCount: Int
+    isOnline: Boolean
+    unread: [UnreadMsg]
+}
+
+type ChatMessage {
+  _id: ID!
+  content: String
+  sender: User
+  receiver: User
+  createdAt: String
+  updatedAt: String
+}
+
+type UnreadMsg {
+  _id: ID!
+  sender: User
+  unreadMsgs: [ChatMessage]
+  createdAt: String
+  updatedAt: String
 }

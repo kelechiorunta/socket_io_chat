@@ -6,6 +6,7 @@ import { configureGooglePassport, configureLocalPassport } from './passport.js';
 import { loginSession } from './middleware.js';
 import { isAuthenticatedUser } from './controllers.js';
 import Chat from './model/Chat.js';
+import UnreadMsg from './model/UnreadMsg.js';
 
 const authRouter = express.Router();
 
@@ -67,14 +68,13 @@ authRouter.post('/signin', (req, res, next) => {
   });
   
   authRouter.get('/api/getChatHistory', async (req, res) => {
-    try {
-        const currentUserId = req.session.user?._id;
-        console.log(currentUserId)
+      try {
+        const { userId, currentUserId } = req.query;
+        // const currentUserId = req.session.user?._id;
       if (!currentUserId) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
-  
-      const { userId } = req.query;
+      
       if (!userId) {
         return res.status(400).json({ error: 'Missing userId in query' });
       }
@@ -90,15 +90,24 @@ authRouter.post('/signin', (req, res, next) => {
           populate: {
             path: 'sender receiver',
             model: 'User',
-            select: 'username _id picture',
+            select: 'username _id picture isOnline lastMessage lastMessageCount unread',
           },
         });
   
       if (!chat) {
         return res.json({ messages: [] });
       }
+          
+      const selectedUser = await User.findById(userId);
+        if (selectedUser) {
+            selectedUser.lasMessageCount = 0
+            await selectedUser.save();
+        }
+          const currentUser = await User.findById(currentUserId);
+          
+        //   await UnreadMsg.deleteMany({ recipient: selectedUser, sender: currentUser });
   
-      res.json({ messages: chat.messages });
+      res.json({ messages: chat.messages, notifiedUser: currentUser});
     } catch (err) {
       console.error('❌ Error getting chat history:', err);
       res.status(500).json({ error: 'Internal server error' });
@@ -120,7 +129,7 @@ authRouter.post("/paystack/webhook", express.json(), (req, res) => {
 
 
 authRouter.get('/isAuthenticated', loginSession, (req, res) => {
-    console.log("USER AUTHENTICATED", req.session?.user)
+    // console.log("USER AUTHENTICATED", req.session?.user)
     res.json({ user: req.user });
   });
   
