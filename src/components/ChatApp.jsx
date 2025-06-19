@@ -193,11 +193,11 @@ import ChatHeader from './ChatHeader';
 import ChatBody from './ChatBody';
 import ChatInput from './ChatInput';
 import IconBar from './IconBar';
-import { AUTH } from '../graphql/queries';
-import { useQuery } from '@apollo/client';
+import { AUTH, GET_CONTACTS } from '../graphql/queries';
+import { useQuery, useMutation } from '@apollo/client';
 import debounce from 'lodash.debounce';
 // import socketInstance from './socket_client.js';
-
+import { MARK_MESSAGES_AS_READ } from '../graphql/queries';
 
 const ChatApp = () => {
   const [messages, setMessages] = useState([]);
@@ -206,12 +206,47 @@ const ChatApp = () => {
   const [selectedChat, setSelectedChat] = useState(null); 
   const [typingUserId, setTypingUserId] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState(new Set());
+  const { data: contacts, loading: contacts_loading, error: contacts_error, refetch } = useQuery(GET_CONTACTS, {
+      fetchPolicy: 'cache-and-network'
+  });
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isOnline, setIsOnline] = useState(null);
+  const [notifiedUser, setNotifiedUser] = useState(null);
+
+  const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
+    update(cache, { data, variables }) {
+      const existing = cache.readQuery({ query: GET_CONTACTS });
+  
+      if (!existing || !variables?.senderId) return;
+  
+      const updatedUsers = existing.users.map(user => {
+        if (user._id === variables.senderId) {
+          return {
+            ...user,
+            unread: [], // Clear unread messages
+          };
+        }
+        return user;
+      });
+  
+      cache.writeQuery({
+        query: GET_CONTACTS,
+        data: { users: updatedUsers },
+      });
+    },
+    // Optional: You may not need this if your cache update works correctly
+    refetchQueries: [], // set to [] if you're confident in the cache update
+    awaitRefetchQueries: true,
+  });
+  
+  
 
 //   const [onlineUser, setOnlineUser] = useState(null)
     const { data, loading, error } = useQuery(AUTH, {
       fetchPolicy: 'network-only'
   });
-  const user = data?.auth || null
+    const user = data?.auth || null
+    const currentContacts = contacts?.users || null
 
   useEffect(() => {
     const host = window.location.hostname;
@@ -275,86 +310,6 @@ useEffect(() => {
     });
   }, [socket, user, onlineUsers]);
   
-    
-// useEffect(() => {
-//     if (!socket || !user?._id) return;
-  
-//     // 1. Emit that the user has logged in
-//     socket.emit('isLoggedIn', { userId: user._id });
-  
-//     // 2. Listen for messages
-//     socket.on('newMessage', (msg) => {
-//       console.log('📩 New message received:', msg);
-//       setMessages((prev) => [...prev, msg]);
-//     });
-  
-//     socket.on('userOnline', ({ userId }) => {
-//         setOnlineUsers((prev) => new Set(prev).add(userId));
-//       });
-      
-//       socket.on('userOffline', ({ userId }) => {
-//         setOnlineUsers((prev) => {
-//           const updated = new Set(prev);
-//           updated.delete(userId);
-//           return updated;
-//         });
-//       });
-      
-//       socket.on('isConnected', ({ currentUser }) => {
-//         setOnlineUsers((prev) => new Set(prev).add(currentUser));
-//       });
-      
-//     // // 3. Listen for online status updates
-//     // socket.on('userOnline', ({ userId }) => {
-//     //   if (userId === user?._id || userId === selectedChat?._id) {
-//     //     setOnlineUser(userId);
-//     //     console.log(`${userId} is now online`);
-//     //   }
-//     // });
-  
-//     // socket.on('userOffline', ({ userId }) => {
-//     //   if (userId === selectedChat?._id) {
-//     //     setOnlineUser(null);
-//     //     console.log(`${userId} went offline`);
-//     //   }
-//     // });
-  
-//     // // 4. Listen for direct isConnected confirmation
-//     // socket.on('isConnected', ({ currentUser }) => {
-//     //   if (currentUser === user?._id || currentUser === selectedChat?._id) {
-//     //     setOnlineUser(currentUser);
-//     //     console.log(`${currentUser} is currently online`);
-//     //   }
-//     // });
-  
-//     // 5. Join chat room and check online status
-//     socket.emit('joinChat', { userId: user._id });
-  
-//     if (selectedChat?._id) {
-//       socket.emit('isOnline', { receiverId: selectedChat._id});
-//     }
-  
-//     // 6. Typing listener
-//     socket.on('typing', ({ from }) => {
-//       if (from === selectedChat?._id) {
-//         setTypingUserId(from);
-//         setTimeout(() => setTypingUserId(null), 2000);
-//       }
-//     });
-  
-//     // Cleanup
-//     return () => {
-//       socket.off('newMessage');
-//       socket.off('userOnline');
-//       socket.off('userOffline');
-//       socket.off('isConnected');
-//       socket.off('typing');
-//     };
-    //   }, [socket, user?._id, selectedChat?._id, onlineUsers]);
-    
-    const memoisedUsers = useMemo(() => {
-        setOnlineUsers(onlineUsers);
-    },[onlineUsers])
   
 useEffect(() => {
     if (!socket || !user?._id) return;
@@ -373,12 +328,14 @@ useEffect(() => {
       setMessages((prev) => [...prev, msg]);
     });
   
-    socket.on('userOnline', ({ userId }) => {
-      setOnlineUsers((prev) => new Set(prev).add(userId));
+    socket.on('userOnline', ({ userId, online }) => {
+        setOnlineUsers((prev) => new Set(prev).add(userId));
+        setIsOnline(online)
     });
   
-    socket.on('currentlyOnline', ({ userIds }) => {
+    socket.on('currentlyOnline', ({ userIds, online }) => {
         setOnlineUsers(new Set(userIds));
+        setIsOnline(online)
     });
     
     socket.on('userOffline', ({ userId }) => {
@@ -407,7 +364,7 @@ useEffect(() => {
       socket.off('isConnected');
       socket.off('typing');
     };
-  }, [selectedChat?._id, socket, user?._id ]); // ✅ Run only once
+  }, [selectedChat?._id, socket, user?._id, currentContacts ]); // ✅ Run only once
   
   // Then use separate effects for `user` or `selectedChat` dependent emissions:
   useEffect(() => {
@@ -421,33 +378,59 @@ useEffect(() => {
     socket.emit('isOnline', { receiverId: selectedChat._id });
   }, [socket, selectedChat?._id]);
   
-  
-    
-const handleSelectChat = async (chatUser) => {
-   
-    setSelectedChat(chatUser);
-      
-        try {
-          const res = await fetch(`http://localhost:7334/api/getChatHistory?userId=${chatUser?._id}`, {
-            method: 'GET',
-            credentials: 'include', // 👈 important for sending cookies
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-      
-          if (!res.ok) {
-            throw new Error('Failed to fetch chat history');
-          }
-      
-          const history = await res.json();
-          setMessages(history.messages);
-        } catch (error) {
-          console.error('Error fetching chat history:', error);
+    useEffect(() => {
+           
+        // Step 1: Get contacts and online users
+        const contactIds = currentContacts?.map(contact => contact._id) || [];
+        const onlineIds = Array.from(onlineUsers || new Set());
+
+        // Step 2: Find online users NOT in contacts
+        const unknownOnlineUsers = onlineIds.filter(id => !contactIds.includes(id));
+
+        // Step 3: Handle or set them (example: set the first unknown user)
+        if (unknownOnlineUsers.length > 0) {
+            const firstUnknownUserId = unknownOnlineUsers[0];
+            setCurrentUser(firstUnknownUserId); // or fetch details from server if needed
+        } else {
+            setCurrentUser(user); // fallback
         }
-      };
+  }, [currentContacts, onlineUsers, user])
+    
+  const handleSelectChat = async (chatUser) => {
+      setSelectedChat(chatUser);
+ 
+        if (currentUser && chatUser) {
+            try {
+        
+                const res = await fetch(
+                  `http://localhost:7334/api/getChatHistory?userId=${chatUser?._id}&currentUserId=${currentUser._id}`,
+                  {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                  }
+                );
+            
+                if (!res.ok) {
+                  throw new Error('Failed to fetch chat history');
+                }
+            
+                const history = await res.json();
+                setMessages(history.messages);
+                setNotifiedUser(history.notifiedUser)
+
+                await markMessagesAsRead({ variables: { senderId: chatUser._id } });
+
+                await refetch();
+              } catch (error) {
+                console.error('Error fetching chat history:', error);
+              }      
+        }
+            
       
-      
+  };   
 
   return (
     <Container fluid className="bg-dark text-light p-0" style={{ height: 'max-content', overflowY: 'auto', overflowX: 'hidden' }}>
@@ -461,7 +444,13 @@ const handleSelectChat = async (chatUser) => {
         <Col xs={10} sm={10} md={10} lg={4} style={{marginLeft:30, overflowX: 'hidden'}} className="p-0 border-end ">
                   <Sidebar onSelectChat={handleSelectChat} pic={data && data.auth}
                       selectedChat={selectedChat}
-                      typingUserId={typingUserId} onlineUsers={onlineUsers} />
+                      typingUserId={typingUserId}
+                      isOnline={isOnline}
+                      notifiedUser={notifiedUser}
+                      loading={contacts_loading}
+                      error={contacts_error}
+                      contacts={contacts?.users || []}
+                      onlineUsers={onlineUsers} />
         </Col>
 
         {loading ? (
@@ -478,26 +467,23 @@ const handleSelectChat = async (chatUser) => {
           ))
         ) : error ? (
           <div className="text-danger">Error fetching contacts</div>
-        ) : (
-          
-             
+        ) : (       
         <Col style={{
                 borderRadius: 20, padding: 'auto 100px', width: '100%',
                 display: 'flex', overflowX: 'hidden', overflowY: 'scroll',
                 maxHeight:'100vh'
                           }}
             xs={10} sm={10} md={11} lg className="justify-content-end d-flex flex-column">
-                              <ChatHeader chat={selectedChat} pic={data?.auth} selectedUser={selectedChat}
-                                  typingUserId={typingUserId}
-                                  onlineUsers={onlineUsers} />
+            <ChatHeader chat={selectedChat} pic={data?.auth} selectedUser={selectedChat}
+                        typingUserId={typingUserId}
+                        onlineUsers={onlineUsers} />
             <ChatBody messages={messages} chat={selectedChat} pic={data?.auth} typingUserId={typingUserId}/>
             <ChatInput input={input} setInput={handleTyping} onSend={sendMessage} />
         </Col>
                 
           
           )
-        }
-        
+        }        
       </Row>
     </Container>
   );

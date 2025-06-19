@@ -20,6 +20,8 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import ChatMessage from './model/ChatMessage.js';
 import Chat from './model/Chat.js';
+import User from './model/User.js';
+import UnreadMsg from './model/UnreadMsg.js';
 
 connectDB(process.env.MONGO_URI);
 const __filename = fileURLToPath(import.meta.url)
@@ -127,17 +129,32 @@ io.engine.on('connection_error', (err) => {
 io.on('connection', (socket) => {
     console.log('✅ Client connected:', socket.id);
 
-    socket.on('isLoggedIn', ({ userId }) => {
+    socket.on('isLoggedIn', async ({ userId }) => {
         socket.data.userId = userId;
         onlineUsers.set(userId, socket.id);
+        const signedInUser = await User.findById(userId);
+        if (signedInUser) {
+            signedInUser.isOnline = true
+            await signedInUser.save();
+            socket.broadcast.emit('userOnline', { userId, online: signedInUser.isOnline });
+        }
         console.log(onlineUsers);
     
         // Notify others this user came online
-        socket.broadcast.emit('userOnline', { userId });
+       
     
         // ✅ Send current online users to the newly logged-in user
         const otherOnlineUsers = [...onlineUsers.keys()].filter((id) => id !== userId);
-        socket.emit('currentlyOnline', { userIds: otherOnlineUsers });
+        // Set isOnline = true in DB for others (optional if you want to persist status)
+        for (const id of otherOnlineUsers) {
+            const userDoc = await User.findById(id);
+            if (userDoc) {
+            userDoc.isOnline = true;
+            await userDoc.save();
+            }
+        }
+       
+        socket.emit('currentlyOnline', { userIds: otherOnlineUsers, online: true });
     });
     
     socket.on('isOnline', ({ receiverId }) => {
@@ -173,7 +190,7 @@ io.on('connection', (socket) => {
             populate: {
               path: 'sender receiver',
               model: 'User',
-              select: 'username _id picture',
+              select: 'username _id picture isOnline lastMessage lastMessageCount unread',
             },
           });
   
@@ -189,21 +206,52 @@ io.on('connection', (socket) => {
           receiver: receiverId,
           content,
         });
-  
-        await message.save();
+
+        const recipientUser = await User.findById(receiverId);
+          const senderUser = await User.findById(senderId);
+          
+        const newMessageId = await message.save();
+        
+        // Track unread only if recipient is offline
+        if (recipientUser && !onlineUsers.has(receiverId)) {
+          recipientUser.lastMessage = content;
+          recipientUser.lastMessageCount = (recipientUser.lastMessageCount || 0) + 1;
+        
+          // Find or create UnreadMsg entry
+          let unreadEntry = await UnreadMsg.findOne({ recipient: receiverId, sender: senderId });
+        
+          if (!unreadEntry) {
+            unreadEntry = new UnreadMsg({
+              recipient: recipientUser,
+              sender: senderUser,
+              unreadMsgs: [message], // Assuming you already saved the message
+            });
+          } else {
+            unreadEntry.unreadMsgs.push(newMessageId);
+          }
+        
+          await unreadEntry.save();
+        
+          // Ensure the unread reference is in recipient's unread array
+          if (!recipientUser.unread.includes(unreadEntry._id)) {
+            recipientUser.unread.push(unreadEntry._id);
+          }
+        
+          await recipientUser.save();
+        }
   
         // ✅ Add message to chat document
-        chat.messages.push(message._id);
+        chat.messages.push(newMessageId);
         await chat.save();
   
         // ✅ Populate sender before emitting
-          message = await message.populate({ path:'sender receiver', select: 'username picture'});
+          message = await message.populate({ path:'sender receiver', select: 'username picture isOnline lastMessage lastMessageCount unread'});
           
   
         // ✅ Broadcast to both sender and receiver
         [senderId, receiverId].forEach((id) => {
           io.to(id).emit('newMessage', {
-            _id: message._id,
+            _id: newMessageId,
             chatId: chat._id,
             sender: message.sender, // { _id, username }
             receiver: message.receiver,
@@ -224,12 +272,17 @@ io.on('connection', (socket) => {
         io.to(receiverId).emit('typing', { from: senderId });
     });
   
-    socket.on('disconnect', () => {
+    socket.on('disconnect', async() => {
         console.log('🔴 Client disconnected:', socket.id);
         const userId = socket.data.userId;
-    if (userId) {
-      onlineUsers.delete(userId);
-      socket.broadcast.emit('userOffline', { userId });
+        if (userId) {
+            const signedOutUser = await User.findById(userId)
+            if (signedOutUser) {
+                signedOutUser.isOnline = false
+                await signedOutUser.save();
+            }
+        onlineUsers.delete(userId);
+        socket.broadcast.emit('userOffline', { userId });
     }
     });
 });

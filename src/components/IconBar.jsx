@@ -7,7 +7,8 @@ import {
     Share2,
     Settings,
     Moon,
-    Sun
+    Sun,
+    LogOutIcon
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,7 +21,8 @@ const IconBar = ({pic}) => {
                 height: '100vh',
                 minWidth: '80px',
                 backgroundColor: '#1e1e1e',
-                borderRight: '1px solid #333'
+                // borderRight: '1px solid #333',
+                borderRight: '1px solid rgba(255,255,255,0.3)'
             }}
         >
             <div className="d-flex flex-column align-items-center gap-3">
@@ -66,6 +68,17 @@ const IconBar = ({pic}) => {
                     {/* You could toggle with state later */}
                     <Moon size={18} />
                 </Button>
+
+                <Button
+                    variant="outline-secondary"
+                    className="d-flex justify-content-center align-items-center text-white"
+                    style={{ width: 36, height: 36, borderRadius: '50%' }}
+                    onClick={()=> window.location.href = 'http://localhost:7334/logout'}
+                >
+                    {/* You could toggle with state later */}
+                    <LogOutIcon size={18} />
+                </Button>
+
 
                 {/* User Avatar */}
                 <Image
