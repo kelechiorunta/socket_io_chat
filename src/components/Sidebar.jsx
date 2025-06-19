@@ -164,16 +164,16 @@ import {
 import Avatar from './Avatar';
 import Button from './Button';
 
-const Sidebar = ({ onSelectChat, pic, typingUserId, onlineUsers, selectedChat }) => {
+const Sidebar = ({ onSelectChat, pic, loading, error, contacts, typingUserId, onlineUsers, isOnline,  notifiedUser, selectedChat }) => {
   const navigate = useNavigate();
-    const { loading, error, data } = useQuery(GET_CONTACTS, 
-      {fetchPolicy: 'cache-and-network'}
-  );
+//     const { loading, error, data } = useQuery(GET_CONTACTS, 
+//       {fetchPolicy: 'cache-and-network'}
+//   );
   const [tab, setTab] = useState('all');
   const [search, setSearch] = useState('');
 
-  const users = data?.users || [];
-  const groups = data?.groups || [];
+  const users = contacts//data?.users || [];
+//   const groups = data?.groups || [];
 
   const filteredUsers = users.filter(user =>
     user.username?.toLowerCase().includes(search.toLowerCase())
@@ -236,48 +236,64 @@ const Sidebar = ({ onSelectChat, pic, typingUserId, onlineUsers, selectedChat })
         ) : error ? (
           <div className="text-danger">Error fetching contacts</div>
         ) : (
-            filteredUsers.map((user) => (
-                <div
-                  key={user._id}
-                  onClick={() => onSelectChat(user)}
-                  className="d-flex align-items-center justify-content-between bg-secondary rounded-3 mb-2 p-2 px-3"
-                  style={{ cursor: 'pointer' }}
-                >
-                  {/* Avatar & Status Dot */}
-                  <div className="d-flex align-items-center">
-                    <div className="position-relative me-3">
-                            <Avatar src={user?.picture || './Darshan.png'} size={40} />
-                            <div style={{
-                                position: 'absolute', top: '70%', left: '80%',
-                                borderRadius: '50%', width: 10, height: 10,
-                                backgroundColor: onlineUsers?.has(user._id) ? '#00e575' : 'white'
+                filteredUsers.map((user) => {
+                    const unreadFromSender = pic && pic.unread?.find(u => u.sender?._id === user?._id);
+                    console.log(pic && pic.unread)
+                    const unreadCount = unreadFromSender?.unreadMsgs?.length;
+               
+                    return (
+                       <div
+                            key={user._id}
+                            onClick={() => onSelectChat(user)}
+                            className="d-flex align-items-center justify-content-between bg-secondary rounded-3 mb-2 p-2 px-3 chat-item"
+                            style={{ cursor: 'pointer' }}
+                        >
 
-                            }}></div>
-                      {user.online && (
-                        <span
-                          className="position-absolute bottom-0 end-0 translate-middle p-1 bg-success border border-light rounded-circle"
-                          style={{ width: '10px', height: '10px' }}
-                        ></span>
-                      )}
-                    </div>
+                      {/* Avatar & Status Dot */}
+                      <div className="d-flex align-items-center">
+                            <div className="position-relative me-3">
+                                <Avatar src={user?.picture || './Darshan.png'} size={40} />
+                                <div style={{
+                                            position: 'absolute', top: '70%', left: '80%',
+                                            borderRadius: '50%', width: 10, height: 10,
+                                            backgroundColor: onlineUsers?.has(user._id) ? '#00e575' : 'white'
+
+                                 }}></div>
+                                </div>
               
-                    {/* Username & Message */}
-                    <div>
-                      <div className="fw-bold text-white">{user.username}</div>
-                            <div style={{ width: 100, color: typingUserId===user._id && ' #00e575' }} className={`small`}>
-                        {typingUserId===user._id ? 'Typing...' : user?.lastMessage || 'No messages'}
-                      </div>
-                    </div>
-                  </div>
+                                {/* Username & Message */}
+                            <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                <div style={{ textAlign: 'left' }} className="fw-bold text-white ">{user.username}</div>
+                                <div style={{ textWrap: 'wrap', textAlign: 'left', minWidth: 100, maxWidth: '100%', color: typingUserId === user._id ? ' #00e575' : ' rgba(255, 255, 255, 0.5)' }} className={`small`}>
+                                            {typingUserId === user?._id ? 'Typing...' : user?.lastMessage || 'No messages'}
+                                </div>
+                                    {/* <p style={{ textAlign: 'left' }}>{onlineUsers?.has(user?._id) && isOnline ? 'Online' : 'Offline'}</p> */}
+                                </div>
+                                </div>
+                                </div>
               
-                  {/* Unread Count Badge */}
-                  {user.unread > 0 && (
-                    <span className="badge rounded-circle bg-success text-white">
-                      {user.unread}
-                    </span>
-                  )}
-                </div>
-              ))              
+                                      {/* Unread Count Badge */}
+                                      {(unreadCount && unreadCount > 0) && (
+                                    <span
+                                    className="badge rounded-circle bg-success text-white"
+                                    style={{
+                                        borderRadius: '100%',
+                                        width: 25,
+                                        height: 20,
+                                        fontSize: 10,
+                                        textAlign: 'center',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}
+                                    >
+                                    {unreadCount}
+                                    </span>
+                                      )}
+                                  </div>
+                              )
+                          })                              
         )}
       </div>
 

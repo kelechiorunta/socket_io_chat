@@ -25,6 +25,19 @@ export const GET_CONTACTS = gql`
       email
       username
       picture
+      lastMessage
+      lastMessageCount
+      isOnline
+      unread {
+        sender {
+          _id
+          username
+        }
+        unreadMsgs {
+          _id
+          content
+        }
+    }
     }
   }
 `;
@@ -36,6 +49,25 @@ export const AUTH = gql`
       email
       username
       picture
+      lastMessage
+      lastMessageCount
+      isOnline
+      unread {
+        sender {
+          _id
+          username
+        }
+        unreadMsgs {
+          _id
+          content
+        }
+      }
     }
+  }
+`;
+
+export const MARK_MESSAGES_AS_READ = gql`
+  mutation MarkMessagesAsRead($senderId: ID!) {
+    markMessagesAsRead(senderId: $senderId)
   }
 `;
