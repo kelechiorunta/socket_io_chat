@@ -73,7 +73,7 @@ const IconBar = ({pic}) => {
                     variant="outline-secondary"
                     className="d-flex justify-content-center align-items-center text-white"
                     style={{ width: 36, height: 36, borderRadius: '50%' }}
-                    onClick={()=> window.location.href = 'http://localhost:7334/logout'}
+                    onClick={() => { window.location.href = 'http://localhost:7334/logout'; localStorage.removeItem('currentUser'); }}
                 >
                     {/* You could toggle with state later */}
                     <LogOutIcon size={18} />
