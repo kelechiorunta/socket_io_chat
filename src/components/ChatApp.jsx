@@ -397,6 +397,7 @@ useEffect(() => {
         setTimeout(() => setTypingUserId(null), 2000);
       }
     });
+    
   
     return () => {
       socket.off('newMessage');
@@ -405,7 +406,24 @@ useEffect(() => {
       socket.off('isConnected');
       socket.off('typing');
     };
-  }, [selectedChat?._id, socket, user?._id, currentContacts ]); // ✅ Run only once
+}, [selectedChat?._id, socket, user?._id, currentContacts]); // ✅ Run only once
+    
+    useEffect(() => {
+        if (!socket) return;
+        socket.on('messagesMarkedAsRead', async ({ senderId }) => {
+            if (senderId) {
+              await markMessagesAsRead({
+                  variables: { senderId },
+                  refetchQueries: [{ query: GET_CONTACTS }],
+                  awaitRefetchQueries: true
+              });
+              setRead(true)   
+            }
+        });
+        return () => {
+            socket.off('messagesMarkedAsRead');
+          };
+    }, [markMessagesAsRead, socket])
   
   // Then use separate effects for `user` or `selectedChat` dependent emissions:
   useEffect(() => {
@@ -417,15 +435,8 @@ useEffect(() => {
   useEffect(() => {
     if (!socket || !selectedChat?._id) return;
       socket.emit('isOnline', { receiverId: selectedChat._id });
-      socket.on('messagesMarkedAsRead', ({ senderId }) => {
-          markMessagesAsRead({
-              variables: { senderId },
-              refetchQueries: [{ query: GET_CONTACTS }],
-              awaitRefetchQueries: true
-          });
-          setRead(true)
-      });
-  }, [socket, selectedChat?._id, markMessagesAsRead, authUser]);
+      
+  }, [socket, selectedChat?._id ]);
   
     useEffect(() => {
            
@@ -461,23 +472,24 @@ useEffect(() => {
     // }, [markMessagesAsRead])
     
   const handleSelectChat = async (chatUser) => {
-      setSelectedChat(chatUser);
+     
  
-      if (currentUser && chatUser) {
+    //   if (currentUser && chatUser) {
         //   await markMessagesAsRead({
         //       variables: { senderId: chatUser._id },
           //       });
-          if (socket && currentUser && chatUser) {
+      if (socket && currentUser && chatUser) {
+        setSelectedChat(chatUser);
             socket.emit('markAsRead', {
-              senderId: chatUser._id,
+              senderId: chatUser?._id,
               receiverId: currentUser._id,
             });
-          }
+          
           
             try {
         
                 const res = await fetch(
-                  `http://localhost:7334/api/getChatHistory?userId=${chatUser?._id}&currentUserId=${currentUser._id}`,
+                  `http://localhost:7334/api/getChatHistory?userId=${chatUser?._id}&currentUserId=${currentUser?._id}`,
                   {
                     method: 'GET',
                     credentials: 'include',
