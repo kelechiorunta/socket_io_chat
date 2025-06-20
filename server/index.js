@@ -174,6 +174,42 @@ io.on('connection', (socket) => {
       socket.join(userId); // Join personal room
     });
   
+    socket.on('markAsRead', async ({ senderId, receiverId }) => {
+        try {
+        //   const user = socket.request.user || receiverId;;
+        //   if (!user) {
+        //     console.error('Unauthorized socket access');
+        //     return;
+        //   }
+      
+          const sender = await User.findById(senderId);
+          const recipient = await User.findById(receiverId);
+      
+          if (!sender || !recipient) {
+            console.error('Sender or recipient not found');
+            return;
+          }
+                  // Delete all unread messages where recipient is current user and sender is senderId
+      const result = await UnreadMsg.deleteMany({
+        recipient: recipient._id,
+        sender: sender._id,
+      });
+
+      console.log(`🗑️ Deleted ${result.deletedCount} unread message docs from ${sender.username} to ${recipient.username}`);
+
+      // Optionally notify the client
+      socket.emit('messagesMarkedAsRead', { senderId });
+      
+        //     await UnreadMsg.deleteMany({ sender, recipient });
+        //     recipient.unread = [];
+        //     await recipient.save();
+      
+        //   console.log(`Marked messages as read from ${senderId} to ${receiverId}`);
+        } catch (error) {
+           console.error('Error in markAsRead socket handler:', error);
+        }
+      });
+      
     socket.on('sendMessage', async ({ content, receiverId }) => {
       const senderId = socket.data.userId;
       if (!senderId || !receiverId || !content) return;
@@ -213,9 +249,9 @@ io.on('connection', (socket) => {
         const newMessageId = await message.save();
         
         // Track unread only if recipient is offline
-        if (recipientUser && !onlineUsers.has(receiverId)) {
-          recipientUser.lastMessage = content;
-          recipientUser.lastMessageCount = (recipientUser.lastMessageCount || 0) + 1;
+        if ((senderUser || recipientUser) && !onlineUsers.has(receiverId)) {
+          senderUser.lastMessage = content;
+          senderUser.lastMessageCount = (senderUser.lastMessageCount || 0) + 1;
         
           // Find or create UnreadMsg entry
           let unreadEntry = await UnreadMsg.findOne({ recipient: receiverId, sender: senderId });
@@ -238,6 +274,7 @@ io.on('connection', (socket) => {
           }
         
           await recipientUser.save();
+          await senderUser.save();
         }
   
         // ✅ Add message to chat document
