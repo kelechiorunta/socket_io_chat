@@ -175,41 +175,47 @@ io.on('connection', (socket) => {
     });
   
     socket.on('markAsRead', async ({ senderId, receiverId }) => {
-        try {
-        //   const user = socket.request.user || receiverId;;
-        //   if (!user) {
-        //     console.error('Unauthorized socket access');
-        //     return;
-        //   }
-      
-          const sender = await User.findById(senderId);
-          const recipient = await User.findById(receiverId);
-      
-          if (!sender || !recipient) {
-            console.error('Sender or recipient not found');
+        if (!senderId || !receiverId) {
+            console.warn('❗ senderId or receiverId not provided');
             return;
-          }
-                  // Delete all unread messages where recipient is current user and sender is senderId
-      const result = await UnreadMsg.deleteMany({
-        recipient: recipient._id,
-        sender: sender._id,
-      });
-
-      console.log(`🗑️ Deleted ${result.deletedCount} unread message docs from ${sender.username} to ${recipient.username}`);
-
-      // Optionally notify the client
-      socket.emit('messagesMarkedAsRead', { senderId });
-      
-        //     await UnreadMsg.deleteMany({ sender, recipient });
-        //     recipient.unread = [];
-        //     await recipient.save();
-      
-        //   console.log(`Marked messages as read from ${senderId} to ${receiverId}`);
-        } catch (error) {
-           console.error('Error in markAsRead socket handler:', error);
         }
-      });
-      
+    
+        try {
+            const sender = await User.findById(senderId);
+            const recipient = await User.findById(receiverId);
+    
+            if (!sender || !recipient) {
+                console.warn('❗ Sender or recipient not found in DB');
+                return;
+            }
+    
+            // Check if there are unread messages from sender to this recipient
+            const unreadEntry = await UnreadMsg.findOne({
+                recipient: recipient._id,
+                sender: sender._id,
+                unreadMsgs: { $exists: true, $not: { $size: 0 } }
+            });
+    
+            if (unreadEntry) {
+                // Delete the specific unread entry
+                const result = await UnreadMsg.deleteOne({
+                    _id: unreadEntry._id
+                });
+    
+                console.log(`🗑️ Deleted ${result.deletedCount} unread message(s) from ${sender.username} to ${recipient.username}`);
+    
+                // Emit confirmation only if deletion was successful
+                socket.emit('messagesMarkedAsRead', { senderId });
+            } else {
+                console.log(`✅ No unread messages found from ${sender.username} to ${recipient.username}`);
+            }
+    
+        } catch (error) {
+            console.error('❌ Error in markAsRead socket handler:', error);
+        }
+    });
+    
+    
     socket.on('sendMessage', async ({ content, receiverId }) => {
       const senderId = socket.data.userId;
       if (!senderId || !receiverId || !content) return;
