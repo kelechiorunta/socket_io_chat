@@ -98,12 +98,13 @@ authRouter.post('/signin', (req, res, next) => {
         return res.json({ messages: [] });
       }
           
-      const selectedUser = await User.findById(userId);
+          const selectedUser = await User.findById(userId);
+          const currentUser = await User.findById(currentUserId);
         if (selectedUser) {
             selectedUser.lasMessageCount = 0
             await selectedUser.save();
         }
-          const currentUser = await User.findById(currentUserId);
+         
           
         //   await UnreadMsg.deleteMany({ recipient: selectedUser, sender: currentUser });
   
