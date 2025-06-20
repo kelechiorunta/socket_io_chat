@@ -206,14 +206,46 @@ const ChatApp = () => {
   const [selectedChat, setSelectedChat] = useState(null); 
   const [typingUserId, setTypingUserId] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState(new Set());
+  const [read, setRead] = useState(null);
   const { data: contacts, loading: contacts_loading, error: contacts_error, refetch } = useQuery(GET_CONTACTS, {
-      fetchPolicy: 'cache-and-network'
+      fetchPolicy: 'cache-and-network',
+      onCompleted: (data) => {
+        // You can do something like sync avatars, badges, etc.
+        console.log('Contacts updated!', data);
+      },
   });
   const [currentUser, setCurrentUser] = useState(null);
   const [isOnline, setIsOnline] = useState(null);
   const [notifiedUser, setNotifiedUser] = useState(null);
 
-  const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
+//   const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
+//     // update(cache, { data, variables }) {
+//     //   const existing = cache.readQuery({ query: GET_CONTACTS });
+  
+//     //   if (!existing || !variables?.senderId) return;
+  
+//     //   const updatedUsers = existing.users.map(user => {
+//     //     if (user._id === variables.senderId) {
+//     //       return {
+//     //         ...user,
+//     //         unread: [], // Clear unread messages
+//     //       };
+//     //     }
+//     //     return user;
+//     //   });
+  
+//     //   cache.writeQuery({
+//     //     query: GET_CONTACTS,
+//     //     data: { users: updatedUsers },
+//     //   });
+//     // },
+//     // Optional: You may not need this if your cache update works correctly
+//     refetchQueries: [{query: GET_CONTACTS}], // set to [] if you're confident in the cache update
+//     awaitRefetchQueries: true,
+//   });
+  
+  
+const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
     update(cache, { data, variables }) {
       const existing = cache.readQuery({ query: GET_CONTACTS });
   
@@ -223,7 +255,7 @@ const ChatApp = () => {
         if (user._id === variables.senderId) {
           return {
             ...user,
-            unread: [], // Clear unread messages
+            unread: [], // ✅ clear unread messages for this user
           };
         }
         return user;
@@ -234,19 +266,28 @@ const ChatApp = () => {
         data: { users: updatedUsers },
       });
     },
-    // Optional: You may not need this if your cache update works correctly
-    refetchQueries: [], // set to [] if you're confident in the cache update
-    awaitRefetchQueries: true,
   });
-  
   
 
-//   const [onlineUser, setOnlineUser] = useState(null)
-    const { data, loading, error } = useQuery(AUTH, {
+    //   const [onlineUser, setOnlineUser] = useState(null)
+    const [authUser, setAuthUser] = useState(null);
+    const { data, loading, error, refetch: refetchAuth } = useQuery(AUTH, {
       fetchPolicy: 'network-only'
   });
-    const user = data?.auth || null
+    const user = data?.auth 
     const currentContacts = contacts?.users || null
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem('currentUser');
+    
+        if ((!storedUser) && user) {
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            setAuthUser(user);
+        } else if (storedUser) {
+            console.log(`storedUser is ${JSON.parse(storedUser)}`)
+            setAuthUser(JSON.parse(storedUser));
+        }
+    }, [user]);
 
   useEffect(() => {
     const host = window.location.hostname;
@@ -375,8 +416,16 @@ useEffect(() => {
   
   useEffect(() => {
     if (!socket || !selectedChat?._id) return;
-    socket.emit('isOnline', { receiverId: selectedChat._id });
-  }, [socket, selectedChat?._id]);
+      socket.emit('isOnline', { receiverId: selectedChat._id });
+      socket.on('messagesMarkedAsRead', ({ senderId }) => {
+          markMessagesAsRead({
+              variables: { senderId },
+              refetchQueries: [{ query: GET_CONTACTS }],
+              awaitRefetchQueries: true
+          });
+          setRead(true)
+      });
+  }, [socket, selectedChat?._id, markMessagesAsRead, authUser]);
   
     useEffect(() => {
            
@@ -394,12 +443,37 @@ useEffect(() => {
         } else {
             setCurrentUser(user); // fallback
         }
-  }, [currentContacts, onlineUsers, user])
+    }, [currentContacts, onlineUsers, user])
+    
+    // useEffect(() => {
+    //     // const handleSelect = async() => {
+    //     //     if (selectedChat && selectedChat._id) {
+    //     //         await markMessagesAsRead({
+    //     //             variables: { senderId: selectedChat._id }
+    //     //         })
+    //     //         // await refetch();
+    //     //         // await refetchAuth();
+    //     //     }
+    //     // }
+    //     // handleSelect();
+        
+          
+    // }, [markMessagesAsRead])
     
   const handleSelectChat = async (chatUser) => {
       setSelectedChat(chatUser);
  
-        if (currentUser && chatUser) {
+      if (currentUser && chatUser) {
+        //   await markMessagesAsRead({
+        //       variables: { senderId: chatUser._id },
+          //       });
+          if (socket && currentUser && chatUser) {
+            socket.emit('markAsRead', {
+              senderId: chatUser._id,
+              receiverId: currentUser._id,
+            });
+          }
+          
             try {
         
                 const res = await fetch(
@@ -421,15 +495,11 @@ useEffect(() => {
                 setMessages(history.messages);
                 setNotifiedUser(history.notifiedUser)
 
-                await markMessagesAsRead({ variables: { senderId: chatUser._id } });
-
-                await refetch();
+              
               } catch (error) {
                 console.error('Error fetching chat history:', error);
               }      
-        }
-            
-      
+        }        
   };   
 
   return (
@@ -442,13 +512,15 @@ useEffect(() => {
 
         {/* Sidebar Column */}
         <Col xs={10} sm={10} md={10} lg={4} style={{marginLeft:30, overflowX: 'hidden'}} className="p-0 border-end ">
-                  <Sidebar onSelectChat={handleSelectChat} pic={data && data.auth}
+                  <Sidebar onSelectChat={handleSelectChat} pic={(data && data.auth)}
+                      authenticatedUser={authUser}
                       selectedChat={selectedChat}
                       typingUserId={typingUserId}
                       isOnline={isOnline}
                       notifiedUser={notifiedUser}
                       loading={contacts_loading}
                       error={contacts_error}
+                      isRead={read}
                       contacts={contacts?.users || []}
                       onlineUsers={onlineUsers} />
         </Col>
