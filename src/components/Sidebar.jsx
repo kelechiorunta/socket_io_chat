@@ -164,7 +164,7 @@ import {
 import Avatar from './Avatar';
 import Button from './Button';
 
-const Sidebar = ({ onSelectChat, pic, loading, error, contacts, typingUserId, onlineUsers, isOnline,  notifiedUser, selectedChat }) => {
+const Sidebar = ({ onSelectChat, pic, loading, error, isRead, contacts, typingUserId, onlineUsers, authenticatedUser, isOnline,  notifiedUser, selectedChat }) => {
   const navigate = useNavigate();
 //     const { loading, error, data } = useQuery(GET_CONTACTS, 
 //       {fetchPolicy: 'cache-and-network'}
@@ -190,7 +190,7 @@ const Sidebar = ({ onSelectChat, pic, loading, error, contacts, typingUserId, on
     <div style={{backgroundColor:' #1f1d1d'}} className="bg-dark text-light p-3 d-flex flex-column">
       {/* Top Icons */}
       <div className="d-flex justify-content-between align-items-center mb-3">
-              <div className="fw-bold text-purple">{pic?.username.toUpperCase().slice(0,2)}</div>
+              <div className="fw-bold text-purple">{authenticatedUser?.username.toUpperCase().slice(0,2)}</div>
         <div className="d-flex gap-2">
           <Sun role="button" />
           <Moon role="button" />
@@ -237,7 +237,8 @@ const Sidebar = ({ onSelectChat, pic, loading, error, contacts, typingUserId, on
           <div className="text-danger">Error fetching contacts</div>
         ) : (
                 filteredUsers.map((user) => {
-                    const unreadFromSender = pic && pic.unread?.find(u => u.sender?._id === user?._id);
+                    const current_user = authenticatedUser || pic;
+                    const unreadFromSender = authenticatedUser && authenticatedUser.unread?.find(u => u.sender?._id === user?._id);
                     console.log(pic && pic.unread)
                     const unreadCount = unreadFromSender?.unreadMsgs?.length;
                
@@ -274,7 +275,7 @@ const Sidebar = ({ onSelectChat, pic, loading, error, contacts, typingUserId, on
                                 </div>
               
                                       {/* Unread Count Badge */}
-                                      {(unreadCount && unreadCount > 0) && (
+                                      {((unreadCount && unreadCount > 0) && (!isRead) && (unreadFromSender !== selectedChat)) && (
                                     <span
                                     className="badge rounded-circle bg-success text-white"
                                     style={{
