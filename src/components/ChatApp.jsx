@@ -336,12 +336,30 @@ useEffect(() => {
       socket.emit('isOnline', { receiverId: selectedChat._id });
     }
   
-    // Set up listeners ONCE
-    socket.on('newMessage', (msg) => {
-      console.log('📩 New message received:', msg);
-      setMessages((prev) => [...prev, msg]);
-    });
+    // // Set up listeners ONCE
+    // socket.on('newMessage', (msg) => {
+    //     console.log('📩 New message received:', msg);
+    //     // if (selectedChat && (selectedChat?._id === msg.receiver?._id)) {
+    //         alert('hello')
+    //         setMessages((prev) => [...prev, msg]);
+    //     // }
+     
+    // });
   
+    socket.on('newMessage', (msg) => {
+        console.log('📩 New message received:', msg);
+      
+        // Show message only if it matches the currently selected chat
+        const isSender = msg.sender?._id === selectedChat?._id;
+        const isReceiver = msg.receiver?._id === selectedChat?._id;
+      
+        if (isSender || isReceiver) {
+          setMessages((prev) => [...prev, msg]);
+        } else {
+          console.log('Message not for currently selected chat, ignoring');
+        }
+      });
+      
     socket.on('userOnline', ({ userId, online }) => {
         setOnlineUsers((prev) => new Set(prev).add(userId));
         setIsOnline(online)
@@ -358,6 +376,7 @@ useEffect(() => {
         updated.delete(userId);
         return updated;
       });
+        // setSelectedChat(null)
     });
   
     socket.on('isConnected', ({ currentUser }) => {
@@ -371,7 +390,6 @@ useEffect(() => {
       }
     });
     
-  
     return () => {
       socket.off('newMessage');
       socket.off('userOnline');
@@ -379,7 +397,7 @@ useEffect(() => {
       socket.off('isConnected');
       socket.off('typing');
     };
-}, [selectedChat?._id, socket, user?._id, currentContacts]); // ✅ Run only once
+}, [selectedChat?._id, socket, user?._id, currentContacts, selectedChat]); // ✅ Run only once
     
     useEffect(() => {
         if (!socket) return;
@@ -428,41 +446,24 @@ useEffect(() => {
         }
     }, [currentContacts, onlineUsers, user])
     
-    // useEffect(() => {
-    //     // const handleSelect = async() => {
-    //     //     if (selectedChat && selectedChat._id) {
-    //     //         await markMessagesAsRead({
-    //     //             variables: { senderId: selectedChat._id }
-    //     //         })
-    //     //         // await refetch();
-    //     //         // await refetchAuth();
-    //     //     }
-    //     // }
-    //     // handleSelect();
-        
-          
-    // }, [markMessagesAsRead])
     
   const handleSelectChat = async (chatUser) => {
-     
- 
-    //   if (currentUser && chatUser) {
-        //   await markMessagesAsRead({
-        //       variables: { senderId: chatUser._id },
-      //       });
+    setSelectedChat(chatUser);
       const storedUser = localStorage.getItem('currentUser');
-      if (socket && storedUser && chatUser) {
-        setSelectedChat(chatUser);
+      const onlineIds = onlineUsers && Array.from(onlineUsers);
+      const knownOnlineUserId = onlineIds.find(id => id === currentUser?._id)
+      if (socket && (storedUser || currentUser) && chatUser) {
+        
             socket.emit('markAsRead', {
               senderId: chatUser?._id,
-              receiverId: storedUser._id,
+              receiverId: storedUser?._id || knownOnlineUserId || currentUser?._id,
             });
           
           
             try {
         
                 const res = await fetch(
-                  `http://localhost:7334/api/getChatHistory?userId=${chatUser?._id}&currentUserId=${storedUser?._id}`,
+                  `http://localhost:7334/api/getChatHistory?userId=${chatUser?._id}&currentUserId=${currentUser?._id}`,
                   {
                     method: 'GET',
                     credentials: 'include',
