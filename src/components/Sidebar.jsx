@@ -238,7 +238,7 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, contacts, typingUs
         ) : (
                 filteredUsers.map((user) => {
                     const current_user = authenticatedUser || pic;
-                    const unreadFromSender = authenticatedUser && authenticatedUser.unread?.find(u => u.sender?._id === user?._id);
+                    const unreadFromSender = pic && pic.unread?.find(u => u.sender?._id === user?._id);
                     console.log(pic && pic.unread)
                     const unreadCount = unreadFromSender?.unreadMsgs?.length;
                
