@@ -105,7 +105,20 @@ authRouter.post('/signin', (req, res, next) => {
             await selectedUser.save();
         }
          
-          
+   const unreadEntry = await UnreadMsg.findOne({
+                   recipient: selectedUser._id,
+                   sender: currentUser._id,
+                   unreadMsgs: { $exists: true, $not: { $size: 0 } }
+               });
+       
+          if (unreadEntry) {
+              // Delete the specific unread entry
+              const result = await UnreadMsg.deleteOne({
+                  _id: unreadEntry._id
+              });
+       
+              console.log(`🗑️ Deleted ${result.deletedCount} unread message(s) from ${currentUser.username} to ${selectedUser.username}`);
+          }
         //   await UnreadMsg.deleteMany({ recipient: selectedUser, sender: currentUser });
   
       res.json({ messages: chat.messages, notifiedUser: currentUser});
