@@ -217,33 +217,6 @@ const ChatApp = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [isOnline, setIsOnline] = useState(null);
   const [notifiedUser, setNotifiedUser] = useState(null);
-
-//   const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
-//     // update(cache, { data, variables }) {
-//     //   const existing = cache.readQuery({ query: GET_CONTACTS });
-  
-//     //   if (!existing || !variables?.senderId) return;
-  
-//     //   const updatedUsers = existing.users.map(user => {
-//     //     if (user._id === variables.senderId) {
-//     //       return {
-//     //         ...user,
-//     //         unread: [], // Clear unread messages
-//     //       };
-//     //     }
-//     //     return user;
-//     //   });
-  
-//     //   cache.writeQuery({
-//     //     query: GET_CONTACTS,
-//     //     data: { users: updatedUsers },
-//     //   });
-//     // },
-//     // Optional: You may not need this if your cache update works correctly
-//     refetchQueries: [{query: GET_CONTACTS}], // set to [] if you're confident in the cache update
-//     awaitRefetchQueries: true,
-//   });
-  
   
 const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
     update(cache, { data, variables }) {
@@ -411,11 +384,10 @@ useEffect(() => {
     useEffect(() => {
         if (!socket) return;
         socket.on('messagesMarkedAsRead', async ({ senderId }) => {
-            if (senderId) {
+            const storedUser = localStorage.getItem('currentUser');
+            if (senderId || storedUser ) {
               await markMessagesAsRead({
-                  variables: { senderId },
-                  refetchQueries: [{ query: GET_CONTACTS }],
-                  awaitRefetchQueries: true
+                  variables: { senderId: storedUser._id || senderId },
               });
               setRead(true)   
             }
@@ -477,19 +449,20 @@ useEffect(() => {
     //   if (currentUser && chatUser) {
         //   await markMessagesAsRead({
         //       variables: { senderId: chatUser._id },
-          //       });
-      if (socket && currentUser && chatUser) {
+      //       });
+      const storedUser = localStorage.getItem('currentUser');
+      if (socket && storedUser && chatUser) {
         setSelectedChat(chatUser);
             socket.emit('markAsRead', {
               senderId: chatUser?._id,
-              receiverId: currentUser._id,
+              receiverId: storedUser._id,
             });
           
           
             try {
         
                 const res = await fetch(
-                  `http://localhost:7334/api/getChatHistory?userId=${chatUser?._id}&currentUserId=${currentUser?._id}`,
+                  `http://localhost:7334/api/getChatHistory?userId=${chatUser?._id}&currentUserId=${storedUser?._id}`,
                   {
                     method: 'GET',
                     credentials: 'include',
