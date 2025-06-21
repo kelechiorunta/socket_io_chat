@@ -497,7 +497,7 @@ useEffect(() => {
         </Col>
 
         {/* Sidebar Column */}
-        <Col xs={10} sm={10} md={10} lg={4} style={{marginLeft:30, overflowX: 'hidden'}} className="p-0 border-end ">
+        <Col xs={10} sm={10} md={10} lg={5} style={{margin:'auto', overflowX: 'hidden'}} className=" border-end ">
                   <Sidebar onSelectChat={handleSelectChat} pic={(data && data.auth)}
                       authenticatedUser={authUser}
                       selectedChat={selectedChat}
