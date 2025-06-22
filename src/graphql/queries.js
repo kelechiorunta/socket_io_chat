@@ -71,3 +71,15 @@ export const MARK_MESSAGES_AS_READ = gql`
     markMessagesAsRead(senderId: $senderId)
   }
 `;
+
+export const CREATE_UNREAD = gql`
+  mutation CreateUnread($senderId: ID!, $recipientId: ID!) {
+    createUnread(senderId: $senderId, recipientId: $recipientId)
+  }
+`;
+
+export const CLEAR_UNREAD = gql`
+  mutation ClearUnread($senderId: ID!, $recipientId: ID!) {
+    clearUnread(senderId: $senderId, recipientId: $recipientId)
+  }
+`;
