@@ -250,12 +250,12 @@ io.on('connection', (socket) => {
         });
 
         const recipientUser = await User.findById(receiverId);
-          const senderUser = await User.findById(senderId);
+        const senderUser = await User.findById(senderId);
           
         const newMessageId = await message.save();
         
         // Track unread only if recipient is offline
-        if ((senderUser || recipientUser) && !onlineUsers.has(receiverId)) {
+        if ((senderUser || recipientUser) && (!onlineUsers.has(receiverId) || onlineUsers.has(receiverId))) {
           senderUser.lastMessage = content;
           senderUser.lastMessageCount = (senderUser.lastMessageCount || 0) + 1;
         
@@ -300,6 +300,8 @@ io.on('connection', (socket) => {
             receiver: message.receiver,
             content: message.content,
             createdAt: message.createdAt,
+            unreadMsgs: recipientUser.unread,
+            recipient: recipientUser
           });
         });
       } catch (error) {
