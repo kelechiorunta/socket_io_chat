@@ -516,7 +516,9 @@ useEffect(() => {
                       loading={contacts_loading}
                       error={contacts_error}
                       isRead={read}
+                      isActiveRecipient={isActive}
                       contacts={contacts?.users || []}
+                      unreadMap={unreadMap}
                       onlineUsers={onlineUsers} />
         </Col>
 
