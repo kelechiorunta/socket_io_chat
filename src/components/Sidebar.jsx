@@ -190,7 +190,7 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, unreadMap, isActiv
     <div style={{backgroundColor:' #1f1d1d'}} className="bg-dark text-light p-3 d-flex flex-column">
       {/* Top Icons */}
       <div className="d-flex justify-content-between align-items-center mb-3">
-              <div className="fw-bold text-purple">{authenticatedUser?.username.toUpperCase().slice(0,2)}</div>
+              <div style={{color: '#00e575', fontSize: 30 }} className="fw-bold text-purple">{'JUSTCHAT' || authenticatedUser?.username.toUpperCase().slice(0,2)}</div>
         <div className="d-flex gap-2">
           <Sun role="button" />
           <Moon role="button" />
