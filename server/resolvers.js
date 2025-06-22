@@ -50,31 +50,39 @@ const resolvers = {
           return null;
         },
     },
+    
     Mutation: {
-        // markMessagesAsRead: async (_, { senderId }, context) => {
-        //   const recipientId = context?.user?._id;
-        //   if (!recipientId) throw new Error('Not authenticated');
+        createUnread: async (_, { senderId, recipientId }) => {
+            try {
+              const user = await User.findById(recipientId);
+              if (!user) throw new Error('Recipient not found');
       
-        //   try {
-        //     const unreadEntry = await UnreadMsg.findOne({ recipient: recipientId, sender: senderId });
+              const currentCount = user.unreadCounts?.get(senderId) || 0;
+              user.unreadCounts.set(senderId, currentCount + 1);
+              await user.save();
       
-        //     if (!unreadEntry) return true;
+              return user.unreadCounts.get(senderId);
+            } catch (err) {
+              console.error('❌ createUnreads error:', err);
+              throw new Error('Failed to update unread count');
+            }
+          },
       
-        //     // Remove the unread reference from user
-        //     await User.updateOne(
-        //       { _id: recipientId },
-        //       { $pull: { unread: unreadEntry._id }, $set: { lastMessageCount: 0 } }
-        //     );
+          clearUnread: async (_, { senderId, recipientId }) => {
+            try {
+              const user = await User.findById(recipientId);
+              if (!user) throw new Error('Recipient not found');
       
-        //     // Delete the unread entry
-        //     await UnreadMsg.deleteOne({ _id: unreadEntry._id });
+              user.unreadCounts.set(senderId, 0);
+              await user.save();
       
-        //     return true;
-        //   } catch (err) {
-        //     console.error('Error marking messages as read:', err);
-        //     return false;
-        //   }
-        // }
+              return true;
+            } catch (err) {
+              console.error('❌ clearUnread error:', err);
+              return false;
+            }
+        },
+          
         markMessagesAsRead: async (_, { senderId }, { user }) => {
             if (!user) throw new Error("Unauthorized");
 
