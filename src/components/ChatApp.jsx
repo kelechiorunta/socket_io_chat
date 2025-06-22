@@ -406,6 +406,7 @@ useEffect(() => {
                       isActiveRecipient={isActive}
                       contacts={contacts?.users || []}
                       unreadMap={unreadMap}
+                      typingUsers={typingUsers}
                       onlineUsers={onlineUsers} />
         </Col>
 
