@@ -5,6 +5,8 @@ type Query{
 
 type Mutation {
   markMessagesAsRead(senderId: ID!): Boolean
+  createUnread(senderId: ID!, recipientId: ID!): Int
+  clearUnread(senderId: ID!, recipientId: ID!): Boolean
 }
 
 type User {
