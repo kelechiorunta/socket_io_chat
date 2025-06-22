@@ -252,7 +252,59 @@ const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
   });
     const user = data?.auth 
     const currentContacts = contacts?.users || null
+    // const [unreadMap, setUnreadMap] = useState(() => {
+    //     const unreadList = user?.unreadMsgs || [];
+    //     const map = {};
+      
+    //     unreadList.forEach(entry => {
+    //       const senderId = entry?.sender?._id || entry?.sender;
+    //       if (senderId) {
+    //         map[senderId] = (map[senderId] || 0) + (entry.unreadMsgs?.length || 0);
+    //       }
+    //     });
+      
+    //     return map;
+    //   });      
+    const [unreadMap, setUnreadMap] = useState({});
 
+    const handleUnreadNotification = async (senderId, recipientId) => {
+        if (!senderId || !recipientId) return;
+      
+        try {
+          const { data } = await createUnread({
+            variables: { senderId, recipientId },
+          });
+      
+          // If your mutation returns the new unread count
+          const newCount = data?.createUnread;
+      
+          setUnreadMap((prev) => ({
+            ...prev,
+            [senderId]: newCount,
+          }));
+        } catch (error) {
+          console.error('Failed to create unread:', error);
+        }
+      };
+      
+      
+
+      useEffect(() => {
+        if (!user?.unread) return;
+      
+        const map = {};
+      
+        user.unread.forEach(entry => {
+          const senderId = entry?.sender?._id || entry?.sender;
+          if (senderId) {
+            map[senderId] = (map[senderId] || 0) + (entry.unreadMsgs?.length || 0);
+          }
+        });
+      
+        setUnreadMap(map);
+      }, [user]);
+      
+    
     useEffect(() => {
         const storedUser = localStorage.getItem('currentUser');
     
