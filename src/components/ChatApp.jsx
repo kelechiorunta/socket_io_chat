@@ -450,10 +450,17 @@ useEffect(() => {
     
     
   const handleSelectChat = async (chatUser) => {
-    setSelectedChat(chatUser);
+      setSelectedChat(chatUser);
+      setUnreadMap(prev => {
+        const updated = { ...prev };
+        delete updated[chatUser._id];
+        return updated;
+      });
+     
       const storedUser = localStorage.getItem('currentUser');
       const onlineIds = onlineUsers && Array.from(onlineUsers);
       const knownOnlineUserId = onlineIds.find(id => id === currentUser?._id)
+      await clearUnread({ variables: { senderId: chatUser?._id, recipientId: storedUser?._id || knownOnlineUserId || currentUser?._id} });
       if (socket && (storedUser || currentUser) && chatUser) {
         
             socket.emit('markAsRead', {
