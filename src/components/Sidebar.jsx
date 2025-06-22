@@ -164,7 +164,7 @@ import {
 import Avatar from './Avatar';
 import Button from './Button';
 
-const Sidebar = ({ onSelectChat, pic, loading, error, isRead, unreadMap, isActiveRecipient, contacts, typingUserId, onlineUsers, authenticatedUser, isOnline,  notifiedUser, selectedChat }) => {
+const Sidebar = ({ onSelectChat, pic, loading, error, isRead, unreadMap, typingUsers, isActiveRecipient, contacts, typingUserId, onlineUsers, authenticatedUser, isOnline,  notifiedUser, selectedChat }) => {
   const navigate = useNavigate();
 //     const { loading, error, data } = useQuery(GET_CONTACTS, 
 //       {fetchPolicy: 'cache-and-network'}
@@ -251,6 +251,7 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, unreadMap, isActiv
             
               console.log(`Unread from ${user.username}: ${unreadCount}`);
             
+              const isTyping = typingUsers.has(user._id);
                
                     return (
                        <div
@@ -275,9 +276,9 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, unreadMap, isActiv
                                 {/* Username & Message */}
                                 <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                        <div style={{ textAlign: 'left' }} className="fw-bold text-white ">{user.username}</div>
+                                        <div style={{ textAlign: 'left', display: 'flex', alignItems:'flex-end', gap: 4 }} className="fw-bold text-white ">{user.username } <span style={{color: ' #00e575'}}>{ isTyping && ' is typing...'}</span></div>
                                           <div style={{ whiteSpace: 'nowrap', marginRight: -2, overflow: 'hidden', textOverflow: 'ellipsis', textAlign: 'left', minWidth: 100, maxWidth: '100%', color: typingUserId === user._id ? ' #00e575' : ' rgba(255, 255, 255, 0.5)' }} className={`small`}>
-                                                {typingUserId === user?._id ? 'Typing...' : user?.lastMessage || 'No messages'}
+                                                {user?.lastMessage || 'No messages'}
                                           </div>
                                         {/* <p style={{ textAlign: 'left' }}>{onlineUsers?.has(user?._id) && isOnline ? 'Online' : 'Offline'}</p> */}
                                         </div>
