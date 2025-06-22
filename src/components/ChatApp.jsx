@@ -185,7 +185,7 @@
 
 // export default ChatApp;
 
-import React, { useState, useEffect, memo, useMemo } from 'react';
+import React, { useState, useEffect, memo} from 'react';
 import { io } from 'socket.io-client';
 import { Container, Row, Col, Card, Placeholder } from 'react-bootstrap';
 import Sidebar from './Sidebar';
@@ -194,10 +194,10 @@ import ChatBody from './ChatBody';
 import ChatInput from './ChatInput';
 import IconBar from './IconBar';
 import { AUTH, GET_CONTACTS } from '../graphql/queries';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import debounce from 'lodash.debounce';
 // import socketInstance from './socket_client.js';
-import { MARK_MESSAGES_AS_READ, CREATE_UNREAD, CLEAR_UNREAD } from '../graphql/queries';
+import { MARK_MESSAGES_AS_READ, CREATE_UNREAD, CLEAR_UNREAD, GET_UNREAD } from '../graphql/queries';
 
 const ChatApp = () => {
   const [messages, setMessages] = useState([]);
@@ -208,7 +208,7 @@ const ChatApp = () => {
   const [onlineUsers, setOnlineUsers] = useState(new Set());
   const [read, setRead] = useState(null);
   const [isActive, setActiveRecipient] = useState(null);
-  const { data: contacts, loading: contacts_loading, error: contacts_error, refetch } = useQuery(GET_CONTACTS, {
+  const { data: contacts, loading: contacts_loading, error: contacts_error } = useQuery(GET_CONTACTS, {
       fetchPolicy: 'cache-and-network',
       onCompleted: (data) => {
         // You can do something like sync avatars, badges, etc.
@@ -220,6 +220,7 @@ const ChatApp = () => {
   const [notifiedUser, setNotifiedUser] = useState(null);
   const [createUnread] = useMutation(CREATE_UNREAD);
   const [clearUnread] = useMutation(CLEAR_UNREAD);
+  const [getUnread] = useLazyQuery(GET_UNREAD)
   
 const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
     update(cache, { data, variables }) {
@@ -247,62 +248,55 @@ const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
 
     //   const [onlineUser, setOnlineUser] = useState(null)
     const [authUser, setAuthUser] = useState(null);
-    const { data, loading, error, refetch: refetchAuth } = useQuery(AUTH, {
+    const { data, loading, error } = useQuery(AUTH, {
       fetchPolicy: 'network-only'
   });
     const user = data?.auth 
     const currentContacts = contacts?.users || null
-    // const [unreadMap, setUnreadMap] = useState(() => {
-    //     const unreadList = user?.unreadMsgs || [];
-    //     const map = {};
-      
-    //     unreadList.forEach(entry => {
-    //       const senderId = entry?.sender?._id || entry?.sender;
-    //       if (senderId) {
-    //         map[senderId] = (map[senderId] || 0) + (entry.unreadMsgs?.length || 0);
-    //       }
-    //     });
-      
-    //     return map;
-    //   });      
+    
     const [unreadMap, setUnreadMap] = useState({});
 
-    const handleUnreadNotification = async (senderId, recipientId) => {
+    const handleUnreadNotification = async( senderId, recipientId ) => {
         if (!senderId || !recipientId) return;
       
         try {
-          const { data } = await createUnread({
-            variables: { senderId, recipientId },
-          });
-      
+          const { data } = await createUnread({variables: { senderId, recipientId }});
           // If your mutation returns the new unread count
           const newCount = data?.createUnread;
-      
-          setUnreadMap((prev) => ({
-            ...prev,
-            [senderId]: newCount,
-          }));
+          setUnreadMap((prev) => ({...prev,[senderId]: newCount}));
         } catch (error) {
           console.error('Failed to create unread:', error);
         }
-      };
+    };
+    
+    useEffect(() => {
+        if (!user || !contacts) return;
       
+        const fetchAllUnreadCounts = async () => {
+          const promises = currentContacts.map(async contact => {
+            try {
+              const { data } = await getUnread({
+                variables: {
+                  senderId: contact._id,
+                  recipientId: user._id,
+                },
+              });
       
-
-      useEffect(() => {
-        if (!user?.unread) return;
+              const newCount = data?.getUnread || 0;
+              setUnreadMap(prev => ({
+                ...prev,
+                [contact._id]: newCount,
+              }));
+            } catch (err) {
+              console.error(`Failed to fetch unread count for ${contact._id}`, err);
+            }
+          });
       
-        const map = {};
+          await Promise.all(promises);
+        };
       
-        user.unread.forEach(entry => {
-          const senderId = entry?.sender?._id || entry?.sender;
-          if (senderId) {
-            map[senderId] = (map[senderId] || 0) + (entry.unreadMsgs?.length || 0);
-          }
-        });
-      
-        setUnreadMap(map);
-      }, [user]);
+        fetchAllUnreadCounts();
+      }, [currentContacts, user]);
       
     
     useEffect(() => {

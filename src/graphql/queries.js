@@ -66,6 +66,12 @@ export const AUTH = gql`
   }
 `;
 
+export const GET_UNREAD = gql`
+  query GetUnread($senderId: ID!, $recipientId: ID!) {
+  getUnread(senderId: $senderId, recipientId: $recipientId)
+}
+`;
+
 export const MARK_MESSAGES_AS_READ = gql`
   mutation MarkMessagesAsRead($senderId: ID!) {
     markMessagesAsRead(senderId: $senderId)
