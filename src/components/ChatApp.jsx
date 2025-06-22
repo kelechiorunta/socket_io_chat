@@ -197,7 +197,7 @@ import { AUTH, GET_CONTACTS } from '../graphql/queries';
 import { useQuery, useMutation } from '@apollo/client';
 import debounce from 'lodash.debounce';
 // import socketInstance from './socket_client.js';
-import { MARK_MESSAGES_AS_READ } from '../graphql/queries';
+import { MARK_MESSAGES_AS_READ, CREATE_UNREAD, CLEAR_UNREAD } from '../graphql/queries';
 
 const ChatApp = () => {
   const [messages, setMessages] = useState([]);
@@ -217,6 +217,8 @@ const ChatApp = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [isOnline, setIsOnline] = useState(null);
   const [notifiedUser, setNotifiedUser] = useState(null);
+  const [createUnread] = useMutation(CREATE_UNREAD);
+  const [clearUnread] = useMutation(CLEAR_UNREAD);
   
 const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
     update(cache, { data, variables }) {
@@ -448,10 +450,17 @@ useEffect(() => {
     
     
   const handleSelectChat = async (chatUser) => {
-    setSelectedChat(chatUser);
+      setSelectedChat(chatUser);
+      setUnreadMap(prev => {
+        const updated = { ...prev };
+        delete updated[chatUser._id];
+        return updated;
+      });
+     
       const storedUser = localStorage.getItem('currentUser');
       const onlineIds = onlineUsers && Array.from(onlineUsers);
       const knownOnlineUserId = onlineIds.find(id => id === currentUser?._id)
+      await clearUnread({ variables: { senderId: chatUser?._id, recipientId: storedUser?._id || knownOnlineUserId || currentUser?._id} });
       if (socket && (storedUser || currentUser) && chatUser) {
         
             socket.emit('markAsRead', {
