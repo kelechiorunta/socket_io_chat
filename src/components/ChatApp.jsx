@@ -207,6 +207,7 @@ const ChatApp = () => {
   const [typingUserId, setTypingUserId] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState(new Set());
   const [read, setRead] = useState(null);
+  const [isActive, setActiveRecipient] = useState(null);
   const { data: contacts, loading: contacts_loading, error: contacts_error, refetch } = useQuery(GET_CONTACTS, {
       fetchPolicy: 'cache-and-network',
       onCompleted: (data) => {
@@ -354,10 +355,16 @@ useEffect(() => {
         // Show message only if it matches the currently selected chat
         const isSender = msg.sender?._id === selectedChat?._id;
         const isReceiver = msg.receiver?._id === selectedChat?._id;
+        // const isrecipientActive = msg.recipient
+        // ?._id === selectedChat?._id
       
         if (isSender || isReceiver) {
           setMessages((prev) => [...prev, msg]);
         } else {
+            if (msg.sender?._id !== user?._id) {
+                handleUnreadNotification(msg.sender?._id, msg.receiver?._id);
+              }     
+            // setActiveRecipient(isrecipientActive)
           console.log('Message not for currently selected chat, ignoring');
         }
       });
