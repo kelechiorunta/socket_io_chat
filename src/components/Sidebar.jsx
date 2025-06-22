@@ -303,7 +303,7 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, unreadMap, isActiv
                                         justifyContent: 'center'
                                     }}
                                     >
-                                    {(unreadMap[user._id] || 0)}
+                                    {(unreadMap[user._id])}
                                     </span>
                                 )}
                                 </div>
