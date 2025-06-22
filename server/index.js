@@ -309,13 +309,22 @@ io.on('connection', (socket) => {
       }
     });
 
+    // socket.on('typing', ({ receiverId }) => {
+    //     const senderId = socket.data.userId;
+    //     if (!receiverId || !senderId) return;
+      
+    //     // Emit 'typing' to the receiver's room
+    //     io.to(receiverId).emit('typing', { from: senderId });
+    // });
+
     socket.on('typing', ({ receiverId }) => {
         const senderId = socket.data.userId;
-        if (!receiverId || !senderId) return;
-      
-        // Emit 'typing' to the receiver's room
-        io.to(receiverId).emit('typing', { from: senderId });
+        const receiverSocketId = onlineUsers.get(receiverId);
+        if (receiverSocketId) {
+          io.to(receiverSocketId).emit('typing', { from: senderId });
+        }
     });
+      
   
     socket.on('disconnect', async() => {
         console.log('🔴 Client disconnected:', socket.id);
