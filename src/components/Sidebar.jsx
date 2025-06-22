@@ -213,10 +213,10 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, unreadMap, isActiv
       {/* Message Section */}
       <div className="d-flex justify-content-between align-items-center mb-2">
         <h5 className="mb-0">Message</h5>
-        <ButtonGroup>
-          <Button variant={tab === 'all' ? 'primary' : 'outline-light'} onClick={() => setTab('all')}>All Chats</Button>
-          <Button variant={tab === 'groups' ? 'primary' : 'outline-light'} onClick={() => setTab('groups')}>Groups</Button>
-          <Button variant={tab === 'contacts' ? 'primary' : 'outline-light'} onClick={() => setTab('contacts')}>Contacts</Button>
+        <ButtonGroup style={{display: 'flex', gap: 8}}>
+          <Button style={{borderRadius: 10}} variant={tab === 'all' ? 'primary' : 'outline-light'} onClick={() => setTab('all')}>All Chats</Button>
+          <Button style={{borderRadius: 10}} variant={tab === 'groups' ? 'primary' : 'outline-light'} onClick={() => setTab('groups')}>Groups</Button>
+          <Button style={{borderRadius: 10}} variant={tab === 'contacts' ? 'primary' : 'outline-light'} onClick={() => setTab('contacts')}>Contacts</Button>
         </ButtonGroup>
       </div>
 
