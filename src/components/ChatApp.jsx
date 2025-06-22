@@ -185,7 +185,7 @@
 
 // export default ChatApp;
 
-import React, { useState, useEffect, memo, useMemo } from 'react';
+import React, { useState, useEffect, memo} from 'react';
 import { io } from 'socket.io-client';
 import { Container, Row, Col, Card, Placeholder } from 'react-bootstrap';
 import Sidebar from './Sidebar';
@@ -208,7 +208,7 @@ const ChatApp = () => {
   const [onlineUsers, setOnlineUsers] = useState(new Set());
   const [read, setRead] = useState(null);
   const [isActive, setActiveRecipient] = useState(null);
-  const { data: contacts, loading: contacts_loading, error: contacts_error, refetch } = useQuery(GET_CONTACTS, {
+  const { data: contacts, loading: contacts_loading, error: contacts_error } = useQuery(GET_CONTACTS, {
       fetchPolicy: 'cache-and-network',
       onCompleted: (data) => {
         // You can do something like sync avatars, badges, etc.
