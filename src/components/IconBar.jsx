@@ -1,5 +1,6 @@
 import React from 'react';
 import { Nav, Image, Button } from 'react-bootstrap';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import {
     Home,
     Search,
@@ -35,31 +36,46 @@ const IconBar = ({pic}) => {
                 />
 
                 <Nav defaultActiveKey="/home" className="flex-column text-center">
-                    <Nav.Link href="#" className="text-white d-flex flex-column align-items-center">
+                    <OverlayTrigger placement="right" overlay={<Tooltip>Home</Tooltip>}>
+                        <Nav.Link href="#" className="text-white d-flex flex-column align-items-center">
                         <Home size={20} />
                         <small style={{ fontSize: '0.7rem' }}>Home</small>
-                    </Nav.Link>
-                    <Nav.Link href="#" className="text-white d-flex flex-column align-items-center">
+                        </Nav.Link>
+                    </OverlayTrigger>
+
+                    <OverlayTrigger placement="right" overlay={<Tooltip>Search</Tooltip>}>
+                        <Nav.Link href="#" className="text-white d-flex flex-column align-items-center">
                         <Search size={20} />
                         <small style={{ fontSize: '0.7rem' }}>Search</small>
-                    </Nav.Link>
-                    <Nav.Link href="#" className="text-white d-flex flex-column align-items-center">
+                        </Nav.Link>
+                    </OverlayTrigger>
+
+                    <OverlayTrigger placement="right" overlay={<Tooltip>Save</Tooltip>}>
+                        <Nav.Link href="#" className="text-white d-flex flex-column align-items-center">
                         <Bookmark size={20} />
                         <small style={{ fontSize: '0.7rem' }}>Save</small>
-                    </Nav.Link>
-                    <Nav.Link href="#" className="text-white d-flex flex-column align-items-center">
+                        </Nav.Link>
+                    </OverlayTrigger>
+
+                    <OverlayTrigger placement="right" overlay={<Tooltip>Share</Tooltip>}>
+                        <Nav.Link href="#" className="text-white d-flex flex-column align-items-center">
                         <Share2 size={20} />
                         <small style={{ fontSize: '0.7rem' }}>Share</small>
-                    </Nav.Link>
-                    <Nav.Link href="#" className="text-white d-flex flex-column align-items-center">
+                        </Nav.Link>
+                    </OverlayTrigger>
+
+                    <OverlayTrigger placement="right" overlay={<Tooltip>Settings</Tooltip>}>
+                        <Nav.Link href="#" className="text-white d-flex flex-column align-items-center">
                         <Settings size={20} />
                         <small style={{ fontSize: '0.7rem' }}>Setting</small>
-                    </Nav.Link>
+                        </Nav.Link>
+                    </OverlayTrigger>
                 </Nav>
             </div>
 
             <div className="d-flex flex-column align-items-center gap-3">
                 {/* Light/Dark Mode Toggle */}
+                <OverlayTrigger placement="right" overlay={<Tooltip>Toggle Theme</Tooltip>}>
                 <Button
                     variant="outline-secondary"
                     className="d-flex justify-content-center align-items-center"
@@ -68,7 +84,9 @@ const IconBar = ({pic}) => {
                     {/* You could toggle with state later */}
                     <Moon size={18} />
                 </Button>
+                </OverlayTrigger>
 
+                <OverlayTrigger placement="right" overlay={<Tooltip>Logout</Tooltip>}>
                 <Button
                     variant="outline-secondary"
                     className="d-flex justify-content-center align-items-center text-white"
@@ -78,7 +96,7 @@ const IconBar = ({pic}) => {
                     {/* You could toggle with state later */}
                     <LogOutIcon size={18} />
                 </Button>
-
+                </OverlayTrigger>
 
                 {/* User Avatar */}
                 <Image
