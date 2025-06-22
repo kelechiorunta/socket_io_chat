@@ -560,12 +560,12 @@ useEffect(() => {
     <Container fluid className="bg-dark text-light p-0" style={{ height: 'max-content', overflowY: 'auto', overflowX: 'hidden' }}>
       <Row className="h-100 flex-xs-row flex-md-row flex-sm-row flex-lg-row">
         {/* IconBar Column */}
-        <Col xs={1} sm={1} md={1} lg={1} style={{position: 'sticky'}} className="p-0 border-end">
+        <Col xs={1} sm={1} md={1} lg={1} style={{position: 'sticky', maxWidth: 50}} className="p-0 border-end">
           <IconBar pic={data && data.auth}/>
         </Col>
 
         {/* Sidebar Column */}
-        <Col xs={10} sm={10} md={10} lg={5} style={{margin:'auto', overflowX: 'hidden'}} className=" border-end ">
+        <Col xs={10} sm={10} md={10} lg={5} style={{margin:'auto', marginLeft: 20, paddingLeft: 20, overflowX: 'hidden'}} className=" border-end ">
                   <Sidebar onSelectChat={handleSelectChat} pic={(data && data.auth)}
                       authenticatedUser={authUser}
                       selectedChat={selectedChat}
