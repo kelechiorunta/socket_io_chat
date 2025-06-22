@@ -207,6 +207,7 @@ const ChatApp = () => {
   const [typingUserId, setTypingUserId] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState(new Set());
   const [read, setRead] = useState(null);
+  const [isActive, setActiveRecipient] = useState(null);
   const { data: contacts, loading: contacts_loading, error: contacts_error, refetch } = useQuery(GET_CONTACTS, {
       fetchPolicy: 'cache-and-network',
       onCompleted: (data) => {
@@ -251,7 +252,59 @@ const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
   });
     const user = data?.auth 
     const currentContacts = contacts?.users || null
+    // const [unreadMap, setUnreadMap] = useState(() => {
+    //     const unreadList = user?.unreadMsgs || [];
+    //     const map = {};
+      
+    //     unreadList.forEach(entry => {
+    //       const senderId = entry?.sender?._id || entry?.sender;
+    //       if (senderId) {
+    //         map[senderId] = (map[senderId] || 0) + (entry.unreadMsgs?.length || 0);
+    //       }
+    //     });
+      
+    //     return map;
+    //   });      
+    const [unreadMap, setUnreadMap] = useState({});
 
+    const handleUnreadNotification = async (senderId, recipientId) => {
+        if (!senderId || !recipientId) return;
+      
+        try {
+          const { data } = await createUnread({
+            variables: { senderId, recipientId },
+          });
+      
+          // If your mutation returns the new unread count
+          const newCount = data?.createUnread;
+      
+          setUnreadMap((prev) => ({
+            ...prev,
+            [senderId]: newCount,
+          }));
+        } catch (error) {
+          console.error('Failed to create unread:', error);
+        }
+      };
+      
+      
+
+      useEffect(() => {
+        if (!user?.unread) return;
+      
+        const map = {};
+      
+        user.unread.forEach(entry => {
+          const senderId = entry?.sender?._id || entry?.sender;
+          if (senderId) {
+            map[senderId] = (map[senderId] || 0) + (entry.unreadMsgs?.length || 0);
+          }
+        });
+      
+        setUnreadMap(map);
+      }, [user]);
+      
+    
     useEffect(() => {
         const storedUser = localStorage.getItem('currentUser');
     
@@ -354,10 +407,16 @@ useEffect(() => {
         // Show message only if it matches the currently selected chat
         const isSender = msg.sender?._id === selectedChat?._id;
         const isReceiver = msg.receiver?._id === selectedChat?._id;
+        // const isrecipientActive = msg.recipient
+        // ?._id === selectedChat?._id
       
         if (isSender || isReceiver) {
           setMessages((prev) => [...prev, msg]);
         } else {
+            if (msg.sender?._id !== user?._id) {
+                handleUnreadNotification(msg.sender?._id, msg.receiver?._id);
+              }     
+            // setActiveRecipient(isrecipientActive)
           console.log('Message not for currently selected chat, ignoring');
         }
       });
@@ -516,7 +575,9 @@ useEffect(() => {
                       loading={contacts_loading}
                       error={contacts_error}
                       isRead={read}
+                      isActiveRecipient={isActive}
                       contacts={contacts?.users || []}
+                      unreadMap={unreadMap}
                       onlineUsers={onlineUsers} />
         </Col>
 

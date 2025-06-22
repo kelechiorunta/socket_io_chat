@@ -164,7 +164,7 @@ import {
 import Avatar from './Avatar';
 import Button from './Button';
 
-const Sidebar = ({ onSelectChat, pic, loading, error, isRead, contacts, typingUserId, onlineUsers, authenticatedUser, isOnline,  notifiedUser, selectedChat }) => {
+const Sidebar = ({ onSelectChat, pic, loading, error, isRead, unreadMap, isActiveRecipient, contacts, typingUserId, onlineUsers, authenticatedUser, isOnline,  notifiedUser, selectedChat }) => {
   const navigate = useNavigate();
 //     const { loading, error, data } = useQuery(GET_CONTACTS, 
 //       {fetchPolicy: 'cache-and-network'}
@@ -190,7 +190,7 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, contacts, typingUs
     <div style={{backgroundColor:' #1f1d1d'}} className="bg-dark text-light p-3 d-flex flex-column">
       {/* Top Icons */}
       <div className="d-flex justify-content-between align-items-center mb-3">
-              <div className="fw-bold text-purple">{authenticatedUser?.username.toUpperCase().slice(0,2)}</div>
+              <div style={{color: '#00e575', fontSize: 30 }} className="fw-bold text-purple">{'JUSTCHAT' || authenticatedUser?.username.toUpperCase().slice(0,2)}</div>
         <div className="d-flex gap-2">
           <Sun role="button" />
           <Moon role="button" />
@@ -213,10 +213,10 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, contacts, typingUs
       {/* Message Section */}
       <div className="d-flex justify-content-between align-items-center mb-2">
         <h5 className="mb-0">Message</h5>
-        <ButtonGroup>
-          <Button variant={tab === 'all' ? 'primary' : 'outline-light'} onClick={() => setTab('all')}>All Chats</Button>
-          <Button variant={tab === 'groups' ? 'primary' : 'outline-light'} onClick={() => setTab('groups')}>Groups</Button>
-          <Button variant={tab === 'contacts' ? 'primary' : 'outline-light'} onClick={() => setTab('contacts')}>Contacts</Button>
+        <ButtonGroup style={{display: 'flex', gap: 8}}>
+          <Button style={{borderRadius: 10}} variant={tab === 'all' ? 'primary' : 'outline-light'} onClick={() => setTab('all')}>All Chats</Button>
+          <Button style={{borderRadius: 10}} variant={tab === 'groups' ? 'primary' : 'outline-light'} onClick={() => setTab('groups')}>Groups</Button>
+          <Button style={{borderRadius: 10}} variant={tab === 'contacts' ? 'primary' : 'outline-light'} onClick={() => setTab('contacts')}>Contacts</Button>
         </ButtonGroup>
       </div>
 
@@ -237,10 +237,20 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, contacts, typingUs
           <div className="text-danger">Error fetching contacts</div>
         ) : (
                 filteredUsers.map((user) => {
-                    const current_user = authenticatedUser || pic;
-                    const unreadFromSender = pic && pic.unread?.find(u => u.sender?._id === user?._id);
-                    console.log(pic && pic.unread)
-                    const unreadCount = unreadFromSender?.unreadMsgs?.length;
+                //     const current_user = authenticatedUser || pic;
+                //     const unreadFromSender = pic && pic.unread?.find(u => u.sender?._id === user?._id);
+                //     console.log(pic && pic.unread)
+              //     const unreadCount = unreadFromSender?.unreadMsgs?.length;
+              const unreadEntry = pic && pic?.unread?.find(
+                (entry) =>
+                  (entry.sender?._id || entry.sender) === user._id ||
+                  (entry.recipient?._id || entry.recipient) === pic._id
+              );
+            
+              const unreadCount = unreadEntry?.unreadMsgs?.length || 0 ;
+            
+              console.log(`Unread from ${user.username}: ${unreadCount}`);
+            
                
                     return (
                        <div
@@ -263,36 +273,41 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, contacts, typingUs
                                 </div>
               
                                 {/* Username & Message */}
-                            <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                <div style={{ textAlign: 'left' }} className="fw-bold text-white ">{user.username}</div>
-                                <div style={{ textWrap: 'wrap', textAlign: 'left', minWidth: 100, maxWidth: '100%', color: typingUserId === user._id ? ' #00e575' : ' rgba(255, 255, 255, 0.5)' }} className={`small`}>
-                                            {typingUserId === user?._id ? 'Typing...' : user?.lastMessage || 'No messages'}
-                                </div>
-                                    {/* <p style={{ textAlign: 'left' }}>{onlineUsers?.has(user?._id) && isOnline ? 'Online' : 'Offline'}</p> */}
-                                </div>
-                                </div>
-                                </div>
-              
+                                <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
+                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <div style={{ textAlign: 'left' }} className="fw-bold text-white ">{user.username}</div>
+                                          <div style={{ whiteSpace: 'nowrap', marginRight: -2, overflow: 'hidden', textOverflow: 'ellipsis', textAlign: 'left', minWidth: 100, maxWidth: '100%', color: typingUserId === user._id ? ' #00e575' : ' rgba(255, 255, 255, 0.5)' }} className={`small`}>
+                                                {typingUserId === user?._id ? 'Typing...' : user?.lastMessage || 'No messages'}
+                                          </div>
+                                        {/* <p style={{ textAlign: 'left' }}>{onlineUsers?.has(user?._id) && isOnline ? 'Online' : 'Offline'}</p> */}
+                                        </div>
+                                   </div>
+                                
+                                {/* /{unreadMap[user._id] > 0 && ( */}
+                                 {/* <span className="badge bg-danger">{unreadMap[user._id]}</span> */}
+                                    {/* )} */}
                                       {/* Unread Count Badge */}
-                                      {((unreadCount && unreadCount > 0) && (!isRead) && (unreadFromSender !== selectedChat)) && (
+                                      {( unreadMap[user._id] > 0) && (
                                     <span
                                     className="badge rounded-circle bg-success text-white"
-                                    style={{
+                                        style={{
+                                        // display: 'inline-block',
                                         borderRadius: '100%',
                                         width: 25,
                                         height: 20,
                                         fontSize: 10,
+                                        left: -20,
                                         textAlign: 'center',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center'
                                     }}
                                     >
-                                    {unreadCount}
+                                    {(unreadMap[user._id] || 0)}
                                     </span>
-                                      )}
-                                  </div>
+                                )}
+                                </div>
+                                </div>
                               )
                           })                              
         )}
