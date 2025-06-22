@@ -194,10 +194,10 @@ import ChatBody from './ChatBody';
 import ChatInput from './ChatInput';
 import IconBar from './IconBar';
 import { AUTH, GET_CONTACTS } from '../graphql/queries';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import debounce from 'lodash.debounce';
 // import socketInstance from './socket_client.js';
-import { MARK_MESSAGES_AS_READ, CREATE_UNREAD, CLEAR_UNREAD } from '../graphql/queries';
+import { MARK_MESSAGES_AS_READ, CREATE_UNREAD, CLEAR_UNREAD, GET_UNREAD } from '../graphql/queries';
 
 const ChatApp = () => {
   const [messages, setMessages] = useState([]);
@@ -220,6 +220,7 @@ const ChatApp = () => {
   const [notifiedUser, setNotifiedUser] = useState(null);
   const [createUnread] = useMutation(CREATE_UNREAD);
   const [clearUnread] = useMutation(CLEAR_UNREAD);
+  const [getUnread] = useLazyQuery(GET_UNREAD)
   
 const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
     update(cache, { data, variables }) {
