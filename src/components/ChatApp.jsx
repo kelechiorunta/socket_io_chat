@@ -1,190 +1,3 @@
-// import React, { useState, useEffect } from 'react'
-// import { io } from 'socket.io-client'
-
-// const ChatApp = () => {
-//     const [messages, setMessages] = useState([{ text: '', from: 'client' || 'server' }]);
-//     const [input, setInput] = useState({ from: 'client', chat: '' });
-//     const [socket, setSocket] = useState(null);
-
-//     useEffect(() => {
-//         const connectWebSocket = () => {
-//             const host = window.location.hostname;
-//             // const ws = new WebSocket(
-//             //     host === 'localhost'
-//             //         ? 'ws://localhost:7334'
-//             //         : 'wss://node-chat-app-ecru.vercel.app'
-//             // );
-//             const ws = io('ws://localhost:7334');
-
-//             setSocket(ws);
-
-//             ws.on('connection', () => {
-//                 console.log('Connected to io server')
-//             })
-
-//             // ws.onopen = () => {
-//             //     console.log('Connected to WebSocket server');
-//             // };
-
-//             // ws.onmessage = (event) => {
-//             //     const data = event.data;
-//             //     console.log('Received:', data);
-//             //     setMessages(prev => [...prev, { text: data, from: 'server' }]);
-//             // };
-
-//             // ws.onclose = () => {
-//             //     setTimeout(() => connectWebSocket(), 5000);
-//             // };
-
-//             // ws.onerror = (error) => {
-//             //     console.error('WebSocket error:', error);
-//             // };
-//         };
-
-//         connectWebSocket();
-//     }, []);
-
-//     const sendMessage = () => {
-//         if (socket && input.chat.trim()) {
-//             socket.send(input.chat);
-//             setMessages(prev => [...prev, { text: input.chat, from: 'client' }]);
-//             setInput({ from: 'client', chat: '' });
-//         }
-//     };
-
-//     return (
-//         <div>
-//             <h1>Chat App</h1>
-//             <ul style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-//                 {messages.map((msg, index) => (
-//                     <li
-//                         key={index}
-//                         style={{
-//                             alignSelf: msg.from === 'client' ? 'flex-end' : 'flex-start',
-//                             backgroundColor: msg.from === 'client' ? '#dcf8c6' : '#eee',
-//                             padding: '12px 16px',
-//                             borderRadius: '12px',
-//                             maxWidth: '60%',
-//                             margin: '4px 0',
-//                         }}
-//                     >
-//                         {msg.text}
-//                     </li>
-//                 ))}
-//             </ul>
-//             <div style={{ display: 'flex', marginTop: 20, gap: 10 }}>
-//                 <input
-//                     type="text"
-//                     value={input.chat}
-//                     onChange={(e) =>
-//                         setInput({ from: 'client', chat: e.target.value })
-//                     }
-//                     placeholder="Type your message"
-//                     style={{ flex: 1, padding: '8px' }}
-//                 />
-//                 <button onClick={sendMessage}>Send</button>
-//             </div>
-//         </div>
-//     );
-// };
-
-
-// export default ChatApp
-
-// import React, { useState, useEffect } from 'react';
-// import { io } from 'socket.io-client';
-// import Sidebar from './Sidebar';
-
-// const ChatApp = () => {
-//     const [messages, setMessages] = useState([]);
-//     const [input, setInput] = useState('');
-//     const [socket, setSocket] = useState(null);
-
-//     useEffect(() => {
-//         const host = window.location.hostname;
-//         const socketServerURL =
-//             host === 'localhost'
-//                 ? 'http://localhost:7334'
-//                 : 'https://node-chat-app-ecru.vercel.app';
-
-//         const socketInstance = io(socketServerURL, {
-//             transports: ['websocket'], // ensure upgrade to WebSocket
-//             withCredentials: true
-//         });
-
-//         setSocket(socketInstance);
-
-//         socketInstance.on('connect', () => {
-//             console.log('✅ Connected to Socket.IO server');
-//         });
-
-//         socketInstance.on('message', (data) => {
-//             console.log('📩 Message received:', data);
-//             setMessages((prev) => [...prev, { text: data, from: 'server' }]);
-//         });
-
-//         socketInstance.on('disconnect', () => {
-//             console.log('❌ Disconnected from server');
-//         });
-
-//         socketInstance.on('connect_error', (err) => {
-//             console.error('Socket.IO connection error:', err.message);
-//         });
-
-//         return () => {
-//             socketInstance.disconnect();
-//         };
-//     }, []);
-
-//     const sendMessage = () => {
-//         if (socket && input.trim()) {
-//             socket.emit('message', input, (ackMessage) => {
-//                 console.log('Server acknowledged:', ackMessage);
-//             });            
-//             setMessages((prev) => [...prev, { text: input, from: 'client' }]);
-//             setInput('');
-//         }
-//     };
-
-//     return (
-//         <div style={{ display: 'flex', height: '100vh', width: '100%', padding: 20 }}>
-//             {/* <h1>Chat App</h1> */}
-//             <Sidebar />
-            
-//             <ul style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%', height:'100vh' }}>
-//                 {messages.map((msg, index) => (
-//                     <li
-//                         key={index}
-//                         style={{
-//                             alignSelf: msg.from === 'client' ? 'flex-end' : 'flex-start',
-//                             backgroundColor: msg.from === 'client' ? '#dcf8c6' : '#eee',
-//                             padding: '12px 16px',
-//                             borderRadius: '12px',
-//                             maxWidth: '60%',
-//                             margin: '4px 0',
-//                         }}
-//                     >
-//                         {msg.text}
-//                     </li>
-//                 ))}
-//                 <div style={{ display: 'flex', marginTop: 20, gap: 10 }}>
-//                 <input
-//                     type="text"
-//                     value={input}
-//                     onChange={(e) => setInput(e.target.value)}
-//                     placeholder="Type your message"
-//                     style={{ flex: 1, padding: '8px' }}
-//                 />
-//                 <button onClick={sendMessage}>Send</button>
-//             </div>
-//             </ul>
-            
-//         </div>
-//     );
-// };
-
-// export default ChatApp;
-
 import React, { useState, useEffect, memo} from 'react';
 import { io } from 'socket.io-client';
 import { Container, Row, Col, Card, Placeholder } from 'react-bootstrap';
@@ -253,6 +66,7 @@ const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
   });
     const user = data?.auth 
     const currentContacts = contacts?.users || null
+    const [typingUsers, setTypingUsers] = useState(new Set());
     
     const [unreadMap, setUnreadMap] = useState({});
 
@@ -351,18 +165,25 @@ const sendMessage = () => {
   }
 };
 
-    // Emit typing to the receiver
-    // 🔁 Debounced typing emitter
-const emitTyping = debounce(() => {
-    if (socket && selectedChat?._id && user?._id) {
-        socket.emit('typing', { receiverId: selectedChat._id });
-        console.log("I am typing")
+//     // Emit typing to the receiver
+//     // 🔁 Debounced typing emitter
+// const emitTyping = debounce(() => {
+//     if (socket && selectedChat?._id && user?._id) {
+//         socket.emit('typing', { receiverId: selectedChat._id });
+//         console.log("I am typing")
+//     }
+// }, 500); // Adjust debounce delay as needed
+
+const emitTyping = debounce((receiverId) => {
+    if (socket && receiverId && user?._id) {
+      socket.emit('typing', { receiverId });
+      console.log("Emitted typing to", receiverId);
     }
-}, 500); // Adjust debounce delay as needed
-    
+  }, 500);
+  
     const handleTyping = (val) => {
         setInput(val);
-        emitTyping()
+        emitTyping(selectedChat?._id)
 }
   
 useEffect(() => {
@@ -438,12 +259,25 @@ useEffect(() => {
       setOnlineUsers((prev) => new Set(prev).add(currentUser));
     });
   
+    // socket.on('typing', ({ from }) => {
+    //   if (from === selectedChat?._id) {
+    //     setTypingUserId(from);
+    //     setTimeout(() => setTypingUserId(null), 2000);
+    //   }
+    // });
+    
+
     socket.on('typing', ({ from }) => {
-      if (from === selectedChat?._id) {
-        setTypingUserId(from);
-        setTimeout(() => setTypingUserId(null), 2000);
-      }
+    setTypingUsers(prev => new Set(prev).add(from));
+    setTimeout(() => {
+        setTypingUsers(prev => {
+        const updated = new Set(prev);
+        updated.delete(from);
+        return updated;
+        });
+    }, 2000);
     });
+
     
     return () => {
       socket.off('newMessage');
@@ -572,6 +406,7 @@ useEffect(() => {
                       isActiveRecipient={isActive}
                       contacts={contacts?.users || []}
                       unreadMap={unreadMap}
+                      typingUsers={typingUsers}
                       onlineUsers={onlineUsers} />
         </Col>
 
