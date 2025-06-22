@@ -49,8 +49,24 @@ const resolvers = {
           }
           return null;
         },
+
+        getUnread: async (_, { senderId, recipientId }) => {
+            try {
+              const user = await User.findById(recipientId);
+              if (!user) throw new Error('Recipient not found');
+      
+              const currentCount = user.unreadCounts?.get(senderId) || 0;
+              user.unreadCounts.set(senderId, currentCount);
+              await user.save();
+      
+              return user.unreadCounts.get(senderId);
+            } catch (err) {
+              console.error('❌ createUnread error:', err);
+              throw new Error('Failed to update unread count');
+            }
+          },
     },
-    
+
     Mutation: {
         createUnread: async (_, { senderId, recipientId }) => {
             try {
@@ -63,7 +79,7 @@ const resolvers = {
       
               return user.unreadCounts.get(senderId);
             } catch (err) {
-              console.error('❌ createUnreads error:', err);
+              console.error('❌ createUnread error:', err);
               throw new Error('Failed to update unread count');
             }
           },
