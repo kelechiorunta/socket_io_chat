@@ -273,7 +273,7 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, unreadMap, isActiv
                                 </div>
               
                                 {/* Username & Message */}
-                                <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
+                                <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                                         <div style={{ textAlign: 'left' }} className="fw-bold text-white ">{user.username}</div>
                                           <div style={{ whiteSpace: 'nowrap', marginRight: -2, overflow: 'hidden', textOverflow: 'ellipsis', textAlign: 'left', minWidth: 100, maxWidth: '100%', color: typingUserId === user._id ? ' #00e575' : ' rgba(255, 255, 255, 0.5)' }} className={`small`}>
