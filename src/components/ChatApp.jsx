@@ -248,62 +248,55 @@ const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
 
     //   const [onlineUser, setOnlineUser] = useState(null)
     const [authUser, setAuthUser] = useState(null);
-    const { data, loading, error, refetch: refetchAuth } = useQuery(AUTH, {
+    const { data, loading, error } = useQuery(AUTH, {
       fetchPolicy: 'network-only'
   });
     const user = data?.auth 
     const currentContacts = contacts?.users || null
-    // const [unreadMap, setUnreadMap] = useState(() => {
-    //     const unreadList = user?.unreadMsgs || [];
-    //     const map = {};
-      
-    //     unreadList.forEach(entry => {
-    //       const senderId = entry?.sender?._id || entry?.sender;
-    //       if (senderId) {
-    //         map[senderId] = (map[senderId] || 0) + (entry.unreadMsgs?.length || 0);
-    //       }
-    //     });
-      
-    //     return map;
-    //   });      
+    
     const [unreadMap, setUnreadMap] = useState({});
 
-    const handleUnreadNotification = async (senderId, recipientId) => {
+    const handleUnreadNotification = async( senderId, recipientId ) => {
         if (!senderId || !recipientId) return;
       
         try {
-          const { data } = await createUnread({
-            variables: { senderId, recipientId },
-          });
-      
+          const { data } = await createUnread({variables: { senderId, recipientId }});
           // If your mutation returns the new unread count
           const newCount = data?.createUnread;
-      
-          setUnreadMap((prev) => ({
-            ...prev,
-            [senderId]: newCount,
-          }));
+          setUnreadMap((prev) => ({...prev,[senderId]: newCount}));
         } catch (error) {
           console.error('Failed to create unread:', error);
         }
-      };
+    };
+    
+    useEffect(() => {
+        if (!user || !contacts) return;
       
+        const fetchAllUnreadCounts = async () => {
+          const promises = currentContacts.map(async contact => {
+            try {
+              const { data } = await getUnread({
+                variables: {
+                  senderId: contact._id,
+                  recipientId: user._id,
+                },
+              });
       
-
-      useEffect(() => {
-        if (!user?.unread) return;
+              const newCount = data?.getUnread || 0;
+              setUnreadMap(prev => ({
+                ...prev,
+                [contact._id]: newCount,
+              }));
+            } catch (err) {
+              console.error(`Failed to fetch unread count for ${contact._id}`, err);
+            }
+          });
       
-        const map = {};
+          await Promise.all(promises);
+        };
       
-        user.unread.forEach(entry => {
-          const senderId = entry?.sender?._id || entry?.sender;
-          if (senderId) {
-            map[senderId] = (map[senderId] || 0) + (entry.unreadMsgs?.length || 0);
-          }
-        });
-      
-        setUnreadMap(map);
-      }, [user]);
+        fetchAllUnreadCounts();
+      }, [currentContacts, user]);
       
     
     useEffect(() => {
