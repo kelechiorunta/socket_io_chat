@@ -1,13 +1,34 @@
 type Query{
     users: [User]!
     auth: User
-    getUnread(senderId: ID!, recipientId: ID!): Int
+    getUnread(senderId: ID!, recipientId: ID!): UnreadResult
 }
 
 type Mutation {
   markMessagesAsRead(senderId: ID!): Boolean
-  createUnread(senderId: ID!, recipientId: ID!): Int
+  createUnread(input: CreateUnreadInput!): UnreadResult
   clearUnread(senderId: ID!, recipientId: ID!): Boolean
+}
+
+input CreateUnreadInput {
+  senderId: ID!
+  recipientId: ID!
+  newMessage: String
+}
+
+type UnreadResult {
+  count: Int
+  lastMessage: String
+}
+
+type UnreadCount {
+  count: Int
+  lastMessage: String
+}
+
+type UnreadCountEntry {
+  senderId: ID
+  data: UnreadCount
 }
 
 type User {
@@ -33,7 +54,9 @@ type ChatMessage {
 type UnreadMsg {
   _id: ID!
   sender: User
-  unreadMsgs: [ChatMessage]
+  recipient: User
+  count: Int
+  lastMessage: String
   createdAt: String
   updatedAt: String
 }
