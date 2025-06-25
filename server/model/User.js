@@ -2,6 +2,11 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import validator from 'validator'
 
+// const unreadSchema = new mongoose.Schema({
+//     count: { type: Number, default: 0 },
+//     lastMessage: { type: String, default: '' }
+//   }, { _id: false }); // Disable _id for subdocs inside Map
+  
 const userSchema = new mongoose.Schema({
     username: { type: String, required: false, default: 'Anonymous User'  },
     email: { type: String, required: false, validate: validator.isEmail },
@@ -30,12 +35,13 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: false, validate: validator.isEmail },
     accessToken: { type: String, required: false }
     },
-    unreadCounts: {
-        type: Map,
-        of: Number,
-        default: {},
-      },      
-    
+    // Example schema update
+    // unreadCounts: {
+    //     type: Map,
+    //     of: unreadSchema,
+    //     default: () => new Map()
+    //   },
+  
 });
 
 // Pre-save hook to hash the password before saving the user
