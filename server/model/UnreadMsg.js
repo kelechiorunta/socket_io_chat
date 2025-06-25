@@ -1,12 +1,28 @@
-import mongoose from 'mongoose';
-import { Schema } from 'mongoose';
+// models/UnreadMsg.js
+import mongoose, { Schema } from 'mongoose';
 
-const unreadMsgSchema = new Schema({
-  recipient: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // The user who has unread messages
-  sender: { type: Schema.Types.ObjectId, ref: 'User', required: false },    // Who sent the messages
-  unreadMsgs: [{ type: Schema.Types.ObjectId, ref: 'ChatMessage' }],       // The actual unread messages
-}, { timestamps: true });
+const unreadMsgSchema = new Schema(
+  {
+    recipient: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true, // Who receives the messages
+    },
+    sender: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true, // Who sent them
+    },
+    count: {
+      type: Number,
+      default: 0,
+    },
+    lastMessage: {
+      type: String,
+      default: '',
+    },
+  },
+  { timestamps: true }
+);
 
-const UnreadMsg = mongoose.models.UnreadMsg || mongoose.model('UnreadMsg', unreadMsgSchema);
-
-export default UnreadMsg
+export default mongoose.models.UnreadMsg || mongoose.model('UnreadMsg', unreadMsgSchema);
