@@ -32,12 +32,12 @@ export const GET_CONTACTS = gql`
         sender {
           _id
           username
+          picture
         }
-        unreadMsgs {
-          _id
-          content
-        }
-    }
+        count
+        lastMessage
+        updatedAt
+      }
     }
   }
 `;
@@ -56,11 +56,11 @@ export const AUTH = gql`
         sender {
           _id
           username
+          picture
         }
-        unreadMsgs {
-          _id
-          content
-        }
+        count
+        lastMessage
+        updatedAt
       }
     }
   }
@@ -68,7 +68,10 @@ export const AUTH = gql`
 
 export const GET_UNREAD = gql`
   query GetUnread($senderId: ID!, $recipientId: ID!) {
-  getUnread(senderId: $senderId, recipientId: $recipientId)
+  getUnread(senderId: $senderId, recipientId: $recipientId) {
+    count
+    lastMessage
+  }
 }
 `;
 
@@ -79,13 +82,16 @@ export const MARK_MESSAGES_AS_READ = gql`
 `;
 
 export const CREATE_UNREAD = gql`
-  mutation CreateUnread($senderId: ID!, $recipientId: ID!) {
-    createUnread(senderId: $senderId, recipientId: $recipientId)
+  mutation CreateUnread($senderId: ID!, $recipientId: ID!, $newMessage: String!) {
+  createUnread(senderId: $senderId, recipientId: $recipientId, newMessage: $newMessage) {
+    count
+    lastMessage
   }
+}
 `;
 
 export const CLEAR_UNREAD = gql`
   mutation ClearUnread($senderId: ID!, $recipientId: ID!) {
-    clearUnread(senderId: $senderId, recipientId: $recipientId)
-  }
+  clearUnread(senderId: $senderId, recipientId: $recipientId)
+}
 `;
