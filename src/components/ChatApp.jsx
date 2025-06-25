@@ -33,7 +33,8 @@ const ChatApp = () => {
   const [notifiedUser, setNotifiedUser] = useState(null);
   const [createUnread] = useMutation(CREATE_UNREAD);
   const [clearUnread] = useMutation(CLEAR_UNREAD);
-  const [getUnread] = useLazyQuery(GET_UNREAD)
+  const [getUnread] = useLazyQuery(GET_UNREAD);
+  const [notificationMsg, setNotification] = useState('');
   
 const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
     update(cache, { data, variables }) {
@@ -69,25 +70,77 @@ const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
     const [typingUsers, setTypingUsers] = useState(new Set());
     
     const [unreadMap, setUnreadMap] = useState({});
+    const [notificationMap, setNotificationMap] = useState({});
 
-    const handleUnreadNotification = async( senderId, recipientId ) => {
-        if (!senderId || !recipientId) return;
+    // const handleUnreadNotification = async (senderId, recipientId, sender, recipient, content) => {
+    //     if (!senderId || !recipientId || !content) return;
       
-        try {
-          const { data } = await createUnread({variables: { senderId, recipientId }});
-          // If your mutation returns the new unread count
-          const newCount = data?.createUnread;
-          setUnreadMap((prev) => ({...prev,[senderId]: newCount}));
-        } catch (error) {
-          console.error('Failed to create unread:', error);
-        }
-    };
-    
+    //     try {
+    //       const { data } = await createUnread({
+    //         variables: {
+    //           senderId,
+    //           recipientId,
+    //           newMessage: content, // 🔥 message content
+    //         },
+    //       });
+          
+    //         console.log(data)
+    //       const newCount = data?.createUnread?.count;
+    //       const lastMessage = data?.createUnread?.lastMessage;
+      
+    //     //   setUnreadMap((prev) => ({ ...prev, [senderId]: newCount }));
+    //       setNotificationMap((prev) => ({ ...prev, [senderId]: lastMessage })); // ✅ shows latest preview
+    //       console.log('Sent')
+    //     } catch (error) {
+    //       console.error('Failed to create unread:', error);
+    //     }
+    //   };
+      
+    //   useEffect(() => {
+    //     if (!user || !contacts) return;
+      
+    //     const fetchAllUnreadCounts = async () => {
+    //       const unreadMapTemp = {};
+    //       const notificationMapTemp = {};
+      
+    //       const promises = currentContacts.map(async contact => {
+    //         try {
+    //           const { data } = await getUnread({
+    //             variables: {
+    //               senderId: contact._id,
+    //               recipientId: user._id,
+    //             },
+    //           });
+            
+    //           const { count , lastMessage } = data || {};
+      
+    //           unreadMapTemp[contact._id] = { count, lastMessage };
+    //           notificationMapTemp[contact._id] = lastMessage;
+      
+    //         } catch (err) {
+    //           console.error(`❌ Failed to fetch unread count for ${contact?._id}`, err);
+    //         }
+    //       });
+      
+    //       await Promise.all(promises);
+    //       alert('Hello')
+    //       // ✅ Set them once here
+    //       setUnreadMap(unreadMapTemp);
+    //       setNotificationMap(notificationMapTemp);
+    //     };
+      
+    //     fetchAllUnreadCounts();
+    //   }, [contacts, currentContacts, getUnread, user]);
+      
+      
     useEffect(() => {
-        if (!user || !contacts) return;
+        if (!user || !contacts || contacts.length === 0) return;
       
         const fetchAllUnreadCounts = async () => {
-          const promises = currentContacts.map(async contact => {
+          const unreadMapTemp = {};
+          const notificationMapTemp = {};
+      
+          const promises = currentContacts.map(async (contact) => {
             try {
               const { data } = await getUnread({
                 variables: {
@@ -96,21 +149,24 @@ const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
                 },
               });
       
-              const newCount = data?.getUnread || 0;
-              setUnreadMap(prev => ({
-                ...prev,
-                [contact._id]: newCount,
-              }));
+              const { count, lastMessage } = data?.getUnread || {};
+      
+              unreadMapTemp[contact._id] = { count: count || 0, lastMessage: lastMessage || '' };
+              notificationMapTemp[contact._id] = lastMessage || '';
             } catch (err) {
-              console.error(`Failed to fetch unread count for ${contact._id}`, err);
+              console.error(`❌ Failed to fetch unread count for ${contact?._id}`, err);
             }
           });
       
           await Promise.all(promises);
+      
+          setUnreadMap(unreadMapTemp);
+          setNotificationMap(notificationMapTemp);
         };
       
         fetchAllUnreadCounts();
-      }, [currentContacts, user]);
+      }, [contacts, currentContacts, getUnread, user]);
+      
       
     
     useEffect(() => {
