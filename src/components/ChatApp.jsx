@@ -144,10 +144,6 @@ const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
         console.log('✅ Connected to Socket.IO server');
         
     });
-    // socketInstance.on('message', (data) => {
-    //   setMessages((prev) => [...prev, { text: data, from: 'server' }]);
-    // });
-
     return () => socketInstance.disconnect();
   }, []);
     
@@ -164,15 +160,6 @@ const sendMessage = () => {
     setInput('');
   }
 };
-
-//     // Emit typing to the receiver
-//     // 🔁 Debounced typing emitter
-// const emitTyping = debounce(() => {
-//     if (socket && selectedChat?._id && user?._id) {
-//         socket.emit('typing', { receiverId: selectedChat._id });
-//         console.log("I am typing")
-//     }
-// }, 500); // Adjust debounce delay as needed
 
 const emitTyping = debounce((receiverId) => {
     if (socket && receiverId && user?._id) {
@@ -206,35 +193,91 @@ useEffect(() => {
       socket.emit('isOnline', { receiverId: selectedChat._id });
     }
   
-    // // Set up listeners ONCE
     // socket.on('newMessage', (msg) => {
     //     console.log('📩 New message received:', msg);
-    //     // if (selectedChat && (selectedChat?._id === msg.receiver?._id)) {
-    //         alert('hello')
-    //         setMessages((prev) => [...prev, msg]);
-    //     // }
-     
-    // });
-  
-    socket.on('newMessage', (msg) => {
-        console.log('📩 New message received:', msg);
       
-        // Show message only if it matches the currently selected chat
+    //     // Show message only if it matches the currently selected chat
+    //     const isSender = msg.sender?._id === selectedChat?._id;
+    //     const isReceiver = msg.receiver?._id === selectedChat?._id;
+    //     // const isrecipientActive = msg.recipient
+    //     // ?._id === selectedChat?._id
+      
+    //     if (isSender || isReceiver) {
+    //       setMessages((prev) => [...prev, msg]);
+    //     } else {
+    //         if (msg.sender?._id !== user?._id) {
+    //             handleUnreadNotification(msg.sender?._id, msg.receiver?._id, msg.sender, msg.receiver);
+    //           }
+    //       console.log('Message not for currently selected chat, ignoring');
+    //     }
+    //   });
+    socket.on('newMessage', (msg) => {
         const isSender = msg.sender?._id === selectedChat?._id;
         const isReceiver = msg.receiver?._id === selectedChat?._id;
-        // const isrecipientActive = msg.recipient
-        // ?._id === selectedChat?._id
       
         if (isSender || isReceiver) {
-          setMessages((prev) => [...prev, msg]);
+            setMessages((prev) => [...prev, msg]);
         } else {
+            //   // ✅ Update sidebar info
+            //   if (msg.sender?._id !== user?._id) {
+            //     // handleUnreadNotification(
+            //     //   msg.sender?._id,
+            //     //   msg.receiver?._id,
+            //     //   msg.sender,
+            //     //   msg.receiver,
+            //     //   msg.content
+            //     // );
+      
+            //     // ✅ Update `unreadMap` or whatever you use in Sidebar
+            //     setUnreadMap((prev) => {
+            //         const prevCount = prev[msg.sender?._id]?.count || 0;
+              
+            //         return {
+            //           ...prev,
+            //           [msg.sender?._id]: {
+            //             count: prevCount + 1,
+            //             lastMessage: msg.lastMessage || msg.content, // fallback to content
+            //           },
+            //         };
+            //       });
+            //   }
             if (msg.sender?._id !== user?._id) {
-                handleUnreadNotification(msg.sender?._id, msg.receiver?._id);
-              }     
-            // setActiveRecipient(isrecipientActive)
-          console.log('Message not for currently selected chat, ignoring');
+                setUnreadMap((prev) => {
+                    const prevCount = prev[msg.sender?._id]?.count || 0;
+              
+                    return {
+                        ...prev,
+                        [msg.sender?._id]: {
+                            count: prevCount + 1,
+                            lastMessage: msg.lastMessage || msg.content,
+                        },
+                    };
+                });
+              
+                // Optional: Refresh from backend for accuracy
+                // getUnread({
+                //     variables: {
+                //         senderId: msg.sender._id,
+                //         recipientId: user._id,
+                //     },
+                // }).then(({ data }) => {
+                //     if (data?.getUnread) {
+                //         const { count, lastMessage } = data.getUnread;
+                //         setUnreadMap((prev) => ({
+                //             ...prev,
+                //             [msg.sender._id]: {
+                //                 count,
+                //                 lastMessage,
+                //             },
+                //         }));
+                //     }
+                // }).catch(err => {
+                //     console.error("❌ Failed to refetch unread for socket message:", err);
+                // })
+            }
         }
       });
+            
       
     socket.on('userOnline', ({ userId, online }) => {
         setOnlineUsers((prev) => new Set(prev).add(userId));
@@ -252,20 +295,11 @@ useEffect(() => {
         updated.delete(userId);
         return updated;
       });
-        // setSelectedChat(null)
     });
   
     socket.on('isConnected', ({ currentUser }) => {
       setOnlineUsers((prev) => new Set(prev).add(currentUser));
     });
-  
-    // socket.on('typing', ({ from }) => {
-    //   if (from === selectedChat?._id) {
-    //     setTypingUserId(from);
-    //     setTimeout(() => setTypingUserId(null), 2000);
-    //   }
-    // });
-    
 
     socket.on('typing', ({ from }) => {
     setTypingUsers(prev => new Set(prev).add(from));
@@ -340,7 +374,7 @@ useEffect(() => {
       setSelectedChat(chatUser);
       setUnreadMap(prev => {
         const updated = { ...prev };
-        delete updated[chatUser._id];
+        delete updated[chatUser?._id];
         return updated;
       });
      
@@ -407,6 +441,7 @@ useEffect(() => {
                       contacts={contacts?.users || []}
                       unreadMap={unreadMap}
                       typingUsers={typingUsers}
+                      notificationMap={notificationMap}
                       onlineUsers={onlineUsers} />
         </Col>
 
