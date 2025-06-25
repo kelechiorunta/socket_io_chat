@@ -164,7 +164,7 @@ import {
 import Avatar from './Avatar';
 import Button from './Button';
 
-const Sidebar = ({ onSelectChat, pic, loading, error, isRead, unreadMap, typingUsers, isActiveRecipient, contacts, typingUserId, onlineUsers, authenticatedUser, isOnline,  notifiedUser, selectedChat }) => {
+const Sidebar = ({ onSelectChat, pic, loading, error, isRead, notificationMsg, notificationMap, unreadMap, typingUsers, isActiveRecipient, contacts, typingUserId, onlineUsers, authenticatedUser, isOnline,  notifiedUser, selectedChat }) => {
   const navigate = useNavigate();
 //     const { loading, error, data } = useQuery(GET_CONTACTS, 
 //       {fetchPolicy: 'cache-and-network'}
@@ -236,26 +236,24 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, unreadMap, typingU
         ) : error ? (
           <div className="text-danger">Error fetching contacts</div>
         ) : (
-                filteredUsers.map((user) => {
+                filteredUsers.map((user, index) => {
                 //     const current_user = authenticatedUser || pic;
                 //     const unreadFromSender = pic && pic.unread?.find(u => u.sender?._id === user?._id);
                 //     console.log(pic && pic.unread)
               //     const unreadCount = unreadFromSender?.unreadMsgs?.length;
-              const unreadEntry = pic && pic?.unread?.find(
-                (entry) =>
-                  (entry.sender?._id || entry.sender) === user._id ||
-                  (entry.recipient?._id || entry.recipient) === pic._id
+              const unreadEntry = pic && pic.unread.find(
+                  (entry) => ((entry.sender?._id === user?._id) || (entry.recipient?._id  === authenticatedUser?._id))
               );
             
-              const unreadCount = unreadEntry?.unreadMsgs?.length || 0 ;
+            //   const lastMessage = notificationMap[user?._id] || 'No messages';
+            //   const unreadCount = unreadMap[user?._id] || 0;
+              const unreadData = unreadMap[user?._id];
             
-              console.log(`Unread from ${user.username}: ${unreadCount}`);
-            
-              const isTyping = typingUsers.has(user._id);
+              const isTyping = typingUsers.has(user?._id);
                
                     return (
                        <div
-                            key={user._id}
+                            key={user?._id}
                             onClick={() => onSelectChat(user)}
                             className="d-flex align-items-center justify-content-between bg-secondary rounded-3 mb-2 p-2 px-3 chat-item"
                             style={{ cursor: 'pointer' }}
@@ -278,7 +276,7 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, unreadMap, typingU
                                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                                         <div style={{ textAlign: 'left', display: 'flex', alignItems:'flex-end', gap: 4 }} className="fw-bold text-white ">{user.username } <span style={{color: ' #00e575'}}>{ isTyping && ' is typing...'}</span></div>
                                           <div style={{ whiteSpace: 'nowrap', marginRight: -2, overflow: 'hidden', textOverflow: 'ellipsis', textAlign: 'left', minWidth: 100, maxWidth: '100%', color: typingUserId === user._id ? ' #00e575' : ' rgba(255, 255, 255, 0.5)' }} className={`small`}>
-                                                {user?.lastMessage || 'No messages'}
+                                                {unreadData?.lastMessage? unreadData?.lastMessage : 'No messages'}
                                           </div>
                                         {/* <p style={{ textAlign: 'left' }}>{onlineUsers?.has(user?._id) && isOnline ? 'Online' : 'Offline'}</p> */}
                                         </div>
@@ -288,15 +286,16 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, unreadMap, typingU
                                  {/* <span className="badge bg-danger">{unreadMap[user._id]}</span> */}
                                     {/* )} */}
                                       {/* Unread Count Badge */}
-                                      {( unreadMap[user._id] > 0) && (
-                                    <span
+                                {(unreadData?.count > 0) && (
+                                    <div style={{display: 'flex', gap: 2, alignItems: 'center', position: 'relative', marginTop: -20}}>
+                                        <span
                                     className="badge rounded-circle bg-success text-white"
                                         style={{
                                         // display: 'inline-block',
                                         borderRadius: '100%',
-                                        width: 25,
-                                        height: 20,
-                                        fontSize: 10,
+                                        width: 30,
+                                        height: 25,
+                                        fontSize: 14,
                                         left: -20,
                                         textAlign: 'center',
                                         display: 'flex',
@@ -304,8 +303,14 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, unreadMap, typingU
                                         justifyContent: 'center'
                                     }}
                                     >
-                                    {(unreadMap[user._id])}
-                                    </span>
+                                        {(unreadData.count)}
+                                        
+                                        </span>
+                                        <div style={{position: 'absolute', top: -10, left:17}}>
+                                            <Avatar src={'./pin.png'} size={20} />  
+                                        </div>   
+                                    </div>
+                                    
                                 )}
                                 </div>
                                 </div>
