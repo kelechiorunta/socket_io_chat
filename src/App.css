@@ -41,7 +41,13 @@
   }
 }
 
-.chat-item:hover {
+.chat-dark:hover {
   background-color: #495057 !important; /* A darker shade of Bootstrap's secondary */
   transition: background-color 0.2s ease-in-out;
+}
+
+.chat-light:hover {
+  background-color: rgba(0,0,0,0.4) !important; /* A darker shade of Bootstrap's secondary */
+  /* color: white !important; */
+  transition: background-color 0.2s, color 0.2s ease-in-out;
 }

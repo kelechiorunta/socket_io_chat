@@ -6,6 +6,7 @@ import ChatHeader from './ChatHeader';
 import ChatBody from './ChatBody';
 import ChatInput from './ChatInput';
 import IconBar from './IconBar';
+import { useTheme } from './ThemeContext';
 import { AUTH, GET_CONTACTS } from '../graphql/queries';
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import debounce from 'lodash.debounce';
@@ -13,6 +14,8 @@ import debounce from 'lodash.debounce';
 import { MARK_MESSAGES_AS_READ, CREATE_UNREAD, CLEAR_UNREAD, GET_UNREAD } from '../graphql/queries';
 
 const ChatApp = () => {
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === 'dark';
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [socket, setSocket] = useState(null);
@@ -475,7 +478,7 @@ useEffect(() => {
   };   
 
   return (
-    <Container fluid className="bg-dark text-light p-0" style={{ height: 'max-content', overflowY: 'auto', overflowX: 'hidden' }}>
+      <Container fluid className={`${isDark? 'bg-dark text-light' : 'bg-light text-black'} p-0`} style={{ height: 'max-content', overflowY: 'auto', overflowX: 'hidden' }}>
       <Row className="h-100 flex-xs-row flex-md-row flex-sm-row flex-lg-row">
         {/* IconBar Column */}
         <Col xs={1} sm={1} md={1} lg={1} style={{position: 'sticky', maxWidth: 50}} className="p-0 border-end">
