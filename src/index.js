@@ -6,6 +6,7 @@ import { ApolloProvider } from '@apollo/client';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import client from './components/client.js';
 import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from './components/ThemeContext.js';
 
 // import reportWebVitals from './reportWebVitals.js';
 
@@ -14,7 +15,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ApolloProvider client={client}>
-        <App />
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
       </ApolloProvider>
     </BrowserRouter>
   </React.StrictMode>
