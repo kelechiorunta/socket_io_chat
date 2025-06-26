@@ -21,3 +21,16 @@ body {
   font-style: normal;
   /* font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
 }
+
+/* index.css */
+body[data-theme='dark'] {
+  --bg-color: #1e1e1e;
+  --text-color: white;
+  --border-color: rgba(255, 255, 255, 0.3);
+}
+
+body[data-theme='light'] {
+  --bg-color: #f8f9fa;
+  --text-color: black;
+  --border-color: rgba(0, 0, 0, 0.2);
+}
