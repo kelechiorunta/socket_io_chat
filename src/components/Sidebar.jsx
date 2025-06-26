@@ -163,31 +163,38 @@ import {
 } from 'lucide-react';
 import Avatar from './Avatar';
 import Button from './Button';
+import { useTheme } from './ThemeContext';
 
-const Sidebar = ({ onSelectChat, pic, loading, error, isRead, notificationMsg, notificationMap, unreadMap, typingUsers, isActiveRecipient, contacts, typingUserId, onlineUsers, authenticatedUser, isOnline,  notifiedUser, selectedChat }) => {
-  const navigate = useNavigate();
-//     const { loading, error, data } = useQuery(GET_CONTACTS, 
-//       {fetchPolicy: 'cache-and-network'}
-//   );
-  const [tab, setTab] = useState('all');
-  const [search, setSearch] = useState('');
+const Sidebar = ({ onSelectChat, pic, loading, error, isRead, notificationMsg, notificationMap, unreadMap, typingUsers, isActiveRecipient, contacts, typingUserId, onlineUsers, authenticatedUser, isOnline, notifiedUser, selectedChat }) => {
+    const navigate = useNavigate();
+    const { theme, toggleTheme } = useTheme();
+    
+    const isDark = theme === 'dark';
 
-  const users = contacts//data?.users || [];
-//   const groups = data?.groups || [];
+    const [tab, setTab] = useState('all');
+    const [search, setSearch] = useState('');
 
-  const filteredUsers = users.filter(user =>
-    user.username?.toLowerCase().includes(search.toLowerCase())
-  );
+    const users = contacts//data?.users || [];
+    //   const groups = data?.groups || [];
 
-  const cardStyle = {
-    backgroundColor: ' #2c2f33',
-    border: 'none',
-    marginBottom: '0.5rem',
-    cursor: 'pointer',
-  };
+    const filteredUsers = users.filter(user =>
+        user.username?.toLowerCase().includes(search.toLowerCase())
+    );
 
-  return (
-    <div style={{backgroundColor:' #1f1d1d'}} className="bg-dark text-light p-3 d-flex flex-column">
+    const cardStyle = {
+        backgroundColor: isDark ? ' #2c2f33' : ' #f7fef2',
+        color: !isDark ? 'black' : 'white',
+        border: 'none',
+        marginBottom: '0.5rem',
+        cursor: 'pointer',
+    };
+
+    return (
+        <div style={{
+            backgroundColor: isDark ? ' #1f1d1d' : ' #f7fef2',
+            color: isDark ? ' #f7fef2' : ' #1f1d1d' 
+        }}
+            className={`${isDark? 'bg-dark text-light' : 'bg-[ #f7fef2] text-[#000]'} p-3 d-flex flex-column`}>
       {/* Top Icons */}
       <div className="d-flex justify-content-between align-items-center mb-3">
               <div style={{color: '#00e575', fontSize: 30 }} className="fw-bold text-purple">{'JUSTCHAT' || authenticatedUser?.username.toUpperCase().slice(0,2)}</div>
@@ -198,12 +205,17 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, notificationMsg, n
       </div>
 
       {/* Search Bar */}
-      <InputGroup className="mb-3">
-        <InputGroup.Text className="bg-secondary border-0">
+            <InputGroup
+                style={{
+                    border: isDark ? 'none' : '1px solid rgba(0, 0, 0, 0.1)',
+                    borderRadius: 5
+                }}
+                className="mb-3">
+        <InputGroup.Text className={`${isDark? 'bg-secondary' : 'bg-#f7fef2 '} border-0`}>
           <Search size={16} />
         </InputGroup.Text>
         <Form.Control
-          className="bg-secondary border-0 text-light"
+          className={`${isDark? 'bg-secondary' : 'bg-#ffff'} border-0`}
           placeholder="Search..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -211,12 +223,17 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, notificationMsg, n
       </InputGroup>
 
       {/* Message Section */}
-      <div className="d-flex justify-content-between align-items-center mb-2">
+            <div style={{ color: isDark ? 'white' : 'rgba(0, 0, 0, 0.9)' }}
+                className="d-flex justify-content-between align-items-center mb-2">
         <h5 className="mb-0">Message</h5>
-        <ButtonGroup style={{display: 'flex', gap: 8}}>
-          <Button style={{borderRadius: 10}} variant={tab === 'all' ? 'primary' : 'outline-light'} onClick={() => setTab('all')}>All Chats</Button>
-          <Button style={{borderRadius: 10}} variant={tab === 'groups' ? 'primary' : 'outline-light'} onClick={() => setTab('groups')}>Groups</Button>
-          <Button style={{borderRadius: 10}} variant={tab === 'contacts' ? 'primary' : 'outline-light'} onClick={() => setTab('contacts')}>Contacts</Button>
+        <ButtonGroup style={{
+                    display: 'flex',
+                    gap: 8,
+                    color: isDark? 'white' : 'rgba(0, 0, 0, 0.9)'
+        }}>
+          <Button style={{border: isDark? '1px solid white' : '1px solid rgba(0, 0, 0, 0.3)', borderRadius: 10, color: isDark? 'white' : ' rgba(0, 0, 0, 0.9)'}} variant={tab === 'all' ? 'primary' : 'outline-light'} onClick={() => setTab('all')}>All Chats</Button>
+          <Button style={{border: isDark? '1px solid white' : '1px solid rgba(0, 0, 0, 0.3)', borderRadius: 10, color: isDark? 'white' : 'rgba(0, 0, 0, 0.9)'}} variant={tab === 'groups' ? 'primary' : 'outline-light'} onClick={() => setTab('groups')}>Groups</Button>
+          <Button style={{border: isDark? '1px solid white' : '1px solid rgba(0, 0, 0, 0.3)', borderRadius: 10, color: isDark? 'white' : 'rgba(0, 0, 0, 0.9)'}} variant={tab === 'contacts' ? 'primary' : 'outline-light'} onClick={() => setTab('contacts')}>Contacts</Button>
         </ButtonGroup>
       </div>
 
@@ -255,8 +272,12 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, notificationMsg, n
                        <div
                             key={user?._id}
                             onClick={() => onSelectChat(user)}
-                            className="d-flex align-items-center justify-content-between bg-secondary rounded-3 mb-2 p-2 px-3 chat-item"
-                            style={{ cursor: 'pointer' }}
+                            className={`${isDark? 'bg-secondary' : 'bg-[ #fcc668]'} d-flex align-items-center justify-content-between rounded-3 mb-2 p-2 px-3 ${isDark? 'chat-dark' : 'chat-light'}`}
+                            style={{
+                                cursor: 'pointer', 
+                                backgroundColor: isDark? 'bg-secondary' : 'rgba(0, 0, 0, 0.1)',
+                                color: isDark? 'white' : 'rgba(0, 0, 0, 0.7)'
+                             }}
                         >
 
                       {/* Avatar & Status Dot */}
@@ -274,10 +295,22 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, notificationMsg, n
                                 {/* Username & Message */}
                                 <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                        <div style={{ textAlign: 'left', display: 'flex', alignItems:'flex-end', gap: 4 }} className="fw-bold text-white ">{user.username } <span style={{color: ' #00e575'}}>{ isTyping && ' is typing...'}</span></div>
-                                          <div style={{ whiteSpace: 'nowrap', marginRight: -2, overflow: 'hidden', textOverflow: 'ellipsis', textAlign: 'left', minWidth: 100, maxWidth: '100%', color: typingUserId === user._id ? ' #00e575' : ' rgba(255, 255, 255, 0.5)' }} className={`small`}>
-                                                {unreadData?.lastMessage? unreadData?.lastMessage : 'No messages'}
-                                          </div>
+                                        <div style={{ textAlign: 'left', display: 'flex', alignItems:'flex-end', gap: 4 }} className="fw-bold ">{user.username }</div>
+                                          <div style={{color: !isDark? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.5)', whiteSpace: 'nowrap', marginRight: -2, overflow: 'hidden', textOverflow: 'ellipsis', textAlign: 'left', minWidth: 100, maxWidth: '100%'}} className={`small`}>
+                                            
+                                           
+                                            {isTyping ?
+                                                <span style={{ color: isDark ? ' #00e575' : ' #0e6efd' }}>
+                                                    is typing...
+                                                </span> : 
+                                                <span>
+                                                    {unreadData?.lastMessage ? unreadData?.lastMessage : 'No messages'}
+                                                </span>
+                                                }
+                                                
+                                            
+                                        </div>
+                                        
                                         {/* <p style={{ textAlign: 'left' }}>{onlineUsers?.has(user?._id) && isOnline ? 'Online' : 'Offline'}</p> */}
                                         </div>
                                    </div>
@@ -289,7 +322,7 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, notificationMsg, n
                                 {(unreadData?.count > 0) && (
                                     <div style={{display: 'flex', gap: 2, alignItems: 'center', position: 'relative', marginTop: -20}}>
                                         <span
-                                    className="badge rounded-circle bg-success text-white"
+                                    className="badge rounded-circle bg-success"
                                         style={{
                                         // display: 'inline-block',
                                         borderRadius: '100%',
