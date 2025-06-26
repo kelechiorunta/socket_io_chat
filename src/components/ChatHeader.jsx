@@ -2,13 +2,19 @@ import React from 'react';
 import { Video, Phone } from 'lucide-react';
 import { Container, Image } from 'react-bootstrap';
 import Avatar from './Avatar';
+import { useTheme } from './ThemeContext';
 
 const ChatHeader = ({ username = "Darshan Zalavadiya", online = true, onlineUsers, pic, selectedUser, typingUserId }) => {
-     
+    const { theme, toggleTheme } = useTheme(); 
+    const isDark = theme === 'dark';
     
     return (
         
-        <div style={{backgroundColor: ' #1f1d1d'}} className="d-flex align-items-center justify-content-between p-3 border-bottom border-dark bg-dark text-white">
+        <div style={{
+            backgroundColor: isDark ? ' #1f1d1d' : 'white',
+            color: isDark? 'white' : 'black'
+        }} className="d-flex align-items-center justify-content-between p-3 border-bottom border-dark">
+            {/* bg-dark text-white */}
             <div className="d-flex align-items-center">
                 <Image src={selectedUser? (selectedUser.picture|| './avatar.png') : './avatar.png'} alt="Avatar" className="rounded-circle" style={{ width: 40, height: 40, marginRight: 12 }} />
                 <div>
@@ -34,8 +40,8 @@ const ChatHeader = ({ username = "Darshan Zalavadiya", online = true, onlineUser
                                     </div>
                                     )} */}
             <div className="d-flex gap-3">
-                <Video className="text-white" />
-                <Phone className="text-white" />
+                <Video />
+                <Phone />
             </div>
         </div>
     );
