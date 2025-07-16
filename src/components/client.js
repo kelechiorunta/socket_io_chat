@@ -1,14 +1,14 @@
-import { ApolloClient, InMemoryCache, HttpLink, createHttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 
-// ✅ HTTP link (for queries & mutations)
-const httpLink = new HttpLink({
-    uri:
-      process.env.NODE_ENV === 'development'
-      // window.location.protocol === 'http:'
-        ? 'http://localhost:7334/graphql'
-        : `${window.location.origin}/graphql`,
-    credentials: 'include',
-});
+// // ✅ HTTP link (for queries & mutations)
+// const httpLink = new HttpLink({
+//     uri:
+//       process.env.NODE_ENV === 'development'
+//       // window.location.protocol === 'http:'
+//         ? 'http://localhost:7334/graphql'
+//         : `${window.location.origin}/graphql`,
+//     credentials: 'include',
+// });
   
 const client = new ApolloClient({
     link: createHttpLink({
