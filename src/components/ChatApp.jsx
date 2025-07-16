@@ -10,7 +10,6 @@ import { useTheme } from './ThemeContext';
 import { AUTH, GET_CONTACTS } from '../graphql/queries';
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import debounce from 'lodash.debounce';
-// import socketInstance from './socket_client.js';
 import { MARK_MESSAGES_AS_READ, CREATE_UNREAD, CLEAR_UNREAD, GET_UNREAD } from '../graphql/queries';
 
 const ChatApp = () => {
@@ -34,10 +33,8 @@ const ChatApp = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [isOnline, setIsOnline] = useState(null);
   const [notifiedUser, setNotifiedUser] = useState(null);
-  const [createUnread] = useMutation(CREATE_UNREAD);
   const [clearUnread] = useMutation(CLEAR_UNREAD);
   const [getUnread] = useLazyQuery(GET_UNREAD);
-  const [notificationMsg, setNotification] = useState('');
   
 const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
     update(cache, { data, variables }) {
@@ -63,7 +60,6 @@ const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
   });
   
 
-    //   const [onlineUser, setOnlineUser] = useState(null)
     const [authUser, setAuthUser] = useState(null);
     const { data, loading, error } = useQuery(AUTH, {
       fetchPolicy: 'network-only'
@@ -74,67 +70,6 @@ const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
     
     const [unreadMap, setUnreadMap] = useState({});
     const [notificationMap, setNotificationMap] = useState({});
-
-    // const handleUnreadNotification = async (senderId, recipientId, sender, recipient, content) => {
-    //     if (!senderId || !recipientId || !content) return;
-      
-    //     try {
-    //       const { data } = await createUnread({
-    //         variables: {
-    //           senderId,
-    //           recipientId,
-    //           newMessage: content, // 🔥 message content
-    //         },
-    //       });
-          
-    //         console.log(data)
-    //       const newCount = data?.createUnread?.count;
-    //       const lastMessage = data?.createUnread?.lastMessage;
-      
-    //     //   setUnreadMap((prev) => ({ ...prev, [senderId]: newCount }));
-    //       setNotificationMap((prev) => ({ ...prev, [senderId]: lastMessage })); // ✅ shows latest preview
-    //       console.log('Sent')
-    //     } catch (error) {
-    //       console.error('Failed to create unread:', error);
-    //     }
-    //   };
-      
-    //   useEffect(() => {
-    //     if (!user || !contacts) return;
-      
-    //     const fetchAllUnreadCounts = async () => {
-    //       const unreadMapTemp = {};
-    //       const notificationMapTemp = {};
-      
-    //       const promises = currentContacts.map(async contact => {
-    //         try {
-    //           const { data } = await getUnread({
-    //             variables: {
-    //               senderId: contact._id,
-    //               recipientId: user._id,
-    //             },
-    //           });
-            
-    //           const { count , lastMessage } = data || {};
-      
-    //           unreadMapTemp[contact._id] = { count, lastMessage };
-    //           notificationMapTemp[contact._id] = lastMessage;
-      
-    //         } catch (err) {
-    //           console.error(`❌ Failed to fetch unread count for ${contact?._id}`, err);
-    //         }
-    //       });
-      
-    //       await Promise.all(promises);
-    //       alert('Hello')
-    //       // ✅ Set them once here
-    //       setUnreadMap(unreadMapTemp);
-    //       setNotificationMap(notificationMapTemp);
-    //     };
-      
-    //     fetchAllUnreadCounts();
-    //   }, [contacts, currentContacts, getUnread, user]);
-      
       
     useEffect(() => {
         if (!user || !contacts || contacts.length === 0) return;
@@ -253,24 +188,6 @@ useEffect(() => {
       socket.emit('isOnline', { receiverId: selectedChat._id });
     }
   
-    // socket.on('newMessage', (msg) => {
-    //     console.log('📩 New message received:', msg);
-      
-    //     // Show message only if it matches the currently selected chat
-    //     const isSender = msg.sender?._id === selectedChat?._id;
-    //     const isReceiver = msg.receiver?._id === selectedChat?._id;
-    //     // const isrecipientActive = msg.recipient
-    //     // ?._id === selectedChat?._id
-      
-    //     if (isSender || isReceiver) {
-    //       setMessages((prev) => [...prev, msg]);
-    //     } else {
-    //         if (msg.sender?._id !== user?._id) {
-    //             handleUnreadNotification(msg.sender?._id, msg.receiver?._id, msg.sender, msg.receiver);
-    //           }
-    //       console.log('Message not for currently selected chat, ignoring');
-    //     }
-    //   });
     socket.on('newMessage', (msg) => {
         const isSender = msg.sender?._id === selectedChat?._id;
         const isReceiver = msg.receiver?._id === selectedChat?._id;
@@ -278,29 +195,6 @@ useEffect(() => {
         if (isSender || isReceiver) {
             setMessages((prev) => [...prev, msg]);
         } else {
-            //   // ✅ Update sidebar info
-            //   if (msg.sender?._id !== user?._id) {
-            //     // handleUnreadNotification(
-            //     //   msg.sender?._id,
-            //     //   msg.receiver?._id,
-            //     //   msg.sender,
-            //     //   msg.receiver,
-            //     //   msg.content
-            //     // );
-      
-            //     // ✅ Update `unreadMap` or whatever you use in Sidebar
-            //     setUnreadMap((prev) => {
-            //         const prevCount = prev[msg.sender?._id]?.count || 0;
-              
-            //         return {
-            //           ...prev,
-            //           [msg.sender?._id]: {
-            //             count: prevCount + 1,
-            //             lastMessage: msg.lastMessage || msg.content, // fallback to content
-            //           },
-            //         };
-            //       });
-            //   }
             if (msg.sender?._id !== user?._id) {
                 setUnreadMap((prev) => {
                     const prevCount = prev[msg.sender?._id]?.count || 0;
@@ -313,27 +207,6 @@ useEffect(() => {
                         },
                     };
                 });
-              
-                // Optional: Refresh from backend for accuracy
-                // getUnread({
-                //     variables: {
-                //         senderId: msg.sender._id,
-                //         recipientId: user._id,
-                //     },
-                // }).then(({ data }) => {
-                //     if (data?.getUnread) {
-                //         const { count, lastMessage } = data.getUnread;
-                //         setUnreadMap((prev) => ({
-                //             ...prev,
-                //             [msg.sender._id]: {
-                //                 count,
-                //                 lastMessage,
-                //             },
-                //         }));
-                //     }
-                // }).catch(err => {
-                //     console.error("❌ Failed to refetch unread for socket message:", err);
-                // })
             }
         }
       });

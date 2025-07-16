@@ -11,17 +11,7 @@ function App() {
   const isDark = theme === 'dark';
 
   return (
-    // <Routes>
-    //   <Routes element={<ProtectedRoute />}>
-    //     <Route path="/"
-    //       element={
-    //         <div className="App">
-    //           <ChatApp/>
-    //         </div>
-    //       } />
-    //   </Routes>
-    //   <Route path="/login" element={<Login />} />
-    // </Routes>
+    
     <Routes>
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={

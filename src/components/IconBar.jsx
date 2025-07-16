@@ -1,15 +1,11 @@
-
-import React from 'react';
 import { Nav, Image, Button } from 'react-bootstrap';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import {
     Home, Search, Bookmark, Share2, Settings, Moon, Sun, LogOutIcon
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { useTheme } from './ThemeContext';
 
 const IconBar = ({ pic }) => {
-    const navigate = useNavigate();
     const { theme, toggleTheme } = useTheme();
 
     const isDark = theme === 'dark';
