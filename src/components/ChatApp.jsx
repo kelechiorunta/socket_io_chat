@@ -19,10 +19,10 @@ const ChatApp = () => {
   const [input, setInput] = useState('');
   const [socket, setSocket] = useState(null);
   const [selectedChat, setSelectedChat] = useState(null); 
-  const [typingUserId, setTypingUserId] = useState(null);
+  // const [typingUserId, setTypingUserId] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState(new Set());
   const [read, setRead] = useState(null);
-  const [isActive, setActiveRecipient] = useState(null);
+  // const [isActive, setActiveRecipient] = useState(null);
   const { data: contacts, loading: contacts_loading, error: contacts_error } = useQuery(GET_CONTACTS, {
       fetchPolicy: 'cache-and-network',
       onCompleted: (data) => {
@@ -364,13 +364,13 @@ useEffect(() => {
                   <Sidebar onSelectChat={handleSelectChat} pic={(data && data.auth)}
                       authenticatedUser={authUser}
                       selectedChat={selectedChat}
-                      typingUserId={typingUserId}
+                      // typingUserId={typingUserId}
                       isOnline={isOnline}
                       notifiedUser={notifiedUser}
                       loading={contacts_loading}
                       error={contacts_error}
                       isRead={read}
-                      isActiveRecipient={isActive}
+                      // isActiveRecipient={isActive}
                       contacts={contacts?.users || []}
                       unreadMap={unreadMap}
                       typingUsers={typingUsers}
@@ -400,9 +400,11 @@ useEffect(() => {
                           }}
             xs={10} sm={10} md={11} lg className="justify-content-end d-flex flex-column">
             <ChatHeader chat={selectedChat} pic={data?.auth} selectedUser={selectedChat}
-                        typingUserId={typingUserId}
+                        // typingUserId={typingUserId}
                         onlineUsers={onlineUsers} />
-            <ChatBody messages={messages} chat={selectedChat} pic={data?.auth} typingUserId={typingUserId}/>
+                <ChatBody messages={messages} chat={selectedChat} pic={data?.auth}
+                  // typingUserId={typingUserId}
+                />
             <ChatInput input={input} setInput={handleTyping} onSend={sendMessage} />
         </Col>
                 
