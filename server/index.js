@@ -90,6 +90,7 @@ app.use(passport.session())
 
 app.use('/', authRouter);
 
+app.use(express.static('../build'))
 
   // Middleware to enable GraphQL Introspection and Client Queries
 app.use(
