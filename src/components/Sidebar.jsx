@@ -14,7 +14,7 @@ import Avatar from './Avatar';
 import Button from './Button';
 import { useTheme } from './ThemeContext';
 
-const Sidebar = ({ onSelectChat, pic, loading, error, isRead, notificationMsg, notificationMap, unreadMap, typingUsers, isActiveRecipient, contacts, typingUserId, onlineUsers, authenticatedUser, isOnline, notifiedUser, selectedChat }) => {
+const Sidebar = ({ onSelectChat, pic, loading, error, unreadMap, typingUsers,  contacts,  onlineUsers, authenticatedUser,  }) => {
   
     const { theme } = useTheme();
     
