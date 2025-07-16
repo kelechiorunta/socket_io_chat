@@ -17,7 +17,7 @@ configureGooglePassport(passport)
 authRouter.get('/logout', function(req, res, next) {
   req.logout(function(err) {
     if (err) { return next(err); }
-    res.redirect('http://localhost:3000/login');
+    res.redirect('/login');
   });
 });
 
