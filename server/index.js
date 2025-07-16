@@ -90,7 +90,7 @@ app.use(passport.session())
 
 app.use('/', authRouter);
 
-app.use(express.static('../build'))
+app.use(express.static(path.resolve('build')))
 
   // Middleware to enable GraphQL Introspection and Client Queries
 app.use(
@@ -113,7 +113,11 @@ app.use(
         // },
       };
     })
-);  
+); 
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve('build', 'index.html'))
+})
   
 const server = http.createServer(app);
 const io = new Server(server, { cors: corsOption})
