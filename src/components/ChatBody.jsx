@@ -11,7 +11,7 @@ const formatDateLabel = (date) => {
 
 const ChatBody = ({ messages = [], pic, chat, typingUserId }) => {
     const chatEndRef = useRef(null);
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const isDark = theme === 'dark';
     const scrollToBottom = () => {

@@ -1,156 +1,5 @@
-// import React, { useState } from 'react';
-// import { useQuery } from '@apollo/client';
-// import { GET_CONTACTS } from '../graphql/queries';
-// import {
-//   Form,
-//   InputGroup,
-//   ButtonGroup,
-//   ListGroup,
-//   Placeholder,
-// } from 'react-bootstrap';
-// import {
-//   Search, Video, Phone, Plus, Sun, Moon, Settings,
-// } from 'lucide-react';
-// import Avatar from './Avatar';
-// import Button from './Button';
 
-// const Sidebar = ({ onSelectChat }) => {
-//   const { loading, error, data } = useQuery(GET_CONTACTS);
-//   const [tab, setTab] = useState('all');
-//   const [search, setSearch] = useState('');
-
-//   const users = data?.users || [];
-//   const groups = data?.groups || [];
-
-//   const filteredChats = (tab === 'groups' ? groups : users).filter((chat) =>
-//     chat.name?.toLowerCase().includes(search.toLowerCase())
-//   );
-
-//   return (
-//     <div style={{ width: 'auto' }} className="bg-dark text-light p-3 d-flex flex-column h-100">
-//       {/* Top Icons */}
-//       <div className="d-flex justify-content-between align-items-center mb-3">
-//         <div className="fw-bold text-purple">D</div>
-//         <div className="d-flex gap-2">
-//           <Sun role="button" />
-//           <Moon role="button" />
-//         </div>
-//       </div>
-
-//       {/* Search Bar */}
-//       <InputGroup className="mb-3">
-//         <InputGroup.Text className="bg-secondary border-0">
-//           <Search size={16} />
-//         </InputGroup.Text>
-//         <Form.Control
-//           className="bg-secondary border-0 text-light"
-//           placeholder="Search..."
-//           value={search}
-//           onChange={(e) => setSearch(e.target.value)}
-//         />
-//       </InputGroup>
-
-//       {/* Tabs */}
-//       <div className="d-flex justify-content-between align-items-center mb-2">
-//         <h5 className="mb-0">Message</h5>
-//         <ButtonGroup>
-//           <Button variant={tab === 'all' ? 'primary' : 'outline-light'} onClick={() => setTab('all')}>All Chats</Button>
-//           <Button variant={tab === 'groups' ? 'primary' : 'outline-light'} onClick={() => setTab('groups')}>Groups</Button>
-//           <Button variant={tab === 'contacts' ? 'primary' : 'outline-light'} onClick={() => setTab('contacts')}>Contacts</Button>
-//         </ButtonGroup>
-//       </div>
-
-//       {/* Chat List */}
-//       <div className="overflow-auto mb-3" style={{ maxHeight: '30vh' }}>
-//         <ListGroup variant="flush">
-//           {loading ? (
-//             // Skeleton loading UI
-//             Array.from({ length: 5 }).map((_, idx) => (
-//               <ListGroup.Item key={idx} className="bg-secondary text-light d-flex align-items-center">
-//                 <Placeholder as="div" animation="glow">
-//                   <Placeholder className="rounded-circle me-3" style={{ width: 40, height: 40 }} />
-//                 </Placeholder>
-//                 <div className="flex-grow-1">
-//                   <Placeholder as="div" animation="glow">
-//                     <Placeholder xs={6} />
-//                   </Placeholder>
-//                   <Placeholder as="div" animation="glow">
-//                     <Placeholder xs={4} />
-//                   </Placeholder>
-//                 </div>
-//               </ListGroup.Item>
-//             ))
-//           ) : error ? (
-//             <ListGroup.Item className="bg-secondary text-danger">Error fetching contacts</ListGroup.Item>
-//           ) : (
-//             filteredChats.map((chat) => (
-//               <ListGroup.Item
-//                 key={chat._id}
-//                 action
-//                 onClick={() => onSelectChat(chat)}
-//                 className="bg-secondary text-light d-flex align-items-center"
-//               >
-//                 <Avatar src={chat.picture || chat.avatar} size={40} className="me-3" />
-//                 <div className="flex-grow-1">
-//                   <div className="fw-bold">{chat.username || chat.name}</div>
-//                   <div className="text-success small">
-//                     {chat.typing ? 'Typing...' : chat.lastMessage || 'No messages'}
-//                   </div>
-//                 </div>
-//                 {chat.unread && <span className="badge bg-success">{chat.unread}</span>}
-//               </ListGroup.Item>
-//             ))
-//           )}
-//         </ListGroup>
-//       </div>
-
-//       {/* Calls Section */}
-//       <div className="d-flex justify-content-between align-items-center mb-2">
-//         <h5 className="mb-0">Calls</h5>
-//         <div className="d-flex align-items-center gap-1 text-muted">
-//           <Plus size={16} /> <small>New Meet</small>
-//         </div>
-//       </div>
-//       <div className="overflow-auto" style={{ maxHeight: '30vh' }}>
-//         <ListGroup variant="flush">
-//           {users.map((user) => (
-//             <ListGroup.Item key={`call-${user._id}`} className="bg-secondary text-light d-flex align-items-center">
-//               <Avatar src={user?.picture} size={40} className="me-3" />
-//               <div className="flex-grow-1">
-//                 <div className="fw-bold">{user.username}</div>
-//                 <div className="text-success small">
-//                   {user.isTalking ? `${user.username} is talking...` : user.lastSeen || 'Offline'}
-//                 </div>
-//               </div>
-//               <div className="d-flex gap-2">
-//                 <Video size={16} />
-//                 <Phone size={16} />
-//                 <Plus size={16} />
-//               </div>
-//             </ListGroup.Item>
-//           ))}
-//         </ListGroup>
-//       </div>
-
-//       {/* Footer/Profile */}
-//       <div className="mt-auto pt-3 border-top border-secondary">
-//         <div className="d-flex align-items-center gap-2 mb-2">
-//           <Avatar src="./Darshan.png" size={32} />
-//           <span>Your Profile</span>
-//         </div>
-//         <div className="d-flex align-items-center gap-2 text-muted cursor-pointer">
-//           <Settings size={16} /> <small>Settings</small>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Sidebar;
 import React, { useState } from 'react';
-import { useQuery } from '@apollo/client';
-import { GET_CONTACTS } from '../graphql/queries';
-import { useNavigate } from 'react-router-dom';
 import {
   Form,
   InputGroup,
@@ -159,15 +8,15 @@ import {
   Card,
 } from 'react-bootstrap';
 import {
-  Search, Video, Phone, Plus, Sun, Moon, Settings,
+  Search, Plus, Sun, Moon, Settings,
 } from 'lucide-react';
 import Avatar from './Avatar';
 import Button from './Button';
 import { useTheme } from './ThemeContext';
 
 const Sidebar = ({ onSelectChat, pic, loading, error, isRead, notificationMsg, notificationMap, unreadMap, typingUsers, isActiveRecipient, contacts, typingUserId, onlineUsers, authenticatedUser, isOnline, notifiedUser, selectedChat }) => {
-    const navigate = useNavigate();
-    const { theme, toggleTheme } = useTheme();
+  
+    const { theme } = useTheme();
     
     const isDark = theme === 'dark';
 
@@ -254,16 +103,11 @@ const Sidebar = ({ onSelectChat, pic, loading, error, isRead, notificationMsg, n
           <div className="text-danger">Error fetching contacts</div>
         ) : (
                 filteredUsers.map((user, index) => {
-                //     const current_user = authenticatedUser || pic;
-                //     const unreadFromSender = pic && pic.unread?.find(u => u.sender?._id === user?._id);
-                //     console.log(pic && pic.unread)
-              //     const unreadCount = unreadFromSender?.unreadMsgs?.length;
-              const unreadEntry = pic && pic.unread.find(
-                  (entry) => ((entry.sender?._id === user?._id) || (entry.recipient?._id  === authenticatedUser?._id))
-              );
+                
+              // const unreadEntry = pic && pic.unread.find(
+              //     (entry) => ((entry.sender?._id === user?._id) || (entry.recipient?._id  === authenticatedUser?._id))
+              // );
             
-            //   const lastMessage = notificationMap[user?._id] || 'No messages';
-            //   const unreadCount = unreadMap[user?._id] || 0;
               const unreadData = unreadMap[user?._id];
             
               const isTyping = typingUsers.has(user?._id);
