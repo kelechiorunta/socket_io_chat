@@ -65,7 +65,7 @@ const IconBar = ({ pic }) => {
                         className="d-flex justify-content-center align-items-center"
                         style={{ width: 36, height: 36, borderRadius: '50%' }}
                         onClick={() => {
-                            window.location.href = 'http://localhost:7334/logout';
+                            window.location.href = '/logout';
                             localStorage.removeItem('currentUser');
                         }}
                     >
@@ -74,7 +74,7 @@ const IconBar = ({ pic }) => {
                 </OverlayTrigger>
 
                 <Image
-                    onClick={() => window.location.href = 'http://localhost:7334/logout'}
+                    onClick={() => window.location.href = '/logout'}
                     src={pic && pic.picture}
                     roundedCircle
                     style={{ width: 36, height: 36, cursor: 'pointer' }}

@@ -5,7 +5,7 @@ export const loginSession = (req, res, next) => {
   
     // Check if user is authenticated with Passport
     if (!req.isAuthenticated() || !req.user) {
-      return res.redirect('http://localhost:3000/login');
+      return res.redirect('/login');
     }
     // if (!req.isAuthenticated() || !req.user) {
     //     return res.status(401).json({ error: 'Unauthorized' }); // ⬅️ return JSON instead of redirect
