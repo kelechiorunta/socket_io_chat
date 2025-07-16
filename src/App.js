@@ -1,14 +1,12 @@
-import logo from './logo.svg';
+
 import './App.css';
 import ChatApp from './components/ChatApp.jsx';
 import { Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import Login from './components/Login.jsx';
-import { useTheme } from './components/ThemeContext.js';
+
 
 function App() {
-  const { theme, toggleTheme } = useTheme();
-  const isDark = theme === 'dark';
 
   return (
     
