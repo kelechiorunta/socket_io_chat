@@ -97,7 +97,6 @@ authRouter.post('/signin', (req, res, next) => {
       if (!chat) {
         return res.json({ messages: [] });
       }
-          
           const selectedUser = await User.findById(userId);
           const currentUser = await User.findById(currentUserId);
         if (selectedUser) {
