@@ -24,6 +24,7 @@ import User from './model/User.js';
 import UnreadMsg from './model/UnreadMsg.js';
 
 connectDB(process.env.MONGO_URI);
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
