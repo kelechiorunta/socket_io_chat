@@ -10,7 +10,6 @@ import {
   Col,
 } from 'react-bootstrap';
 import { object, string } from 'yup'; // ✅ Use named imports instead of `* as Yup`
-import { useNavigate } from 'react-router-dom';
 import { FaUser, FaLock, FaGoogle } from 'react-icons/fa';
 
 const LoginSchema = object({

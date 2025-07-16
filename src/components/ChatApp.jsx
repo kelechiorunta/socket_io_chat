@@ -13,7 +13,7 @@ import debounce from 'lodash.debounce';
 import { MARK_MESSAGES_AS_READ, CLEAR_UNREAD, GET_UNREAD } from '../graphql/queries';
 
 const ChatApp = () => {
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const isDark = theme === 'dark';
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');

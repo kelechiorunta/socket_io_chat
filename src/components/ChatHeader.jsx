@@ -3,7 +3,7 @@ import { Image } from 'react-bootstrap';
 import { useTheme } from './ThemeContext';
 
 const ChatHeader = ({ username = "Darshan Zalavadiya", online = true, onlineUsers, pic, selectedUser, typingUserId }) => {
-    const { theme, toggleTheme } = useTheme(); 
+    const { theme } = useTheme(); 
     const isDark = theme === 'dark';
     
     return (
