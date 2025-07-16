@@ -21,7 +21,6 @@ const LoginSchema = object({
 });
 
 export default function Login() {
-  const navigate = useNavigate();
   const [serverError, setServerError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
