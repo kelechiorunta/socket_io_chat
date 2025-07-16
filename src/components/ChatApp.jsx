@@ -189,7 +189,8 @@ const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
     const socketServerURL =
       host === 'localhost'
         ? 'http://localhost:7334'
-        : 'https://node-chat-app-ecru.vercel.app';
+        : 'https://chatvercelsocketio.vercel.app';
+        // : 'https://node-chat-app-ecru.vercel.app';
 
     const socketInstance = io(socketServerURL, {
         transports: ['websocket'],
