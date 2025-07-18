@@ -126,7 +126,7 @@ const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
 
     const socketInstance = io(socketServerURL, {
         transports: ['websocket'],
-        // extraHeaders: ['Authorization', 'Content-Type'], 
+        extraHeaders: ['Authorization', 'Content-Type'], 
       withCredentials: true,
     });
 
@@ -372,6 +372,7 @@ useEffect(() => {
                       unreadMap={unreadMap}
                       typingUsers={typingUsers}
                       notificationMap={notificationMap}
+                      selectedClient={selectedChat}
                       onlineUsers={onlineUsers} />
         </Col>
 
