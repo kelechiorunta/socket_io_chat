@@ -34,7 +34,7 @@ const schema = makeExecutableSchema({
 })
 
 const app = express();
-const PORT = 7334;
+const PORT = process.env.PORT || 7334;
 const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
 const corsOption = {
     origin: function (origin, callback) {
@@ -80,6 +80,7 @@ app.use(cors(corsOption))
 //     schema,
 //     context: async (req) => ({ user: req.user }), // optional
 // }));
+app.use(express.static(path.resolve('build')))
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
@@ -90,7 +91,7 @@ app.use(passport.session())
 
 app.use('/', authRouter);
 
-app.use(express.static(path.resolve('build')))
+
 
   // Middleware to enable GraphQL Introspection and Client Queries
 app.use(
