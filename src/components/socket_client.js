@@ -4,11 +4,11 @@ const host = window.location.hostname;
     const socketServerURL =
       host === 'localhost'
         ? 'http://localhost:7334'
-        : 'https://node-chat-app-ecru.vercel.app';
+        : 'https://socketiochat-production-8edb.up.railway.app';
 
     const socketInstance = io(socketServerURL, {
         transports: ['websocket'],
-        extraHeaders: ['Authorization', 'Content-Type'], 
+        // extraHeaders: ['Authorization', 'Content-Type'], 
       withCredentials: true,
     });
 
