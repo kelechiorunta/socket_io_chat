@@ -129,7 +129,7 @@ const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
 
     const socketInstance = io(socketServerURL, {
         transports: ['websocket'],
-        // extraHeaders: ['Authorization', 'Content-Type'], 
+        extraHeaders: ['Authorization', 'Content-Type'], 
       withCredentials: true,
     });
 
