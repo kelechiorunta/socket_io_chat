@@ -65,7 +65,7 @@ authRouter.post('/signin', (req, res, next) => {
     })(req, res, next);
   });
   
-  authRouter.get('/api/getChatHistory', async (req, res) => {
+  authRouter.get('/getChatHistory', async (req, res) => {
       try {
         const { userId, currentUserId } = req.query;
         // const currentUserId = req.session.user?._id;

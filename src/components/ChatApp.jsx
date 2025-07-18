@@ -323,7 +323,7 @@ useEffect(() => {
             try {
         
                 const res = await fetch(
-                  `http://localhost:7334/api/getChatHistory?userId=${chatUser?._id}&currentUserId=${currentUser?._id}`,
+                  `/api/getChatHistory?userId=${chatUser?._id}&currentUserId=${currentUser?._id}`,
                   {
                     method: 'GET',
                     credentials: 'include',
