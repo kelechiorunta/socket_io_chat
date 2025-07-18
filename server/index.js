@@ -36,19 +36,21 @@ const schema = makeExecutableSchema({
 const app = express();
 const PORT = process.env.PORT || 7334;
 
-const ALLOWED_ORIGINS = 'http://localhost:7334,http://localhost:3000,http://localhost:3001,https://chatvercelsocketio.vercel.app,https://socketiochat-production.up.railway.app'
-const allowedOrigins = ALLOWED_ORIGINS.split(',');
+// const ALLOWED_ORIGINS = 'http://localhost:7334,http://localhost:3000,http://localhost:3001,https://chatvercelsocketio.vercel.app,https://socketiochat-production.up.railway.app'
+// const allowedOrigins = ALLOWED_ORIGINS.split(',');
+
+const ALLOWED_ORIGINS = ['http://localhost:7334', 'http://localhost:3000','http://localhost:3001', 'https://chatvercelsocketio.vercel.app', 'https://socketiochat-production.up.railway.app']
 
 const corsOption = {
     origin: function (origin, callback) {
-        if (allowedOrigins.includes(origin) || !origin) {
+        if (ALLOWED_ORIGINS.includes(origin) || !origin) {
             return callback(null, true)
         } else {
             return callback(false, new Error("Domain not supported"))
         }
     },
     allowedHeaders: ['Content-Type', 'Authorization'],
-    method: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
   optionsSuccessStatus: 200,
 }
