@@ -27,7 +27,7 @@ export default function Login() {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await fetch(`/signin`, {
+      const response = await fetch(`/api/signin`, {
         credentials: 'include',
         method: 'POST',
         headers: {
