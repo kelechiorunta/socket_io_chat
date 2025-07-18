@@ -4,11 +4,20 @@ import {
     Home, Search, Bookmark, Share2, Settings, Moon, Sun, LogOutIcon
 } from 'lucide-react';
 import { useTheme } from './ThemeContext';
+import { useNavigate } from 'react-router-dom';
 
 const IconBar = ({ pic }) => {
     const { theme, toggleTheme } = useTheme();
 
     const isDark = theme === 'dark';
+
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        await fetch('/logout', { method: 'POST', credentials: 'include' });
+        // Clear state, tokens, etc.
+        navigate('/login'); // or home
+      };
 
     return (
         <div
@@ -60,17 +69,14 @@ const IconBar = ({ pic }) => {
                         variant="outline-secondary"
                         className="d-flex justify-content-center align-items-center"
                         style={{ width: 36, height: 36, borderRadius: '50%' }}
-                        onClick={() => {
-                            window.location.href = '/logout';
-                            localStorage.removeItem('currentUser');
-                        }}
+                        onClick={handleLogout}
                     >
                         <LogOutIcon size={18} />
                     </Button>
                 </OverlayTrigger>
 
                 <Image
-                    onClick={() => window.location.href = 'https://socketiochat-production-8edb.up.railway.app/logout'}
+                    onClick={handleLogout}
                     src={pic && pic.picture}
                     roundedCircle
                     style={{ width: 36, height: 36, cursor: 'pointer' }}
