@@ -51,9 +51,9 @@ authRouter.post('/signup', signupController);
 
 authRouter.post('/signin', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
-      if (err || !user) {
-        return res.status(401).json({ error: info?.message || 'Unauthorized' });
-      }
+      // if (err || !user) {
+      //   return res.status(401).json({ error: info?.message || 'Unauthorized' });
+      // }
   
       req.logIn(user, (err) => {
         if (err) return res.status(500).json({ error: 'Login error' });
