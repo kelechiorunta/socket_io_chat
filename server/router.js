@@ -1,10 +1,10 @@
 import express from 'express';
-import { signupController, loginController } from './controllers.js';
+import { signupController } from './controllers.js';
 import passport from 'passport';
 import User from './model/User.js';
 import { configureGooglePassport, configureLocalPassport } from './passport.js';
 import { loginSession } from './middleware.js';
-import { isAuthenticatedUser } from './controllers.js';
+// import { isAuthenticatedUser } from './controllers.js';
 import Chat from './model/Chat.js';
 import UnreadMsg from './model/UnreadMsg.js';
 
@@ -60,7 +60,7 @@ authRouter.post('/signin', (req, res, next) => {
   
         req.session.user = user;
         req.session.authenticated = true;
-        return res.json({ message: 'Login successful', user });
+        return res.json({ message: 'Login successful', user: user });
       });
     })(req, res, next);
   });
