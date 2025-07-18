@@ -27,8 +27,8 @@ export default function Login() {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await fetch(`/signin`, {
-        credentials: 'include',
+      const response = await fetch(`https://socketiochat-production.up.railway.app/signin`, {
+        credentials: 'same-origin',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
