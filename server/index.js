@@ -99,27 +99,22 @@ app.use('/', authRouter);
 
 
   // Middleware to enable GraphQL Introspection and Client Queries
-app.use(
+  app.use(
     '/graphql',
     graphqlHTTP((req) => {
       const isDev = process.env.NODE_ENV === 'development';
-      const protocol = isDev ? 'ws' : 'wss';
-      const host = isDev ? 'localhost:7334' : req.headers.host;
   
       return {
         schema,
-          context: {
-              
-                isAuthenticated: req.isAuthenticated?.(),
-                user: req.user ?? req.session?.user,
-          },
-        graphiql: true
-        // graphiql: {
-        //   subscriptionEndpoint: `${protocol}://${host}/graphql`,
-        // },
+        context: {
+          isAuthenticated: req.isAuthenticated?.(),
+          user: req.user ?? req.session?.user,
+        },
+        graphiql: isDev, // Only enable GraphiQL in development
       };
     })
-); 
+  );
+  
 
 app.set('trust proxy', true); // Trust Railway's proxy
   
