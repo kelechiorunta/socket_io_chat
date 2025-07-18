@@ -10,7 +10,7 @@ import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 //     credentials: 'include',
 // });
   
-const isDev = process.env.NODE_ENV === 'development';
+// const isDev = process.env.NODE_ENV === 'development';
 
 const client = new ApolloClient({
     link: createHttpLink({
