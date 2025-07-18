@@ -12,6 +12,7 @@ import { fileURLToPath } from 'url';
 import { connectDB } from './db.js';
 import { graphqlHTTP } from 'express-graphql';
 import passport from 'passport';
+import dotenv from 'dotenv'
 // import Message from './model/Message.js';
 import ConnectMongoDBSession from 'connect-mongodb-session'
 import session from 'express-session'
@@ -22,6 +23,7 @@ import ChatMessage from './model/ChatMessage.js';
 import Chat from './model/Chat.js';
 import User from './model/User.js';
 import UnreadMsg from './model/UnreadMsg.js';
+dotenv.config();
 
 connectDB(process.env.MONGO_URI);
 
