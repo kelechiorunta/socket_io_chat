@@ -16,6 +16,7 @@ const client = new ApolloClient({
     link: createHttpLink({
         uri: 'https://socketiochat-production.up.railway.app/graphql',
         credentials: 'include',
+        headers: ['Authorization', 'Content-Type']
     }),
     cache: new InMemoryCache({
         typePolicies: {
