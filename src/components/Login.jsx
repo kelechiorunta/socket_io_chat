@@ -25,7 +25,7 @@ export default function Login() {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await fetch(`/signin`, {
+      const response = await fetch(`https://socketiochat-production-8edb.up.railway.app/signin`, {
         credentials: 'include',
         method: 'POST',
         headers: {
