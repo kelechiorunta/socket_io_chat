@@ -13,10 +13,9 @@ import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 // const isDev = process.env.NODE_ENV === 'development';
 
 const client = new ApolloClient({
-    link: createHttpLink({
+        link: createHttpLink({
         uri: 'https://socketiochat-production.up.railway.app/graphql',
         credentials: 'include',
-        headers: ['Authorization', 'Content-Type']
     }),
     cache: new InMemoryCache({
         typePolicies: {
