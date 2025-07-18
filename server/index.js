@@ -83,16 +83,16 @@ const sessionOptions = {
     store: store
   }
 
-// app.use(cors(corsOption))
-app.use(
-  cors({
-    origin: ['https://socketiochat-production.up.railway.app', 'http://localhost:3000', 'https://chatvercelsocketio.vercel.app'],
-    credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    optionsSuccessStatus: 200,
-  })
-);
+app.use(cors(corsOption))
+// app.use(
+//   cors({
+//     origin: ['http://localhost:7334', 'https://socketiochat-production.up.railway.app', 'http://localhost:3000', 'https://chatvercelsocketio.vercel.app'],
+//     credentials: true,
+//     allowedHeaders: ['Content-Type', 'Authorization'],
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//     optionsSuccessStatus: 200,
+//   })
+// );
 // app.use('/graphql', createHandler({
 //     schema,
 //     context: async (req) => ({ user: req.user }), // optional
@@ -359,14 +359,13 @@ io.on('connection', (socket) => {
     });
 });
 
-
-  
-server.listen(PORT, () => {
-  console.log(`WebSocket server listening on ws://localhost:${PORT}`);
-});
-
 app.use(express.static(path.resolve('build')));
 
 app.get('/', (req, res) => {
   res.sendFile(path.resolve('build', 'index.html'))
 })
+  
+server.listen(PORT, () => {
+  console.log(`WebSocket server listening on ws://localhost:${PORT}`);
+});
+

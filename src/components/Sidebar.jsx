@@ -14,7 +14,7 @@ import Avatar from './Avatar';
 import Button from './Button';
 import { useTheme } from './ThemeContext';
 
-const Sidebar = ({ onSelectChat, pic, loading, error, unreadMap, typingUsers,  contacts,  onlineUsers, authenticatedUser,  }) => {
+const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap, typingUsers,  contacts,  onlineUsers, authenticatedUser,  }) => {
   
     const { theme } = useTheme();
     
@@ -87,22 +87,22 @@ const Sidebar = ({ onSelectChat, pic, loading, error, unreadMap, typingUsers,  c
       </div>
 
       <div className="overflow-scroll mb-3" style={{  maxHeight: '50vh' }}>
-        {loading ? (
-          Array.from({ length: 5 }).map((_, idx) => (
-            <Card key={idx} style={cardStyle}>
-              <Card.Body className="d-flex align-items-center">
-                <Placeholder className="rounded-circle me-3" style={{ width: 40, height: 40 }} />
-                <div className="flex-grow-1">
-                  <Placeholder xs={6} /> <br />
-                  <Placeholder xs={4} />
-                </div>
-              </Card.Body>
-            </Card>
-          ))
-        ) : error ? (
-          <div className="text-danger">Error fetching contacts</div>
-        ) : (
-                filteredUsers.map((user, index) => {
+          {loading ? (
+            Array.from({ length: 5 }).map((_, idx) => (
+              <Card key={idx} style={cardStyle}>
+                <Card.Body className="d-flex align-items-center">
+                  <Placeholder className="rounded-circle me-3" style={{ width: 40, height: 40 }} />
+                  <div className="flex-grow-1">
+                    <Placeholder xs={6} /> <br />
+                    <Placeholder xs={4} />
+                  </div>
+                </Card.Body>
+              </Card>
+            ))
+          ) : error ? (
+            <div className="text-danger">Error fetching contacts</div>
+          ) : (
+            filteredUsers.map((user, index) => {
                 
               // const unreadEntry = pic && pic.unread.find(
               //     (entry) => ((entry.sender?._id === user?._id) || (entry.recipient?._id  === authenticatedUser?._id))
@@ -112,15 +112,20 @@ const Sidebar = ({ onSelectChat, pic, loading, error, unreadMap, typingUsers,  c
             
               const isTyping = typingUsers.has(user?._id);
                
-                    return (
-                       <div
-                            key={user?._id}
-                            onClick={() => onSelectChat(user)}
-                            className={`${isDark? 'bg-secondary' : 'bg-[ #fcc668]'} d-flex align-items-center justify-content-between rounded-3 mb-2 p-2 px-3 ${isDark? 'chat-dark' : 'chat-light'}`}
+              return (
+                <div
+                  key={user?._id}
+                  onClick={() => onSelectChat(user)}
+                  className={`d-flex align-items-center justify-content-between rounded-3 mb-2 p-2 px-3
+                    ${isDark ? 'bg-secondary chat-dark' : 'bg-[rgba(0,0,0,0.8)] chat-light'}
+                    ${selectedClient?._id === user?._id ? 'bg-[ #00e575]' : 'bg-[rgba(0,0,0,0.8)]'}
+                  `}
+                  
                             style={{
                                 cursor: 'pointer', 
-                                backgroundColor: isDark? 'bg-secondary' : 'rgba(0, 0, 0, 0.1)',
-                                color: isDark? 'white' : 'rgba(0, 0, 0, 0.7)'
+                                backgroundColor: (selectedClient?._id === user?._id) && 'rgba(0, 0, 0, 0.5)', //: !isDark && 'bg-secondary', //' rgba(252,198,104,0.9)' ,//' #00e575',
+                                color: (selectedClient?._id === user?._id)? 'white' : isDark ? 'white' : 'rgba(0, 0, 0, 0.7)',
+                                border: '1px solid rgba(0, 0, 0, 0.7)',
                              }}
                         >
 
