@@ -116,9 +116,9 @@ app.use(
     })
 ); 
 
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve('build', 'index.html'))
-})
+// app.get('*', (req, res) => {
+//   res.sendFile(path.resolve('build', 'index.html'))
+// })
 
 app.set('trust proxy', true); // Trust Railway's proxy
   
