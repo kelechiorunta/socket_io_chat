@@ -127,7 +127,7 @@ app.use('/*', authRouter);
   );
   
 
-app.set('trust proxy', true); // Trust Railway's proxy
+// app.set('trust proxy', true); // Trust Railway's proxy
   
 const server = http.createServer(app);
 const io = new Server(server, { cors: corsOption})
@@ -361,9 +361,9 @@ io.on('connection', (socket) => {
 
 app.use(express.static(path.resolve('build')));
 
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve('build', 'index.html'))
-})
+// app.get('/', (req, res) => {
+//   res.sendFile(path.resolve('build', 'index.html'))
+// })
   
 server.listen(PORT, () => {
   console.log(`WebSocket server listening on ws://localhost:${PORT}`);
