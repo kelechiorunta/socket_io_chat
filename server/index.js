@@ -70,8 +70,8 @@ const sessionOptions = {
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false,           // don’t use true unless HTTPS
-      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
     },
