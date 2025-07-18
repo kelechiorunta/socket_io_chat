@@ -39,7 +39,7 @@ const PORT = process.env.PORT || 7334;
 // const ALLOWED_ORIGINS = 'http://localhost:7334,http://localhost:3000,http://localhost:3001,https://chatvercelsocketio.vercel.app,https://socketiochat-production.up.railway.app'
 // const allowedOrigins = ALLOWED_ORIGINS.split(',');
 
-const ALLOWED_ORIGINS = ['http://localhost:7334', 'http://localhost:3000','http://localhost:3001', 'https://chatvercelsocketio.vercel.app', 'https://socketiochat-production.up.railway.app']
+const ALLOWED_ORIGINS = ['http://localhost:7334', 'http://localhost:3000', 'http://localhost:3001', 'https://chatvercelsocketio.vercel.app', 'https://socketiochat-production.up.railway.app']
 
 const corsOption = {
     origin: function (origin, callback) {
@@ -81,7 +81,16 @@ const sessionOptions = {
     store: store
   }
 
-app.use(cors(corsOption))
+// app.use(cors(corsOption))
+app.use(
+  cors({
+    origin: ['https://socketiochat-production.up.railway.app', 'http://localhost:3000', 'https://chatvercelsocketio.vercel.app'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    optionsSuccessStatus: 200,
+  })
+);
 // app.use('/graphql', createHandler({
 //     schema,
 //     context: async (req) => ({ user: req.user }), // optional
