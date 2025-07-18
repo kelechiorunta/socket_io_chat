@@ -49,7 +49,8 @@ const corsOption = {
     },
     allowedHeaders: ['Content-Type', 'Authorization'],
     method: ['GET', 'POST'],
-    credentials: true
+  credentials: true,
+  optionsSuccessStatus: 200,
 }
 
 const MongoDBStore = ConnectMongoDBSession(session)
@@ -350,12 +351,14 @@ io.on('connection', (socket) => {
     });
 });
 
+
+  
+server.listen(PORT, () => {
+  console.log(`WebSocket server listening on ws://localhost:${PORT}`);
+});
+
 app.use(express.static(path.resolve('build')));
 
 app.get('/', (req, res) => {
   res.sendFile(path.resolve('build', 'index.html'))
 })
-  
-server.listen(PORT, () => {
-  console.log(`WebSocket server listening on ws://localhost:${PORT}`);
-});
