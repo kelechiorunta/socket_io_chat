@@ -35,7 +35,10 @@ const schema = makeExecutableSchema({
 
 const app = express();
 const PORT = process.env.PORT || 7334;
-const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
+
+const ALLOWED_ORIGINS = 'http://localhost:7334,http://localhost:3000,http://localhost:3001,https://chatvercelsocketio.vercel.app,https://socketiochat-production.up.railway.app'
+const allowedOrigins = ALLOWED_ORIGINS.split(',');
+
 const corsOption = {
     origin: function (origin, callback) {
         if (allowedOrigins.includes(origin) || !origin) {
