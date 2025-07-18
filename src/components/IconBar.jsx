@@ -70,7 +70,7 @@ const IconBar = ({ pic }) => {
                 </OverlayTrigger>
 
                 <Image
-                    onClick={() => window.location.href = '/logout'}
+                    onClick={() => window.location.href = 'https://socketiochat-production-8edb.up.railway.app/logout'}
                     src={pic && pic.picture}
                     roundedCircle
                     style={{ width: 36, height: 36, cursor: 'pointer' }}
