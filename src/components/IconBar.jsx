@@ -69,14 +69,14 @@ const IconBar = ({ pic }) => {
                         variant="outline-secondary"
                         className="d-flex justify-content-center align-items-center"
                         style={{ width: 36, height: 36, borderRadius: '50%' }}
-                        onClick={handleLogout}
+                        onClick={()=>handleLogout()}
                     >
                         <LogOutIcon size={18} />
                     </Button>
                 </OverlayTrigger>
 
                 <Image
-                    onClick={handleLogout}
+                    onClick={()=>handleLogout()}
                     src={pic && pic.picture}
                     roundedCircle
                     style={{ width: 36, height: 36, cursor: 'pointer' }}

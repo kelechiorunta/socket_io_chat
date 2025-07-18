@@ -10,19 +10,23 @@ import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 //     credentials: 'include',
 // });
   
+const isDev = process.env.NODE_ENV === 'development';
+
 const client = new ApolloClient({
     link: createHttpLink({
-        uri: 'http://localhost:7334/graphql', // ✅ correct
-        credentials: 'include', // ✅ This ensures cookies are sent
-    }), // change this to match your deployment
-   
+        uri: isDev
+          ? 'http://localhost:7334/graphql'
+          : 'https://socketiochat-production.up.railway.app/graphql',
+        credentials: 'include',
+    }),
     cache: new InMemoryCache({
         typePolicies: {
           User: {
-            keyFields: ['_id'], // Must match what’s used in your backend
+            keyFields: ['_id'],
           },
         },
-      }),
+    }),
 });
+
 
 export default client;
