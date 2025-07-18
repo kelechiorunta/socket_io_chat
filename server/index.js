@@ -52,7 +52,7 @@ const corsOption = {
         }
     },
     allowedHeaders: ['Content-Type', 'Authorization'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    method: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
   optionsSuccessStatus: 200,
 }
@@ -105,7 +105,7 @@ app.use(session(sessionOptions))
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use('/*', authRouter);
+app.use('/api', authRouter);
 
 
 
@@ -359,9 +359,9 @@ io.on('connection', (socket) => {
     });
 });
 
-// app.use(express.static(path.resolve('build')));
+app.use(express.static(path.resolve('build')));
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.resolve('build', 'index.html'))
 })
   

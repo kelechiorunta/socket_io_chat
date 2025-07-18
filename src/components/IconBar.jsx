@@ -14,7 +14,7 @@ const IconBar = ({ pic }) => {
     const navigate = useNavigate();
 
     const handleLogout = async () => {
-        await fetch('/logout', { method: 'POST', credentials: 'include' });
+        await fetch('/api/logout', { method: 'GET', credentials: 'include' });
         // Clear state, tokens, etc.
         navigate('/login'); // or home
       };
