@@ -46,7 +46,8 @@
     "yup": "^1.6.1"
   },
   "scripts": {
-    "start": "HOST=0.0.0.0 DANGEROUSLY_DISABLE_HOST_CHECK=true react-scripts start",
+    "start": "node server/index.js",
+    "heroku-postbuild": "npm run build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
