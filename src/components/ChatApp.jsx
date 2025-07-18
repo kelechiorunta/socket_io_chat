@@ -120,16 +120,13 @@ const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
     }, [user]);
 
   useEffect(() => {
-    const host = window.location.hostname;
-    const socketServerURL =
-      host === 'localhost'
-        ? 'http://localhost:7334'
-        : 'https://socketiochat-production.up.railway.app';
+    // const host = window.location.hostname;
+    const socketServerURL = 'https://socketiochat-production.up.railway.app';
         // : 'https://node-chat-app-ecru.vercel.app';
 
     const socketInstance = io(socketServerURL, {
         transports: ['websocket'],
-        extraHeaders: ['Authorization', 'Content-Type'], 
+        // extraHeaders: ['Authorization', 'Content-Type'], 
       withCredentials: true,
     });
 
