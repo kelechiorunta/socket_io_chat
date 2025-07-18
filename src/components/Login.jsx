@@ -11,6 +11,7 @@ import {
 } from 'react-bootstrap';
 import { object, string } from 'yup'; // ✅ Use named imports instead of `* as Yup`
 import { FaUser, FaLock, FaGoogle } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const LoginSchema = object({
   username: string().required('Username is required'),
@@ -22,6 +23,7 @@ const LoginSchema = object({
 export default function Login() {
   const [serverError, setServerError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
@@ -42,7 +44,7 @@ export default function Login() {
 
       setSuccessMessage(data.message || 'Login successful');
       setServerError('');
-      window.location.href = '/';
+      navigate('/');
     } catch (err) {
       setServerError(err.message);
       setSuccessMessage('');
