@@ -124,12 +124,12 @@ const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
     const socketServerURL =
       host === 'localhost'
         ? 'http://localhost:7334'
-        : 'https://chatvercelsocketio.vercel.app';
+        : 'https://socketiochat-production.up.railway.app';
         // : 'https://node-chat-app-ecru.vercel.app';
 
     const socketInstance = io(socketServerURL, {
         transports: ['websocket'],
-        extraHeaders: ['Authorization', 'Content-Type'], 
+        // extraHeaders: ['Authorization', 'Content-Type'], 
       withCredentials: true,
     });
 
