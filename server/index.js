@@ -38,7 +38,7 @@ const PORT = process.env.PORT || 7334;
 const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
 const corsOption = {
     origin: function (origin, callback) {
-        if (allowedOrigins.includes(origin)) {
+        if (allowedOrigins.includes(origin) || !origin) {
             return callback(null, true)
         } else {
             return callback(false, new Error("Domain not supported"))
@@ -116,9 +116,9 @@ app.use(
     })
 ); 
 
-// app.get('*', (req, res) => {
-//   res.sendFile(path.resolve('build', 'index.html'))
-// })
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve('build', 'index.html'))
+})
 
 app.set('trust proxy', true); // Trust Railway's proxy
   

@@ -14,9 +14,7 @@ const isDev = process.env.NODE_ENV === 'development';
 
 const client = new ApolloClient({
     link: createHttpLink({
-        uri: isDev
-          ? 'http://localhost:7334/graphql'
-          : 'https://socketiochat-production.up.railway.app/graphql',
+        uri: 'https://socketiochat-production.up.railway.app/graphql',
         credentials: 'include',
     }),
     cache: new InMemoryCache({
