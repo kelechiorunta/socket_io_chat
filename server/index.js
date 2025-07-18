@@ -80,7 +80,6 @@ app.use(cors(corsOption))
 //     schema,
 //     context: async (req) => ({ user: req.user }), // optional
 // }));
-app.use(express.static(path.resolve('build')))
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
@@ -115,6 +114,8 @@ app.use(
       };
     })
 ); 
+
+app.use(express.static(path.resolve('build')));
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve('build', 'index.html'))
