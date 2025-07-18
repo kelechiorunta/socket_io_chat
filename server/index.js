@@ -118,6 +118,8 @@ app.use(
 app.get('*', (req, res) => {
   res.sendFile(path.resolve('build', 'index.html'))
 })
+
+app.set('trust proxy', true); // Trust Railway's proxy
   
 const server = http.createServer(app);
 const io = new Server(server, { cors: corsOption})
