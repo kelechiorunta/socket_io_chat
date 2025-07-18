@@ -1,10 +1,10 @@
 import http from 'http';
 import path from 'path'
-import { WebSocketServer } from 'ws';
+// import { WebSocketServer } from 'ws';
 import express from 'express';
 import { Server } from 'socket.io';
 import cors from 'cors';
-import { createHandler } from 'graphql-http/lib/use/express';
+// import { createHandler } from 'graphql-http/lib/use/express';
 import { loadFilesSync } from '@graphql-tools/load-files'
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import resolvers from './resolvers.js';
@@ -12,7 +12,7 @@ import { fileURLToPath } from 'url';
 import { connectDB } from './db.js';
 import { graphqlHTTP } from 'express-graphql';
 import passport from 'passport';
-import Message from './model/Message.js';
+// import Message from './model/Message.js';
 import ConnectMongoDBSession from 'connect-mongodb-session'
 import session from 'express-session'
 import authRouter from './router.js';
@@ -352,9 +352,9 @@ io.on('connection', (socket) => {
 
 app.use(express.static(path.resolve('build')));
 
-// app.get('*', (req, res) => {
-//   res.sendFile(path.resolve('build', 'index.html'))
-// })
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve('build', 'index.html'))
+})
   
 server.listen(PORT, () => {
   console.log(`WebSocket server listening on ws://localhost:${PORT}`);
