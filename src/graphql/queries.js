@@ -68,6 +68,7 @@ export const UPDATE_PROFILE = gql`
         gender
         phone
         address
+        picture
       }
     }
   }
