@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
     isOnline: { type: Boolean, required: false, default: null },
     unread: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UnreadMsg' }],
     token: { type: String, required: false },
+    birthday: { type: String, required: false },
+    phone: { type: String, required: false },
+    gender: { type: String, required: false },
+    address: { type: String, required: false },
     otp: {
         type: String,
         default: 'otp'
@@ -30,7 +34,7 @@ const userSchema = new mongoose.Schema({
     resetPasswordToken: { type: String },
     resetPasswordExpires: { type: Date },
   google:
-  {
+    {
     name: { type: String, required: false },
     email: { type: String, required: false, validate: validator.isEmail },
     accessToken: { type: String, required: false }

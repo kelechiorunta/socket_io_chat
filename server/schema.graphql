@@ -8,6 +8,7 @@ type Mutation {
   markMessagesAsRead(senderId: ID!): Boolean
   createUnread(input: CreateUnreadInput!): UnreadResult
   clearUnread(senderId: ID!, recipientId: ID!): Boolean
+  updateProfile(input: UpdateProfileInput!): UpdateProfileResponse!
 }
 
 input CreateUnreadInput {
@@ -31,15 +32,33 @@ type UnreadCountEntry {
   data: UnreadCount
 }
 
+input UpdateProfileInput {
+  username: String!
+  email: String!
+  gender: String!
+  phone: String!
+  address: String!
+}
+
+type UpdateProfileResponse {
+  success: Boolean!
+  message: String!
+  user: User
+}
+
 type User {
-    _id: ID
-    username: String
-    email: String
-    picture: String
-    lastMessage: String
-    lastMessageCount: Int
-    isOnline: Boolean
-    unread: [UnreadMsg]
+  _id: ID
+  username: String
+  email: String
+  picture: String
+  lastMessage: String
+  lastMessageCount: Int
+  isOnline: Boolean
+  unread: [UnreadMsg]
+  phone: String
+  gender: String
+  address: String
+  birthday: String
 }
 
 type ChatMessage {
