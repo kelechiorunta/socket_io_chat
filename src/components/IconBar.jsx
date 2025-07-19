@@ -1,10 +1,10 @@
 import { Nav, Image, Button } from 'react-bootstrap';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import {
-    Home, Search, Bookmark, Share2, Settings, Moon, Sun, LogOutIcon
-} from 'lucide-react';
+import { Home, Search, Bookmark, Share2, Settings, Moon, Sun, LogOutIcon} from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import Profile from './Profile';
 
 const IconBar = ({ pic }) => {
     const { theme, toggleTheme } = useTheme();
@@ -17,7 +17,12 @@ const IconBar = ({ pic }) => {
         await fetch('/api/logout', { method: 'GET', credentials: 'include' });
         // Clear state, tokens, etc.
         navigate('/login'); // or home
-      };
+    };
+
+    const [showProfile, setShowProfile] = useState(false);
+
+    const handleProfileOpen = () => setShowProfile(true);
+    const handleProfileClose = () => setShowProfile(false);
 
     return (
         <div
@@ -75,12 +80,19 @@ const IconBar = ({ pic }) => {
                     </Button>
                 </OverlayTrigger>
 
-                <Image
-                    onClick={()=>handleLogout()}
-                    src={pic && pic.picture}
-                    roundedCircle
-                    style={{ width: 36, height: 36, cursor: 'pointer' }}
-                />
+                <>
+                    <Image
+                        // onClick={()=>handleLogout()}
+                        src={pic && pic.picture}
+                        roundedCircle
+                        style={{ width: 36, height: 36, cursor: 'pointer' }}
+                    />
+
+                    <Profile show={showProfile} handleClose={handleProfileClose} />
+
+                </>
+                
+
             </div>
         </div>
     );
