@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Form,
   InputGroup,
@@ -24,17 +24,30 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
   const [search, setSearch] = useState('');
   const [filteredUsers, setFilteredUsers] = useState(contacts)
 
-    const users = contacts; // or data?.users || []
-    // const groups = data?.groups || []
+  //   const users = contacts; // or data?.users || []
+  //   // const groups = data?.groups || []
     
-    const activeUsers = [...users].sort((a, b) => {
+  //   const activeUsers = [...users].sort((a, b) => {
+  //     return (b.isOnline === true) - (a.isOnline === true);
+  //   });
+    
+  // // eslint-disable-next-line array-callback-return
+  // const mappedUsers = activeUsers.filter((user) => {
+  //   user.username?.toLowerCase().includes(search.toLowerCase());
+  //   setFilteredUsers(mappedUsers)
+  // });
+
+  useEffect(() => {
+    const sortedUsers = [...contacts].sort((a, b) => {
       return (b.isOnline === true) - (a.isOnline === true);
     });
-    
-  const mappedUsers = activeUsers.filter((user) => {
-    user.username?.toLowerCase().includes(search.toLowerCase());
-    setFilteredUsers(mappedUsers)
-  });
+  
+    const result = sortedUsers.filter(user =>
+      user.username?.toLowerCase().includes(search.toLowerCase())
+    );
+  
+    setFilteredUsers(result);
+  }, [contacts, search]);
     
 
     const cardStyle = {
