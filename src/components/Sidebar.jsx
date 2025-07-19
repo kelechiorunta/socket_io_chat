@@ -23,12 +23,17 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
     const [tab, setTab] = useState('all');
     const [search, setSearch] = useState('');
 
-    const users = contacts//data?.users || [];
-    //   const groups = data?.groups || [];
-
-    const filteredUsers = users.filter(user =>
-        user.username?.toLowerCase().includes(search.toLowerCase())
+    const users = contacts; // or data?.users || []
+    // const groups = data?.groups || []
+    
+    const activeUsers = [...users].sort((a, b) => {
+      return (b.isOnline === true) - (a.isOnline === true);
+    });
+    
+    const filteredUsers = activeUsers.filter(user =>
+      user.username?.toLowerCase().includes(search.toLowerCase())
     );
+    
 
     const cardStyle = {
         backgroundColor: isDark ? ' #2c2f33' : ' #f7fef2',
