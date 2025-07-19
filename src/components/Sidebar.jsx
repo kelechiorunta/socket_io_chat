@@ -21,7 +21,8 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
     const isDark = theme === 'dark';
 
     const [tab, setTab] = useState('all');
-    const [search, setSearch] = useState('');
+  const [search, setSearch] = useState('');
+  const [filteredUsers, setFilteredUsers] = useState(contacts)
 
     const users = contacts; // or data?.users || []
     // const groups = data?.groups || []
@@ -30,9 +31,10 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
       return (b.isOnline === true) - (a.isOnline === true);
     });
     
-    const filteredUsers = activeUsers.filter(user =>
-      user.username?.toLowerCase().includes(search.toLowerCase())
-    );
+  const mappedUsers = activeUsers.filter((user) => {
+    user.username?.toLowerCase().includes(search.toLowerCase());
+    setFilteredUsers(mappedUsers)
+  });
     
 
     const cardStyle = {
