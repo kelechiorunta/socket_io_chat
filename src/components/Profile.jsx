@@ -1,5 +1,4 @@
 // Profile.jsx
-// Profile.jsx
 import React, { useRef } from "react";
 import { Modal, Button, Form, Image } from "react-bootstrap";
 import { useFormik } from "formik";
@@ -18,7 +17,10 @@ const validationSchema = Yup.object({
 
 const Profile = ({ show, handleClose }) => {
   const { data, loading } = useQuery(AUTH);
-  const [updateProfile] = useMutation(UPDATE_PROFILE);
+  const [updateProfile] = useMutation(UPDATE_PROFILE, {
+    refetchQueries: [{ query: AUTH }],
+    awaitRefetchQueries: true
+  });
   const fileInputRef = useRef();
 
   const formik = useFormik({
@@ -79,7 +81,7 @@ const Profile = ({ show, handleClose }) => {
         <Form onSubmit={formik.handleSubmit}>
           <div className="text-center mb-3">
             <Image
-              src={formik.values.picture || "./avatar.png"}
+              src={formik.values.picture || "https://via.placeholder.com/100"}
               roundedCircle
               style={{ width: 100, height: 100, objectFit: 'cover', cursor: 'pointer' }}
               onClick={() => fileInputRef.current.click()}
@@ -174,3 +176,4 @@ const Profile = ({ show, handleClose }) => {
 };
 
 export default Profile;
+
