@@ -1,22 +1,4 @@
-// export const GET_CONTACTS = gql`
-//   query GetContacts {
-//     users {
-//       _id
-//       username
-//       avatar
-//       lastMessage
-//       isTyping
-//       unread
-//     }
-//     groups {
-//       _id
-//       name
-//       avatar
-//       lastMessage
-//       unread
-//     }
-//   }
-// `;
+
 import { gql } from "@apollo/client";
 export const GET_CONTACTS = gql`
   query GetContacts {
@@ -74,6 +56,23 @@ export const GET_UNREAD = gql`
   }
 }
 `;
+
+export const UPDATE_PROFILE = gql`
+  mutation UpdateProfile($input: UpdateProfileInput!) {
+    updateProfile(input: $input) {
+      success
+      message
+      user {
+        username
+        email
+        gender
+        phone
+        address
+      }
+    }
+  }
+`;
+
 
 export const MARK_MESSAGES_AS_READ = gql`
   mutation MarkMessagesAsRead($senderId: ID!) {

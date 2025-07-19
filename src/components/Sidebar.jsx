@@ -61,11 +61,6 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
     // Separate users by online status
     const online = contacts.filter((user) => onlineUsers.has(user._id));
     const offline = contacts.filter((user) => !onlineUsers.has(user._id));
-  
-    // Sort online users before initialization
-    // const sortedOnlineUsers = online.sort((a, b) => {
-    //   return (b.isOnline === true) - (a.isOnline === true);
-    // })
 
     // Merge online first, then offline
     const allOnlineUsers = [...online];
@@ -75,12 +70,11 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
       user.username?.toLowerCase().includes(search.toLowerCase())
     );
 
+    // Sort users based on their online activity
     const allUsers = [...result.sort((a,b) => {return (b.isOnline === true) - (a.isOnline === true);}), ...offline]
   
     setFilteredUsers(allUsers);
   }, [contacts, search, onlineUsers,]);
-  
-  // const offline = contacts.filter((user) => !onlineUsers.has(user._id));
 
   const cardStyle = {
       backgroundColor: isDark ? ' #2c2f33' : ' #f7fef2',
@@ -195,7 +189,7 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
                                           
                                          
                                           {isTyping ?
-                                              <span style={{ color: isDark ? ' #00e575' : ' #0e6efd' }}>
+                                              <span style={{ color: isDark ? ' #00e575' : ' #00e575' }}>
                                                   is typing...
                                               </span> : 
                                               <span>
