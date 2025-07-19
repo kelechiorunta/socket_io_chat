@@ -60,7 +60,7 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
   useEffect(() => {
     // Separate users by online status
     const online = contacts.filter((user) => onlineUsers.has(user._id));
-    // const offline = contacts.filter((user) => !onlineUsers.has(user._id));
+    const offline = contacts.filter((user) => !onlineUsers.has(user._id) || !user.isOnline);
   
     // Sort online users before initialization
     // const sortedOnlineUsers = online.sort((a, b) => {
@@ -75,12 +75,12 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
       user.username?.toLowerCase().includes(search.toLowerCase())
     );
 
-    const allUsers = result.sort((a,b) => {return (b.isOnline === true) - (a.isOnline === true);})
+    const allUsers = [...result.sort((a,b) => {return (b.isOnline === true) - (a.isOnline === true);}), ...offline]
   
     setFilteredUsers(allUsers);
   }, [contacts, search, onlineUsers,]);
   
-  const offline = contacts.filter((user) => !onlineUsers.has(user._id));
+  // const offline = contacts.filter((user) => !onlineUsers.has(user._id));
 
   const cardStyle = {
       backgroundColor: isDark ? ' #2c2f33' : ' #f7fef2',
@@ -150,7 +150,7 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
         ) : error ? (
           <div className="text-danger">Error fetching contacts</div>
         ) : (
-          [...filteredUsers, ...offline].map((user, index) => {
+          filteredUsers.map((user, index) => {
               
             // const unreadEntry = pic && pic.unread.find(
             //     (entry) => ((entry.sender?._id === user?._id) || (entry.recipient?._id  === authenticatedUser?._id))
