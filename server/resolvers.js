@@ -251,13 +251,13 @@ const resolvers = {
   },
 
   Mutation: {
-    
+
     updateProfile: async (_, { input }, { user, db }) => {
       if (!user) {
         return { success: false, message: "Not authenticated", user: null };
       }
   
-      const updatedUser = await db.collection("users").findOneAndUpdate(
+      const updatedUser = await User.findOneAndUpdate(
         { _id: user._id },
         { $set: { ...input } },
         { returnDocument: "after" }

@@ -1,12 +1,12 @@
 // Profile.jsx
-import React from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+// Profile.jsx
+import React, { useRef } from "react";
+import { Modal, Button, Form, Image } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useQuery, useMutation } from "@apollo/client";
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaVenusMars } from "react-icons/fa";
 import { AUTH, UPDATE_PROFILE } from "../graphql/queries";
-
 
 const validationSchema = Yup.object({
   username: Yup.string().required("Username is required"),
@@ -19,6 +19,7 @@ const validationSchema = Yup.object({
 const Profile = ({ show, handleClose }) => {
   const { data, loading } = useQuery(AUTH);
   const [updateProfile] = useMutation(UPDATE_PROFILE);
+  const fileInputRef = useRef();
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -27,7 +28,8 @@ const Profile = ({ show, handleClose }) => {
       email: data?.auth.email || "",
       gender: data?.auth.gender || "",
       phone: data?.auth.phone || "",
-      address: data?.auth.address || ""
+      address: data?.auth.address || "",
+      picture: data?.auth.picture || ""
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -39,6 +41,17 @@ const Profile = ({ show, handleClose }) => {
       }
     }
   });
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        formik.setFieldValue("picture", reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   if (loading) return (
     <Modal show={show} onHide={handleClose} centered>
@@ -64,6 +77,22 @@ const Profile = ({ show, handleClose }) => {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
+          <div className="text-center mb-3">
+            <Image
+              src={formik.values.picture || "./avatar.png"}
+              roundedCircle
+              style={{ width: 100, height: 100, objectFit: 'cover', cursor: 'pointer' }}
+              onClick={() => fileInputRef.current.click()}
+            />
+            <Form.Control
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              ref={fileInputRef}
+              onChange={handleImageChange}
+            />
+          </div>
+
           <Form.Group className="mb-3">
             <Form.Label><FaUser /> Username</Form.Label>
             <Form.Control
