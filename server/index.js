@@ -23,6 +23,7 @@ import ChatMessage from './model/ChatMessage.js';
 import Chat from './model/Chat.js';
 import User from './model/User.js';
 import UnreadMsg from './model/UnreadMsg.js';
+import { loginSession } from './middleware.js';
 dotenv.config();
 
 connectDB(process.env.MONGO_URI);
@@ -105,7 +106,7 @@ app.use(session(sessionOptions))
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use('/api', authRouter);
+app.use('/api', loginSession, authRouter);
 
 
 
