@@ -109,29 +109,29 @@ app.use('/api', authRouter);
 
 
 
-  // Middleware to enable GraphQL Introspection and Client Queries
-  app.use(
-    '/graphql',
-    graphqlHTTP((req) => {
-      const isDev = process.env.NODE_ENV === 'development';
-  
-      return {
-        schema,
-        context: {
-          isAuthenticated: req.isAuthenticated?.(),
-          user: req.user ?? req.session?.user,
-        },
-        graphiql: isDev, // Only enable GraphiQL in development
-      };
-    })
-  );
+// Middleware to enable GraphQL Introspection and Client Queries
+app.use(
+  '/graphql',
+  graphqlHTTP((req) => {
+    const isDev = process.env.NODE_ENV === 'development';
+
+    return {
+      schema,
+      context: {
+        isAuthenticated: req.isAuthenticated?.(),
+        user: req.user ?? req.session?.user,
+      },
+      graphiql: isDev, // Only enable GraphiQL in development
+    };
+  })
+);
   
 
 app.set('trust proxy', true); // Trust Railway's proxy
   
 const server = http.createServer(app);
 const io = new Server(server, { cors: corsOption})
-// const ws = new WebSocketServer({ server });
+
 const onlineUsers = new Map();
 
 io.engine.on('connection', (socket) => {
@@ -146,35 +146,33 @@ io.on('connection', (socket) => {
     console.log('✅ Client connected:', socket.id);
 
     socket.on('isLoggedIn', async ({ userId }) => {
-        socket.data.userId = userId;
-        onlineUsers.set(userId, socket.id);
-        const signedInUser = await User.findById(userId);
-        if (signedInUser) {
-            signedInUser.isOnline = true
-            await signedInUser.save();
-            socket.broadcast.emit('userOnline', { userId, online: signedInUser.isOnline });
-        }
-        console.log(onlineUsers);
-    
-        // Notify others this user came online
-       
-    
-        // ✅ Send current online users to the newly logged-in user
-        const otherOnlineUsers = [...onlineUsers.keys()].filter((id) => id !== userId);
-        // Set isOnline = true in DB for others (optional if you want to persist status)
-        for (const id of otherOnlineUsers) {
-            const userDoc = await User.findById(id);
-            if (userDoc) {
-            userDoc.isOnline = true;
-            await userDoc.save();
-            }
-        }
-       
+      socket.data.userId = userId;
+      onlineUsers.set(userId, socket.id);
+      const signedInUser = await User.findById(userId);
+      if (signedInUser) {
+          signedInUser.isOnline = true
+          await signedInUser.save();
+          socket.broadcast.emit('userOnline', { userId, online: signedInUser.isOnline });
+      }
+      console.log(onlineUsers);
+  
+      // Notify others this user came online
+
+      // ✅ Send current online users to the newly logged-in user
+      const otherOnlineUsers = [...onlineUsers.keys()].filter((id) => id !== userId);
+      // Set isOnline = true in DB for others (optional if you want to persist status)
+      for (const id of otherOnlineUsers) {
+          const userDoc = await User.findById(id);
+          if (userDoc) {
+          userDoc.isOnline = true;
+          await userDoc.save();
+          }
+      }
         socket.emit('currentlyOnline', { userIds: otherOnlineUsers, online: true });
     });
     
-    socket.on('isOnline', ({ receiverId }) => {
-        const senderId = socket.data.userId;
+    socket.on('isOnline', ({ receiverId, senderId }) => {
+        //const senderId = socket.data.userId;
         if (!receiverId || !senderId) return;
     
         const receiverSocketId = onlineUsers.get(receiverId);
