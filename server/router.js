@@ -25,7 +25,7 @@ authRouter.get('/google', passport.authenticate('google', { scope: ['profile', '
 authRouter.get('/oauth2/redirect/google', passport.authenticate('google'), (req, res, next) => {
   try {
         req.session.user = req.user
-    req.session.authenticated = req.isAuthenticated()
+        req.session.authenticated = req.isAuthenticated()
     // res.json({ message: 'Login successful', user: req.user, isValid: req.isAuthenticated() });
         res.redirect('/');
     } catch (err) {
@@ -34,26 +34,12 @@ authRouter.get('/oauth2/redirect/google', passport.authenticate('google'), (req,
 })
 
 authRouter.post('/signup', signupController);
-// authRouter.post('/signin',  passport.authenticate('local'), (req, res, next) => {
-//     // next();
-//     // res.redirect('/')
-//     try {
-//       req.session.user = req.user
-//       req.session.authenticated = req.isAuthenticated()
-//       res.json({ message: 'Login successful', user: req.user, isValid: req.isAuthenticated() });
-//     //   res.redirect('/');
-//   } catch (err) {
-//       res.redirect('/login')
-//   }
-//     next()
-
-// });
 
 authRouter.post('/signin', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
-      // if (err || !user) {
-      //   return res.status(401).json({ error: info?.message || 'Unauthorized' });
-      // }
+      if (err || !user) {
+        return res.status(401).json({ error: info?.message || 'Unauthorized' });
+      }
   
       req.logIn(user, (err) => {
         if (err) return res.status(500).json({ error: 'Login error' });
