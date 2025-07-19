@@ -50,6 +50,10 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
   //   setFilteredUsers(result);
   // }, [contacts, search, filteredUsers, onlineUsers]);
 
+  const handleSort = () => {
+    setFilteredUsers(prev => ({ ...prev.sort((a, b) => { return (b.isOnline === true) - (a.isOnline === true); }) }));
+  }
+
   useEffect(() => {
     // Separate users by online status
     const online = contacts.filter((user) => onlineUsers.has(user._id));
@@ -90,7 +94,7 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
     <div className="d-flex justify-content-between align-items-center mb-3">
             <div style={{color: '#00e575', fontSize: 30 }} className="fw-bold text-purple">{'JUSTCHAT' || authenticatedUser?.username.toUpperCase().slice(0,2)}</div>
       <div className="d-flex gap-2">
-        <Sun role="button" />
+        <Sun role="button" onClick />
         <Moon role="button" />
       </div>
     </div>
@@ -122,7 +126,7 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
       }}>
         <Button style={{border: isDark? '1px solid white' : '1px solid rgba(0, 0, 0, 0.3)', borderRadius: 10, color: isDark? 'white' : ' rgba(0, 0, 0, 0.9)'}} variant={tab === 'all' ? 'primary' : 'outline-light'} onClick={() => setTab('all')}>All Chats</Button>
         <Button style={{border: isDark? '1px solid white' : '1px solid rgba(0, 0, 0, 0.3)', borderRadius: 10, color: isDark? 'white' : 'rgba(0, 0, 0, 0.9)'}} variant={tab === 'groups' ? 'primary' : 'outline-light'} onClick={() => setTab('groups')}>Groups</Button>
-        <Button style={{border: isDark? '1px solid white' : '1px solid rgba(0, 0, 0, 0.3)', borderRadius: 10, color: isDark? 'white' : 'rgba(0, 0, 0, 0.9)'}} variant={tab === 'contacts' ? 'primary' : 'outline-light'} onClick={() => setTab('contacts')}>Contacts</Button>
+          <Button style={{ border: isDark ? '1px solid white' : '1px solid rgba(0, 0, 0, 0.3)', borderRadius: 10, color: isDark ? 'white' : 'rgba(0, 0, 0, 0.9)' }} variant={tab === 'contacts' ? 'primary' : 'outline-light'} onClick={() => { setTab('contacts'); handleSort(); }}>Contacts</Button>
       </ButtonGroup>
     </div>
     <div className="overflow-scroll mb-3" style={{  maxHeight: '50vh' }}>
