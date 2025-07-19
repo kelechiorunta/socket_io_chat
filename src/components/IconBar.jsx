@@ -82,7 +82,7 @@ const IconBar = ({ pic }) => {
 
                 <>
                     <Image
-                        // onClick={()=>handleLogout()}
+                        onClick={handleProfileOpen}
                         src={pic && pic.picture}
                         roundedCircle
                         style={{ width: 36, height: 36, cursor: 'pointer' }}
