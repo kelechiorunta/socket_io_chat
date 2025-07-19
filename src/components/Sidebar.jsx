@@ -37,17 +37,35 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
   //   setFilteredUsers(mappedUsers)
   // });
 
-  useEffect(() => {
-    const sortedUsers = [...contacts].sort((a, b) => {
-      return (b.isOnline === true) - (a.isOnline === true);
-    });
+  // useEffect(() => {
+  //   const otherUsers = contacts.filter((user, index) => user._id !== Array.from(onlineUsers)._id)
+  //   const sortedUsers = [...Array.from(onlineUsers), otherUsers].sort((a, b) => {
+  //     return (b.isOnline === true) - (a.isOnline === true);
+  //   });
   
-    const result = sortedUsers.filter(user =>
+  //   const result = sortedUsers.filter(user =>
+  //     user.username?.toLowerCase().includes(search.toLowerCase())
+  //   );
+  
+  //   setFilteredUsers(result);
+  // }, [contacts, search, filteredUsers, onlineUsers]);
+
+  useEffect(() => {
+    // Separate users by online status
+    const online = contacts.filter((user) => onlineUsers.has(user._id));
+    const offline = contacts.filter((user) => !onlineUsers.has(user._id));
+  
+    // Merge online first, then offline
+    const sortedUsers = [...online, ...offline];
+  
+    // Filter by search term
+    const result = sortedUsers.filter((user) =>
       user.username?.toLowerCase().includes(search.toLowerCase())
     );
   
     setFilteredUsers(result);
-  }, [contacts, search, filteredUsers]);
+  }, [contacts, search, onlineUsers]);
+  
     
 
     const cardStyle = {
