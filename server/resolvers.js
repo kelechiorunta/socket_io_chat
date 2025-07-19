@@ -224,141 +224,80 @@ const resolvers = {
       return userObj;
     },
 
-    // getUnread: async (_, { senderId, recipientId }) => {
-    //     try {
-    //       const user = await User.findById(recipientId);
-    //       if (!user) throw new Error("Recipient not found");
-      
-    //       // Get unreadCounts for senderId
-    //       let data = user.unreadCounts?.get(senderId);
-      
-    //       // Fallback if it's undefined or invalid
-    //       if (!data || typeof data !== "object") {
-    //         data = { count: 0, lastMessage: "" };
-    //       }
-      
-    //       // Ensure it's stored even if default
-    //       user.unreadCounts.set(senderId, data);
-    //       user.markModified("unreadCounts");
-    //       await user.save();
-      
-    //       // ✅ Return clean object matching client expectations
-    //       return {
-    //         count: data.count || 0,
-    //         lastMessage: data.lastMessage || "",
-    //       };
-    //     } catch (err) {
-    //       console.error("❌ getUnread error:", err);
-    //       throw new Error("Failed to get unread count");
-    //     }
-        //   }
-        getUnread: async (_, { senderId, recipientId }) => {
-            try {
-              // Validate recipient
-              const recipient = await User.findById(recipientId);
-              if (!recipient) throw new Error("Recipient not found");
-          
-              // Look for UnreadMsg document between sender and recipient
-              const unreadEntry = await UnreadMsg.findOne({
-                sender: senderId,
-                recipient: recipientId,
-              });
-          
-              // Return UnreadResult format
-              return {
-                count: unreadEntry?.count || 0,
-                lastMessage: unreadEntry?.lastMessage || "",
-              };
-            } catch (err) {
-              console.error("❌ getUnread error:", err);
-              throw new Error("Failed to get unread count");
-            }
-          },          
+    getUnread: async (_, { senderId, recipientId }) => {
+      try {
+        // Validate recipient
+        const recipient = await User.findById(recipientId);
+        if (!recipient) throw new Error("Recipient not found");
+    
+        // Look for UnreadMsg document between sender and recipient
+        const unreadEntry = await UnreadMsg.findOne({
+          sender: senderId,
+          recipient: recipientId,
+        });
+    
+        // Return UnreadResult format
+        return {
+          count: unreadEntry?.count || 0,
+          lastMessage: unreadEntry?.lastMessage || "",
+        };
+      } catch (err) {
+        console.error("❌ getUnread error:", err);
+        throw new Error("Failed to get unread count");
+      }
+    },          
           
       
   },
 
   Mutation: {
-    // createUnread: async (_, { senderId, recipientId, newMessage }) => {
-    //   try {
-    //     const user = await User.findById(recipientId);
-    //     if (!user) throw new Error("Recipient not found");
-
-    //     let data = user.unreadCounts?.get(senderId);
-    //     if (!data || typeof data !== "object") {
-    //       data = { count: 0, lastMessage: "" };
-    //     }
-
-    //     data.count += 1;
-    //     data.lastMessage = newMessage;
-
-    //     user.unreadCounts.set(senderId, data);
-    //     user.markModified("unreadCounts");
-    //     await user.save();
-
-    //     return user.unreadCounts.get(senderId);
-    //   } catch (err) {
-    //     console.error("❌ createUnread error:", err);
-    //     throw new Error("Failed to update unread count");
-    //   }
-    // },
-
-    // clearUnread: async (_, { senderId, recipientId }) => {
-    //   try {
-    //     const user = await User.findById(recipientId);
-    //     if (!user) throw new Error("Recipient not found");
-
-    //     const existingData = user.unreadCounts?.get(senderId) || {
-    //       count: 0,
-    //       lastMessage: "",
-    //     };
-
-    //     user.unreadCounts.set(senderId, {
-    //       count: 0,
-    //       lastMessage: existingData.lastMessage,
-    //     });
-
-    //     user.markModified("unreadCounts");
-    //     await user.save();
-
-    //     return true;
-    //   } catch (err) {
-    //     console.error("❌ clearUnread error:", err);
-    //     return false;
-    //   }
-      // },
-        createUnread: async (_, { input }) => {
-        const { senderId, recipientId, newMessage } = input;
-
-        try {
-            // Find existing unread record for this recipient/sender pair
-            let unread = await UnreadMsg.findOne({ sender: senderId, recipient: recipientId });
-
-            if (!unread) {
-            // Create a new one if it doesn't exist
-            unread = new UnreadMsg({
-                sender: senderId,
-                recipient: recipientId,
-                count: 1,
-                lastMessage: newMessage,
-            });
-            } else {
-            // Update existing one
-            unread.count += 1;
-            unread.lastMessage = newMessage;
-            }
-
-            await unread.save();
-
-            return {
-            count: unread.count,
-            lastMessage: unread.lastMessage,
-            };
-        } catch (err) {
-            console.error("❌ createUnread error:", err);
-            throw new Error("Failed to update unread count");
-        }
-        },
+    
+    updateProfile: async (_, { input }, { user, db }) => {
+      if (!user) {
+        return { success: false, message: "Not authenticated", user: null };
+      }
+  
+      const updatedUser = await db.collection("users").findOneAndUpdate(
+        { _id: user._id },
+        { $set: { ...input } },
+        { returnDocument: "after" }
+      );
+  
+      return {
+        success: true,
+        message: "Profile updated successfully",
+        user: updatedUser.value
+      };
+    },
+    
+    createUnread: async (_, { input }) => {
+      const { senderId, recipientId, newMessage } = input;
+      try {
+          // Find existing unread record for this recipient/sender pair
+          let unread = await UnreadMsg.findOne({ sender: senderId, recipient: recipientId });
+          if (!unread) {
+          // Create a new one if it doesn't exist
+          unread = new UnreadMsg({
+              sender: senderId,
+              recipient: recipientId,
+              count: 1,
+              lastMessage: newMessage,
+          });
+          } else {
+          // Update existing one
+          unread.count += 1;
+          unread.lastMessage = newMessage;
+          }
+          await unread.save();
+          return {
+          count: unread.count,
+          lastMessage: unread.lastMessage,
+          };
+      } catch (err) {
+          console.error("❌ createUnread error:", err);
+          throw new Error("Failed to update unread count");
+      }
+      },
 
         clearUnread: async (_, { senderId, recipientId }) => {
             try {
