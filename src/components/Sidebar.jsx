@@ -57,14 +57,18 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
   
     // Merge online first, then offline
     const sortedUsers = [...online, ...offline];
+
+    const sortAllUsers = sortedUsers.sort((a, b) => {
+          return (b.isOnline === true) - (a.isOnline === true);
+        })
   
     // Filter by search term
-    const result = sortedUsers.filter((user) =>
+    const result = sortAllUsers.filter((user) =>
       user.username?.toLowerCase().includes(search.toLowerCase())
     );
   
     setFilteredUsers(result);
-  }, [contacts, search, onlineUsers]);
+  }, [contacts, search, onlineUsers,]);
   
     
 
