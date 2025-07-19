@@ -51,8 +51,11 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
   // }, [contacts, search, filteredUsers, onlineUsers]);
 
   const handleSort = () => {
-    setFilteredUsers(prev => ({ ...prev.sort((a, b) => { return (b.isOnline === true) - (a.isOnline === true); }) }));
-  }
+    setFilteredUsers(prev => 
+      [...prev].sort((a, b) => (b.isOnline === true) - (a.isOnline === true))
+    );
+  };
+  
 
   useEffect(() => {
     // Separate users by online status
