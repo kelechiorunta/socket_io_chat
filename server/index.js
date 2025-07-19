@@ -153,6 +153,7 @@ io.on('connection', (socket) => {
           signedInUser.isOnline = true
           await signedInUser.save();
           socket.broadcast.emit('userOnline', { userId, online: signedInUser.isOnline });
+          socket.broadcast.emit('isConnected', { currentUser: userId });
       }
       console.log(onlineUsers);
   
