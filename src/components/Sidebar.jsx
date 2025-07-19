@@ -55,15 +55,17 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
     const online = contacts.filter((user) => onlineUsers.has(user._id));
     const offline = contacts.filter((user) => !onlineUsers.has(user._id));
   
-    // Merge online first, then offline
-    const sortedUsers = [...online, ...offline];
+    // Sort online users before initialization
+    const sortedOnlineUsers = online.sort((a, b) => {
+      return (b.isOnline === true) - (a.isOnline === true);
+    })
 
-    const sortAllUsers = sortedUsers.sort((a, b) => {
-          return (b.isOnline === true) - (a.isOnline === true);
-        })
-  
+    // Merge online first, then offline
+    const sortedUsers = [...sortedOnlineUsers, ...offline];
+
+    
     // Filter by search term
-    const result = sortAllUsers.filter((user) =>
+    const result = sortedUsers.filter((user) =>
       user.username?.toLowerCase().includes(search.toLowerCase())
     );
   
