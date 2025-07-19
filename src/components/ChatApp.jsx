@@ -182,7 +182,7 @@ useEffect(() => {
     socket.emit('joinChat', { userId: user._id });
   
     if (selectedChat?._id) {
-      socket.emit('isOnline', { receiverId: selectedChat._id });
+      socket.emit('isOnline', { receiverId: selectedChat._id, senderId: user._id });
     }
   
     socket.on('newMessage', (msg) => {
