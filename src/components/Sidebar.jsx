@@ -52,7 +52,7 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
 
   useEffect(() => {
     // Separate users by online status
-    const online = contacts.filter((user) => onlineUsers.has(user._id) || user.isOnline);
+    const online = contacts.filter((user) => onlineUsers.has(user._id) && user.isOnline);
     const offline = contacts.filter((user) => !onlineUsers.has(user._id));
   
     // Sort online users before initialization
