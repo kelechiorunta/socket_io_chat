@@ -38,6 +38,7 @@ input UpdateProfileInput {
   gender: String!
   phone: String!
   address: String!
+  picture: String!
 }
 
 type UpdateProfileResponse {
