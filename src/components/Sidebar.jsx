@@ -74,8 +74,10 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
     const result = onlineUsers.filter((user) =>
       user.username?.toLowerCase().includes(search.toLowerCase())
     );
+
+    const allUsers = [...result.sort((a,b) => {return (b.isOnline === true) - (a.isOnline === true);}), ...offline]
   
-    setFilteredUsers([result.sort((a,b) => {return (b.isOnline === true) - (a.isOnline === true);}), ...offline]);
+    setFilteredUsers(allUsers);
   }, [contacts, search, onlineUsers,]);
   
   
