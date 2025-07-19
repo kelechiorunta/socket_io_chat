@@ -148,7 +148,7 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
         ) : error ? (
           <div className="text-danger">Error fetching contacts</div>
         ) : (
-          [filteredUsers, ...offline].map((user, index) => {
+          [...filteredUsers, ...offline].map((user, index) => {
               
             // const unreadEntry = pic && pic.unread.find(
             //     (entry) => ((entry.sender?._id === user?._id) || (entry.recipient?._id  === authenticatedUser?._id))
