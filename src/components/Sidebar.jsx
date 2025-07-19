@@ -38,7 +38,7 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
   // });
 
   useEffect(() => {
-    const sortedUsers = [...filteredUsers].sort((a, b) => {
+    const sortedUsers = [...contacts].sort((a, b) => {
       return (b.isOnline === true) - (a.isOnline === true);
     });
   
