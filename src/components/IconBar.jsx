@@ -3,10 +3,11 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Home, Search, Bookmark, Share2, Settings, Moon, Sun, LogOutIcon} from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Profile from './Profile';
 
 const IconBar = ({ pic }) => {
+    const [profile, setProfile] = useState(pic);
     const { theme, toggleTheme } = useTheme();
 
     const isDark = theme === 'dark';
@@ -23,6 +24,12 @@ const IconBar = ({ pic }) => {
 
     const handleProfileOpen = () => setShowProfile(true);
     const handleProfileClose = () => setShowProfile(false);
+
+    useEffect(() => {
+        if (pic) {
+            setProfile(pic)
+        }
+    },[pic])
 
     return (
         <div
@@ -83,7 +90,7 @@ const IconBar = ({ pic }) => {
                 <>
                     <Image
                         onClick={handleProfileOpen}
-                        src={pic && pic.picture}
+                        src={profile && profile.picture}
                         roundedCircle
                         style={{ width: 36, height: 36, cursor: 'pointer' }}
                     />
