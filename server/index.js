@@ -351,10 +351,10 @@ io.on('connection', (socket) => {
             const signedOutUser = await User.findById(userId)
             if (signedOutUser) {
                 signedOutUser.isOnline = false
-                await signedOutUser.save();
+              await signedOutUser.save();
+              onlineUsers.delete(userId);
+              socket.broadcast.emit('userOffline', { userId });
             }
-        onlineUsers.delete(userId);
-        socket.broadcast.emit('userOffline', { userId });
     }
     });
 });
