@@ -43,7 +43,7 @@ input UpdateProfileInput {
 
 type UpdateProfileResponse {
   success: Boolean!
-  message: String!
+  message: String
   user: User
 }
 

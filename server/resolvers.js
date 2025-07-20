@@ -269,7 +269,11 @@ const resolvers = {
         runValidators: true
       });
     
-      return { success: true, user: updated };
+      return {
+        success: true,
+        message: "Profile updated successfully",
+        user: updated
+      };
     },    
     
     createUnread: async (_, { input }) => {
