@@ -258,22 +258,23 @@ const resolvers = {
       if (input.email) {
         const existingEmailUser = await User.findOne({ email: input.email });
     
-        // If the email exists and doesn't belong to the current user, block it
-        if (existingEmailUser && existingEmailUser._id.toString() !== user._id.toString()) {
-          throw new Error("Email is already taken by another user");
+        // // If the email exists and doesn't belong to the current user, block it
+        // if (existingEmailUser && existingEmailUser._id.toString() !== user._id.toString()) {
+        //   throw new Error("Email is already taken by another user");
+        // }
+      
+    
+        const updated = await User.findByIdAndUpdate(existingEmailUser._id, input, {
+          new: true,
+          runValidators: true
+        });
+    
+        return {
+          success: true,
+          message: "Profile updated successfully",
+          user: updated
         }
       }
-    
-      const updated = await User.findByIdAndUpdate(user._id, input, {
-        new: true,
-        runValidators: true
-      });
-    
-      return {
-        success: true,
-        message: "Profile updated successfully",
-        user: updated
-      };
     },    
     
     createUnread: async (_, { input }) => {
