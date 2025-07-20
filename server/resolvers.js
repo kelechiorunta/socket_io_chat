@@ -263,24 +263,24 @@ const resolvers = {
           // if (existingEmailUser && existingEmailUser._id.toString() !== user._id.toString()) {
           //   throw new Error("Email is already taken by another user");
           // }
+          if (existingEmailUser) {
+            const updated = await User.findByIdAndUpdate(existingEmailUser._id, input, {
+              new: true,
+              runValidators: true
+            });
         
-      
-          const updated = await User.findByIdAndUpdate(existingEmailUser._id, input, {
-            new: true,
-            runValidators: true
-          });
-      
-          return {
-            success: true,
-            message: "Profile updated successfully",
-            user: updated
-          }
+            return {
+              success: true,
+              message: "Profile updated successfully",
+              user: updated
+            }
+        } 
         }  
       }
       catch (err) {
         return {
           success: false,
-          message: err,
+          message: err.message || 'Failed to update profile',
           user: null
         }
       }
