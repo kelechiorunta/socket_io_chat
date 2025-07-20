@@ -356,7 +356,7 @@ useEffect(() => {
         {/* IconBar Column */}
         <Col xs={1} sm={1} md={1} lg={1} style={{position: 'sticky', maxWidth: 50}} className="p-0 border-end">
           {/* <IconBar pic={data && data.auth}/> */}
-          <IconBar profile={authUser || signedUser} onUpdateProfile={setAuthUser} />
+          <IconBar profile={signedUser} onUpdateProfile={setSignedUser} />
           
         </Col>
 
