@@ -31,6 +31,10 @@ export const AUTH = gql`
       email
       username
       picture
+      address
+      phone
+      birthday
+      gender
       lastMessage
       lastMessageCount
       isOnline
