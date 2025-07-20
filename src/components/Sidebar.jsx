@@ -146,10 +146,6 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
         ) : (
           filteredUsers.map((user, index) => {
               
-            // const unreadEntry = pic && pic.unread.find(
-            //     (entry) => ((entry.sender?._id === user?._id) || (entry.recipient?._id  === authenticatedUser?._id))
-            // );
-          
             const unreadData = unreadMap[user?._id];
           
             const isTyping = typingUsers.has(user?._id);
@@ -163,12 +159,12 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
                   ${selectedClient?._id === user?._id ? 'bg-[ #00e575]' : 'bg-[rgba(0,0,0,0.8)]'}
                 `}
                 
-                          style={{
-                              cursor: 'pointer', 
-                              backgroundColor: (selectedClient?._id === user?._id) && 'rgba(0, 0, 0, 0.5)', //: !isDark && 'bg-secondary', //' rgba(252,198,104,0.9)' ,//' #00e575',
-                              color: (selectedClient?._id === user?._id)? 'white' : isDark ? 'white' : 'rgba(0, 0, 0, 0.7)',
-                              border: '1px solid rgba(0, 0, 0, 0.7)',
-                           }}
+                  style={{
+                      cursor: 'pointer', 
+                      backgroundColor: (selectedClient?._id === user?._id) && !isDark? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 0.9)', //: !isDark && 'bg-secondary', //' rgba(252,198,104,0.9)' ,//' #00e575',
+                      color: (selectedClient?._id === user?._id)? 'white' : isDark ? 'white' : 'rgba(0, 0, 0, 0.7)',
+                      border: '1px solid rgba(0, 0, 0, 0.7)',
+                   }}
                       >
                     {/* Avatar & Status Dot */}
                     <div className="d-flex align-items-center">
