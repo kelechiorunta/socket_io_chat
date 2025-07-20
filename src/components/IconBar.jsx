@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Profile from './Profile';
 
-const IconBar = ({ pic }) => {
-    const [profile, setProfile] = useState(pic);
+const IconBar = ({ profile, onUpdateProfile }) => {
+    // const [profile, setProfile] = useState(pic);
     const { theme, toggleTheme } = useTheme();
 
     const isDark = theme === 'dark';
@@ -25,10 +25,10 @@ const IconBar = ({ pic }) => {
     const handleProfileOpen = () => setShowProfile(true);
     const handleProfileClose = () => setShowProfile(false);
 
-    // 👇 Update state after profile is saved
     const handleProfileUpdate = (newData) => {
-        setProfile((prev) => ({ ...prev, ...newData }));
+        onUpdateProfile(prev => ({ ...prev, ...newData }));
     };
+    
 
     // useEffect(() => {
     //     if (pic) {
@@ -49,7 +49,7 @@ const IconBar = ({ pic }) => {
         >
             <div className="d-flex flex-column align-items-center gap-3">
                 <Image
-                    src={pic && pic.picture}
+                    src={profile?.picture}
                     alt="Logo"
                     style={{ width: 30, height: 30 }}
                     rounded
@@ -101,9 +101,10 @@ const IconBar = ({ pic }) => {
                     />
 
                     <Profile
-                    show={showProfile}
-                    handleClose={handleProfileClose}
-                    onProfileUpdate={handleProfileUpdate}
+                        show={showProfile}
+                        handleClose={handleProfileClose}
+                        onProfileUpdate={handleProfileUpdate}
+                        user={profile}
                     />
 
                 </>
