@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Modal, Spinner } from 'react-bootstrap';
 
 export default function ProtectedRoute() {
   const [isAuthenticated, setIsAuthenticated] = useState(null); // null = loading
@@ -34,8 +35,29 @@ export default function ProtectedRoute() {
   }, []);
 
   // 🌀 While checking auth
+  // if (isAuthenticated === null) {
+  //   return <div>Loading...</div>;
+  // }
   if (isAuthenticated === null) {
-    return <div>Loading...</div>;
+    return (
+      <Modal show centered backdrop="static" keyboard={false}>
+        <Modal.Body
+          className="d-flex flex-column align-items-center justify-content-center"
+          style={{
+            padding: '2rem',
+            fontFamily: 'Segoe UI, Roboto, sans-serif',
+            fontSize: '1.1rem',
+            textAlign: 'center',
+            minHeight: '200px',
+          }}
+        >
+          <Spinner animation="border" role="status" variant="primary" style={{ width: '3rem', height: '3rem' }} />
+          <div className="mt-4" style={{ fontWeight: '500', color: '#333' }}>
+            Authenticating, please wait...
+          </div>
+        </Modal.Body>
+      </Modal>
+    );
   }
 
   // ❌ Not authenticated
