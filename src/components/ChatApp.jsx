@@ -64,7 +64,8 @@ const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
     const { data, loading, error } = useQuery(AUTH, {
       fetchPolicy: 'network-only'
   });
-    const user = data?.auth 
+  const user = data?.auth 
+  const [signedUser, setSignedUser] = useState(user);
     const currentContacts = contacts?.users || null
     const [typingUsers, setTypingUsers] = useState(new Set());
     
@@ -354,7 +355,7 @@ useEffect(() => {
         {/* IconBar Column */}
         <Col xs={1} sm={1} md={1} lg={1} style={{position: 'sticky', maxWidth: 50}} className="p-0 border-end">
           {/* <IconBar pic={data && data.auth}/> */}
-          <IconBar profile={authUser} onUpdateProfile={setAuthUser} />
+          <IconBar profile={signedUser} onUpdateProfile={setSignedUser} />
           
         </Col>
 
