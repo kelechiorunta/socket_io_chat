@@ -278,7 +278,11 @@ const resolvers = {
         }  
       }
       catch (err) {
-        throw new Error(err)
+        return {
+          success: false,
+          message: err,
+          user: null
+        }
       }
       
     },    
