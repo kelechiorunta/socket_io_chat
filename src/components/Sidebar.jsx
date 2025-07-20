@@ -161,8 +161,8 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
                 
                   style={{
                       cursor: 'pointer', 
-                    backgroundColor: (selectedClient?._id === user?._id) ? 'rgba(0, 0, 0, 0.5)' : 
-                    isDark? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 0.5)', //: !isDark && 'bg-secondary', //' rgba(252,198,104,0.9)' ,//' #00e575',
+                    backgroundColor: !isDark ? (selectedClient?._id === user?._id) && 'rgba(0, 0, 0, 0.5)' : 
+                    (selectedClient?._id === user?._id) && 'rgba(255, 255, 255, 0.8)', //: !isDark && 'bg-secondary', //' rgba(252,198,104,0.9)' ,//' #00e575',
                       color: (selectedClient?._id === user?._id)? 'white' : isDark ? 'white' : 'rgba(0, 0, 0, 0.7)',
                       border: '1px solid rgba(0, 0, 0, 0.7)',
                    }}
