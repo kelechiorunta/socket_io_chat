@@ -30,11 +30,11 @@ const IconBar = ({ pic }) => {
         setProfile((prev) => ({ ...prev, ...newData }));
     };
 
-    useEffect(() => {
-        if (pic) {
-            setProfile(pic)
-        }
-    },[pic])
+    // useEffect(() => {
+    //     if (pic) {
+    //         setProfile(pic)
+    //     }
+    // },[pic])
 
     return (
         <div

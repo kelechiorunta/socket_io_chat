@@ -16,11 +16,21 @@ const validationSchema = Yup.object({
 });
 
 const Profile = ({ show, handleClose, onProfileUpdate }) => {
-  const { data, loading } = useQuery(AUTH);
-  const [updateProfile] = useMutation(UPDATE_PROFILE, {
-    refetchQueries: [{ query: AUTH }],
-    awaitRefetchQueries: true
-  });
+    const { data, loading } = useQuery(AUTH);
+    const [updateProfile] = useMutation(UPDATE_PROFILE, {
+        update(cache, { data: { updateProfile } }) {
+          if (updateProfile?.user) {
+            cache.writeQuery({
+              query: AUTH,
+              data: { auth: updateProfile.user }
+            });
+          }
+        }
+      });
+//   const [updateProfile] = useMutation(UPDATE_PROFILE, {
+//     refetchQueries: [{ query: AUTH }],
+//     awaitRefetchQueries: true
+//   });
   const fileInputRef = useRef();
 
   const formik = useFormik({
