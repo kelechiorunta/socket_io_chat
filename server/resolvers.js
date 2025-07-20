@@ -255,13 +255,13 @@ const resolvers = {
     updateProfile: async (_, { input }, { user }) => {
       if (!user) throw new Error("Not authenticated");
     
-      const existingEmailUser = await User.findOne({
-        email: input.email,
-        _id: { $ne: user._id } // ignore current user
-      });
+      if (input.email) {
+        const existingEmailUser = await User.findOne({ email: input.email });
     
-      if (existingEmailUser) {
-        throw new Error("Email is already taken by another user");
+        // If the email exists and doesn't belong to the current user, block it
+        if (existingEmailUser && existingEmailUser._id.toString() !== user._id.toString()) {
+          throw new Error("Email is already taken by another user");
+        }
       }
     
       const updated = await User.findByIdAndUpdate(user._id, input, {
@@ -270,7 +270,7 @@ const resolvers = {
       });
     
       return { success: true, user: updated };
-    },
+    },    
     
     createUnread: async (_, { input }) => {
       const { senderId, recipientId, newMessage } = input;
