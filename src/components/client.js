@@ -20,7 +20,7 @@ const client = new ApolloClient({
     cache: new InMemoryCache({
         typePolicies: {
           User: {
-            keyFields: ['email'],
+            keyFields: ['_id'],
           },
         },
     }),
