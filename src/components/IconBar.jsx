@@ -3,7 +3,7 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Home, Search, Bookmark, Share2, Settings, Moon, Sun, LogOutIcon} from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Profile from './Profile';
 
 const IconBar = ({ pic }) => {
