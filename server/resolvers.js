@@ -255,26 +255,32 @@ const resolvers = {
     updateProfile: async (_, { input }, { user }) => {
       if (!user) throw new Error("Not authenticated");
     
-      if (input.email) {
-        const existingEmailUser = await User.findOne({ email: input.email });
-    
-        // // If the email exists and doesn't belong to the current user, block it
-        // if (existingEmailUser && existingEmailUser._id.toString() !== user._id.toString()) {
-        //   throw new Error("Email is already taken by another user");
-        // }
+      try {
+        if (input.email) {
+          const existingEmailUser = await User.findOne({ email: input.email });
       
-    
-        const updated = await User.findByIdAndUpdate(existingEmailUser._id, input, {
-          new: true,
-          runValidators: true
-        });
-    
-        return {
-          success: true,
-          message: "Profile updated successfully",
-          user: updated
-        }
+          // // If the email exists and doesn't belong to the current user, block it
+          // if (existingEmailUser && existingEmailUser._id.toString() !== user._id.toString()) {
+          //   throw new Error("Email is already taken by another user");
+          // }
+        
+      
+          const updated = await User.findByIdAndUpdate(existingEmailUser._id, input, {
+            new: true,
+            runValidators: true
+          });
+      
+          return {
+            success: true,
+            message: "Profile updated successfully",
+            user: updated
+          }
+        }  
       }
+      catch (err) {
+        throw new Error(err)
+      }
+      
     },    
     
     createUnread: async (_, { input }) => {
