@@ -39,6 +39,7 @@ input UpdateProfileInput {
   phone: String
   address: String
   picture: String
+  birthday: String
 }
 
 type UpdateProfileResponse {

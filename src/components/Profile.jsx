@@ -203,7 +203,8 @@ const validationSchema = Yup.object({
   email: Yup.string().email("Invalid email").required("Email is required"),
   gender: Yup.string().required("Gender is required"),
   phone: Yup.string().required("Phone is required"),
-  address: Yup.string().required("Address is required")
+  address: Yup.string().required("Address is required"),
+  birthday: Yup.string().required("Birthday is required"), // optional, or use .required(...) if needed
 });
 
 const Profile = ({ show, handleClose, onProfileUpdate, user }) => {
@@ -228,7 +229,8 @@ const Profile = ({ show, handleClose, onProfileUpdate, user }) => {
       gender: user?.gender || "",
       phone: user?.phone || "",
       address: user?.address || "",
-      picture: user?.picture || ""
+      picture: user?.picture || "",
+      birthday: user?.birthday || ""
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -322,6 +324,20 @@ const Profile = ({ show, handleClose, onProfileUpdate, user }) => {
             </Form.Select>
             <Form.Control.Feedback type="invalid">
               {formik.errors.gender}
+            </Form.Control.Feedback>
+           </Form.Group>
+                  
+           <Form.Group className="mb-3">
+            <Form.Label>🎂 Birthday</Form.Label>
+            <Form.Control
+                type="date"
+                name="birthday"
+                value={formik.values.birthday}
+                onChange={formik.handleChange}
+                isInvalid={!!formik.errors.birthday}
+            />
+            <Form.Control.Feedback type="invalid">
+                {formik.errors.birthday}
             </Form.Control.Feedback>
           </Form.Group>
 
