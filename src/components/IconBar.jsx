@@ -18,6 +18,7 @@ const IconBar = ({ profile, onUpdateProfile }) => {
         await fetch('/api/logout', { method: 'GET', credentials: 'include' });
         // Clear state, tokens, etc.
         navigate('/login'); // or home
+        localStorage.removeItem('currentUser')
     };
 
     const [showProfile, setShowProfile] = useState(false);
