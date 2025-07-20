@@ -9,7 +9,7 @@ export default function ProtectedRoute() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch('https://socketiochat-production.up.railway.app/isAuthenticated', {
+        const res = await fetch('/api/isAuthenticated', {
           credentials: 'include', // 🔥 Send session cookie
           method: 'GET',
         });
