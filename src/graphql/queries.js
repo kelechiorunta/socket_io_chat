@@ -67,6 +67,7 @@ export const UPDATE_PROFILE = gql`
       success
       message
       user {
+        _id
         username
         email
         gender
