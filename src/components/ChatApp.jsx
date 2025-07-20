@@ -65,7 +65,7 @@ const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
       fetchPolicy: 'network-only'
   });
   const user = data?.auth 
-  const [signedUser, setSignedUser] = useState(user);
+  const [signedUser, setSignedUser] = useState(data?.auth);
     const currentContacts = contacts?.users || null
     const [typingUsers, setTypingUsers] = useState(new Set());
     
@@ -118,6 +118,7 @@ const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
             console.log(`storedUser is ${JSON.parse(storedUser)}`)
             setAuthUser(JSON.parse(storedUser));
         }
+      setSignedUser(user)
     }, [user]);
 
   useEffect(() => {
