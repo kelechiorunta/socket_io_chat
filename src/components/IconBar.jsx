@@ -25,6 +25,11 @@ const IconBar = ({ pic }) => {
     const handleProfileOpen = () => setShowProfile(true);
     const handleProfileClose = () => setShowProfile(false);
 
+    // 👇 Update state after profile is saved
+    const handleProfileUpdate = (newData) => {
+        setProfile((prev) => ({ ...prev, ...newData }));
+    };
+
     useEffect(() => {
         if (pic) {
             setProfile(pic)
@@ -95,7 +100,11 @@ const IconBar = ({ pic }) => {
                         style={{ width: 36, height: 36, cursor: 'pointer' }}
                     />
 
-                    <Profile show={showProfile} handleClose={handleProfileClose} />
+                    <Profile
+                    show={showProfile}
+                    handleClose={handleProfileClose}
+                    onProfileUpdate={handleProfileUpdate}
+                    />
 
                 </>
                 
