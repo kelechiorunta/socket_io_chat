@@ -15,7 +15,7 @@ const validationSchema = Yup.object({
   address: Yup.string().required("Address is required")
 });
 
-const Profile = ({ show, handleClose }) => {
+const Profile = ({ show, handleClose, onProfileUpdate }) => {
   const { data, loading } = useQuery(AUTH);
   const [updateProfile] = useMutation(UPDATE_PROFILE, {
     refetchQueries: [{ query: AUTH }],
@@ -35,13 +35,16 @@ const Profile = ({ show, handleClose }) => {
     },
     validationSchema,
     onSubmit: async (values) => {
-      try {
-        await updateProfile({ variables: { input: values } });
-        handleClose();
-      } catch (err) {
-        console.error(err);
+        try {
+          const { data: response } = await updateProfile({ variables: { input: values } });
+          if (response?.updateProfile?.user && onProfileUpdate) {
+            onProfileUpdate(response.updateProfile.user); // 👈 Update parent
+          }
+          handleClose();
+        } catch (err) {
+          console.error(err);
+        }
       }
-    }
   });
 
   const handleImageChange = (e) => {
