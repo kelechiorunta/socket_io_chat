@@ -353,7 +353,9 @@ useEffect(() => {
       <Row className="h-100 flex-xs-row flex-md-row flex-sm-row flex-lg-row">
         {/* IconBar Column */}
         <Col xs={1} sm={1} md={1} lg={1} style={{position: 'sticky', maxWidth: 50}} className="p-0 border-end">
-          <IconBar pic={data && data.auth}/>
+          {/* <IconBar pic={data && data.auth}/> */}
+          <IconBar profile={authUser} onUpdateProfile={setAuthUser} />
+          
         </Col>
 
         {/* Sidebar Column */}
