@@ -252,22 +252,24 @@ const resolvers = {
 
   Mutation: {
 
-    updateProfile: async (_, { input }, { user, db }) => {
-      if (!user) {
-        return { success: false, message: "Not authenticated", user: null };
+    updateProfile: async (_, { input }, { user }) => {
+      if (!user) throw new Error("Not authenticated");
+    
+      const existingEmailUser = await User.findOne({
+        email: input.email,
+        _id: { $ne: user._id } // ignore current user
+      });
+    
+      if (existingEmailUser) {
+        throw new Error("Email is already taken by another user");
       }
-  
-      const updatedUser = await User.findOneAndUpdate(
-        { _id: user._id },
-        { $set: { ...input } },
-        { returnDocument: "after" }
-      );
-  
-      return {
-        success: true,
-        message: "Profile updated successfully",
-        user: updatedUser.value
-      };
+    
+      const updated = await User.findByIdAndUpdate(user._id, input, {
+        new: true,
+        runValidators: true
+      });
+    
+      return { success: true, user: updated };
     },
     
     createUnread: async (_, { input }) => {
