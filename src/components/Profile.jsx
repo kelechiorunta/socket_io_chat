@@ -260,7 +260,7 @@ const Profile = ({ show, handleClose, onProfileUpdate, user }) => {
   if (!user) return null;
 
   return (
-    <Modal show={show} onHide={handleClose} centered>
+    <Modal className="modal" show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>Update Profile</Modal.Title>
       </Modal.Header>
