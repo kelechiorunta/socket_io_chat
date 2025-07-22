@@ -19,14 +19,11 @@ const ChatApp = () => {
   const [input, setInput] = useState('');
   const [socket, setSocket] = useState(null);
   const [selectedChat, setSelectedChat] = useState(null); 
-  // const [typingUserId, setTypingUserId] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState(new Set());
   const [read, setRead] = useState(null);
-  // const [isActive, setActiveRecipient] = useState(null);
   const { data: contacts, loading: contacts_loading, error: contacts_error } = useQuery(GET_CONTACTS, {
       fetchPolicy: 'cache-and-network',
       onCompleted: (data) => {
-        // You can do something like sync avatars, badges, etc.
         console.log('Contacts updated!', data);
       },
   });
