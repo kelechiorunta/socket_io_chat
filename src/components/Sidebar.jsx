@@ -115,18 +115,20 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
       />
     </InputGroup>
     {/* Message Section */}
-          <div style={{ color: isDark ? 'white' : 'rgba(0, 0, 0, 0.9)' }}
-              className="d-flex justify-content-between align-items-center mb-2">
-      <h5 className="mb-0">Message</h5>
-      <ButtonGroup style={{
-                  display: 'flex',
-                  gap: 8,
-                  color: isDark? 'white' : 'rgba(0, 0, 0, 0.9)'
-      }}>
-        <Button style={{border: isDark? '1px solid white' : '1px solid rgba(0, 0, 0, 0.3)', borderRadius: 10, color: isDark? 'white' : ' rgba(0, 0, 0, 0.9)'}} variant={tab === 'all' ? 'primary' : 'outline-light'} onClick={() => setTab('all')}>All Chats</Button>
-        <Button style={{border: isDark? '1px solid white' : '1px solid rgba(0, 0, 0, 0.3)', borderRadius: 10, color: isDark? 'white' : 'rgba(0, 0, 0, 0.9)'}} variant={tab === 'groups' ? 'primary' : 'outline-light'} onClick={() => setTab('groups')}>Groups</Button>
+    <div style={{ color: isDark ? 'white' : 'rgba(0, 0, 0, 0.9)' }}
+           className="d-flex justify-content-between align-items-center mb-2">
+        <h5 className="mb-0 d-none d-xs-block">Message</h5>
+        <ButtonGroup
+          className="d-none d-xs-flex"
+          style={{
+          gap: 8,
+          color: isDark ? 'white' : 'rgba(0, 0, 0, 0.9)'
+                   
+        }}>
+          <Button style={{border: isDark? '1px solid white' : '1px solid rgba(0, 0, 0, 0.3)', borderRadius: 10, color: isDark? 'white' : ' rgba(0, 0, 0, 0.9)'}} variant={tab === 'all' ? 'primary' : 'outline-light'} onClick={() => setTab('all')}>All Chats</Button>
+          <Button style={{border: isDark? '1px solid white' : '1px solid rgba(0, 0, 0, 0.3)', borderRadius: 10, color: isDark? 'white' : 'rgba(0, 0, 0, 0.9)'}} variant={tab === 'groups' ? 'primary' : 'outline-light'} onClick={() => setTab('groups')}>Groups</Button>
           <Button style={{ border: isDark ? '1px solid white' : '1px solid rgba(0, 0, 0, 0.3)', borderRadius: 10, color: isDark ? 'white' : 'rgba(0, 0, 0, 0.9)' }} variant={tab === 'contacts' ? 'primary' : 'outline-light'} onClick={() => { setTab('contacts'); handleSort(); }}>Contacts</Button>
-      </ButtonGroup>
+        </ButtonGroup>
     </div>
     <div className="overflow-scroll mb-3" style={{  maxHeight: '50vh' }}>
         {loading ? (
