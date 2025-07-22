@@ -7,4 +7,16 @@ $grid-breakpoints: (
   xxl: 1400px
 );
 
+@media (min-width: 300px) {
+    .d-xs-flex {
+      display: flex !important;
+    }
+  }
+  
+  @media (max-width: 299.98px) {
+    .d-xs-flex {
+      display: none !important;
+    }
+  }
+
 @import '~bootstrap/scss/bootstrap';
