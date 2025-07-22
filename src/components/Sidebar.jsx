@@ -119,7 +119,7 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
         className="d-flex justify-content-between align-items-center mb-2">
         <h5 className="mb-0 d-none d-sm-block">Message</h5>
         <ButtonGroup
-          className="d-none d-xxs-flex"
+          className="d-none d-xs-flex"
           style={{
           gap: 8,
           color: isDark ? 'white' : 'rgba(0, 0, 0, 0.9)'
