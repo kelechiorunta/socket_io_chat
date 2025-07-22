@@ -65,15 +65,15 @@ const Sidebar = ({ onSelectChat, pic, loading, error, selectedClient, unreadMap,
     // Merge online first, then offline
     const allOnlineUsers = [...online];
 
+    // Sort users based on their online activity
+    const allUsers = [...allOnlineUsers.sort((a,b) => {return (b.isOnline === true) - (a.isOnline === true);}), ...offline]
+  
     // Filter by search term
-    const result = allOnlineUsers.filter((user) =>
+    const result = allUsers.filter((user) =>
       user.username?.toLowerCase().includes(search.toLowerCase())
     );
 
-    // Sort users based on their online activity
-    const allUsers = [...result.sort((a,b) => {return (b.isOnline === true) - (a.isOnline === true);}), ...offline]
-  
-    setFilteredUsers(allUsers);
+    setFilteredUsers(result);
   }, [contacts, search, onlineUsers,]);
 
   const cardStyle = {
