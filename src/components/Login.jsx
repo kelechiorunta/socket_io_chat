@@ -7,7 +7,7 @@ import {
   Alert,
   NavLink,
   Row,
-  Col,
+  Col
 } from 'react-bootstrap';
 import { object, string } from 'yup'; // ✅ Use named imports instead of `* as Yup`
 import { FaUser, FaLock, FaGoogle } from 'react-icons/fa';
@@ -17,7 +17,7 @@ const LoginSchema = object({
   username: string().required('Username is required'),
   password: string()
     .min(6, 'Password must be at least 6 characters')
-    .required('Password is required'),
+    .required('Password is required')
 });
 
 export default function Login() {
@@ -31,9 +31,9 @@ export default function Login() {
         credentials: 'include',
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(values)
       });
 
       const data = await response.json();
@@ -76,39 +76,21 @@ export default function Login() {
             {({ isSubmitting }) => (
               <Form>
                 <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Label
-                    style={{ fontFamily: 'Cinzel' }}
-                    className="fs-5"
-                  >
+                  <BootstrapForm.Label style={{ fontFamily: 'Cinzel' }} className="fs-5">
                     <FaUser className="me-2" />
                     Username
                   </BootstrapForm.Label>
                   <Field type="text" name="username" className="form-control" />
-                  <ErrorMessage
-                    name="username"
-                    component="div"
-                    className="text-danger"
-                  />
+                  <ErrorMessage name="username" component="div" className="text-danger" />
                 </BootstrapForm.Group>
 
                 <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Label
-                    style={{ fontFamily: 'Cinzel' }}
-                    className="fs-5"
-                  >
+                  <BootstrapForm.Label style={{ fontFamily: 'Cinzel' }} className="fs-5">
                     <FaLock className="me-2" />
                     Password
                   </BootstrapForm.Label>
-                  <Field
-                    type="password"
-                    name="password"
-                    className="form-control"
-                  />
-                  <ErrorMessage
-                    name="password"
-                    component="div"
-                    className="text-danger"
-                  />
+                  <Field type="password" name="password" className="form-control" />
+                  <ErrorMessage name="password" component="div" className="text-danger" />
                 </BootstrapForm.Group>
 
                 <div className="d-grid mb-3">
@@ -130,7 +112,7 @@ export default function Login() {
                       fontFamily: 'Cinzel',
                       width: '100%',
                       borderRadius: '10px',
-                      color: 'white',
+                      color: 'white'
                     }}
                     className="bg-primary fs-5 mt-2 p-2 mx-auto text-center btn btn-outline-primary text-center d-flex align-items-center justify-content-center"
                   >
@@ -139,15 +121,13 @@ export default function Login() {
                 </div>
 
                 <div className="text-center mt-3">
-                  <span style={{ fontFamily: 'Cinzel' }}>
-                    Don’t have an account?{' '}
-                  </span>
+                  <span style={{ fontFamily: 'Cinzel' }}>Don’t have an account? </span>
                   <NavLink
                     href="/signup"
                     className="text-primary"
                     style={{
                       fontFamily: 'Cinzel',
-                      fontWeight: 'bold',
+                      fontWeight: 'bold'
                     }}
                   >
                     Sign up
@@ -161,4 +141,3 @@ export default function Login() {
     </Container>
   );
 }
-

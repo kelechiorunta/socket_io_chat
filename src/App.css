@@ -1,5 +1,8 @@
-*, *::after, *::before, .modal{
-  font-family: "Poppins", sans-serif;
+*,
+*::after,
+*::before,
+.modal {
+  font-family: 'Poppins', sans-serif;
   /* font-family: "Jost", sans-serif; */
   font-weight: 400;
   font-style: normal;
@@ -50,7 +53,9 @@
 }
 
 .chat-light:hover {
-  background-color: rgba(0,0,0,0.4) !important; /* A darker shade of Bootstrap's secondary */
+  background-color: rgba(0, 0, 0, 0.4) !important; /* A darker shade of Bootstrap's secondary */
   /* color: white !important; */
-  transition: background-color 0.2s, color 0.2s ease-in-out;
+  transition:
+    background-color 0.2s,
+    color 0.2s ease-in-out;
 }
