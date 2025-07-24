@@ -7,7 +7,7 @@ import {
   Alert,
   NavLink,
   Row,
-  Col,
+  Col
 } from 'react-bootstrap';
 import { object, string } from 'yup';
 import { FaUser, FaLock, FaGoogle, FaEnvelope } from 'react-icons/fa';
@@ -18,7 +18,7 @@ const SignUpSchema = object({
   username: string().required('Username is required'),
   password: string()
     .min(6, 'Password must be at least 6 characters')
-    .required('Password is required'),
+    .required('Password is required')
 });
 
 export default function SignUp() {
@@ -32,9 +32,9 @@ export default function SignUp() {
         credentials: 'include',
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(values)
       });
 
       const data = await response.json();
@@ -76,55 +76,30 @@ export default function SignUp() {
             {({ isSubmitting }) => (
               <Form>
                 <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Label
-                    className="fs-5"
-                    style={{ fontFamily: 'Cinzel' }}
-                  >
+                  <BootstrapForm.Label className="fs-5" style={{ fontFamily: 'Cinzel' }}>
                     <FaEnvelope className="me-2" />
                     Email
                   </BootstrapForm.Label>
                   <Field type="email" name="email" className="form-control" />
-                  <ErrorMessage
-                    name="email"
-                    component="div"
-                    className="text-danger"
-                  />
+                  <ErrorMessage name="email" component="div" className="text-danger" />
                 </BootstrapForm.Group>
 
                 <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Label
-                    className="fs-5"
-                    style={{ fontFamily: 'Cinzel' }}
-                  >
+                  <BootstrapForm.Label className="fs-5" style={{ fontFamily: 'Cinzel' }}>
                     <FaUser className="me-2" />
                     Username
                   </BootstrapForm.Label>
                   <Field type="text" name="username" className="form-control" />
-                  <ErrorMessage
-                    name="username"
-                    component="div"
-                    className="text-danger"
-                  />
+                  <ErrorMessage name="username" component="div" className="text-danger" />
                 </BootstrapForm.Group>
 
                 <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Label
-                    className="fs-5"
-                    style={{ fontFamily: 'Cinzel' }}
-                  >
+                  <BootstrapForm.Label className="fs-5" style={{ fontFamily: 'Cinzel' }}>
                     <FaLock className="me-2" />
                     Password
                   </BootstrapForm.Label>
-                  <Field
-                    type="password"
-                    name="password"
-                    className="form-control"
-                  />
-                  <ErrorMessage
-                    name="password"
-                    component="div"
-                    className="text-danger"
-                  />
+                  <Field type="password" name="password" className="form-control" />
+                  <ErrorMessage name="password" component="div" className="text-danger" />
                 </BootstrapForm.Group>
 
                 <div className="d-grid mb-3">
@@ -147,7 +122,7 @@ export default function SignUp() {
                       fontFamily: 'Cinzel',
                       width: '100%',
                       borderRadius: '10px',
-                      color: 'white',
+                      color: 'white'
                     }}
                   >
                     <FaGoogle className="me-2" />
@@ -156,15 +131,13 @@ export default function SignUp() {
                 </div>
 
                 <div className="text-center mt-3">
-                  <span style={{ fontFamily: 'Cinzel' }}>
-                    Already have an account?{' '}
-                  </span>
+                  <span style={{ fontFamily: 'Cinzel' }}>Already have an account? </span>
                   <NavLink
                     href="/login"
                     className="text-primary"
                     style={{
                       fontFamily: 'Cinzel',
-                      fontWeight: 'bold',
+                      fontWeight: 'bold'
                     }}
                   >
                     Login

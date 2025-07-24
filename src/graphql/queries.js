@@ -1,5 +1,4 @@
-
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 export const GET_CONTACTS = gql`
   query GetContacts {
     users {
@@ -54,11 +53,11 @@ export const AUTH = gql`
 
 export const GET_UNREAD = gql`
   query GetUnread($senderId: ID!, $recipientId: ID!) {
-  getUnread(senderId: $senderId, recipientId: $recipientId) {
-    count
-    lastMessage
+    getUnread(senderId: $senderId, recipientId: $recipientId) {
+      count
+      lastMessage
+    }
   }
-}
 `;
 
 export const UPDATE_PROFILE = gql`
@@ -80,7 +79,6 @@ export const UPDATE_PROFILE = gql`
   }
 `;
 
-
 export const MARK_MESSAGES_AS_READ = gql`
   mutation MarkMessagesAsRead($senderId: ID!) {
     markMessagesAsRead(senderId: $senderId)
@@ -89,15 +87,15 @@ export const MARK_MESSAGES_AS_READ = gql`
 
 export const CREATE_UNREAD = gql`
   mutation CreateUnread($senderId: ID!, $recipientId: ID!, $newMessage: String!) {
-  createUnread(senderId: $senderId, recipientId: $recipientId, newMessage: $newMessage) {
-    count
-    lastMessage
+    createUnread(senderId: $senderId, recipientId: $recipientId, newMessage: $newMessage) {
+      count
+      lastMessage
+    }
   }
-}
 `;
 
 export const CLEAR_UNREAD = gql`
   mutation ClearUnread($senderId: ID!, $recipientId: ID!) {
-  clearUnread(senderId: $senderId, recipientId: $recipientId)
-}
+    clearUnread(senderId: $senderId, recipientId: $recipientId)
+  }
 `;

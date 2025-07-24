@@ -12,7 +12,7 @@ export default function ProtectedRoute() {
       try {
         const res = await fetch('/api/isAuthenticated', {
           credentials: 'include', // 🔥 Send session cookie
-          method: 'GET',
+          method: 'GET'
         });
 
         const data = await res.json();
@@ -48,10 +48,15 @@ export default function ProtectedRoute() {
             fontFamily: 'Segoe UI, Roboto, sans-serif',
             fontSize: '1.1rem',
             textAlign: 'center',
-            minHeight: '200px',
+            minHeight: '200px'
           }}
         >
-          <Spinner animation="border" role="status" variant="primary" style={{ width: '3rem', height: '3rem' }} />
+          <Spinner
+            animation="border"
+            role="status"
+            variant="primary"
+            style={{ width: '3rem', height: '3rem' }}
+          />
           <div className="mt-4" style={{ fontWeight: '500', color: '#333' }}>
             Authenticating, please wait...
           </div>
@@ -68,7 +73,6 @@ export default function ProtectedRoute() {
   // ✅ Authenticated: expose user to nested routes
   return <Outlet context={currentUser} />;
 }
-
 
 // import React from 'react';
 // import { Navigate, Outlet, useLocation } from 'react-router-dom';

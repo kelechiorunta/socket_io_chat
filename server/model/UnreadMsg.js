@@ -6,21 +6,21 @@ const unreadMsgSchema = new Schema(
     recipient: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true, // Who receives the messages
+      required: true // Who receives the messages
     },
     sender: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true, // Who sent them
+      required: true // Who sent them
     },
     count: {
       type: Number,
-      default: 0,
+      default: 0
     },
     lastMessage: {
       type: String,
-      default: '',
-    },
+      default: ''
+    }
   },
   { timestamps: true }
 );
