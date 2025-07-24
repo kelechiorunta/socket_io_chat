@@ -126,12 +126,9 @@
 //     server.emit('request', req, res);
 // };
 
-
-
 //Start here
 
 // ///////////////LAST USEFUL CODE
-
 
 // // import net from 'net';
 // import https from 'https';
@@ -200,12 +197,12 @@
 //         //     socket.close();
 //         //     return;
 //         // }
-    
+
 //         socket.id = counter++;
 //         activeSockets[socket.id] = socket;
-    
+
 //         console.log(`Client connected with ID: ${socket.id}`);
-    
+
 //         socket.on('message', (data) => {
 //             console.log(`Received message from client ${socket.id}: ${data}`);
 //             // Broadcast to the other socket
@@ -217,13 +214,13 @@
 //                 }
 //             });
 //         });
-    
+
 //         socket.on('close', () => {
 //             delete activeSockets[socket.id];
 //             console.log(`Client ${socket.id} disconnected`);
 //         });
 //     });
-    
+
 //     // // Handle HTTP requests and WebSocket upgrades
 //     // server.on('upgrade', (request, socket, head) => {
 //     //     console.log('Handling WebSocket upgrade');
@@ -232,7 +229,6 @@
 //     //         wss.emit('connection', ws, request);
 //     //     });
 //     // });
-
 
 //     // Serve static files and handle fallback for React Router
 //     server.on('request', async (req, res) => {
@@ -272,7 +268,7 @@
 //                     res.end('Internal Server Error');
 //                     console.error('Error serving fallback:', fallbackErr);
 //                 }
-//             } 
+//             }
 //             else {
 //                 res.writeHead(500);
 //                 res.end('Internal Server Error');
@@ -324,24 +320,24 @@
 
 //                 console.log("Hello")
 //                 const readPicStream = createReadStream('./product9.jpg')
-                
+
 //                 // const readableStream = (buffer) => {
 //                 //     const readable = new Readable();
 //                 //     readable.push(buffer);
 //                 //     readable.push(null);
 //                 //     return readable;
 //                 // }
-                
+
 //                 // const readingStream = readableStream(readPicStream);
-                
+
 //                 readPicStream.on('error', (err) => {
 //                     console.log("Error in streaming", err.message)
 //                 })
 //                 readPicStream.pipe(res);
 //                 // readingStream.pipe(res);
-                
+
 //             }
-//         })     
+//         })
 //     }
 // })
 
@@ -365,7 +361,6 @@
 // // Derive __dirname in ES Module
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = path.dirname(__filename);
-
 
 // // const WebSocket = require('ws');
 

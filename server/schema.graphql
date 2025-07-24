@@ -1,7 +1,7 @@
-type Query{
-    users: [User]!
-    auth: User
-    getUnread(senderId: ID!, recipientId: ID!): UnreadResult
+type Query {
+  users: [User]!
+  auth: User
+  getUnread(senderId: ID!, recipientId: ID!): UnreadResult
 }
 
 type Mutation {

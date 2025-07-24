@@ -190,21 +190,21 @@
 
 // export default Profile;
 
-import React, { useRef } from "react";
-import { Modal, Button, Form, Image } from "react-bootstrap";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { useMutation } from "@apollo/client";
-import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaVenusMars } from "react-icons/fa";
-import { UPDATE_PROFILE, AUTH } from "../graphql/queries";
+import React, { useRef } from 'react';
+import { Modal, Button, Form, Image } from 'react-bootstrap';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { useMutation } from '@apollo/client';
+import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaVenusMars } from 'react-icons/fa';
+import { UPDATE_PROFILE, AUTH } from '../graphql/queries';
 
 const validationSchema = Yup.object({
-  username: Yup.string().required("Username is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  gender: Yup.string().required("Gender is required"),
-  phone: Yup.string().required("Phone is required"),
-  address: Yup.string().required("Address is required"),
-  birthday: Yup.string().required("Birthday is required"), // optional, or use .required(...) if needed
+  username: Yup.string().required('Username is required'),
+  email: Yup.string().email('Invalid email').required('Email is required'),
+  gender: Yup.string().required('Gender is required'),
+  phone: Yup.string().required('Phone is required'),
+  address: Yup.string().required('Address is required'),
+  birthday: Yup.string().required('Birthday is required') // optional, or use .required(...) if needed
 });
 
 const Profile = ({ show, handleClose, onProfileUpdate, user }) => {
@@ -224,13 +224,13 @@ const Profile = ({ show, handleClose, onProfileUpdate, user }) => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      username: user?.username || "",
-      email: user?.email || "",
-      gender: user?.gender || "",
-      phone: user?.phone || "",
-      address: user?.address || "",
-      picture: user?.picture || "",
-      birthday: user?.birthday || ""
+      username: user?.username || '',
+      email: user?.email || '',
+      gender: user?.gender || '',
+      phone: user?.phone || '',
+      address: user?.address || '',
+      picture: user?.picture || '',
+      birthday: user?.birthday || ''
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -251,7 +251,7 @@ const Profile = ({ show, handleClose, onProfileUpdate, user }) => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        formik.setFieldValue("picture", reader.result);
+        formik.setFieldValue('picture', reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -268,7 +268,7 @@ const Profile = ({ show, handleClose, onProfileUpdate, user }) => {
         <Form onSubmit={formik.handleSubmit}>
           <div className="text-center mb-3">
             <Image
-              src={formik.values.picture || "/avatar.png"}
+              src={formik.values.picture || '/avatar.png'}
               roundedCircle
               style={{ width: 100, height: 100, objectFit: 'cover', cursor: 'pointer' }}
               onClick={() => fileInputRef.current.click()}
@@ -283,20 +283,22 @@ const Profile = ({ show, handleClose, onProfileUpdate, user }) => {
           </div>
 
           <Form.Group className="mb-3">
-            <Form.Label><FaUser /> Username</Form.Label>
+            <Form.Label>
+              <FaUser /> Username
+            </Form.Label>
             <Form.Control
               name="username"
               value={formik.values.username}
               onChange={formik.handleChange}
               isInvalid={!!formik.errors.username}
             />
-            <Form.Control.Feedback type="invalid">
-              {formik.errors.username}
-            </Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{formik.errors.username}</Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label><FaEnvelope /> Email</Form.Label>
+            <Form.Label>
+              <FaEnvelope /> Email
+            </Form.Label>
             <Form.Control
               name="email"
               type="email"
@@ -304,13 +306,13 @@ const Profile = ({ show, handleClose, onProfileUpdate, user }) => {
               onChange={formik.handleChange}
               isInvalid={!!formik.errors.email}
             />
-            <Form.Control.Feedback type="invalid">
-              {formik.errors.email}
-            </Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{formik.errors.email}</Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label><FaVenusMars /> Gender</Form.Label>
+            <Form.Label>
+              <FaVenusMars /> Gender
+            </Form.Label>
             <Form.Select
               name="gender"
               value={formik.values.gender}
@@ -322,49 +324,45 @@ const Profile = ({ show, handleClose, onProfileUpdate, user }) => {
               <option value="female">Female</option>
               <option value="other">Other</option>
             </Form.Select>
-            <Form.Control.Feedback type="invalid">
-              {formik.errors.gender}
-            </Form.Control.Feedback>
-           </Form.Group>
-                  
-           <Form.Group className="mb-3">
-            <Form.Label>🎂 Birthday</Form.Label>
-            <Form.Control
-                type="date"
-                name="birthday"
-                value={formik.values.birthday}
-                onChange={formik.handleChange}
-                isInvalid={!!formik.errors.birthday}
-            />
-            <Form.Control.Feedback type="invalid">
-                {formik.errors.birthday}
-            </Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{formik.errors.gender}</Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label><FaPhone /> Phone (w/ country code)</Form.Label>
+            <Form.Label>🎂 Birthday</Form.Label>
+            <Form.Control
+              type="date"
+              name="birthday"
+              value={formik.values.birthday}
+              onChange={formik.handleChange}
+              isInvalid={!!formik.errors.birthday}
+            />
+            <Form.Control.Feedback type="invalid">{formik.errors.birthday}</Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>
+              <FaPhone /> Phone (w/ country code)
+            </Form.Label>
             <Form.Control
               name="phone"
               value={formik.values.phone}
               onChange={formik.handleChange}
               isInvalid={!!formik.errors.phone}
             />
-            <Form.Control.Feedback type="invalid">
-              {formik.errors.phone}
-            </Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{formik.errors.phone}</Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label><FaMapMarkerAlt /> Address</Form.Label>
+            <Form.Label>
+              <FaMapMarkerAlt /> Address
+            </Form.Label>
             <Form.Control
               name="address"
               value={formik.values.address}
               onChange={formik.handleChange}
               isInvalid={!!formik.errors.address}
             />
-            <Form.Control.Feedback type="invalid">
-              {formik.errors.address}
-            </Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{formik.errors.address}</Form.Control.Feedback>
           </Form.Group>
 
           <Button variant="primary" type="submit">

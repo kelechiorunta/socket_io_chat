@@ -8,16 +8,16 @@ $grid-breakpoints: (
 );
 
 .d-sm-flex {
-    display: none !important;
-  }
+  display: none !important;
+}
 
-  @media (min-width: 376px) {
-    //@media (min-width: 376px) {
-    .d-sm-flex {
-      display: flex !important;
-    }
+@media (min-width: 376px) {
+  //@media (min-width: 376px) {
+  .d-sm-flex {
+    display: flex !important;
   }
-  
+}
+
 //   @media (max-width: 299.98px) {
 //     .d-xs-flex {
 //       display: none !important;
