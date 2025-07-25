@@ -54,8 +54,8 @@ export const configureGooglePassport = (passport) => {
   passport.use(
     new GoogleStrategy(
       {
-        clientID: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        clientID: process.env.GOOGLE_CLIENT_ID_NEW,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET_NEW,
         callbackURL:
           process.env.NODE_ENV === 'development'
             ? 'http://localhost:7334/oauth2/redirect/google'
