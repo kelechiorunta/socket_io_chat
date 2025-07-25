@@ -59,7 +59,7 @@ export const configureGooglePassport = (passport) => {
         callbackURL:
           process.env.NODE_ENV === 'development'
             ? 'http://localhost:7334/oauth2/redirect/google'
-            : 'https://socketiochat-production.up.railway.app/oauth2/redirect/google',
+            : 'https://socketiochat-production.up.railway.app/api/oauth2/redirect/google',
         scope: ['profile', 'email']
       },
       async (accessToken, refreshToken, profile, done) => {
