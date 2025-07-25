@@ -107,7 +107,7 @@ export default function Login() {
 
                 <div className="d-grid mb-3">
                   <NavLink
-                    href="/google"
+                    href="/api/google"
                     style={{
                       fontFamily: 'Cinzel',
                       width: '100%',
