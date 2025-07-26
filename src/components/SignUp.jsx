@@ -10,7 +10,7 @@ import {
   Col
 } from 'react-bootstrap';
 import { object, string } from 'yup';
-import { FaUser, FaLock, FaGoogle, FaEnvelope } from 'react-icons/fa';
+import { FaUser, FaLock, FaEnvelope } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 const SignUpSchema = object({
