@@ -378,11 +378,15 @@ const Sidebar = ({
                             style={{
                               display: 'flex',
                               justifyContent: 'space-between',
-                              alignItems: 'center'
+                              alignItems: 'center',
+                              minWidth: 200,
+                              width: '100%'
                             }}
                           >
-                            {unreadData?.lastMessage ? unreadData?.lastMessage : 'No messages'}
-                            {unreadData?.timeStamp && unreadData?.timeStamp}
+                            <p>
+                              {unreadData?.lastMessage ? unreadData?.lastMessage : 'No messages'}
+                            </p>
+                            <p>{unreadData?.timeStamp && unreadData?.timeStamp}</p>
                           </span>
                         )}
                       </div>
