@@ -50,6 +50,10 @@ const Sidebar = ({
     setSearchResults(filtered);
   }, [search, filteredUsers]);
 
+  useEffect(() => {
+    itemRefs.current = {};
+  }, [filteredUsers]);
+
   const handleSort = () => {
     setFilteredUsers((prev) =>
       [...prev].sort((a, b) => (b.isOnline === true) - (a.isOnline === true))
@@ -67,6 +71,18 @@ const Sidebar = ({
 
     setFilteredUsers(sortedUsers);
   }, [contacts, onlineUsers, tab]);
+
+  const handleUserSelect = (user) => {
+    onSelectChat(user);
+    setSearch('');
+    setSearchResults([]);
+
+    // Scroll to user in main list
+    const el = itemRefs.current[user._id];
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
 
   // useEffect(() => {
   //   // Separate users by online status
@@ -157,6 +173,7 @@ const Sidebar = ({
                 onSelectChat(user);
                 setSearch('');
                 setSearchResults([]);
+                handleUserSelect(user);
               }
             }
           }}
@@ -281,6 +298,7 @@ const Sidebar = ({
             return (
               <div
                 key={user?._id}
+                ref={(el) => (itemRefs.current[user._id] = el)}
                 onClick={() => onSelectChat(user)}
                 className={`d-flex align-items-center justify-content-between rounded-3 mb-2 p-2 px-3
                   ${isDark ? 'bg-secondary chat-dark' : 'bg-[rgba(0,0,0,0.8)] chat-light'}
