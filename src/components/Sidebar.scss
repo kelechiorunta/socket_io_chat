@@ -12,16 +12,13 @@ $grid-breakpoints: (
 }
 
 @media (min-width: 376px) {
-  //@media (min-width: 376px) {
   .d-sm-flex {
     display: flex !important;
   }
 }
 
-//   @media (max-width: 299.98px) {
-//     .d-xs-flex {
-//       display: none !important;
-//     }
-//   }
+.hover-bg:hover {
+  background-color: rgba(0, 229, 117, 0.1);
+}
 
 @import '~bootstrap/scss/bootstrap';

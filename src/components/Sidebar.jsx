@@ -1,5 +1,5 @@
 import './Sidebar.scss';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Form, InputGroup, ButtonGroup, Placeholder, Card } from 'react-bootstrap';
 import { Search, Plus, Sun, Moon, Settings } from 'lucide-react';
 import Avatar from './Avatar';
@@ -25,6 +25,15 @@ const Sidebar = ({
   const [tab, setTab] = useState('all');
   const [search, setSearch] = useState('');
   const [filteredUsers, setFilteredUsers] = useState(contacts);
+  const [focusedIndex, setFocusedIndex] = useState(0);
+  const itemRefs = useRef([]);
+
+  useEffect(() => {
+    const el = itemRefs.current[focusedIndex];
+    if (el) {
+      el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }, [focusedIndex]);
 
   const handleSort = () => {
     setFilteredUsers((prev) =>
@@ -92,13 +101,80 @@ const Sidebar = ({
         <InputGroup.Text className={`${isDark ? 'bg-secondary' : 'bg-#f7fef2 '} border-0`}>
           <Search size={16} />
         </InputGroup.Text>
-        <Form.Control
+        {/* <Form.Control
           className={`${isDark ? 'bg-secondary' : 'bg-#ffff'} border-0`}
           placeholder="Search..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+        /> */}
+        <Form.Control
+          className={`${isDark ? 'bg-secondary' : 'bg-#ffff'} border-0`}
+          placeholder="Search..."
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setFocusedIndex(0); // reset on change
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'ArrowDown') {
+              e.preventDefault();
+              setFocusedIndex((prev) => (prev + 1) % filteredUsers.length);
+            } else if (e.key === 'ArrowUp') {
+              e.preventDefault();
+              setFocusedIndex((prev) => (prev === 0 ? filteredUsers.length - 1 : prev - 1));
+            } else if (e.key === 'Enter') {
+              e.preventDefault();
+              const user = filteredUsers[focusedIndex];
+              if (user) {
+                onSelectChat(user);
+                setSearch('');
+              }
+            }
+          }}
         />
       </InputGroup>
+
+      {/* Dropdown list search */}
+
+      {search.length > 0 && filteredUsers.length > 0 && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 100,
+            zIndex: 1000,
+            backgroundColor: isDark ? '#2c2f33' : '#fff',
+            width: '90%',
+            maxHeight: '200px',
+            overflowY: 'auto',
+            border: '1px solid #ccc',
+            borderRadius: 8,
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+            left: '5%'
+          }}
+        >
+          {filteredUsers.map((user, index) => (
+            <div
+              key={user._id}
+              ref={(el) => (itemRefs.current[index] = el)}
+              className={`p-2 d-flex align-items-center hover-bg ${
+                index === focusedIndex ? 'bg-success text-white' : ''
+              }`}
+              onClick={() => {
+                onSelectChat(user);
+                setSearch('');
+              }}
+              style={{
+                cursor: 'pointer',
+                borderBottom: '1px solid #eee'
+              }}
+            >
+              <Avatar src={user.picture || './Darshan.png'} size={30} className="me-2" />
+              <span>{user.username}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Message Section */}
       <div
         style={{ color: isDark ? 'white' : 'rgba(0, 0, 0, 0.9)' }}
