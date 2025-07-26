@@ -385,9 +385,7 @@ const Sidebar = ({
                               }
                             }
                           >
-                            <p>
-                              {unreadData?.lastMessage ? unreadData?.lastMessage : 'No messages'}
-                            </p>
+                            {unreadData?.lastMessage ? unreadData?.lastMessage : 'No messages'}
                           </span>
                         )}
                       </div>
