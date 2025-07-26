@@ -10,6 +10,7 @@ import { useTheme } from './ThemeContext';
 import { AUTH, GET_CONTACTS } from '../graphql/queries';
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import debounce from 'lodash.debounce';
+import { format, isToday, isYesterday } from 'date-fns';
 import { MARK_MESSAGES_AS_READ, CLEAR_UNREAD, GET_UNREAD } from '../graphql/queries';
 
 const ChatApp = () => {
@@ -198,7 +199,8 @@ const ChatApp = () => {
               ...prev,
               [msg.sender?._id]: {
                 count: prevCount + 1,
-                lastMessage: msg.lastMessage || msg.content
+                lastMessage: msg.lastMessage || msg.content,
+                timeStamp: formatDateLabel(msg.createdAt)
               }
             };
           });
@@ -339,6 +341,12 @@ const ChatApp = () => {
         console.error('Error fetching chat history:', error);
       }
     }
+  };
+
+  const formatDateLabel = (date) => {
+    if (isToday(date)) return 'Today';
+    if (isYesterday(date)) return 'Yesterday';
+    return format(date, 'MMMM d, yyyy');
   };
 
   return (
