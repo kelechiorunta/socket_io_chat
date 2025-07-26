@@ -240,7 +240,7 @@ const Sidebar = ({
             style={{
               border: isDark ? '1px solid white' : '1px solid rgba(0, 0, 0, 0.3)',
               borderRadius: 10,
-              color: isDark ? 'white' : ' rgba(0, 0, 0, 0.9)'
+              color: isDark ? 'white' : tab === 'all' ? 'white' : 'rgba(0, 0, 0, 0.9)'
             }}
             variant={tab === 'all' ? 'secondary' : 'outline-light'}
             onClick={() => setTab('all')}
@@ -251,7 +251,7 @@ const Sidebar = ({
             style={{
               border: isDark ? '1px solid white' : '1px solid rgba(0, 0, 0, 0.3)',
               borderRadius: 10,
-              color: isDark ? 'white' : 'rgba(0, 0, 0, 0.9)'
+              color: isDark ? 'white' : tab === 'groups' ? 'white' : 'rgba(0, 0, 0, 0.9)'
             }}
             variant={tab === 'groups' ? 'secondary' : 'outline-light'}
             onClick={() => setTab('groups')}
@@ -262,7 +262,7 @@ const Sidebar = ({
             style={{
               border: isDark ? '1px solid white' : '1px solid rgba(0, 0, 0, 0.3)',
               borderRadius: 10,
-              color: isDark ? 'white' : 'rgba(0, 0, 0, 0.9)'
+              color: isDark ? 'white' : tab === 'contacts' ? 'white' : 'rgba(0, 0, 0, 0.9)'
             }}
             variant={tab === 'contacts' ? 'secondary' : 'outline-light'}
             onClick={() => {
