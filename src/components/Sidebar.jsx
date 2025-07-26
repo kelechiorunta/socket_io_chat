@@ -186,8 +186,8 @@ const Sidebar = ({
         <div
           style={{
             position: 'absolute',
-            top: inputRef.current?.offsetTop + inputRef.current?.offsetHeight || 100,
-            left: inputRef.current?.offsetLeft || '5%',
+            top: inputRef.current?.offsetTop + inputRef.current?.offsetHeight + 100 || 100,
+            left: inputRef.current?.offsetLeft + '5%' || '5%',
             zIndex: 1000,
             backgroundColor: isDark ? '#2c2f33' : '#fff',
             minWidth: inputRef.current?.offsetWidth || 300,
