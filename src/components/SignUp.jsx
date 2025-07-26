@@ -114,7 +114,7 @@ export default function SignUp() {
                   </Button>
                 </div>
 
-                <div className="d-grid mb-3">
+                {/* <div className="d-grid mb-3">
                   <NavLink
                     href="/google"
                     className="bg-primary fs-5 mt-2 p-2 mx-auto text-center btn btn-outline-primary d-flex align-items-center justify-content-center"
@@ -128,7 +128,7 @@ export default function SignUp() {
                     <FaGoogle className="me-2" />
                     Sign Up with Google
                   </NavLink>
-                </div>
+                </div> */}
 
                 <div className="text-center mt-3">
                   <span style={{ fontFamily: 'Cinzel' }}>Already have an account? </span>
