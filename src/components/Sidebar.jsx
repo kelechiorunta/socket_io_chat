@@ -190,7 +190,7 @@ const Sidebar = ({
             left: inputRef.current?.offsetLeft + 50 || '5%',
             zIndex: 1000,
             backgroundColor: isDark ? '#2c2f33' : '#fff',
-            minWidth: inputRef.current?.offsetWidth || 300,
+            minWidth: inputRef.current?.offsetWidth + 50 || 300,
             maxWidth: 500,
             overflowY: 'auto',
             maxHeight: 200,
