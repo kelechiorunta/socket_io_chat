@@ -386,13 +386,11 @@ const Sidebar = ({
                             <p>
                               {unreadData?.lastMessage ? unreadData?.lastMessage : 'No messages'}
                             </p>
-                            <p>{unreadData?.timeStamp && unreadData?.timeStamp}</p>
                           </span>
                         )}
                       </div>
-
-                      {/* <p style={{ textAlign: 'left' }}>{onlineUsers?.has(user?._id) && isOnline ? 'Online' : 'Offline'}</p> */}
                     </div>
+                    <p>{unreadData?.timeStamp && unreadData?.timeStamp}</p>
                   </div>
 
                   {/* /{unreadMap[user._id] > 0 && ( */}
