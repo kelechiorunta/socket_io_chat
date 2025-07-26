@@ -242,7 +242,7 @@ const Sidebar = ({
               borderRadius: 10,
               color: isDark ? 'white' : ' rgba(0, 0, 0, 0.9)'
             }}
-            variant={tab === 'all' ? 'primary' : 'outline-light'}
+            variant={tab === 'all' ? 'secondary' : 'outline-light'}
             onClick={() => setTab('all')}
           >
             All Chats
@@ -253,7 +253,7 @@ const Sidebar = ({
               borderRadius: 10,
               color: isDark ? 'white' : 'rgba(0, 0, 0, 0.9)'
             }}
-            variant={tab === 'groups' ? 'primary' : 'outline-light'}
+            variant={tab === 'groups' ? 'secondary' : 'outline-light'}
             onClick={() => setTab('groups')}
           >
             Groups
@@ -264,7 +264,7 @@ const Sidebar = ({
               borderRadius: 10,
               color: isDark ? 'white' : 'rgba(0, 0, 0, 0.9)'
             }}
-            variant={tab === 'contacts' ? 'primary' : 'outline-light'}
+            variant={tab === 'contacts' ? 'secondary' : 'outline-light'}
             onClick={() => {
               setTab('contacts');
               handleSort();
