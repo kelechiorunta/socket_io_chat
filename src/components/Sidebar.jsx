@@ -18,39 +18,13 @@ const Sidebar = ({
   onlineUsers,
   authenticatedUser
 }) => {
-  const { theme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
 
   const isDark = theme === 'dark';
 
   const [tab, setTab] = useState('all');
   const [search, setSearch] = useState('');
   const [filteredUsers, setFilteredUsers] = useState(contacts);
-
-  //   const users = contacts; // or data?.users || []
-  //   // const groups = data?.groups || []
-
-  //   const activeUsers = [...users].sort((a, b) => {
-  //     return (b.isOnline === true) - (a.isOnline === true);
-  //   });
-
-  // // eslint-disable-next-line array-callback-return
-  // const mappedUsers = activeUsers.filter((user) => {
-  //   user.username?.toLowerCase().includes(search.toLowerCase());
-  //   setFilteredUsers(mappedUsers)
-  // });
-
-  // useEffect(() => {
-  //   const otherUsers = contacts.filter((user, index) => user._id !== Array.from(onlineUsers)._id)
-  //   const sortedUsers = [...Array.from(onlineUsers), otherUsers].sort((a, b) => {
-  //     return (b.isOnline === true) - (a.isOnline === true);
-  //   });
-
-  //   const result = sortedUsers.filter(user =>
-  //     user.username?.toLowerCase().includes(search.toLowerCase())
-  //   );
-
-  //   setFilteredUsers(result);
-  // }, [contacts, search, filteredUsers, onlineUsers]);
 
   const handleSort = () => {
     setFilteredUsers((prev) =>
@@ -103,8 +77,8 @@ const Sidebar = ({
           {'JUSTCHAT' || authenticatedUser?.username.toUpperCase().slice(0, 2)}
         </div>
         <div className="d-flex gap-2">
-          <Sun role="button" onClick />
-          <Moon role="button" />
+          <Sun role="button" onClick={isDark && toggleTheme} />
+          <Moon role="button" onClick={!isDark && toggleTheme} />
         </div>
       </div>
       {/* Search Bar */}
