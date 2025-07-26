@@ -375,13 +375,15 @@ const Sidebar = ({
                           </span>
                         ) : (
                           <span
-                            style={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              alignItems: 'center',
-                              minWidth: 200,
-                              width: '100%'
-                            }}
+                            style={
+                              {
+                                // display: 'flex',
+                                // justifyContent: 'space-between',
+                                // alignItems: 'center',
+                                // minWidth: 200,
+                                // width: '100%'
+                              }
+                            }
                           >
                             <p>
                               {unreadData?.lastMessage ? unreadData?.lastMessage : 'No messages'}
