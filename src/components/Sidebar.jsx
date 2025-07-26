@@ -27,6 +27,8 @@ const Sidebar = ({
   const [filteredUsers, setFilteredUsers] = useState(contacts);
   const [focusedIndex, setFocusedIndex] = useState(0);
   const itemRefs = useRef([]);
+  const [searchResults, setSearchResults] = useState([]);
+  const inputRef = useRef(null); // to size dropdown
 
   useEffect(() => {
     const el = itemRefs.current[focusedIndex];
@@ -35,6 +37,19 @@ const Sidebar = ({
     }
   }, [focusedIndex]);
 
+  useEffect(() => {
+    if (!search) {
+      setSearchResults([]);
+      return;
+    }
+
+    const filtered = filteredUsers.filter((user) =>
+      user.username?.toLowerCase().includes(search.toLowerCase())
+    );
+
+    setSearchResults(filtered);
+  }, [search, filteredUsers]);
+
   const handleSort = () => {
     setFilteredUsers((prev) =>
       [...prev].sort((a, b) => (b.isOnline === true) - (a.isOnline === true))
@@ -42,28 +57,40 @@ const Sidebar = ({
   };
 
   useEffect(() => {
-    // Separate users by online status
     const online = contacts.filter((user) => onlineUsers.has(user._id));
     const offline = contacts.filter((user) => !onlineUsers.has(user._id));
 
-    // Merge online first, then offline
-    const allOnlineUsers = [...online];
-
-    // Sort users based on their online activity
-    const allUsers = [
-      ...allOnlineUsers.sort((a, b) => {
-        return (b.isOnline === true) - (a.isOnline === true);
-      }),
+    const sortedUsers = [
+      ...online.sort((a, b) => (b.isOnline === true) - (a.isOnline === true)),
       ...offline
     ];
 
-    // Filter by search term
-    const result = allUsers.filter((user) =>
-      user.username?.toLowerCase().includes(search.toLowerCase())
-    );
+    setFilteredUsers(sortedUsers);
+  }, [contacts, onlineUsers, tab]);
 
-    setFilteredUsers(result);
-  }, [contacts, search, onlineUsers]);
+  // useEffect(() => {
+  //   // Separate users by online status
+  //   const online = contacts.filter((user) => onlineUsers.has(user._id));
+  //   const offline = contacts.filter((user) => !onlineUsers.has(user._id));
+
+  //   // Merge online first, then offline
+  //   const allOnlineUsers = [...online];
+
+  //   // Sort users based on their online activity
+  //   const allUsers = [
+  //     ...allOnlineUsers.sort((a, b) => {
+  //       return (b.isOnline === true) - (a.isOnline === true);
+  //     }),
+  //     ...offline
+  //   ];
+
+  //   // Filter by search term
+  //   const result = allUsers.filter((user) =>
+  //     user.username?.toLowerCase().includes(search.toLowerCase())
+  //   );
+
+  //   setFilteredUsers(result);
+  // }, [contacts, search, onlineUsers]);
 
   const cardStyle = {
     backgroundColor: isDark ? ' #2c2f33' : ' #f7fef2',
@@ -108,26 +135,28 @@ const Sidebar = ({
           onChange={(e) => setSearch(e.target.value)}
         /> */}
         <Form.Control
-          className={`${isDark ? 'bg-secondary' : 'bg-#ffff'} border-0`}
+          ref={inputRef}
+          className={`${isDark ? 'bg-secondary' : 'bg-white'} border-0`}
           placeholder="Search..."
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
-            setFocusedIndex(0); // reset on change
+            setFocusedIndex(0); // reset focus
           }}
           onKeyDown={(e) => {
             if (e.key === 'ArrowDown') {
               e.preventDefault();
-              setFocusedIndex((prev) => (prev + 1) % filteredUsers.length);
+              setFocusedIndex((prev) => (prev + 1) % searchResults.length);
             } else if (e.key === 'ArrowUp') {
               e.preventDefault();
-              setFocusedIndex((prev) => (prev === 0 ? filteredUsers.length - 1 : prev - 1));
+              setFocusedIndex((prev) => (prev === 0 ? searchResults.length - 1 : prev - 1));
             } else if (e.key === 'Enter') {
               e.preventDefault();
-              const user = filteredUsers[focusedIndex];
+              const user = searchResults[focusedIndex];
               if (user) {
                 onSelectChat(user);
                 setSearch('');
+                setSearchResults([]);
               }
             }
           }}
@@ -136,32 +165,34 @@ const Sidebar = ({
 
       {/* Dropdown list search */}
 
-      {search.length > 0 && filteredUsers.length > 0 && (
+      {search.length > 0 && searchResults.length > 0 && (
         <div
           style={{
             position: 'absolute',
-            top: 100,
+            top: inputRef.current?.offsetTop + inputRef.current?.offsetHeight || 100,
+            left: inputRef.current?.offsetLeft || '5%',
             zIndex: 1000,
             backgroundColor: isDark ? '#2c2f33' : '#fff',
-            width: '90%',
-            maxHeight: '200px',
+            minWidth: inputRef.current?.offsetWidth || 300,
+            maxWidth: 500,
             overflowY: 'auto',
+            maxHeight: 200,
             border: '1px solid #ccc',
             borderRadius: 8,
-            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-            left: '5%'
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
           }}
         >
-          {filteredUsers.map((user, index) => (
+          {searchResults.map((user, index) => (
             <div
               key={user._id}
               ref={(el) => (itemRefs.current[index] = el)}
-              className={`p-2 d-flex align-items-center hover-bg ${
+              className={`p-2 d-flex align-items-center ${
                 index === focusedIndex ? 'bg-success text-white' : ''
               }`}
               onClick={() => {
                 onSelectChat(user);
                 setSearch('');
+                setSearchResults([]);
               }}
               style={{
                 cursor: 'pointer',
