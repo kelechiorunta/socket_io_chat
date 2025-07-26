@@ -374,8 +374,15 @@ const Sidebar = ({
                             is typing...
                           </span>
                         ) : (
-                          <span>
+                          <span
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center'
+                            }}
+                          >
                             {unreadData?.lastMessage ? unreadData?.lastMessage : 'No messages'}
+                            {unreadData?.timeStamp && unreadData?.timeStamp}
                           </span>
                         )}
                       </div>
