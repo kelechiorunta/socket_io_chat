@@ -236,8 +236,8 @@ const Sidebar = ({
           </Button>
           <Button
             style={{
-              // border: isDark ? '1px solid white' : '1px solid rgba(0, 0, 0, 0.3)',
-              boxShadow: isDark ? '2px 2px 2px 2px white' : '2px 2px 2px 2px rgba(0, 0, 0, 0.5)',
+              border: isDark ? '1px solid white' : '1px solid rgba(0, 0, 0, 0.3)',
+
               borderRadius: 10,
               color: isDark ? 'white' : tab === 'contacts' ? 'white' : 'rgba(0, 0, 0, 0.9)'
             }}
@@ -292,7 +292,8 @@ const Sidebar = ({
                       : isDark
                         ? 'white'
                         : 'rgba(0, 0, 0, 0.7)',
-                  border: '1px solid rgba(0, 0, 0, 0.7)'
+                  // border: '1px solid rgba(0, 0, 0, 0.7)',
+                  boxShadow: isDark ? '2px 2px 2px white' : '2px 2px 2px rgba(0, 0, 0, 0.5)'
                 }}
               >
                 {/* Avatar & Status Dot */}
