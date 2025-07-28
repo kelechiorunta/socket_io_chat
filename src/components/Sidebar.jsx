@@ -292,8 +292,8 @@ const Sidebar = ({
                       : isDark
                         ? 'white'
                         : 'rgba(0, 0, 0, 0.7)',
-                  // border: '1px solid rgba(0, 0, 0, 0.7)',
-                  boxShadow: isDark ? '2px 2px 2px white' : '2px 2px 2px rgba(0, 0, 0, 0.5)'
+                  border: '1px solid rgba(0, 0, 0, 0.7)',
+                  boxShadow: isDark ? '2px 2px 2px white' : '2px 2px -1px rgba(0, 0, 0, 0.3)'
                 }}
               >
                 {/* Avatar & Status Dot */}
