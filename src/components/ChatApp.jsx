@@ -241,9 +241,9 @@ const ChatApp = () => {
       }, 2000);
     });
 
-    socket.on('LoggingIn', ({ status, loggedInUser }) => {
-      alert(`Welcome, ${loggedInUser?.username}`);
-    });
+    // socket.on('LoggingIn', ({ status, loggedInUser }) => {
+    //   alert(`Welcome, ${loggedInUser?.username}`);
+    // });
 
     return () => {
       socket.off('newMessage');
