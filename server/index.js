@@ -123,12 +123,13 @@ app.use(
   '/graphql',
   graphqlHTTP((req) => {
     const isDev = process.env.NODE_ENV === 'development';
-
+    const ioInstance = req.app.get('io');
     return {
       schema,
       context: {
         isAuthenticated: req.isAuthenticated?.(),
-        user: req.user ?? req.session?.user
+        user: req.user ?? req.session?.user,
+        ioInstance: ioInstance
       },
       graphiql: isDev // Only enable GraphiQL in development
     };
@@ -139,6 +140,8 @@ app.set('trust proxy', true); // Trust Railway's proxy
 
 const server = http.createServer(app);
 const io = new Server(server, { cors: corsOption });
+
+app.set('io', io);
 
 const onlineUsers = new Map();
 
