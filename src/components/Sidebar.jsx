@@ -84,30 +84,6 @@ const Sidebar = ({
     }
   };
 
-  // useEffect(() => {
-  //   // Separate users by online status
-  //   const online = contacts.filter((user) => onlineUsers.has(user._id));
-  //   const offline = contacts.filter((user) => !onlineUsers.has(user._id));
-
-  //   // Merge online first, then offline
-  //   const allOnlineUsers = [...online];
-
-  //   // Sort users based on their online activity
-  //   const allUsers = [
-  //     ...allOnlineUsers.sort((a, b) => {
-  //       return (b.isOnline === true) - (a.isOnline === true);
-  //     }),
-  //     ...offline
-  //   ];
-
-  //   // Filter by search term
-  //   const result = allUsers.filter((user) =>
-  //     user.username?.toLowerCase().includes(search.toLowerCase())
-  //   );
-
-  //   setFilteredUsers(result);
-  // }, [contacts, search, onlineUsers]);
-
   const cardStyle = {
     backgroundColor: isDark ? ' #2c2f33' : ' #f7fef2',
     color: !isDark ? 'black' : 'white',
@@ -260,7 +236,8 @@ const Sidebar = ({
           </Button>
           <Button
             style={{
-              border: isDark ? '1px solid white' : '1px solid rgba(0, 0, 0, 0.3)',
+              // border: isDark ? '1px solid white' : '1px solid rgba(0, 0, 0, 0.3)',
+              boxShadow: isDark ? '2px 2px 2px 2px white' : '2px 2px 2px 2px rgba(0, 0, 0, 0.5)',
               borderRadius: 10,
               color: isDark ? 'white' : tab === 'contacts' ? 'white' : 'rgba(0, 0, 0, 0.9)'
             }}
