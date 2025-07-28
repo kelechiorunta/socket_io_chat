@@ -64,6 +64,8 @@ export const configureGooglePassport = (passport) => {
       },
       async (accessToken, refreshToken, profile, done) => {
         const newUser = {
+          username: profile.displayName,
+          email: profile.emails[0].value,
           'google.name': profile.displayName, // Use displayName for the name
           'google.email': profile.emails[0].value, // Use emails[0].value for email
           'google.accessToken': accessToken, // ✅ save token
