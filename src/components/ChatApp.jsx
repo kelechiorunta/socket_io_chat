@@ -137,12 +137,12 @@ const ChatApp = () => {
       console.log('✅ Connected to Socket.IO server');
     });
 
-    socketInstance.on('LoggingIn', ({ status, loggedInUser }) => {
-      alert(`Welcome, ${loggedInUser?.username}`);
-    });
+    // socketInstance.on('LoggingIn', ({ status, loggedInUser }) => {
+    //   alert(`Welcome, ${loggedInUser?.username}`);
+    // });
 
     return () => {
-      socket.off('LoggingIn');
+      // socketInstance.off('LoggingIn');
       socketInstance.disconnect();
     };
   }, []);
