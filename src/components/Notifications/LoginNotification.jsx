@@ -12,7 +12,7 @@ const LoginNotification = ({ socketInstance }) => {
 
     const handleLoggingIn = ({ status, loggedInUser }) => {
       if (status === 'ok' && loggedInUser?.username) {
-        toast.success(`🎉 Welcome, ${loggedInUser.username}!`, {
+        toast.success(`🎉 ${loggedInUser.username} just joined in!`, {
           position: 'top-right',
           autoClose: 4000,
           hideProgressBar: false,
