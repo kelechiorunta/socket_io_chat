@@ -27,7 +27,7 @@ const LoginNotification = ({ socketInstance }) => {
     return () => {
       socketInstance.off('LoggingIn', handleLoggingIn);
     };
-  }, []);
+  }, [socketInstance]);
 
   return <ToastContainer />;
 };
