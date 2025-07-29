@@ -250,17 +250,12 @@ const ChatApp = () => {
       }, 2000);
     });
 
-    socket.on('LoggingIn', ({ status, loggedInUser }) => {
-      alert(`Welcome, ${loggedInUser?.username}`);
-    });
-
     return () => {
       socket.off('newMessage');
       socket.off('userOnline');
       socket.off('userOffline');
       socket.off('isConnected');
       socket.off('typing');
-      socket.off('LoggingIn');
     };
   }, [selectedChat?._id, socket, user?._id, currentContacts, selectedChat]); // ✅ Run only once
 
