@@ -203,6 +203,8 @@ const resolvers = {
           loggedInUser: context.user
         });
         console.log('loggingin');
+      } else {
+        console.log('Absent');
       }
 
       try {
