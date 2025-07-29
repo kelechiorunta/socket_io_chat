@@ -27,7 +27,7 @@ const LogoutNotification = ({ socketInstance }) => {
     return () => {
       socketInstance.off('LoggingOut', handleLoggingOut);
     };
-  }, []);
+  }, [socketInstance]);
 
   return <ToastContainer />;
 };

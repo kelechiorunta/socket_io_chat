@@ -257,6 +257,8 @@ const ChatApp = () => {
       socket.off('userOffline');
       socket.off('isConnected');
       socket.off('typing');
+      socket.off('LoggingIn');
+      socket.off('LoggingOut');
     };
   }, [selectedChat?._id, socket, user?._id, currentContacts, selectedChat]); // ✅ Run only once
 
