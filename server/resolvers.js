@@ -220,10 +220,11 @@ const resolvers = {
       const userObj = user.toObject();
       userObj.unreadCounts = formatUnreadCounts(user.unreadCounts);
 
-      if (context?.ioInstance) {
-        const io = context.ioInstance;
-        io.emit('LoggingIn', { status: 'ok', loggedInUser: user });
-        console.log('Responding...');
+      if (context.ioInstance) {
+        context.ioInstance.emit('LoggingIn', {
+          status: 'ok',
+          loggedInUser: userObj
+        });
       }
 
       // // Example usage: emit to a room
