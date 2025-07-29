@@ -197,6 +197,13 @@ const resolvers = {
     users: async (_, args, context) => {
       if (!context?.user) return [];
 
+      if (context.ioInstance) {
+        context.ioInstance.emit('LoggingIn', {
+          status: 'ok',
+          loggedInUser: context.user
+        });
+      }
+
       try {
         const users = await User.find({ _id: { $ne: context.user._id } });
 
@@ -219,14 +226,6 @@ const resolvers = {
       const user = await User.findById(context.user._id);
       const userObj = user.toObject();
       userObj.unreadCounts = formatUnreadCounts(user.unreadCounts);
-
-      if (context.ioInstance) {
-        context.ioInstance.emit('LoggingIn', {
-          status: 'ok',
-          loggedInUser: userObj
-        });
-      }
-
       // // Example usage: emit to a room
       // io.to(user._id.toString()).emit('user:authCheck', { status: 'ok' });
       // io.broadcast.emit('LoggingIn', { status: 'ok', loggedInUser: user });
