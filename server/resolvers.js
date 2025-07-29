@@ -202,6 +202,7 @@ const resolvers = {
           status: 'ok',
           loggedInUser: context.user
         });
+        console.log('loggingin');
       }
 
       try {
