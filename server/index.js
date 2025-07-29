@@ -136,7 +136,7 @@ app.use(
       context: {
         isAuthenticated: req.isAuthenticated?.(),
         user: req.user ?? req.session?.user,
-        ioInstance
+        ioInstance: ioInstance
       },
       graphiql: isDev // Only enable GraphiQL in development
     };
