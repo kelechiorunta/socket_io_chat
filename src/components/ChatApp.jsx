@@ -12,7 +12,7 @@ import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import debounce from 'lodash.debounce';
 import { format, isToday, isYesterday } from 'date-fns';
 import { MARK_MESSAGES_AS_READ, CLEAR_UNREAD, GET_UNREAD } from '../graphql/queries';
-import LoginNotification from './Notifications/LoginNotification';
+// import LoginNotification from './Notifications/LoginNotification';
 import LogoutNotification from './Notifications/LogoutNotification';
 
 const ChatApp = () => {
