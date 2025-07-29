@@ -1,24 +1,23 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-/**
- * Props:
- * @param socketInstance - Your connected socket.io-client instance
- */
 const LogoutNotification = ({ socketInstance }) => {
+  const toastIdRef = useRef(null);
+
   useEffect(() => {
     if (!socketInstance) return;
 
     const handleLoggingOut = ({ signedOutUser }) => {
-      if (signedOutUser && signedOutUser?.username && !signedOutUser.isOnline) {
-        toast.success(`🎉 ${signedOutUser.username} just logged out!`, {
-          position: 'top-left',
-          autoClose: 4000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true
-        });
+      if (signedOutUser && signedOutUser?.username) {
+        if (!toast.isActive(toastIdRef.current)) {
+          toastIdRef.current = toast.success(`🎉${signedOutUser.username} just logged out!`, {
+            position: 'top-right',
+            autoClose: 4000,
+            pauseOnHover: true,
+            draggable: true
+          });
+        }
       }
     };
 
