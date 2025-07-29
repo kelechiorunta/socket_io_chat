@@ -1,24 +1,23 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-/**
- * Props:
- * @param socketInstance - Your connected socket.io-client instance
- */
 const LoginNotification = ({ socketInstance }) => {
+  const toastIdRef = useRef(null);
+
   useEffect(() => {
     if (!socketInstance) return;
 
     const handleLoggingIn = ({ status, loggedInUser }) => {
       if (status === 'ok' && loggedInUser?.username) {
-        toast.success(`🎉 ${loggedInUser.username} just joined in!`, {
-          position: 'top-right',
-          autoClose: 4000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true
-        });
+        if (!toast.isActive(toastIdRef.current)) {
+          toastIdRef.current = toast.success(`🎉${loggedInUser.username} just logged in!`, {
+            position: 'top-right',
+            autoClose: 4000,
+            pauseOnHover: true,
+            draggable: true
+          });
+        }
       }
     };
 
