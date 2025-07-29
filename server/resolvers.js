@@ -223,6 +223,7 @@ const resolvers = {
       if (context?.ioInstance) {
         const io = context.ioInstance;
         io.emit('LoggingIn', { status: 'ok', loggedInUser: user });
+        console.log('Responding...');
       }
 
       // // Example usage: emit to a room
