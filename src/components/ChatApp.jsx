@@ -367,7 +367,7 @@ const ChatApp = () => {
       className={`${isDark ? 'bg-dark text-light' : 'bg-light text-black'} p-0`}
       style={{ height: 'max-content', overflowY: 'auto', overflowX: 'hidden' }}
     >
-      <LoginNotification socketInstance={socket} />
+      {/* <LoginNotification socketInstance={socket} /> */}
       <LogoutNotification socketInstance={socket} />
 
       <Row className="h-100 flex-xs-row flex-md-row flex-sm-row flex-lg-row">
