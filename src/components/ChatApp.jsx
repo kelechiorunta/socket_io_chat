@@ -136,9 +136,6 @@ const ChatApp = () => {
     socketInstance.on('connect', () => {
       console.log('✅ Connected to Socket.IO server');
     });
-    socketInstance.on('LoggingIn', ({ status, loggedInUser }) => {
-      alert(`Welcome, ${loggedInUser?.username}`);
-    });
 
     return () => socketInstance.disconnect();
   }, []);
@@ -245,9 +242,9 @@ const ChatApp = () => {
       }, 2000);
     });
 
-    // socket.on('LoggingIn', ({ status, loggedInUser }) => {
-    //   alert(`Welcome, ${loggedInUser?.username}`);
-    // });
+    socket.on('LoggingIn', ({ status, loggedInUser }) => {
+      alert(`Welcome, ${loggedInUser?.username}`);
+    });
 
     return () => {
       socket.off('newMessage');
@@ -255,7 +252,7 @@ const ChatApp = () => {
       socket.off('userOffline');
       socket.off('isConnected');
       socket.off('typing');
-      // socket.off('LoggingIn');
+      socket.off('LoggingIn');
     };
   }, [selectedChat?._id, socket, user?._id, currentContacts, selectedChat]); // ✅ Run only once
 
