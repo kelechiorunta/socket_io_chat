@@ -130,13 +130,13 @@ app.use(
   '/graphql',
   graphqlHTTP((req) => {
     const isDev = process.env.NODE_ENV === 'development';
-    const ioInstance = req?.app?.get('io');
+    const ioInstance = req.app.get('io');
     return {
       schema,
       context: {
         isAuthenticated: req.isAuthenticated?.(),
         user: req.user ?? req.session?.user,
-        ioInstance: ioInstance
+        ioInstance
       },
       graphiql: isDev // Only enable GraphiQL in development
     };
