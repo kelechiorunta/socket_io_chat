@@ -137,7 +137,14 @@ const ChatApp = () => {
       console.log('✅ Connected to Socket.IO server');
     });
 
-    return () => socketInstance.disconnect();
+    socketInstance.on('LoggingIn', ({ status, loggedInUser }) => {
+      alert(`Welcome, ${loggedInUser?.username}`);
+    });
+
+    return () => {
+      socket.off('LoggingIn');
+      socketInstance.disconnect();
+    };
   }, []);
 
   //Broadcast message to receiver from sender
