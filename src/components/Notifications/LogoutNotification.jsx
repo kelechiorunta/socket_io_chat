@@ -11,9 +11,9 @@ const LogoutNotification = ({ socketInstance }) => {
     if (!socketInstance) return;
 
     const handleLoggingOut = ({ signedOutUser }) => {
-      if (signedOutUser && signedOutUser?.username) {
+      if (signedOutUser && signedOutUser?.username && !signedOutUser.isOnline) {
         toast.success(`🎉 ${signedOutUser.username} just logged out!`, {
-          position: 'top-right',
+          position: 'top-left',
           autoClose: 4000,
           hideProgressBar: false,
           closeOnClick: true,
