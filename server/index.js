@@ -118,6 +118,13 @@ app.use(passport.session());
 
 app.use('/api', authRouter);
 
+app.set('trust proxy', true); // Trust Railway's proxy
+
+const server = http.createServer(app);
+const io = new Server(server, { cors: corsOption });
+
+app.set('io', io);
+
 // Middleware to enable GraphQL Introspection and Client Queries
 app.use(
   '/graphql',
@@ -135,13 +142,6 @@ app.use(
     };
   })
 );
-
-app.set('trust proxy', true); // Trust Railway's proxy
-
-const server = http.createServer(app);
-const io = new Server(server, { cors: corsOption });
-
-app.set('io', io);
 
 const onlineUsers = new Map();
 
