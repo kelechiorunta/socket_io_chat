@@ -207,7 +207,7 @@ const validationSchema = Yup.object({
   birthday: Yup.string().required('Birthday is required') // optional, or use .required(...) if needed
 });
 
-const Profile = ({ show, handleClose, onProfileUpdate, user, socketInstance }) => {
+const Profile = ({ show, handleClose, onProfileUpdate, user }) => {
   const fileInputRef = useRef();
 
   const [updateProfile] = useMutation(UPDATE_PROFILE, {
@@ -224,12 +224,10 @@ const Profile = ({ show, handleClose, onProfileUpdate, user, socketInstance }) =
 
       const updatedUsers = existing.users.map((user) => {
         if (user._id === updateProfile.user._id) {
-          socketInstance.on('updating', ({ updatedUser }) => {
-            return {
-              ...user,
-              picture: updatedUser?.picture || updateProfile.user.picture // ✅ clear unread messages for this user
-            };
-          });
+          return {
+            ...user,
+            picture: updateProfile.user.picture // ✅ clear unread messages for this user
+          };
         }
         return user;
       });
