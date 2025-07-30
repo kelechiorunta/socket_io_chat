@@ -204,7 +204,7 @@ const resolvers = {
         });
         console.log('loggingin');
       } else {
-        context.ioInstance.emit('LoggingOut', { signedOutUser: context.user });
+        // context.ioInstance.emit('LoggingOut', { signedOutUser: context.user });
         console.log('Absent');
       }
 

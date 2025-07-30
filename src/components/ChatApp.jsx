@@ -12,8 +12,7 @@ import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import debounce from 'lodash.debounce';
 import { format, isToday, isYesterday } from 'date-fns';
 import { MARK_MESSAGES_AS_READ, CLEAR_UNREAD, GET_UNREAD } from '../graphql/queries';
-import LoginNotification from './Notifications/LoginNotification';
-import LogoutNotification from './Notifications/LogoutNotification';
+import SocketNotifications from './Notifications/SocketNotifications';
 
 const ChatApp = () => {
   const { theme } = useTheme();
@@ -367,8 +366,7 @@ const ChatApp = () => {
       className={`${isDark ? 'bg-dark text-light' : 'bg-light text-black'} p-0`}
       style={{ height: 'max-content', overflowY: 'auto', overflowX: 'hidden' }}
     >
-      <LoginNotification socketInstance={socket} />
-      <LogoutNotification socketInstance={socket} />
+      <SocketNotifications socketInstance={socket} />
 
       <Row className="h-100 flex-xs-row flex-md-row flex-sm-row flex-lg-row">
         {/* IconBar Column */}
