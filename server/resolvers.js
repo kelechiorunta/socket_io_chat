@@ -197,13 +197,14 @@ const resolvers = {
     users: async (_, args, context) => {
       if (!context?.user) return [];
 
-      if (context.ioInstance) {
+      if (context.ioInstance && context.user) {
         context.ioInstance.emit('LoggingIn', {
           status: 'ok',
           loggedInUser: context.user
         });
         console.log('loggingin');
       } else {
+        context.ioInstance.emit('LoggingOut', { signedOutUser: context.user });
         console.log('Absent');
       }
 

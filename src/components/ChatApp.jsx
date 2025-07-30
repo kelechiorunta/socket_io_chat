@@ -13,7 +13,7 @@ import debounce from 'lodash.debounce';
 import { format, isToday, isYesterday } from 'date-fns';
 import { MARK_MESSAGES_AS_READ, CLEAR_UNREAD, GET_UNREAD } from '../graphql/queries';
 import LoginNotification from './Notifications/LoginNotification';
-// import LogoutNotification from './Notifications/LogoutNotification';
+import LogoutNotification from './Notifications/LogoutNotification';
 
 const ChatApp = () => {
   const { theme } = useTheme();
@@ -368,7 +368,7 @@ const ChatApp = () => {
       style={{ height: 'max-content', overflowY: 'auto', overflowX: 'hidden' }}
     >
       <LoginNotification socketInstance={socket} />
-      {/* <LogoutNotification socketInstance={socket} /> */}
+      <LogoutNotification socketInstance={socket} />
 
       <Row className="h-100 flex-xs-row flex-md-row flex-sm-row flex-lg-row">
         {/* IconBar Column */}
