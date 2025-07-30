@@ -379,7 +379,7 @@ const ChatApp = () => {
           className="p-0 border-end"
         >
           {/* <IconBar pic={data && data.auth}/> */}
-          <IconBar profile={signedUser} onUpdateProfile={setSignedUser} />
+          <IconBar profile={signedUser} onUpdateProfile={setSignedUser} socketInstance={socket} />
         </Col>
 
         {/* Sidebar Column */}
