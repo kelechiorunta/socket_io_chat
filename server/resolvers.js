@@ -203,9 +203,6 @@ const resolvers = {
           loggedInUser: context.user
         });
         console.log('loggingin');
-      } else {
-        // context.ioInstance.emit('LoggingOut', { signedOutUser: context.user });
-        console.log('Absent');
       }
 
       try {
@@ -262,7 +259,7 @@ const resolvers = {
   },
 
   Mutation: {
-    updateProfile: async (_, { input }, { user }) => {
+    updateProfile: async (_, { input }, { user, ioInstance }) => {
       if (!user) throw new Error('Not authenticated');
 
       try {
@@ -279,6 +276,9 @@ const resolvers = {
               runValidators: true
             });
 
+            if (ioInstance) {
+              ioInstance.emit('Updating', { updatedUser: updated });
+            }
             return {
               success: true,
               message: 'Profile updated successfully',

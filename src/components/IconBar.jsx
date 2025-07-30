@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Profile from './Profile';
 
-const IconBar = ({ profile, onUpdateProfile }) => {
+const IconBar = ({ profile, onUpdateProfile, socketInstance }) => {
   // const [profile, setProfile] = useState(pic);
   const { theme, toggleTheme } = useTheme();
 
@@ -107,6 +107,7 @@ const IconBar = ({ profile, onUpdateProfile }) => {
             handleClose={handleProfileClose}
             onProfileUpdate={handleProfileUpdate}
             user={profile}
+            socketInstance={socketInstance}
           />
         </>
       </div>
