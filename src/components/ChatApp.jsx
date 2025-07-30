@@ -8,13 +8,14 @@ import ChatInput from './ChatInput';
 import IconBar from './IconBar';
 import { useTheme } from './ThemeContext';
 import { AUTH, GET_CONTACTS } from '../graphql/queries';
-import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
+import { useQuery, useMutation, useLazyQuery, useApolloClient } from '@apollo/client';
 import debounce from 'lodash.debounce';
 import { format, isToday, isYesterday } from 'date-fns';
 import { MARK_MESSAGES_AS_READ, CLEAR_UNREAD, GET_UNREAD } from '../graphql/queries';
 import SocketNotifications from './Notifications/SocketNotifications';
 
 const ChatApp = () => {
+  const client = useApolloClient();
   const { theme } = useTheme();
   const isDark = theme === 'dark';
   const [messages, setMessages] = useState([]);
@@ -250,16 +251,36 @@ const ChatApp = () => {
       }, 2000);
     });
 
+    socket.on('Updating', ({ updatedUser }) => {
+      try {
+        const existing = client.readQuery({ query: GET_CONTACTS });
+
+        if (!existing) return;
+
+        const updatedUsers = existing.users.map((user) =>
+          user._id === updatedUser._id ? { ...user, ...updatedUser } : user
+        );
+
+        client.writeQuery({
+          query: GET_CONTACTS,
+          data: { users: updatedUsers }
+        });
+      } catch (err) {
+        console.error('Error updating contacts in real-time:', err);
+      }
+    });
+
     return () => {
       socket.off('newMessage');
       socket.off('userOnline');
       socket.off('userOffline');
       socket.off('isConnected');
       socket.off('typing');
+      socket.off('Updating');
       // socket.off('LoggingIn');
       // socket.off('LoggingOut');
     };
-  }, [selectedChat?._id, socket, user?._id, currentContacts, selectedChat]); // ✅ Run only once
+  }, [selectedChat?._id, socket, user?._id, currentContacts, selectedChat, client]); // ✅ Run only once
 
   useEffect(() => {
     if (!socket) return;
@@ -379,7 +400,7 @@ const ChatApp = () => {
           className="p-0 border-end"
         >
           {/* <IconBar pic={data && data.auth}/> */}
-          <IconBar profile={signedUser} onUpdateProfile={setSignedUser} socketInstance={socket} />
+          <IconBar profile={signedUser} onUpdateProfile={setSignedUser} />
         </Col>
 
         {/* Sidebar Column */}
