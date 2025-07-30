@@ -47,7 +47,7 @@ const SocketNotifications = ({ socketInstance }) => {
     };
   }, [socketInstance]);
 
-  return <ToastContainer />;
+  return <ToastContainer style={{ fontFamily: 'Poppins' }} />;
 };
 
 export default SocketNotifications;
