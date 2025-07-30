@@ -196,7 +196,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useMutation } from '@apollo/client';
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaVenusMars } from 'react-icons/fa';
-import { UPDATE_PROFILE, AUTH } from '../graphql/queries';
+import { UPDATE_PROFILE, AUTH, GET_CONTACTS } from '../graphql/queries';
 
 const validationSchema = Yup.object({
   username: Yup.string().required('Username is required'),
@@ -218,6 +218,24 @@ const Profile = ({ show, handleClose, onProfileUpdate, user }) => {
           data: { auth: updateProfile.user }
         });
       }
+      const existing = cache.readQuery({ query: GET_CONTACTS });
+
+      if (!existing || !updateProfile.user) return;
+
+      const updatedUsers = existing.users.map((user) => {
+        if (user._id === updateProfile.user._id) {
+          return {
+            ...user,
+            picture: updateProfile.user.picture // ✅ clear unread messages for this user
+          };
+        }
+        return user;
+      });
+
+      cache.writeQuery({
+        query: GET_CONTACTS,
+        data: { users: updatedUsers }
+      });
     }
   });
 
@@ -249,9 +267,18 @@ const Profile = ({ show, handleClose, onProfileUpdate, user }) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      const MAX_SIZE_MB = 1;
+      const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
+
+      if (file.size > MAX_SIZE_BYTES) {
+        formik.setFieldError('picture', 'Image size must be less than 1MB');
+        return;
+      }
+
       const reader = new FileReader();
       reader.onloadend = () => {
         formik.setFieldValue('picture', reader.result);
+        formik.setFieldError('picture', null); // clear error if successful
       };
       reader.readAsDataURL(file);
     }
@@ -273,6 +300,7 @@ const Profile = ({ show, handleClose, onProfileUpdate, user }) => {
               style={{ width: 100, height: 100, objectFit: 'cover', cursor: 'pointer' }}
               onClick={() => fileInputRef.current.click()}
             />
+
             <Form.Control
               type="file"
               accept="image/*"
@@ -280,6 +308,12 @@ const Profile = ({ show, handleClose, onProfileUpdate, user }) => {
               ref={fileInputRef}
               onChange={handleImageChange}
             />
+
+            {formik.errors.picture && (
+              <div className="text-danger mt-2" style={{ fontSize: '0.875rem' }}>
+                {formik.errors.picture}
+              </div>
+            )}
           </div>
 
           <Form.Group className="mb-3">
