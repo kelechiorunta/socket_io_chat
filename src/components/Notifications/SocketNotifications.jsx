@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const SocketNotifications = ({ socketInstance }) => {
   const loginToastRef = useRef(null);
   const logoutToastRef = useRef(null);
+  const ProfileToastRef = useRef(null);
 
   useEffect(() => {
     if (!socketInstance) return;
@@ -38,12 +39,28 @@ const SocketNotifications = ({ socketInstance }) => {
       }
     };
 
+    const handleProfileChanged = ({ user }) => {
+      if (user && user?.username) {
+        if (!toast.isActive(ProfileToastRef.current)) {
+          ProfileToastRef.current = toast.info(`👋 ${user.username} just updated profile!`, {
+            position: 'bottom-right',
+            autoClose: 4000,
+            pauseOnHover: true,
+            draggable: true
+            // style={"fontFamily: 'Poppins'"}
+          });
+        }
+      }
+    };
+
     socketInstance.on('LoggingIn', handleLoggingIn);
     socketInstance.on('LoggingOut', handleLoggingOut);
+    socketInstance.on('ProfileChanged', handleProfileChanged);
 
     return () => {
       socketInstance.off('LoggingIn', handleLoggingIn);
       socketInstance.off('LoggingOut', handleLoggingOut);
+      socketInstance.off('ProfileChanged', handleProfileChanged);
     };
   }, [socketInstance]);
 
