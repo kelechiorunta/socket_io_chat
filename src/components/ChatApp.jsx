@@ -309,6 +309,7 @@ const ChatApp = () => {
     });
 
     if (profileUser) {
+      console.log('There is an updated User');
       socket.emit('ProfileUpdated', { updatedUser: profileUser });
     }
 
