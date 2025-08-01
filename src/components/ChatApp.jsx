@@ -39,7 +39,7 @@ const ChatApp = () => {
   const [notifiedUser, setNotifiedUser] = useState(null);
   const [clearUnread] = useMutation(CLEAR_UNREAD);
   const [getUnread] = useLazyQuery(GET_UNREAD);
-  // const [profileUser, setUpdatedProfileUser] = useState(null);
+  const [profileUser, setUpdatedProfileUser] = useState(null);
 
   const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
     update(cache, { data, variables }) {
@@ -301,17 +301,21 @@ const ChatApp = () => {
 
         console.log('updatedUser:', updatedUser);
         // if (socket.connected) {
-        socket.emit('ProfileUpdated', { updatedUser: updatedUser });
+        setUpdatedProfileUser(updatedUser);
         // }
       } catch (err) {
         console.error('Error updating contacts in real-time:', err);
       }
     });
 
+    if (profileUser) {
+      socket.emit('ProfileUpdated', { updatedUser: profileUser });
+    }
+
     return () => {
       socket.off('Updating');
     };
-  }, [client, socket]);
+  }, [client, socket, profileUser]);
 
   // Then use separate effects for `user` or `selectedChat` dependent emissions:
   useEffect(() => {
