@@ -268,9 +268,9 @@ const ChatApp = () => {
           data: { users: updatedUsers }
         });
 
-        if (socket.connected) {
-          socket.emit('ProfileUpdated', { updatedUser: updatedUser });
-        }
+        // if (socket.connected) {
+        socket.emit('ProfileUpdated', { updatedUser: updatedUser });
+        // }
       } catch (err) {
         console.error('Error updating contacts in real-time:', err);
       }
