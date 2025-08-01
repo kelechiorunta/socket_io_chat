@@ -43,7 +43,7 @@ const SocketNotifications = ({ socketInstance }) => {
       if (user && user?.username) {
         if (!toast.isActive(ProfileToastRef.current)) {
           ProfileToastRef.current = toast.info(`👋 ${user.username} just updated profile!`, {
-            position: 'bottom-right',
+            position: 'top-right',
             autoClose: 4000,
             pauseOnHover: true,
             draggable: true
