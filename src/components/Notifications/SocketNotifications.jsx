@@ -39,12 +39,12 @@ const SocketNotifications = ({ socketInstance }) => {
       }
     };
 
-    const handleProfileChanged = ({ updatedUser }) => {
+    const handleProfileChanged = ({ updatedProfileUser }) => {
       console.log('Notification received for profile');
-      if (updatedUser && updatedUser?.username) {
+      if (updatedProfileUser && updatedProfileUser?.username) {
         console.log('Profile Updated');
         // if (!toast.isActive(profileToastRef.current)) {
-        toast.info(`👋 ${updatedUser.username} just updated profile!`, {
+        toast.info(`👋 ${updatedProfileUser.username} just updated profile!`, {
           position: 'top-right',
           autoClose: 4000,
           pauseOnHover: true,
@@ -57,12 +57,12 @@ const SocketNotifications = ({ socketInstance }) => {
 
     socketInstance.on('LoggingIn', handleLoggingIn);
     socketInstance.on('LoggingOut', handleLoggingOut);
-    socketInstance.on('ProfileUpdated', handleProfileChanged);
+    socketInstance.on('UpdatedProfile', handleProfileChanged);
 
     return () => {
       socketInstance.off('LoggingIn', handleLoggingIn);
       socketInstance.off('LoggingOut', handleLoggingOut);
-      socketInstance.off('ProfileUpdated', handleProfileChanged);
+      socketInstance.off('UpdatedProfile', handleProfileChanged);
     };
   }, [socketInstance]);
 

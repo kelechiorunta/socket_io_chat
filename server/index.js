@@ -336,6 +336,12 @@ io.on('connection', (socket) => {
     }
   });
 
+  socket.on('ProfileUpdated', ({ updatedUser }) => {
+    if (updatedUser) {
+      socket.broadcast.emit('UpdatedProfile', { updatedProfileUser: updatedUser });
+    }
+  });
+
   // socket.on('typing', ({ receiverId }) => {
   //     const senderId = socket.data.userId;
   //     if (!receiverId || !senderId) return;

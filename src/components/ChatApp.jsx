@@ -301,22 +301,22 @@ const ChatApp = () => {
 
         console.log('updatedUser:', updatedUser);
         // if (socket.connected) {
-        setUpdatedProfileUser(updatedUser);
+
+        socket.emit('ProfileUpdated', { updatedUser: updatedUser });
         // }
       } catch (err) {
         console.error('Error updating contacts in real-time:', err);
       }
     });
 
-    if (profileUser) {
-      console.log('There is an updated User');
-      socket.emit('ProfileUpdated', { updatedUser: profileUser });
-    }
+    // if (profileUser) {
+
+    // }
 
     return () => {
       socket.off('Updating');
     };
-  }, [client, socket, profileUser]);
+  }, [client, socket]);
 
   // Then use separate effects for `user` or `selectedChat` dependent emissions:
   useEffect(() => {
