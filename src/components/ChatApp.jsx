@@ -299,6 +299,7 @@ const ChatApp = () => {
           data: { users: updatedUsers }
         });
 
+        console.log('updatedUser:', updatedUser);
         // if (socket.connected) {
         socket.emit('ProfileUpdated', { updatedUser: profileUser || updatedUser });
         // }
