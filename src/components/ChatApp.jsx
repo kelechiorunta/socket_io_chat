@@ -39,6 +39,7 @@ const ChatApp = () => {
   const [notifiedUser, setNotifiedUser] = useState(null);
   const [clearUnread] = useMutation(CLEAR_UNREAD);
   const [getUnread] = useLazyQuery(GET_UNREAD);
+  const [profileUser, setUpdatedProfileUser] = useState(null);
 
   const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
     update(cache, { data, variables }) {
@@ -252,6 +253,7 @@ const ChatApp = () => {
     });
 
     socket.on('Updating', ({ updatedUser }) => {
+      setUpdatedProfileUser(updatedUser);
       try {
         const existing = client.readQuery({ query: GET_CONTACTS });
 
@@ -267,7 +269,7 @@ const ChatApp = () => {
         });
 
         if (socket.connected) {
-          socket.emit('ProfileUpdated', { updatedUser });
+          socket.emit('ProfileUpdated', { updatedUser: updatedUser });
         }
       } catch (err) {
         console.error('Error updating contacts in real-time:', err);
@@ -284,7 +286,7 @@ const ChatApp = () => {
       // socket.off('LoggingIn');
       // socket.off('LoggingOut');
     };
-  }, [selectedChat?._id, socket, user?._id, currentContacts, selectedChat, client]); // ✅ Run only once
+  }, [selectedChat?._id, socket, user?._id, currentContacts, selectedChat, client, profileUser]); // ✅ Run only once
 
   useEffect(() => {
     if (!socket) return;
