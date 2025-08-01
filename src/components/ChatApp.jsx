@@ -265,6 +265,7 @@ const ChatApp = () => {
           query: GET_CONTACTS,
           data: { users: updatedUsers }
         });
+        socket.emit('ProfileChanged', { user: updatedUser });
       } catch (err) {
         console.error('Error updating contacts in real-time:', err);
       }
