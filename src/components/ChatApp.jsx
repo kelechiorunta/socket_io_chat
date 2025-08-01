@@ -300,7 +300,7 @@ const ChatApp = () => {
         });
 
         // if (socket.connected) {
-        socket.emit('ProfileUpdated', { updatedUser: updatedUser });
+        socket.emit('ProfileUpdated', { updatedUser: profileUser || updatedUser });
         // }
       } catch (err) {
         console.error('Error updating contacts in real-time:', err);
