@@ -284,7 +284,7 @@ const ChatApp = () => {
     if (!socket || !client) return;
 
     socket.on('Updating', ({ updatedUser }) => {
-      setUpdatedProfileUser(updatedUser);
+      // setUpdatedProfileUser(updatedUser);
       try {
         const existing = client.readQuery({ query: GET_CONTACTS });
 
@@ -301,7 +301,7 @@ const ChatApp = () => {
 
         console.log('updatedUser:', updatedUser);
         // if (socket.connected) {
-        socket.emit('ProfileUpdated', { updatedUser: profileUser || updatedUser });
+        socket.emit('ProfileUpdated', { updatedUser: updatedUser });
         // }
       } catch (err) {
         console.error('Error updating contacts in real-time:', err);
@@ -311,7 +311,7 @@ const ChatApp = () => {
     return () => {
       socket.off('Updating');
     };
-  }, [client, socket, profileUser]);
+  }, [client, socket]);
 
   // Then use separate effects for `user` or `selectedChat` dependent emissions:
   useEffect(() => {
