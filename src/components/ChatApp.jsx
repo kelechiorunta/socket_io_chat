@@ -39,7 +39,7 @@ const ChatApp = () => {
   const [notifiedUser, setNotifiedUser] = useState(null);
   const [clearUnread] = useMutation(CLEAR_UNREAD);
   const [getUnread] = useLazyQuery(GET_UNREAD);
-  const [profileUser, setUpdatedProfileUser] = useState(null);
+  // const [profileUser, setUpdatedProfileUser] = useState(null);s
 
   const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
     update(cache, { data, variables }) {
