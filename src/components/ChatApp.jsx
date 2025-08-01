@@ -252,7 +252,6 @@ const ChatApp = () => {
     });
 
     socket.on('Updating', ({ updatedUser }) => {
-      socket.emit('ProfileChanged', { user: updatedUser });
       try {
         const existing = client.readQuery({ query: GET_CONTACTS });
 

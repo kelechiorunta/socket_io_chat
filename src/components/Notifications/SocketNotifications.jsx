@@ -39,10 +39,10 @@ const SocketNotifications = ({ socketInstance }) => {
       }
     };
 
-    const handleProfileChanged = ({ user }) => {
-      if (user && user?.username) {
+    const handleProfileChanged = ({ updatedUser }) => {
+      if (updatedUser && updatedUser?.username) {
         if (!toast.isActive(ProfileToastRef.current)) {
-          ProfileToastRef.current = toast.info(`👋 ${user.username} just updated profile!`, {
+          ProfileToastRef.current = toast.info(`👋 ${updatedUser.username} just updated profile!`, {
             position: 'top-right',
             autoClose: 4000,
             pauseOnHover: true,
@@ -55,7 +55,7 @@ const SocketNotifications = ({ socketInstance }) => {
 
     socketInstance.on('LoggingIn', handleLoggingIn);
     socketInstance.on('LoggingOut', handleLoggingOut);
-    socketInstance.on('ProfileChanged', handleProfileChanged);
+    socketInstance.on('Updating', handleProfileChanged);
 
     return () => {
       socketInstance.off('LoggingIn', handleLoggingIn);
