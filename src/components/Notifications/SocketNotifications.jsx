@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const SocketNotifications = ({ socketInstance }) => {
   const loginToastRef = useRef(null);
   const logoutToastRef = useRef(null);
-  const profileToastRef = useRef(null);
+  // const profileToastRef = useRef(null);
 
   useEffect(() => {
     if (!socketInstance) return;
