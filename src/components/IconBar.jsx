@@ -95,12 +95,14 @@ const IconBar = ({ profile, onUpdateProfile }) => {
         </OverlayTrigger>
 
         <>
-          <Image
-            onClick={handleProfileOpen}
-            src={profile && profile.picture}
-            roundedCircle
-            style={{ width: 36, height: 36, cursor: 'pointer' }}
-          />
+          <OverlayTrigger placement="right" overlay={<Tooltip>Update Profile</Tooltip>}>
+            <Image
+              onClick={handleProfileOpen}
+              src={profile && profile.picture}
+              roundedCircle
+              style={{ width: 36, height: 36, cursor: 'pointer' }}
+            />
+          </OverlayTrigger>
 
           <Profile
             show={showProfile}
