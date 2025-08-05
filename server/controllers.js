@@ -7,13 +7,11 @@ export const isAuthenticatedUser = (req, res) => {
       .status(200)
       .json({ isValid: true, user: req.user, message: 'User still authenticated!' });
   } else {
-    return res
-      .status(400)
-      .json({
-        isValid: false,
-        user: null,
-        message: 'User not authenticated. Please login or signup!'
-      });
+    return res.status(400).json({
+      isValid: false,
+      user: null,
+      message: 'User not authenticated. Please login or signup!'
+    });
   }
 };
 
@@ -30,7 +28,7 @@ export const signupController = async (req, res) => {
       return res.status(400).json({ error: 'User already exists!' });
     }
 
-    const newUser = new User({ username, password, email });
+    const newUser = new User({ username: username, password: password, email: email });
     await newUser.save();
 
     // Optionally log them in immediately:
