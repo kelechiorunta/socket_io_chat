@@ -31,7 +31,7 @@ const ChatApp = () => {
   } = useQuery(GET_CONTACTS, {
     fetchPolicy: 'cache-and-network',
     onCompleted: (data) => {
-      console.log('Contacts updated!', data);
+      console.log('Contacts updated!');
     }
   });
   const [currentUser, setCurrentUser] = useState(null);
@@ -117,7 +117,6 @@ const ChatApp = () => {
       localStorage.setItem('currentUser', JSON.stringify(user));
       setAuthUser(user);
     } else if (storedUser) {
-      console.log(`storedUser is ${JSON.parse(storedUser)}`);
       setAuthUser(JSON.parse(storedUser));
     }
     setSignedUser(user);
@@ -137,15 +136,10 @@ const ChatApp = () => {
     setSocket(socketInstance);
 
     socketInstance.on('connect', () => {
-      console.log('✅ Connected to Socket.IO server');
+      console.log('Connected to Socket.IO server');
     });
 
-    // socketInstance.on('LoggingIn', ({ status, loggedInUser }) => {
-    //   alert(`Welcome, ${loggedInUser?.username}`);
-    // });
-
     return () => {
-      // socketInstance.off('LoggingIn');
       socketInstance.disconnect();
     };
   }, []);
@@ -167,7 +161,6 @@ const ChatApp = () => {
   const emitTyping = debounce((receiverId) => {
     if (socket && receiverId && user?._id) {
       socket.emit('typing', { receiverId });
-      console.log('Emitted typing to', receiverId);
     }
   }, 500);
 
@@ -258,9 +251,6 @@ const ChatApp = () => {
       socket.off('userOffline');
       socket.off('isConnected');
       socket.off('typing');
-
-      // socket.off('LoggingIn');
-      // socket.off('LoggingOut');
     };
   }, [selectedChat?._id, socket, user?._id, currentContacts, selectedChat]); // ✅ Run only once
 
@@ -284,7 +274,6 @@ const ChatApp = () => {
     if (!socket || !client) return;
 
     socket.on('Updating', ({ updatedUser }) => {
-      // setUpdatedProfileUser(updatedUser);
       try {
         const existing = client.readQuery({ query: GET_CONTACTS });
 
@@ -299,26 +288,17 @@ const ChatApp = () => {
           data: { users: updatedUsers }
         });
 
-        console.log('updatedUser:', updatedUser);
-        // if (socket.connected) {
-
         socket.emit('ProfileUpdated', { updatedUser: updatedUser });
-        // }
       } catch (err) {
         console.error('Error updating contacts in real-time:', err);
       }
     });
-
-    // if (profileUser) {
-
-    // }
 
     return () => {
       socket.off('Updating');
     };
   }, [client, socket]);
 
-  // Then use separate effects for `user` or `selectedChat` dependent emissions:
   useEffect(() => {
     if (!socket || !user?._id || selectedChat?._id) return;
     socket.emit('isLoggedIn', { userId: user._id || selectedChat._id });
@@ -341,9 +321,9 @@ const ChatApp = () => {
     // Step 3: Handle or set them (example: set the first unknown user)
     if (unknownOnlineUsers.length > 0) {
       const firstUnknownUserId = unknownOnlineUsers[0];
-      setCurrentUser(firstUnknownUserId); // or fetch details from server if needed
+      setCurrentUser(firstUnknownUserId);
     } else {
-      setCurrentUser(user); // fallback
+      setCurrentUser(user);
     }
   }, [currentContacts, onlineUsers, user]);
 
@@ -495,6 +475,7 @@ const ChatApp = () => {
               messages={messages}
               chat={selectedChat}
               pic={data?.auth}
+              typingUsers={typingUsers}
               // typingUserId={typingUserId}
             />
             <ChatInput input={input} setInput={handleTyping} onSend={sendMessage} />
