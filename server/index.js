@@ -165,8 +165,12 @@ io.on('connection', (socket) => {
       await signedInUser.save();
       socket.broadcast.emit('userOnline', { userId, online: signedInUser.isOnline });
       socket.broadcast.emit('isConnected', { currentUser: userId });
+
+      socket.emit('LoggingIn', {
+        status: 'ok',
+        loggedInUser: signedInUser
+      });
     }
-    console.log(onlineUsers);
 
     // Notify others this user came online
 

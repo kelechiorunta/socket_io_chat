@@ -197,13 +197,13 @@ const resolvers = {
     users: async (_, args, context) => {
       if (!context?.user) return [];
 
-      if (context.ioInstance && context.user) {
-        context.ioInstance.emit('LoggingIn', {
-          status: 'ok',
-          loggedInUser: context.user
-        });
-        console.log('loggingin');
-      }
+      // if (context.ioInstance && context.user) {
+      //   context.ioInstance.emit('LoggingIn', {
+      //     status: 'ok',
+      //     loggedInUser: context.user
+      //   });
+      //   console.log('loggingin');
+      // }
 
       try {
         const users = await User.find({ _id: { $ne: context.user._id } });
