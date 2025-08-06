@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import Avatar from './Avatar';
 import { format, isToday, isYesterday } from 'date-fns';
 import { useTheme } from './ThemeContext';
+import TypingIndicator from './Indicators/TypingIndicator';
 
 const formatDateLabel = (date) => {
   if (isToday(date)) return 'Today';
@@ -9,7 +10,7 @@ const formatDateLabel = (date) => {
   return format(date, 'MMMM d, yyyy');
 };
 
-const ChatBody = ({ messages = [], pic, chat, typingUserId }) => {
+const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
   const chatEndRef = useRef(null);
   const { theme } = useTheme();
 
@@ -42,6 +43,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUserId }) => {
         lastMessageDate = msgDate;
 
         const isClient = msg?.sender?._id === pic?._id || msg.from === 'client';
+        // const isTyping = typingUsers.has(msg?.sender?._id) || typingUsers.has(msg?.receiver?._id);
 
         return (
           <React.Fragment key={index}>
@@ -91,6 +93,25 @@ const ChatBody = ({ messages = [], pic, chat, typingUserId }) => {
           </React.Fragment>
         );
       })}
+      {[...typingUsers].length > 0 && (
+        <div className="d-flex align-items-center gap-2 mb-2 justify-content-start">
+          <Avatar src={(chat && chat.picture) || './avatar.png'} size={32} />
+          <div
+            className="px-3 py-2 rounded-pill"
+            style={{
+              backgroundColor: '#3a3b3c',
+              color: '#fff',
+              maxWidth: '60%',
+              fontSize: '0.9rem',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
+            <TypingIndicator />
+          </div>
+        </div>
+      )}
+
       <div ref={chatEndRef} />
     </div>
   );
