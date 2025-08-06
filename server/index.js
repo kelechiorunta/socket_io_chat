@@ -338,7 +338,8 @@ io.on('connection', (socket) => {
 
   socket.on('ProfileUpdated', ({ updatedUser }) => {
     if (updatedUser) {
-      socket.broadcast.emit('UpdatedProfile', { updatedProfileUser: updatedUser });
+      // Don't broadcast
+      socket.emit('UpdatedProfile', { updatedProfileUser: updatedUser });
     }
   });
 
