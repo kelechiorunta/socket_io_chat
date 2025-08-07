@@ -10,12 +10,14 @@ const SocketNotifications = ({ socketInstance }) => {
   const logoutToastRef = useRef(null);
   const profileToastRef = useRef(null);
 
+  const shownUsersRef = useRef(new Set());
+
   useEffect(() => {
     if (!socketInstance) return;
 
     const handleLoggingIn = ({ status, loggedInUser }) => {
-      // socketInstance.on('LoggingIn', handleLoggingIn);
       if (status === 'ok' && loggedInUser?.username) {
+        shownUsersRef.current.add(loggedInUser.username);
         if (!toast.isActive(loginToastRef.current)) {
           loginToastRef.current = toast.success(`🎉 ${loggedInUser.username} just joined in!`, {
             position: 'top-right',
@@ -41,38 +43,33 @@ const SocketNotifications = ({ socketInstance }) => {
     };
 
     const handleProfileChanged = ({ updatedProfileUser }) => {
-      if (updatedProfileUser && updatedProfileUser?.username) {
-        console.log('Profile Updated');
-
-        // Cancel login toast if it's still active
-        // if (toast.isActive(loginToastRef.current)) {
-        //   toast.dismiss(loginToastRef.current);
-        //   loginToastRef.current = null;
-        // }
-
-        if (!toast.isActive(profileToastRef.current)) {
-          toast.dismiss(loginToastRef.current);
-          profileToastRef.current = toast.success(
-            `👋 ${updatedProfileUser.username} just updated profile!`,
-            {
-              position: 'top-right',
-              autoClose: 4000,
-              pauseOnHover: true,
-              draggable: true
-            }
-          );
+      if (updatedProfileUser?.username) {
+        if (!shownUsersRef.current.has(updatedProfileUser.username)) {
+          socketInstance.on('LoggingIn');
+        } else {
+          socketInstance.off('LoggingIn');
         }
       }
+      shownUsersRef.current.add(updatedProfileUser.username);
+      profileToastRef.current = toast.success(
+        `👋 ${updatedProfileUser.username} just updated profile!`,
+        {
+          position: 'top-right',
+          autoClose: 4000,
+          pauseOnHover: true,
+          draggable: true
+        }
+      );
     };
 
     socketInstance.on('LoggingIn', handleLoggingIn);
     socketInstance.on('LoggingOut', handleLoggingOut);
-    socketInstance.on('UpdatedProfile', handleProfileChanged);
+    socketInstance.on('ProfileUpdated', handleProfileChanged);
 
     return () => {
       socketInstance.off('LoggingIn', handleLoggingIn);
       socketInstance.off('LoggingOut', handleLoggingOut);
-      socketInstance.off('UpdatedProfile', handleProfileChanged);
+      socketInstance.off('ProfileUpdated', handleProfileChanged);
     };
   }, [socketInstance]);
 
