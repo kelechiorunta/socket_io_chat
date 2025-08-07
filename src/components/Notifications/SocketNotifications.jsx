@@ -51,17 +51,18 @@ const SocketNotifications = ({ socketInstance }) => {
         // } else {
         //   socketInstance.off('LoggingIn');
         // }
-
-        // shownUsersRef.current.add(updatedProfileUser.username);
-        profileToastRef.current = toast.success(
-          `👋 ${updatedProfileUser.username} just updated profile!`,
-          {
-            position: 'top-right',
-            autoClose: 4000,
-            pauseOnHover: true,
-            draggable: true
-          }
-        );
+        if (!toast.isActive(profileToastRef.current)) {
+          // shownUsersRef.current.add(updatedProfileUser.username);
+          profileToastRef.current = toast.success(
+            `👋 ${updatedProfileUser.username} just updated profile!`,
+            {
+              position: 'top-right',
+              autoClose: 4000,
+              pauseOnHover: true,
+              draggable: true
+            }
+          );
+        }
       }
     };
 
