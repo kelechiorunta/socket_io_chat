@@ -276,7 +276,7 @@ const resolvers = {
               runValidators: true
             });
 
-            if (ioInstance) {
+            if (ioInstance && existingEmailUser) {
               ioInstance.emit('Updating', { updatedUser: updated });
             }
             return {
