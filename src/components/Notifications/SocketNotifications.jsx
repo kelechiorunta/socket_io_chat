@@ -1,43 +1,54 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { useApolloClient } from '@apollo/client';
 import { GET_CONTACTS } from '../../graphql/queries';
 import 'react-toastify/dist/ReactToastify.css';
 
+/**
+ * Combined login/logout notifications from socket events
+ */
 const SocketNotifications = ({ socketInstance }) => {
+  const loginToastRef = useRef(null);
+  const logoutToastRef = useRef(null);
+  const profileToastRef = useRef(null);
+
   const client = useApolloClient();
+  // const shownUsersRef = useRef(new Set());
 
   useEffect(() => {
     if (!socketInstance) return;
 
     const handleLoggingIn = ({ status, loggedInUser }) => {
       if (status === 'ok' && loggedInUser?.username) {
-        toast.success(`🎉 ${loggedInUser.username} just joined in!`, {
-          toastId: `login-${loggedInUser._id}`,
-          position: 'top-right',
-          autoClose: 4000,
-          pauseOnHover: true,
-          draggable: true
-        });
+        if (!toast.isActive(loginToastRef.current)) {
+          loginToastRef.current = toast.success(`🎉 ${loggedInUser.username} just joined in!`, {
+            position: 'top-right',
+            autoClose: 4000,
+            pauseOnHover: true,
+            draggable: true
+          });
+        }
       }
     };
 
     const handleLoggingOut = ({ signedOutUser }) => {
-      if (signedOutUser?.username) {
-        toast.info(`👋 ${signedOutUser.username} just logged out!`, {
-          toastId: `logout-${signedOutUser._id}`,
-          position: 'top-right',
-          autoClose: 4000,
-          pauseOnHover: true,
-          draggable: true
-        });
+      if (signedOutUser && signedOutUser?.username) {
+        if (!toast.isActive(logoutToastRef.current)) {
+          logoutToastRef.current = toast.info(`👋 ${signedOutUser.username} just logged out!`, {
+            position: 'top-right',
+            autoClose: 4000,
+            pauseOnHover: true,
+            draggable: true
+          });
+        }
       }
     };
 
     const handleProfileChanged = ({ updatedUser }) => {
       try {
         const existing = client.readQuery({ query: GET_CONTACTS });
-        if (!existing || !Array.isArray(existing.users)) return;
+
+        if (!existing) return;
 
         const updatedUsers = existing.users.map((user) =>
           user._id === updatedUser._id ? { ...user, ...updatedUser } : user
@@ -48,13 +59,20 @@ const SocketNotifications = ({ socketInstance }) => {
           data: { users: updatedUsers }
         });
 
-        toast.success(`✏️ ${updatedUser.username} updated profile!`, {
-          toastId: `profile-${updatedUser._id}-${Date.now()}`,
-          position: 'top-right',
-          autoClose: 4000,
-          pauseOnHover: true,
-          draggable: true
-        });
+        if (updatedUser?.username) {
+          if (!toast.isActive(profileToastRef.current)) {
+            profileToastRef.current = toast.success(
+              `👋 ${updatedUser.username} just updated profile!`,
+              {
+                position: 'top-right',
+                autoClose: 4000,
+                pauseOnHover: true,
+                draggable: true
+              }
+            );
+          }
+        }
+        // socket.emit('ProfileUpdated', { updatedUser: updatedUser });
       } catch (err) {
         console.error('Error updating contacts in real-time:', err);
       }
