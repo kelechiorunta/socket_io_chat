@@ -44,11 +44,11 @@ const SocketNotifications = ({ socketInstance }) => {
 
     const handleProfileChanged = ({ updatedProfileUser }) => {
       if (updatedProfileUser?.username) {
-        if (!shownUsersRef.current.has(updatedProfileUser.username)) {
-          socketInstance.on('LoggingIn');
-        } else {
-          socketInstance.off('LoggingIn');
-        }
+        // if (!shownUsersRef.current.has(updatedProfileUser.username)) {
+        //   socketInstance.on('LoggingIn');
+        // } else {
+        //   socketInstance.off('LoggingIn');
+        // }
 
         // shownUsersRef.current.add(updatedProfileUser.username);
         profileToastRef.current = toast.success(
