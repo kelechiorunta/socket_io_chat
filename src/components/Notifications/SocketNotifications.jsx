@@ -99,7 +99,7 @@ const SocketNotifications = ({ socketInstance }) => {
       if (status === 'ok' && loggedInUser?.username) {
         const toastKey = `login-${loggedInUser.username}`;
         if (!loginToasts.current.has(toastKey)) {
-          const id = toast.success(`🎉 ${loggedInUser.username} just joined in!`, {
+          toast.success(`🎉 ${loggedInUser.username} just joined in!`, {
             position: 'top-right',
             autoClose: 4000,
             pauseOnHover: true,
@@ -115,7 +115,7 @@ const SocketNotifications = ({ socketInstance }) => {
       if (signedOutUser?.username) {
         const toastKey = `logout-${signedOutUser.username}`;
         if (!logoutToasts.current.has(toastKey)) {
-          const id = toast.info(`👋 ${signedOutUser.username} just logged out!`, {
+          toast.info(`👋 ${signedOutUser.username} just logged out!`, {
             position: 'top-right',
             autoClose: 4000,
             pauseOnHover: true,
