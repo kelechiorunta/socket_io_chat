@@ -17,14 +17,16 @@ const SocketNotifications = ({ socketInstance }) => {
 
     const handleLoggingIn = ({ status, loggedInUser }) => {
       if (status === 'ok' && loggedInUser?.username) {
-        shownUsersRef.current.add(loggedInUser.username);
-        if (!toast.isActive(loginToastRef.current)) {
-          loginToastRef.current = toast.success(`🎉 ${loggedInUser.username} just joined in!`, {
-            position: 'top-right',
-            autoClose: 4000,
-            pauseOnHover: true,
-            draggable: true
-          });
+        if (!shownUsersRef.current.has(loggedInUser.username)) {
+          shownUsersRef.current.add(loggedInUser.username);
+          if (!toast.isActive(loginToastRef.current)) {
+            loginToastRef.current = toast.success(`🎉 ${loggedInUser.username} just joined in!`, {
+              position: 'top-right',
+              autoClose: 4000,
+              pauseOnHover: true,
+              draggable: true
+            });
+          }
         }
       }
     };
