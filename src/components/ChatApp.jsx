@@ -296,6 +296,8 @@ const ChatApp = () => {
 
     return () => {
       socket.off('Updating');
+      socket.off('LoggingIn');
+      socket.off('ProfileUpdated');
     };
   }, [client, socket]);
 

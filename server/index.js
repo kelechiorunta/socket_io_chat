@@ -166,7 +166,7 @@ io.on('connection', (socket) => {
       socket.broadcast.emit('userOnline', { userId, online: signedInUser.isOnline });
       socket.broadcast.emit('isConnected', { currentUser: userId });
 
-      socket.emit('LoggingIn', {
+      socket.broadcast.emit('LoggingIn', {
         status: 'ok',
         loggedInUser: signedInUser
       });
@@ -343,7 +343,7 @@ io.on('connection', (socket) => {
   socket.on('ProfileUpdated', ({ updatedUser }) => {
     if (updatedUser) {
       // Don't broadcast
-      socket.emit('UpdatedProfile', { updatedProfileUser: updatedUser });
+      socket.broadcast.emit('UpdatedProfile', { updatedProfileUser: updatedUser });
     }
   });
 
