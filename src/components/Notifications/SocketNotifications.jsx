@@ -14,7 +14,7 @@ const SocketNotifications = ({ socketInstance }) => {
     if (!socketInstance) return;
 
     const handleLoggingIn = ({ status, loggedInUser }) => {
-      socketInstance.on('LoggingIn', handleLoggingIn);
+      // socketInstance.on('LoggingIn', handleLoggingIn);
       if (status === 'ok' && loggedInUser?.username) {
         if (!toast.isActive(loginToastRef.current)) {
           loginToastRef.current = toast.success(`🎉 ${loggedInUser.username} just joined in!`, {
@@ -45,7 +45,8 @@ const SocketNotifications = ({ socketInstance }) => {
       if (updatedProfileUser && updatedProfileUser?.username) {
         console.log('Profile Updated');
         if (!toast.isActive(profileToastRef.current)) {
-          socketInstance.off('LoggingIn', handleLoggingIn);
+          // socketInstance.off('LoggingIn', handleLoggingIn);
+          loginToastRef.current = null;
           profileToastRef.current = toast.success(
             `👋 ${updatedProfileUser.username} just updated profile!`,
             {
