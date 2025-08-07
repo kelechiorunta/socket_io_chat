@@ -14,6 +14,7 @@ const SocketNotifications = ({ socketInstance }) => {
     if (!socketInstance) return;
 
     const handleLoggingIn = ({ status, loggedInUser }) => {
+      socketInstance.on('LoggingIn', handleLoggingIn);
       if (status === 'ok' && loggedInUser?.username) {
         if (!toast.isActive(loginToastRef.current)) {
           loginToastRef.current = toast.success(`🎉 ${loggedInUser.username} just joined in!`, {
