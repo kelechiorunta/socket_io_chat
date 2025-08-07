@@ -45,21 +45,22 @@ const SocketNotifications = ({ socketInstance }) => {
     const handleProfileChanged = ({ updatedProfileUser }) => {
       if (updatedProfileUser?.username) {
         if (!shownUsersRef.current.has(updatedProfileUser.username)) {
-          socketInstance.on('LoggingIn');
+          socketInstance.off('LoggingIn');
         } else {
           socketInstance.off('LoggingIn');
         }
+
+        shownUsersRef.current.add(updatedProfileUser.username);
+        profileToastRef.current = toast.success(
+          `👋 ${updatedProfileUser.username} just updated profile!`,
+          {
+            position: 'top-right',
+            autoClose: 4000,
+            pauseOnHover: true,
+            draggable: true
+          }
+        );
       }
-      shownUsersRef.current.add(updatedProfileUser.username);
-      profileToastRef.current = toast.success(
-        `👋 ${updatedProfileUser.username} just updated profile!`,
-        {
-          position: 'top-right',
-          autoClose: 4000,
-          pauseOnHover: true,
-          draggable: true
-        }
-      );
     };
 
     socketInstance.on('LoggingIn', handleLoggingIn);
