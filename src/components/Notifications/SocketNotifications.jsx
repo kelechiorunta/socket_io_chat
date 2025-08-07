@@ -10,15 +10,13 @@ const SocketNotifications = ({ socketInstance }) => {
   const logoutToastRef = useRef(null);
   const profileToastRef = useRef(null);
 
-  const shownUsersRef = useRef(new Set());
-
   useEffect(() => {
     if (!socketInstance) return;
 
     const handleLoggingIn = ({ status, loggedInUser }) => {
+      // socketInstance.on('LoggingIn', handleLoggingIn);
       if (status === 'ok' && loggedInUser?.username) {
-        if (!shownUsersRef.current.has(loggedInUser.username)) {
-          shownUsersRef.current.add(loggedInUser.username);
+        if (!toast.isActive(loginToastRef.current)) {
           loginToastRef.current = toast.success(`🎉 ${loggedInUser.username} just joined in!`, {
             position: 'top-right',
             autoClose: 4000,
@@ -44,8 +42,15 @@ const SocketNotifications = ({ socketInstance }) => {
 
     const handleProfileChanged = ({ updatedProfileUser }) => {
       if (updatedProfileUser?.username) {
-        if (!shownUsersRef.current.has(updatedProfileUser.username)) {
-          shownUsersRef.current.add(updatedProfileUser.username);
+        console.log('Profile Updated');
+
+        // Cancel login toast if it's still active
+        if (toast.isActive(loginToastRef.current)) {
+          toast.dismiss(loginToastRef.current);
+          loginToastRef.current = null;
+        }
+
+        if (!toast.isActive(profileToastRef.current)) {
           profileToastRef.current = toast.success(
             `👋 ${updatedProfileUser.username} just updated profile!`,
             {
