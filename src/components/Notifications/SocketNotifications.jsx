@@ -41,16 +41,17 @@ const SocketNotifications = ({ socketInstance }) => {
     };
 
     const handleProfileChanged = ({ updatedProfileUser }) => {
-      if (updatedProfileUser?.username) {
+      if (updatedProfileUser && updatedProfileUser?.username) {
         console.log('Profile Updated');
 
         // Cancel login toast if it's still active
-        if (toast.isActive(loginToastRef.current)) {
-          toast.dismiss(loginToastRef.current);
-          loginToastRef.current = null;
-        }
+        // if (toast.isActive(loginToastRef.current)) {
+        //   toast.dismiss(loginToastRef.current);
+        //   loginToastRef.current = null;
+        // }
 
         if (!toast.isActive(profileToastRef.current)) {
+          toast.dismiss(loginToastRef.current);
           profileToastRef.current = toast.success(
             `👋 ${updatedProfileUser.username} just updated profile!`,
             {
