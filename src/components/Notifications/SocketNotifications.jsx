@@ -45,7 +45,7 @@ const SocketNotifications = ({ socketInstance }) => {
     const handleProfileChanged = ({ updatedProfileUser }) => {
       if (updatedProfileUser?.username) {
         if (!shownUsersRef.current.has(updatedProfileUser.username)) {
-          socketInstance.off('LoggingIn');
+          socketInstance.on('LoggingIn');
         } else {
           socketInstance.off('LoggingIn');
         }
