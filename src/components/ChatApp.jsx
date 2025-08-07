@@ -299,7 +299,7 @@ const ChatApp = () => {
       socket.off('LoggingIn');
       socket.off('ProfileUpdated');
     };
-  }, [client, socket]);
+  }, [client]);
 
   useEffect(() => {
     if (!socket || !user?._id || selectedChat?._id) return;
