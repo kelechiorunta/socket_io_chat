@@ -50,7 +50,7 @@ const SocketNotifications = ({ socketInstance }) => {
           socketInstance.off('LoggingIn');
         }
 
-        shownUsersRef.current.add(updatedProfileUser.username);
+        // shownUsersRef.current.add(updatedProfileUser.username);
         profileToastRef.current = toast.success(
           `👋 ${updatedProfileUser.username} just updated profile!`,
           {
