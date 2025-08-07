@@ -8,14 +8,14 @@ import ChatInput from './ChatInput';
 import IconBar from './IconBar';
 import { useTheme } from './ThemeContext';
 import { AUTH, GET_CONTACTS } from '../graphql/queries';
-import { useQuery, useMutation, useLazyQuery, useApolloClient } from '@apollo/client';
+import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import debounce from 'lodash.debounce';
 import { format, isToday, isYesterday } from 'date-fns';
 import { MARK_MESSAGES_AS_READ, CLEAR_UNREAD, GET_UNREAD } from '../graphql/queries';
 import SocketNotifications from './Notifications/SocketNotifications';
 
 const ChatApp = () => {
-  const client = useApolloClient();
+  // const client = useApolloClient();
   const { theme } = useTheme();
   const isDark = theme === 'dark';
   const [messages, setMessages] = useState([]);
@@ -270,35 +270,35 @@ const ChatApp = () => {
     };
   }, [markMessagesAsRead, socket]);
 
-  useEffect(() => {
-    if (!socket || !client) return;
+  // useEffect(() => {
+  //   if (!socket || !client) return;
 
-    socket.on('Updating', ({ updatedUser }) => {
-      try {
-        const existing = client.readQuery({ query: GET_CONTACTS });
+  // socket.on('Updating', ({ updatedUser }) => {
+  //   try {
+  //     const existing = client.readQuery({ query: GET_CONTACTS });
 
-        if (!existing) return;
+  //     if (!existing) return;
 
-        const updatedUsers = existing.users.map((user) =>
-          user._id === updatedUser._id ? { ...user, ...updatedUser } : user
-        );
+  //     const updatedUsers = existing.users.map((user) =>
+  //       user._id === updatedUser._id ? { ...user, ...updatedUser } : user
+  //     );
 
-        client.writeQuery({
-          query: GET_CONTACTS,
-          data: { users: updatedUsers }
-        });
-        socket.emit('ProfileUpdated', { updatedUser: updatedUser });
-      } catch (err) {
-        console.error('Error updating contacts in real-time:', err);
-      }
-    });
+  //     client.writeQuery({
+  //       query: GET_CONTACTS,
+  //       data: { users: updatedUsers }
+  //     });
+  //     socket.emit('ProfileUpdated', { updatedUser: updatedUser });
+  //   } catch (err) {
+  //     console.error('Error updating contacts in real-time:', err);
+  //   }
+  // });
 
-    return () => {
-      socket.off('Updating');
-      socket.off('LoggingIn');
-      socket.off('ProfileUpdated');
-    };
-  }, [client, socket]);
+  //   return () => {
+  //     socket.off('Updating');
+  //     socket.off('LoggingIn');
+  //     socket.off('ProfileUpdated');
+  //   };
+  // }, [client, socket]);
 
   useEffect(() => {
     if (!socket || !user?._id || selectedChat?._id) return;
