@@ -88,7 +88,7 @@ const SocketNotifications = ({ socketInstance }) => {
       socketInstance.off('LoggingOut', handleLoggingOut);
       socketInstance.off('Updating', handleProfileChanged);
     };
-  }, [socketInstance, client]);
+  }, [socketInstance, client, isLoggedIn]);
 
   return <ToastContainer style={{ fontFamily: 'Poppins' }} />;
 };
