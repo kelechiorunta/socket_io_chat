@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { useApolloClient } from '@apollo/client';
 import { GET_CONTACTS } from '../../graphql/queries';
@@ -12,6 +12,7 @@ const SocketNotifications = ({ socketInstance }) => {
   const logoutToastRef = useRef(null);
   const profileToastRef = useRef(null);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const client = useApolloClient();
   // const shownUsersRef = useRef(new Set());
 
@@ -19,7 +20,7 @@ const SocketNotifications = ({ socketInstance }) => {
     if (!socketInstance) return;
 
     const handleLoggingIn = ({ status, loggedInUser }) => {
-      if (status === 'ok' && loggedInUser?.username) {
+      if (status === 'ok' && loggedInUser?.username && !isLoggedIn) {
         if (!toast.isActive(loginToastRef.current)) {
           loginToastRef.current = toast.success(`🎉 ${loggedInUser.username} just joined in!`, {
             position: 'top-right',
@@ -58,7 +59,7 @@ const SocketNotifications = ({ socketInstance }) => {
           query: GET_CONTACTS,
           data: { users: updatedUsers }
         });
-
+        setIsLoggedIn(true);
         if (updatedUser?.username) {
           if (!toast.isActive(profileToastRef.current)) {
             profileToastRef.current = toast.success(
