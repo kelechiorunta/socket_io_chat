@@ -26,13 +26,13 @@ const SocketNotifications = ({ socketInstance }) => {
       if (status === 'ok' && loggedInUser?.username) {
         setSignedUsers((prev) => {
           // 🚫 Skip if user just updated profile
-          if (recentlyUpdatedProfilesRef.current.has(updatedProfileUser._id)) {
+          if (recentlyUpdatedProfilesRef.current.has(loggedInUser._id || updatedProfileUser._id)) {
             return prev; // no login toast
           }
 
-          if (!prev.has(updatedProfileUser._id)) {
+          if (!prev.has(loggedInUser._id || updatedProfileUser._id)) {
             const newSet = new Set(prev);
-            newSet.add(updatedProfileUser._id);
+            newSet.add(loggedInUser._id || updatedProfileUser._id);
 
             if (!toast.isActive(loginToastRef.current)) {
               loginToastRef.current = toast.success(`🎉 ${loggedInUser.username} just joined in!`, {
@@ -81,7 +81,7 @@ const SocketNotifications = ({ socketInstance }) => {
         recentlyUpdatedProfilesRef.current.add(updatedUser._id);
         setTimeout(() => {
           recentlyUpdatedProfilesRef.current.delete(updatedUser._id);
-        }, 1000); // 5 seconds window
+        }, 3000); // 5 seconds window
 
         if (updatedUser?.username) {
           if (!toast.isActive(profileToastRef.current)) {
@@ -110,7 +110,7 @@ const SocketNotifications = ({ socketInstance }) => {
       socketInstance.off('LoggingOut', handleLoggingOut);
       socketInstance.off('Updating', handleProfileChanged);
     };
-  }, [socketInstance, client, signedUsers]);
+  }, [socketInstance, client, signedUsers, updatedProfileUser]);
 
   return <ToastContainer style={{ fontFamily: 'Poppins' }} />;
 };
