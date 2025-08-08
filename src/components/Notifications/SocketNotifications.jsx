@@ -12,7 +12,10 @@ const SocketNotifications = ({ socketInstance }) => {
   const logoutToastRef = useRef(null);
   const profileToastRef = useRef(null);
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [signedUsers, setSignedUsers] = useState(new Set());
+
+  // const [updatedProfileUser, setUpdatedProfileUser] = useState(null);
+  const recentlyUpdatedProfilesRef = useRef(new Set());
   const client = useApolloClient();
   // const shownUsersRef = useRef(new Set());
 
@@ -20,15 +23,29 @@ const SocketNotifications = ({ socketInstance }) => {
     if (!socketInstance) return;
 
     const handleLoggingIn = ({ status, loggedInUser }) => {
-      if (status === 'ok' && loggedInUser?.username && !isLoggedIn) {
-        if (!toast.isActive(loginToastRef.current)) {
-          loginToastRef.current = toast.success(`🎉 ${loggedInUser.username} just joined in!`, {
-            position: 'top-right',
-            autoClose: 4000,
-            pauseOnHover: true,
-            draggable: true
-          });
-        }
+      if (status === 'ok' && loggedInUser?.username) {
+        setSignedUsers((prev) => {
+          // 🚫 Skip if user just updated profile
+          if (recentlyUpdatedProfilesRef.current.has(loggedInUser._id)) {
+            return prev; // no login toast
+          }
+
+          if (!prev.has(loggedInUser._id)) {
+            const newSet = new Set(prev);
+            newSet.add(loggedInUser._id);
+
+            if (!toast.isActive(loginToastRef.current)) {
+              loginToastRef.current = toast.success(`🎉 ${loggedInUser.username} just joined in!`, {
+                position: 'top-right',
+                autoClose: 4000,
+                pauseOnHover: true,
+                draggable: true
+              });
+            }
+            return newSet;
+          }
+          return prev;
+        });
       }
     };
 
@@ -48,7 +65,6 @@ const SocketNotifications = ({ socketInstance }) => {
     const handleProfileChanged = ({ updatedUser }) => {
       try {
         const existing = client.readQuery({ query: GET_CONTACTS });
-
         if (!existing) return;
 
         const updatedUsers = existing.users.map((user) =>
@@ -59,7 +75,13 @@ const SocketNotifications = ({ socketInstance }) => {
           query: GET_CONTACTS,
           data: { users: updatedUsers }
         });
-        setIsLoggedIn(true);
+
+        // 🕒 Track this user so they don't trigger a login toast
+        recentlyUpdatedProfilesRef.current.add(updatedUser._id);
+        setTimeout(() => {
+          recentlyUpdatedProfilesRef.current.delete(updatedUser._id);
+        }, 5000); // 5 seconds window
+
         if (updatedUser?.username) {
           if (!toast.isActive(profileToastRef.current)) {
             profileToastRef.current = toast.success(
@@ -73,7 +95,6 @@ const SocketNotifications = ({ socketInstance }) => {
             );
           }
         }
-        // socket.emit('ProfileUpdated', { updatedUser: updatedUser });
       } catch (err) {
         console.error('Error updating contacts in real-time:', err);
       }
@@ -88,7 +109,7 @@ const SocketNotifications = ({ socketInstance }) => {
       socketInstance.off('LoggingOut', handleLoggingOut);
       socketInstance.off('Updating', handleProfileChanged);
     };
-  }, [socketInstance, client, isLoggedIn]);
+  }, [socketInstance, client, signedUsers]);
 
   return <ToastContainer style={{ fontFamily: 'Poppins' }} />;
 };
