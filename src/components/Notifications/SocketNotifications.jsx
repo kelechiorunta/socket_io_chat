@@ -14,7 +14,7 @@ const SocketNotifications = ({ socketInstance }) => {
 
   const [signedUsers, setSignedUsers] = useState(new Set());
 
-  // const [updatedProfileUser, setUpdatedProfileUser] = useState(null);
+  const [updatedProfileUser, setUpdatedProfileUser] = useState(null);
   const recentlyUpdatedProfilesRef = useRef(new Set());
   const client = useApolloClient();
   // const shownUsersRef = useRef(new Set());
@@ -26,13 +26,13 @@ const SocketNotifications = ({ socketInstance }) => {
       if (status === 'ok' && loggedInUser?.username) {
         setSignedUsers((prev) => {
           // 🚫 Skip if user just updated profile
-          if (recentlyUpdatedProfilesRef.current.has(loggedInUser._id)) {
+          if (recentlyUpdatedProfilesRef.current.has(updatedProfileUser._id)) {
             return prev; // no login toast
           }
 
-          if (!prev.has(loggedInUser._id)) {
+          if (!prev.has(updatedProfileUser._id)) {
             const newSet = new Set(prev);
-            newSet.add(loggedInUser._id);
+            newSet.add(updatedProfileUser._id);
 
             if (!toast.isActive(loginToastRef.current)) {
               loginToastRef.current = toast.success(`🎉 ${loggedInUser.username} just joined in!`, {
@@ -77,10 +77,11 @@ const SocketNotifications = ({ socketInstance }) => {
         });
 
         // 🕒 Track this user so they don't trigger a login toast
+        setUpdatedProfileUser(updatedUser);
         recentlyUpdatedProfilesRef.current.add(updatedUser._id);
         setTimeout(() => {
           recentlyUpdatedProfilesRef.current.delete(updatedUser._id);
-        }, 5000); // 5 seconds window
+        }, 1000); // 5 seconds window
 
         if (updatedUser?.username) {
           if (!toast.isActive(profileToastRef.current)) {
