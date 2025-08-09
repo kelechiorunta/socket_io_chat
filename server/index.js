@@ -381,6 +381,7 @@ io.on('connection', (socket) => {
         signedOutUser.isOnline = false;
         await signedOutUser.save();
         onlineUsers.delete(userId);
+        signedInUsers.delete(userId);
         socket.broadcast.emit('userOffline', { userId, signedOutUser });
         socket.broadcast.emit('LoggingOut', { signedOutUser: signedOutUser });
       }
