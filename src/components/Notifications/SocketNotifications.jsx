@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
  */
 const SocketNotifications = ({ socketInstance }) => {
   const loginToastRef = useRef(null);
+  const signInToastRef = useRef(null);
   const logoutToastRef = useRef(null);
   const profileToastRef = useRef(null);
 
@@ -53,6 +54,19 @@ const SocketNotifications = ({ socketInstance }) => {
           }
           return prev;
         });
+      }
+    };
+
+    const handleSigningIn = ({ status, loggedInUser }) => {
+      if (loggedInUser && loggedInUser?.username) {
+        if (!toast.isActive(signInToastRef.current)) {
+          signInToastRef.current = toast.info(`👋 ${loggedInUser.username} just signed in!`, {
+            position: 'top-right',
+            autoClose: 4000,
+            pauseOnHover: true,
+            draggable: true
+          });
+        }
       }
     };
 
@@ -109,11 +123,13 @@ const SocketNotifications = ({ socketInstance }) => {
     };
 
     socketInstance.on('LoggingIn', handleLoggingIn);
+    socketInstance.on('SigningIn', handleSigningIn);
     socketInstance.on('LoggingOut', handleLoggingOut);
     socketInstance.on('Updating', handleProfileChanged);
 
     return () => {
       socketInstance.off('LoggingIn', handleLoggingIn);
+      socketInstance.off('SigningIn', handleSigningIn);
       socketInstance.off('LoggingOut', handleLoggingOut);
       socketInstance.off('Updating', handleProfileChanged);
     };

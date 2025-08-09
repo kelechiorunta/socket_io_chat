@@ -144,6 +144,7 @@ app.use(
 );
 
 const onlineUsers = new Map();
+const signedInUsers = new Set();
 
 io.engine.on('connection', (socket) => {
   console.log(socket?.request?.url);
@@ -155,6 +156,16 @@ io.engine.on('connection_error', (err) => {
 
 io.on('connection', (socket) => {
   console.log('✅ Client connected:', socket.id);
+
+  socket.on('signedIn', async ({ userId }) => {
+    if (!signedInUsers.has(userId)) {
+      signedInUsers.add(userId);
+      const signedInUser = await User.findById(userId);
+      if (signedInUser) {
+        socket.broadcast.emit('SigningIn', { status: 'ok', loggedInUser: signedInUser });
+      }
+    }
+  });
 
   socket.on('isLoggedIn', async ({ userId }) => {
     socket.data.userId = userId;
@@ -180,11 +191,9 @@ io.on('connection', (socket) => {
       if (userDoc) {
         userDoc.isOnline = true;
         await userDoc.save();
-        socket.broadcast.emit('LoggingIn', { status: 'ok', loggedInUser: userDoc });
       }
     }
     socket.emit('currentlyOnline', { userIds: otherOnlineUsers, online: true });
-    // socket.broadcast.emit('LoggingIn', { status: 'ok', loggedInUser: signedInUser });
   });
 
   socket.on('isOnline', ({ receiverId, senderId }) => {
