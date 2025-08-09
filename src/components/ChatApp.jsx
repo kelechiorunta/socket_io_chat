@@ -182,6 +182,7 @@ const ChatApp = () => {
 
     // Emit login status and join
     socket.emit('isLoggedIn', { userId: user._id });
+    socket.emit('signedIn', { userId: user._id });
     socket.emit('joinChat', { userId: user._id });
 
     if (selectedChat?._id) {
