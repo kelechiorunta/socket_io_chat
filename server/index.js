@@ -166,8 +166,8 @@ io.on('connection', (socket) => {
       socket.broadcast.emit('userOnline', { userId, online: signedInUser.isOnline });
       socket.broadcast.emit('isConnected', { currentUser: userId });
 
+      io.emit('LoggingIn', { status: 'ok', loggedInUser: signedInUser }); // to others
       socket.emit('LoggingIn', { status: 'ok', loggedInUser: signedInUser }); // to current client
-      socket.broadcast.emit('LoggingIn', { status: 'ok', loggedInUser: signedInUser }); // to others
     }
 
     // Notify others this user came online
