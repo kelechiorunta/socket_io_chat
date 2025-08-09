@@ -33,6 +33,12 @@ const SocketNotifications = ({ socketInstance }) => {
           if (!prev.has(loggedInUser._id || updatedProfileUser._id)) {
             const newSet = new Set(prev);
             newSet.add(loggedInUser._id || updatedProfileUser._id);
+            loginToastRef.current = toast.success(`🎉 ${loggedInUser.username} just joined in!`, {
+              position: 'top-right',
+              autoClose: 4000,
+              pauseOnHover: true,
+              draggable: true
+            });
 
             if (!toast.isActive(loginToastRef.current)) {
               loginToastRef.current = toast.success(`🎉 ${loggedInUser.username} just joined in!`, {
