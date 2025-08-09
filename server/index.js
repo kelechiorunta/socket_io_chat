@@ -180,7 +180,7 @@ io.on('connection', (socket) => {
       if (userDoc) {
         userDoc.isOnline = true;
         await userDoc.save();
-        socket.broadcast.emit('LoggingIn', { status: 'ok', loggedInUser: userDoc });
+        io.emit('LoggingIn', { status: 'ok', loggedInUser: userDoc });
       }
     }
     socket.emit('currentlyOnline', { userIds: otherOnlineUsers, online: true });
