@@ -60,7 +60,7 @@ const SocketNotifications = ({ socketInstance }) => {
     const handleSigningIn = ({ status, loggedInUser }) => {
       if (loggedInUser && loggedInUser?.username) {
         if (!toast.isActive(signInToastRef.current)) {
-          signInToastRef.current = toast.info(`👋 ${loggedInUser.username} just signed in!`, {
+          signInToastRef.current = toast.success(`👋 ${loggedInUser.username} just joined in!`, {
             position: 'top-right',
             autoClose: 4000,
             pauseOnHover: true,
