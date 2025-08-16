@@ -397,6 +397,6 @@ app.get('*', (req, res) => {
 });
 
 export const handler = serverless(app);
-// server.listen(PORT, () => {
-//   console.log(`WebSocket server listening on ws://localhost:${PORT}`);
-// });
+handler.listen(PORT, () => {
+  console.log(`WebSocket server listening on ws://localhost:${PORT}`);
+});
