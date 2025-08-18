@@ -1,5 +1,4 @@
 import http from 'http';
-import serverless from 'serverless-http';
 import path from 'path';
 // import { WebSocketServer } from 'ws';
 import express from 'express';
@@ -396,7 +395,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.resolve('build', 'index.html'));
 });
 
-export const handler = serverless(app);
-handler.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`WebSocket server listening on ws://localhost:${PORT}`);
 });
