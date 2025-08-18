@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: chat-app
+    env: node
+    plan: free # or starter/standard depending on your needs
+    buildCommand: |
+      npm install
+      npm run build
+      cd server
+      npm install
+      cp -r ../build ./
+    startCommand: |
+      cd server && node index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000 # Render assigns PORT dynamically, your Express must use process.env.PORT
+      - key: MONGO_URI
+        sync: false # Set this securely in Render dashboard
+      - key: SESSION_SECRET
+        sync: false # Same here
