@@ -23,6 +23,7 @@ import ChatMessage from './model/ChatMessage.js';
 import Chat from './model/Chat.js';
 import User from './model/User.js';
 import UnreadMsg from './model/UnreadMsg.js';
+import { rateLimitMiddleware } from './middleware.js';
 // import { loginSession } from './middleware.js';
 dotenv.config();
 
@@ -117,6 +118,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api', authRouter);
+
+app.use(rateLimitMiddleware);
 
 app.set('trust proxy', true); // Trust Railway's proxy
 
