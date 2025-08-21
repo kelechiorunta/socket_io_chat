@@ -117,15 +117,7 @@ app.use(session(sessionOptions));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(express.static(path.resolve('build')));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve('build', 'index.html'));
-});
-
 app.use('/api', authRouter);
-
-app.use(rateLimitMiddleware);
 
 app.set('trust proxy', true); // Trust Railway's proxy
 
@@ -397,6 +389,14 @@ io.on('connection', (socket) => {
     }
   });
 });
+
+app.use(express.static(path.resolve('build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve('build', 'index.html'));
+});
+
+app.use(rateLimitMiddleware);
 
 server.listen(PORT, () => {
   console.log(`WebSocket server listening on ws://localhost:${PORT}`);
