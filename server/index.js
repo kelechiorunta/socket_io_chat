@@ -117,6 +117,12 @@ app.use(session(sessionOptions));
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(express.static(path.resolve('build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve('build', 'index.html'));
+});
+
 app.use('/api', authRouter);
 
 app.use(rateLimitMiddleware);
@@ -390,12 +396,6 @@ io.on('connection', (socket) => {
       }
     }
   });
-});
-
-app.use(express.static(path.resolve('build')));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve('build', 'index.html'));
 });
 
 server.listen(PORT, () => {
