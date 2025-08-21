@@ -9,6 +9,8 @@
     "@emoji-mart/react": "^1.1.1",
     "@graphql-tools/load-files": "^7.0.1",
     "@graphql-tools/schema": "^10.0.23",
+    "@upstash/ratelimit": "^2.0.6",
+    "@upstash/redis": "^1.35.3",
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
     "bootstrap": "^5.3.6",
