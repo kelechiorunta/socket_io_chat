@@ -1,4 +1,4 @@
-import rateLimit from './config/ratelimit';
+import rateLimit from './config/ratelimit.js';
 
 export const loginSession = (req, res, next) => {
   console.log('Authenticated?', req.isAuthenticated());
