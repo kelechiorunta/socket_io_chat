@@ -30,7 +30,7 @@ const AnimateText = ({ texts = [], speed = 100, delay = 5000 }) => {
 
       return () => {
         isMounted = false;
-        textRef.current.innerHTML = '';
+        // textRef.current.innerHTML = '';
       };
     }
   }, [speed, delay, textRef, texts]); // Only re-run if config changes
