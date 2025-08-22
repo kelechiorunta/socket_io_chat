@@ -72,7 +72,7 @@ export default function Login() {
     >
       <Container
         className="d-flex flex-column align-items-center justify-content-center"
-        style={{ minHeight: '100vh', maxWidth: '500px', zIndex: 20 }}
+        style={{ minHeight: '100vh', maxWidth: '500px', zIndex: 50 }}
       >
         <Row className="w-100 shadow p-2 rounded bg-dark">
           <AnimateText texts={['J U S T C H A T', "Let's Chat", 'C O N N E C T']} />
