@@ -56,92 +56,106 @@ export default function Login() {
   };
 
   return (
-    <Container
-      className="d-flex flex-column align-items-center justify-content-center"
-      style={{ minHeight: '100vh', maxWidth: '500px', backgroundImage: 'url(/screenshot.png)' }}
+    <div
+      style={{
+        backgroundAttachment: 'fixed',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100vh',
+        backgroundImage: 'url(/screenshot.png)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%'
+      }}
     >
-      <Row className="w-100 shadow p-2 rounded bg-dark">
-        <AnimateText texts={['J U S T C H A T', "Let's Chat", 'Connect with Pals']} />
-      </Row>
-      <Row className="w-100 shadow p-4 rounded bg-white">
-        <Col>
-          <h2 className="text-center mb-4" style={{ fontFamily: 'Cinzel' }}>
-            Login
-          </h2>
+      <Container
+        className="d-flex flex-column align-items-center justify-content-center"
+        style={{ minHeight: '100vh', maxWidth: '500px' }}
+      >
+        <Row className="w-100 shadow p-2 rounded bg-dark">
+          <AnimateText texts={['J U S T C H A T', "Let's Chat", 'C O N N E C T']} />
+        </Row>
+        <Row className="w-100 shadow p-4 rounded bg-white">
+          <Col>
+            <h2 className="text-center mb-4" style={{ fontFamily: 'Cinzel' }}>
+              Login
+            </h2>
 
-          {serverError && <Alert variant="danger">{serverError}</Alert>}
-          {successMessage && <Alert variant="success">{successMessage}</Alert>}
+            {serverError && <Alert variant="danger">{serverError}</Alert>}
+            {successMessage && <Alert variant="success">{successMessage}</Alert>}
 
-          <Formik
-            initialValues={{ username: '', password: '' }}
-            validationSchema={LoginSchema}
-            onSubmit={handleSubmit}
-          >
-            {({ isSubmitting }) => (
-              <Form>
-                <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Label style={{ fontFamily: 'Cinzel' }} className="fs-5">
-                    <FaUser className="me-2" />
-                    Username
-                  </BootstrapForm.Label>
-                  <Field type="text" name="username" className="form-control" />
-                  <ErrorMessage name="username" component="div" className="text-danger" />
-                </BootstrapForm.Group>
+            <Formik
+              initialValues={{ username: '', password: '' }}
+              validationSchema={LoginSchema}
+              onSubmit={handleSubmit}
+            >
+              {({ isSubmitting }) => (
+                <Form>
+                  <BootstrapForm.Group className="mb-3">
+                    <BootstrapForm.Label style={{ fontFamily: 'Cinzel' }} className="fs-5">
+                      <FaUser className="me-2" />
+                      Username
+                    </BootstrapForm.Label>
+                    <Field type="text" name="username" className="form-control" />
+                    <ErrorMessage name="username" component="div" className="text-danger" />
+                  </BootstrapForm.Group>
 
-                <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Label style={{ fontFamily: 'Cinzel' }} className="fs-5">
-                    <FaLock className="me-2" />
-                    Password
-                  </BootstrapForm.Label>
-                  <Field type="password" name="password" className="form-control" />
-                  <ErrorMessage name="password" component="div" className="text-danger" />
-                </BootstrapForm.Group>
+                  <BootstrapForm.Group className="mb-3">
+                    <BootstrapForm.Label style={{ fontFamily: 'Cinzel' }} className="fs-5">
+                      <FaLock className="me-2" />
+                      Password
+                    </BootstrapForm.Label>
+                    <Field type="password" name="password" className="form-control" />
+                    <ErrorMessage name="password" component="div" className="text-danger" />
+                  </BootstrapForm.Group>
 
-                <div className="d-grid mb-3">
-                  <Button
-                    style={{ fontFamily: 'Jost' }}
-                    type="submit"
-                    disabled={isSubmitting}
-                    variant="primary"
-                    className="fs-5"
-                  >
-                    {isSubmitting ? 'Logging in...' : 'Login'}
-                  </Button>
-                </div>
+                  <div className="d-grid mb-3">
+                    <Button
+                      style={{ fontFamily: 'Jost' }}
+                      type="submit"
+                      disabled={isSubmitting}
+                      variant="primary"
+                      className="fs-5"
+                    >
+                      {isSubmitting ? 'Logging in...' : 'Login'}
+                    </Button>
+                  </div>
 
-                <div className="d-grid mb-3">
-                  <NavLink
-                    href="/api/google"
-                    style={{
-                      fontFamily: 'Jost',
-                      width: '100%',
-                      borderRadius: '10px',
-                      color: 'white'
-                    }}
-                    className="bg-primary fs-5 mt-2 p-2 mx-auto text-center btn btn-outline-primary text-center d-flex align-items-center justify-content-center"
-                  >
-                    <FaGoogle className="me-2" /> Sign In with Google
-                  </NavLink>
-                </div>
+                  <div className="d-grid mb-3">
+                    <NavLink
+                      href="/api/google"
+                      style={{
+                        fontFamily: 'Jost',
+                        width: '100%',
+                        borderRadius: '10px',
+                        color: 'white'
+                      }}
+                      className="bg-primary fs-5 mt-2 p-2 mx-auto text-center btn btn-outline-primary text-center d-flex align-items-center justify-content-center"
+                    >
+                      <FaGoogle className="me-2" /> Sign In with Google
+                    </NavLink>
+                  </div>
 
-                <div className="text-center mt-3">
-                  <span style={{ fontFamily: 'Raleway' }}>Don’t have an account? </span>
-                  <NavLink
-                    href="/signup"
-                    className="text-primary"
-                    style={{
-                      fontFamily: 'Raleway',
-                      fontWeight: 'bold'
-                    }}
-                  >
-                    Sign up
-                  </NavLink>
-                </div>
-              </Form>
-            )}
-          </Formik>
-        </Col>
-      </Row>
-    </Container>
+                  <div className="text-center mt-3">
+                    <span style={{ fontFamily: 'Raleway' }}>Don’t have an account? </span>
+                    <NavLink
+                      href="/signup"
+                      className="text-primary"
+                      style={{
+                        fontFamily: 'Raleway',
+                        fontWeight: 'bold'
+                      }}
+                    >
+                      Sign up
+                    </NavLink>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 }
