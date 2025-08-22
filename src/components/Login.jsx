@@ -12,6 +12,7 @@ import {
 import { object, string } from 'yup'; // ✅ Use named imports instead of `* as Yup`
 import { FaUser, FaLock, FaGoogle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import AnimateText from './AnimateText/AnimateText';
 
 const LoginSchema = object({
   username: string().required('Username is required'),
@@ -59,6 +60,7 @@ export default function Login() {
       className="d-flex flex-column align-items-center justify-content-center"
       style={{ minHeight: '100vh', maxWidth: '500px' }}
     >
+      <AnimateText texts={['JUSTCHAT', "Let's Chat"]} />
       <Row className="w-100 shadow p-4 rounded bg-white">
         <Col>
           <h2 className="text-center mb-4" style={{ fontFamily: 'Cinzel' }}>
