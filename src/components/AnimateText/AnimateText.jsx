@@ -2,7 +2,7 @@ import './animateText.scss';
 import React, { useEffect, useRef } from 'react';
 import { animateText } from './animate.js';
 
-const AnimateText = ({ texts = [], speed = 100, delay = 2000 }) => {
+const AnimateText = ({ texts = [], speed = 100, delay = 5000 }) => {
   const textRef = useRef(null);
 
   useEffect(() => {
