@@ -44,7 +44,8 @@ const AnimateText = ({ texts = [], speed = 100, delay = 5000 }) => {
         width: '100%',
         fontWeight: 'bolder',
         fontSize: '2.75rem',
-        textAlign: 'center'
+        textAlign: 'center',
+        height: '48'
         // fontFamily: 'monospace'
         // color: 'black'
       }}
@@ -56,7 +57,7 @@ const AnimateText = ({ texts = [], speed = 100, delay = 5000 }) => {
           //   margin: 'auto',
           //   padding: 'auto',
           textAlign: 'center',
-          height: 'max-content'
+          height: 'auto'
         }}
         ref={textRef}
       ></div>
