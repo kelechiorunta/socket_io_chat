@@ -99,7 +99,7 @@ export default function Login() {
 
                 <div className="d-grid mb-3">
                   <Button
-                    style={{ fontFamily: 'Poppins' }}
+                    style={{ fontFamily: 'Raleway' }}
                     type="submit"
                     disabled={isSubmitting}
                     variant="primary"
@@ -113,7 +113,7 @@ export default function Login() {
                   <NavLink
                     href="/api/google"
                     style={{
-                      fontFamily: 'Poppins',
+                      fontFamily: 'Raleway',
                       width: '100%',
                       borderRadius: '10px',
                       color: 'white'
@@ -125,12 +125,12 @@ export default function Login() {
                 </div>
 
                 <div className="text-center mt-3">
-                  <span style={{ fontFamily: 'Cinzel' }}>Don’t have an account? </span>
+                  <span style={{ fontFamily: 'Raleway' }}>Don’t have an account? </span>
                   <NavLink
                     href="/signup"
                     className="text-primary"
                     style={{
-                      fontFamily: 'Cinzel',
+                      fontFamily: 'Raleway',
                       fontWeight: 'bold'
                     }}
                   >
