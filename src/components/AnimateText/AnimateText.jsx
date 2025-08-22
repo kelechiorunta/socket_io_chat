@@ -30,6 +30,7 @@ const AnimateText = ({ texts = [], speed = 100, delay = 5000 }) => {
 
       return () => {
         isMounted = false;
+        textRef.current.innerHTML = '';
       };
     }
   }, [speed, delay, textRef, texts]); // Only re-run if config changes
@@ -46,8 +47,8 @@ const AnimateText = ({ texts = [], speed = 100, delay = 5000 }) => {
         fontSize: '2.75rem',
         textAlign: 'center',
         margin: 'auto',
-        padding: '1rem',
-        height: '36px'
+        padding: '0.5rem',
+        height: '30px'
 
         // fontFamily: 'monospace'
         // color: 'black'
