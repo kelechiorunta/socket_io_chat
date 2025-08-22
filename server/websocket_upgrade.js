@@ -399,8 +399,6 @@
 // console.log(`WebSocket server listening on ws://localhost:${PORT}`);
 // server.js
 
-let clients = [];
-
 // wss.on('connection', (ws) => {
 //   if (clients.length >= 4) {
 //     ws.send('Connection limit reached. Only two clients allowed.');
