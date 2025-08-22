@@ -99,7 +99,7 @@ export default function Login() {
 
                 <div className="d-grid mb-3">
                   <Button
-                    style={{ fontFamily: 'Raleway' }}
+                    style={{ fontFamily: 'Jost' }}
                     type="submit"
                     disabled={isSubmitting}
                     variant="primary"
@@ -113,7 +113,7 @@ export default function Login() {
                   <NavLink
                     href="/api/google"
                     style={{
-                      fontFamily: 'Raleway',
+                      fontFamily: 'Jost',
                       width: '100%',
                       borderRadius: '10px',
                       color: 'white'
