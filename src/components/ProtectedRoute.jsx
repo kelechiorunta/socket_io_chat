@@ -24,7 +24,12 @@ export default function ProtectedRoute() {
         setCurrentUser(data.user);
         setIsAuthenticated(true);
       } catch (err) {
-        console.error('Auth check failed:', err.message);
+        if (err.response.status === 429) {
+          console.error('Too many requests', err?.response || err?.message);
+        } else {
+          console.error('Auth check failed:', err.message);
+        }
+
         setIsAuthenticated(false);
         setCurrentUser(null);
         localStorage.removeItem('entry'); // optional
