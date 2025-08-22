@@ -59,3 +59,17 @@
     background-color 0.2s,
     color 0.2s ease-in-out;
 }
+
+.overlay_screenshot {
+  position: relative;
+  ::before {
+    position: absolute;
+    content: '';
+    width: '100%';
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+}

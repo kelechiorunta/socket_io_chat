@@ -57,6 +57,7 @@ export default function Login() {
 
   return (
     <div
+      className="overlay_screenshot"
       style={{
         backgroundAttachment: 'fixed',
         backgroundSize: 'cover',
