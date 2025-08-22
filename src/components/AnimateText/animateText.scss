@@ -1,0 +1,38 @@
+.animate {
+  font-family: 'Cinzel', sans-serif;
+  display: inline-block;
+  opacity: 0;
+  animation: changeColor 2s ease-in-out forwards 2s;
+}
+@keyframes changeColor {
+  0% {
+    color: white;
+    opacity: 1;
+    text-shadow: 2px 2px 2px black;
+  }
+  25% {
+    color: orange;
+    opacity: 0.75;
+    text-shadow: 4px 4px 4px black;
+  }
+  50% {
+    color: yellow;
+    opacity: 0.5;
+    text-shadow: 2px 2px 2px black;
+  }
+  75% {
+    color: yellowgreen;
+    opacity: 0.25;
+    text-shadow: 4px 4px 4px black;
+  }
+  95% {
+    color: yellowgreen;
+    opacity: 0;
+    text-shadow: 4px 4px 4px black;
+  }
+  100% {
+    color: green;
+    opacity: 1;
+    text-shadow: 4px 4px 4px black;
+  }
+}
