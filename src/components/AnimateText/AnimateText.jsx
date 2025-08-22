@@ -45,7 +45,7 @@ const AnimateText = ({ texts = [], speed = 100, delay = 5000 }) => {
         fontWeight: 'bolder',
         fontSize: '2.75rem',
         textAlign: 'center',
-        height: '48'
+        height: '24px'
         // fontFamily: 'monospace'
         // color: 'black'
       }}
