@@ -60,8 +60,8 @@ export default function Login() {
       className="d-flex flex-column align-items-center justify-content-center"
       style={{ minHeight: '100vh', maxWidth: '500px' }}
     >
-      <Row className="w-100 shadow p-4 rounded bg-white">
-        <AnimateText texts={['JUSTCHAT', "Let's Chat"]} />
+      <Row className="w-100 shadow p-4 rounded bg-dark">
+        <AnimateText texts={['J U S T C H A T', "Let's Chat"]} />
       </Row>
       <Row className="w-100 shadow p-4 rounded bg-white">
         <Col>
