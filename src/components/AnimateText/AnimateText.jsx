@@ -1,4 +1,4 @@
-import './AnimateText.scss';
+import './animateText.scss';
 import React, { useEffect, useRef } from 'react';
 import { animateText } from './animate.js';
 
