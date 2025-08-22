@@ -61,9 +61,9 @@ export default function Login() {
       style={{ minHeight: '100vh', maxWidth: '500px' }}
     >
       <Row className="w-100 shadow p-4 rounded bg-white">
-        <Col>
-          <AnimateText texts={['JUSTCHAT', "Let's Chat"]} />
-        </Col>
+        <AnimateText texts={['JUSTCHAT', "Let's Chat"]} />
+      </Row>
+      <Row className="w-100 shadow p-4 rounded bg-white">
         <Col>
           <h2 className="text-center mb-4" style={{ fontFamily: 'Cinzel' }}>
             Login
