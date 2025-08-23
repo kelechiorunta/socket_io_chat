@@ -128,15 +128,15 @@ export const forgotPasswordController = async (req, res) => {
     if (!user) return res.status(401).json({ error: 'User not found' });
 
     if (user) {
-      const resetTokenExpiry = Date.now() + 60 * 10; // Token valid for 10 minutes
-      const token = jwt.sign({ id: user?._id }, process.env.JWT_SECRET, { expiresIn: 60 * 10 });
+      const resetTokenExpiry = Date.now() + 10 * 60 * 1000; // Token valid for 10 minutes
+      const token = jwt.sign({ id: user?._id }, process.env.JWT_SECRET, { expiresIn: '10m' });
       user.resetPasswordToken = token;
       user.resetPasswordExpires = resetTokenExpiry;
       await user.save();
     }
     // Use nodemailer to send an approval link to reset the password.
 
-    const resetLink = `${process.env.PUBLIC_URL}/reset-password/${user?.username}`;
+    const resetLink = `https://socketiochat-production.up.railway.app/reset-password/${user?.username}`;
     // Send reset email with token
     const transporter = createTransport({
       service: 'gmail', // Use Gmail or any other email service
@@ -151,12 +151,20 @@ export const forgotPasswordController = async (req, res) => {
       to: email,
       subject: 'Password Reset',
       html: `<p>You requested a password reset. Click the link below to reset your password:</p>
+             <p>Your token expires in ten minutes:</p>
              <a href="${resetLink}">Reset Password</a>
              <p>If you did not request this, please ignore this email.</p>`
     };
 
-    await transporter.sendMail(mailOptions);
-    res.status(200).json({ message: 'Password reset email sent' });
+    const response = await transporter.sendMail(mailOptions);
+
+    if (response.rejected && response.rejected.length > 0) {
+      return res.status(552).json({
+        error: `Email could not be delivered to: ${response.rejected.join(', ')}. It is not a registered cloud email.`
+      });
+    }
+
+    return res.status(200).json({ message: 'Password reset email sent' });
 
     // next();
     // res.status(200).json({message: "User signed up successfully", user: req.session.token})
