@@ -158,7 +158,7 @@ export const forgotPasswordController = async (req, res) => {
 
     const response = await transporter.sendMail(mailOptions);
 
-    if (response.rejected && response.rejected.length > 0) {
+    if (response?.rejected) {
       return res.status(552).json({
         error: `Email could not be delivered to: ${response.rejected.join(', ')}. It is not a registered cloud email.`
       });
@@ -169,7 +169,9 @@ export const forgotPasswordController = async (req, res) => {
     // next();
     // res.status(200).json({message: "User signed up successfully", user: req.session.token})
   } catch (err) {
-    if (err?.response?.status === 429) return res.status(429).json({ error: 'Too many requests.' });
+    if (err?.response?.status === 429) {
+      return res.status(429).json({ error: 'Too many requests.' });
+    }
     res.status(500).json({ error: err });
   }
 };
