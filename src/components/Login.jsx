@@ -178,7 +178,7 @@ import { useNavigate } from 'react-router-dom';
 import AnimateText from './AnimateText/AnimateText';
 
 const LoginSchema = object({
-  username: string().email('Enter a valid email').required('Email is required'),
+  username: string().required('Username is required'),
   password: string()
     .min(6, 'Password must be at least 6 characters')
     .required('Password is required')
@@ -292,9 +292,9 @@ export default function Login() {
                   <BootstrapForm.Group className="mb-3">
                     <div className="d-flex justify-content-between">
                       <BootstrapForm.Label>Password</BootstrapForm.Label>
-                      <NavLink href="/forgot-password" className="text-primary">
+                      {/* <NavLink href="/forgot-password" className="text-primary">
                         Forgot your password?
-                      </NavLink>
+                      </NavLink> */}
                     </div>
                     <Field
                       type="password"
