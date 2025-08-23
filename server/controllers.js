@@ -164,7 +164,7 @@ export const forgotPasswordController = async (req, res) => {
       });
     }
 
-    return res.status(200).json({ message: 'Password reset email sent' });
+    res.status(200).json({ message: 'Password reset email sent' });
 
     // next();
     // res.status(200).json({message: "User signed up successfully", user: req.session.token})
