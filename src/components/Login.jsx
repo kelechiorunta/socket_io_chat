@@ -245,10 +245,8 @@ export default function Login() {
         {/* Main card */}
         <Row className="w-100 shadow p-4 rounded bg-white mt-3">
           <Col>
-            <h3 className="text-center mb-1">Welcome back to Ruut</h3>
-            <p className="text-center text-muted mb-4">
-              Access your account and continue where you left off. 🚀
-            </p>
+            <h3 className="text-center mb-1">JUSTCHAT</h3>
+            <p className="text-center text-muted mb-4">C'mon let's chat. 🚀</p>
 
             {serverError && <Alert variant="danger">{serverError}</Alert>}
             {successMessage && <Alert variant="success">{successMessage}</Alert>}
@@ -257,7 +255,7 @@ export default function Login() {
             <div className="d-grid mb-3">
               <NavLink
                 href="/api/google"
-                className="btn btn-light border d-flex align-items-center justify-content-center"
+                className="btn btn-light fs-5 p-2 border d-flex align-items-center justify-content-center"
               >
                 <FaGoogle className="me-2" /> Login with Google
               </NavLink>
@@ -280,12 +278,12 @@ export default function Login() {
                 <Form>
                   {/* Email */}
                   <BootstrapForm.Group className="mb-3">
-                    <BootstrapForm.Label>Email</BootstrapForm.Label>
+                    <BootstrapForm.Label>Username</BootstrapForm.Label>
                     <Field
-                      type="email"
+                      type="name"
                       name="username"
                       className="form-control"
-                      placeholder="Enter your email"
+                      placeholder="Enter your username"
                     />
                     <ErrorMessage name="username" component="div" className="text-danger" />
                   </BootstrapForm.Group>
@@ -314,7 +312,7 @@ export default function Login() {
                       disabled={isSubmitting}
                       className="fs-5"
                       style={{
-                        backgroundColor: '#9b59b6',
+                        backgroundColor: '#008000', //'#9b59b6',
                         border: 'none'
                       }}
                     >
