@@ -59,7 +59,7 @@ authRouter.post('/signin', (req, res, next) => {
 });
 
 authRouter.post(
-  '/forget_password',
+  '/forgot_password',
   emailValidationSchema,
   validateRequest,
   forgotPasswordController
