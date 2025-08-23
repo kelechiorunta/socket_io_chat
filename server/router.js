@@ -1,5 +1,10 @@
 import express from 'express';
-import { signupController } from './controllers.js';
+import {
+  emailValidationSchema,
+  forgotPasswordController,
+  signupController,
+  validateRequest
+} from './controllers.js';
 import passport from 'passport';
 import User from './model/User.js';
 import { configureGooglePassport, configureLocalPassport } from './passport.js';
@@ -52,6 +57,13 @@ authRouter.post('/signin', (req, res, next) => {
     });
   })(req, res, next);
 });
+
+authRouter.post(
+  '/forget_password',
+  emailValidationSchema,
+  validateRequest,
+  forgotPasswordController
+);
 
 authRouter.get('/getChatHistory', async (req, res) => {
   try {
