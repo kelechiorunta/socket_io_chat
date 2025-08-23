@@ -158,7 +158,7 @@ export const forgotPasswordController = async (req, res) => {
 
     const response = await transporter.sendMail(mailOptions);
 
-    if (response?.rejected) {
+    if (response.rejected && response.rejected.length > 0) {
       return res.status(552).json({
         error: `Email could not be delivered to: ${response.rejected.join(', ')}. It is not a registered cloud email.`
       });
