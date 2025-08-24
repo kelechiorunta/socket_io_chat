@@ -292,9 +292,9 @@ export default function Login() {
                   <BootstrapForm.Group className="mb-3">
                     <div className="d-flex justify-content-between">
                       <BootstrapForm.Label>Password</BootstrapForm.Label>
-                      <NavLink href="/forgot-password" className="text-primary">
+                      {/* <NavLink href="/forgot-password" className="text-primary">
                         Forgot your password?
-                      </NavLink>
+                      </NavLink> */}
                     </div>
                     <Field
                       type="password"
