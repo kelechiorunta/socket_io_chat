@@ -54,7 +54,7 @@ export default function ForgotPassword() {
       setServerError('');
 
       // redirect after 2s so user sees success
-      setTimeout(() => navigate('/'), 2000);
+      //   setTimeout(() => navigate('/'), 2000);
     } catch (err) {
       setServerError(err.message);
       setSuccessMessage('');
