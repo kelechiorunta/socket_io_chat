@@ -17,7 +17,7 @@ import {
 } from 'react-bootstrap';
 import { object, string } from 'yup';
 // import { FaGoogle } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 import AnimateText from '../components/AnimateText/AnimateText';
 
@@ -28,7 +28,7 @@ const emailSchema = object({
 export default function ForgotPassword() {
   const [serverError, setServerError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const navigate = useNavigate();
+  //   const navigate = useNavigate();
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
