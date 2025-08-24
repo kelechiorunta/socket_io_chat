@@ -90,7 +90,7 @@ export const configureGooglePassport = (passport) => {
             done(null, localUser);
           } else {
             //User is new
-            const user = User.create(newUser);
+            const user = await User.create(newUser);
             done(null, user);
           }
         } catch (err) {
