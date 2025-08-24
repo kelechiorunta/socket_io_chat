@@ -4,11 +4,13 @@ import { Modal, Spinner } from 'react-bootstrap';
 
 export default function ProtectedRoute() {
   const [isAuthenticated, setIsAuthenticated] = useState(null); // null = loading
+  const [loading, setLoading] = useState(false); // null = loading
   const [currentUser, setCurrentUser] = useState(null);
   const location = useLocation();
 
   useEffect(() => {
     const checkAuth = async () => {
+      setLoading(true);
       try {
         const res = await fetch('/api/isAuthenticated', {
           credentials: 'include', // 🔥 Send session cookie
@@ -33,6 +35,8 @@ export default function ProtectedRoute() {
         setIsAuthenticated(false);
         setCurrentUser(null);
         localStorage.removeItem('entry'); // optional
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -43,7 +47,7 @@ export default function ProtectedRoute() {
   // if (isAuthenticated === null) {
   //   return <div>Loading...</div>;
   // }
-  if (isAuthenticated === null) {
+  if (isAuthenticated === null && loading) {
     return (
       <Modal show centered backdrop="static" keyboard={false}>
         <Modal.Body
@@ -71,7 +75,7 @@ export default function ProtectedRoute() {
   }
 
   // ❌ Not authenticated
-  if (!isAuthenticated) {
+  if (!isAuthenticated && !loading) {
     return <Navigate to="/login" state={{ path: location.pathname }} replace />;
   }
 
