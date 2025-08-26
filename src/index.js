@@ -7,6 +7,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import client from './components/client.js';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from './components/ThemeContext.js';
+import '@radix-ui/themes/styles.css';
+import '@radix-ui/themes/layout.css';
 
 // import reportWebVitals from './reportWebVitals.js';
 
