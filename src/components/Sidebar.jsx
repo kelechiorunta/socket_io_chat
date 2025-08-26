@@ -479,38 +479,50 @@ const Sidebar = ({
   return (
     <Flex
       direction="column"
-      className={isDark ? 'bg-[#1f1d1d] text-white' : 'bg-[#f7fef2] text-black'}
       p="3"
-      style={{ height: '100vh' }}
+      style={{
+        height: '100vh',
+        backgroundColor: isDark ? '#1f1d1d' : '#f7fef2',
+        color: isDark ? 'white' : 'black'
+      }}
     >
+      {/* Header */}
       <Flex justify="between" align="center" mb="3">
         <Text weight="bold" size="5" color="green">
           JUSTCHAT
         </Text>
-        <Flex gap="2">
-          <IconButton variant="ghost" onClick={toggleTheme}>
-            {isDark ? <Sun size={18} /> : <Moon size={18} />}
-          </IconButton>
-        </Flex>
+        <IconButton variant="ghost" onClick={toggleTheme}>
+          {isDark ? <Sun size={18} /> : <Moon size={18} />}
+        </IconButton>
       </Flex>
 
+      {/* Search Bar */}
       <Flex
         align="center"
         gap="2"
         mb="3"
-        className={isDark ? 'bg-gray-800' : 'bg-white'}
         p="2"
-        radius="large"
+        style={{
+          borderRadius: 8,
+          backgroundColor: isDark ? '#2a2a2a' : '#ffffff'
+        }}
       >
         <Search size={16} />
         <input
-          className={`flex-1 bg-transparent outline-none ${isDark ? 'text-white' : 'text-black'}`}
+          style={{
+            flex: 1,
+            background: 'transparent',
+            border: 'none',
+            outline: 'none',
+            color: isDark ? 'white' : 'black'
+          }}
           placeholder="Search..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </Flex>
 
+      {/* Tabs */}
       <Tabs.Root value={tab} onValueChange={setTab}>
         <Tabs.List>
           <Tabs.Trigger value="all">All Chats</Tabs.Trigger>
@@ -523,10 +535,19 @@ const Sidebar = ({
 
       <Separator my="2" />
 
+      {/* Contacts List */}
       <ScrollArea style={{ flex: 1 }}>
         {loading ? (
           Array.from({ length: 5 }).map((_, idx) => (
-            <Box key={idx} className="animate-pulse h-12 bg-gray-300 rounded-md mb-2" />
+            <Box
+              key={idx}
+              height="3"
+              mb="2"
+              style={{
+                borderRadius: 6,
+                backgroundColor: isDark ? '#333' : '#ddd'
+              }}
+            />
           ))
         ) : error ? (
           <Text color="red">Error fetching contacts</Text>
@@ -542,38 +563,60 @@ const Sidebar = ({
                 ref={(el) => (itemRefs.current[index] = el)}
                 align="center"
                 justify="between"
-                className={`rounded-lg cursor-pointer p-2 mb-2 ${
-                  isSelected ? 'bg-green-500 text-white' : isDark ? 'bg-gray-800' : 'bg-gray-100'
-                }`}
+                p="2"
+                mb="2"
+                style={{
+                  borderRadius: 8,
+                  cursor: 'pointer',
+                  backgroundColor: isSelected ? '#22c55e' : isDark ? '#2a2a2a' : '#f1f1f1',
+                  color: isSelected ? 'white' : 'inherit'
+                }}
                 onClick={() => onSelectChat(user)}
               >
                 <Flex align="center" gap="3">
-                  <Box className="relative">
+                  <Box style={{ position: 'relative' }}>
                     <Avatar
                       src={user.picture}
                       fallback={user.username.slice(0, 2).toUpperCase()}
                       size="3"
                     />
                     <Box
-                      className="absolute rounded-full border"
                       style={{
+                        position: 'absolute',
                         top: '70%',
                         left: '75%',
                         width: 10,
                         height: 10,
+                        borderRadius: '50%',
+                        border: '1px solid white',
                         backgroundColor: onlineUsers.has(user._id) ? '#00e575' : 'gray'
                       }}
                     />
                   </Box>
-                  <Flex direction="column" className="truncate">
+                  <Flex direction="column" style={{ minWidth: 0 }}>
                     <Text weight="bold">{user.username}</Text>
-                    <Text size="1" color="gray">
+                    <Text
+                      size="1"
+                      color="gray"
+                      style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                    >
                       {isTyping ? 'is typing...' : unread?.lastMessage || 'No messages'}
                     </Text>
                   </Flex>
                 </Flex>
                 {unread?.count > 0 && (
-                  <Flex className="bg-green-500 text-white rounded-full w-6 h-6 items-center justify-center text-xs">
+                  <Flex
+                    align="center"
+                    justify="center"
+                    style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: '50%',
+                      backgroundColor: '#22c55e',
+                      color: 'white',
+                      fontSize: '12px'
+                    }}
+                  >
                     {unread.count}
                   </Flex>
                 )}
@@ -583,20 +626,24 @@ const Sidebar = ({
         )}
       </ScrollArea>
 
+      {/* Calls Section */}
       <Flex justify="between" align="center" mt="3" mb="2">
         <Text weight="medium">Calls</Text>
-        <Flex align="center" gap="1" className="text-muted">
+        <Flex align="center" gap="1" style={{ color: 'gray' }}>
           <Plus size={16} /> <Text size="1">New Meet</Text>
         </Flex>
       </Flex>
 
       <Separator my="2" />
 
+      {/* Profile */}
       <Flex align="center" gap="2" mb="2">
         <Avatar src={pic?.picture} fallback="U" size="3" />
         <Text>Your Profile</Text>
       </Flex>
-      <Flex align="center" gap="2" className="cursor-pointer text-muted">
+
+      {/* Settings */}
+      <Flex align="center" gap="2" style={{ cursor: 'pointer', color: 'gray' }}>
         <Settings size={16} /> <Text size="1">Settings</Text>
       </Flex>
     </Flex>
