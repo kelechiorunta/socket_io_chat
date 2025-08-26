@@ -121,7 +121,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Tooltip from '@radix-ui/react-tooltip';
-import { Flex, Box, IconButton, Avatar, Text } from '@radix-ui/themes';
+import { Flex, IconButton, Avatar, Text } from '@radix-ui/themes';
 import { Home, Search, Bookmark, Share2, Settings, Moon, Sun, LogOutIcon } from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import Profile from './Profile';
@@ -151,7 +151,7 @@ const IconBar = ({ profile, onUpdateProfile }) => {
       style={{
         height: '100vh',
         minWidth: '80px',
-        borderRight: '1px solid var(--gray-a5)',
+        borderRight: '1px solid rgba(0,0,0,0.4)',
         backgroundColor: isDark ? '#1f1d1d' : 'white'
       }}
     >

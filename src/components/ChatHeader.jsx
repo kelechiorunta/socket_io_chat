@@ -69,7 +69,7 @@ const ChatHeader = ({
       style={{
         backgroundColor: isDark ? '#1f1d1d' : 'white',
         color: isDark ? 'white' : 'black',
-        borderBottom: '1px solid var(--gray-a5)'
+        borderBottom: '1px solid rgba(0, 0, 0, 0.4)'
       }}
     >
       <Flex align="center" gap="3">
