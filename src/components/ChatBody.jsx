@@ -134,8 +134,8 @@ const formatDateLabel = (date) => {
 const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
   const chatEndRef = useRef(null);
   const { theme } = useTheme();
-
   const isDark = theme === 'dark';
+
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -146,11 +146,11 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
 
   return (
     <Box
-      className="flex-grow"
       px="4"
       py="3"
       style={{
         overflowY: 'auto',
+        flexGrow: 1,
         backgroundImage: isDark ? "url('./background.jpg')" : "url('./backgroundII.png')",
         backgroundSize: 'cover',
         backgroundColor: isDark ? '#0d1717' : 'rgba(0,0,0,0.2)',
@@ -170,7 +170,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
         return (
           <React.Fragment key={index}>
             {showDateLabel && (
-              <Flex direction="column" align="center" my="3">
+              <Flex direction="column" align="center" style={{ margin: '12px 0' }}>
                 <Flex align="center" justify="center" gap="2" style={{ width: '100%' }}>
                   <Box flexGrow="1" style={{ borderBottom: '1px solid rgba(0,0,0,0.4)' }} />
                   <Text size="1" color="gray">
@@ -180,7 +180,12 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
                 </Flex>
               </Flex>
             )}
-            <Flex align="center" gap="2" mb="2" justify={isClient ? 'end' : 'start'}>
+            <Flex
+              align="center"
+              gap="2"
+              style={{ marginBottom: 8 }}
+              justify={isClient ? 'end' : 'start'}
+            >
               <Avatar
                 fallback={msg?.sender?.name ? msg.sender.name[0] : 'A'}
                 src={
@@ -199,7 +204,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
                   color: '#fff',
                   maxWidth: '60%',
                   fontSize: '0.9rem',
-                  borderRadius: '9999px'
+                  borderRadius: '16px'
                 }}
               >
                 {msg.text || msg.content}
@@ -210,7 +215,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
       })}
 
       {[...typingUsers].length > 0 && (
-        <Flex align="center" gap="2" mb="2" justify="start">
+        <Flex align="center" gap="2" style={{ marginBottom: 8 }} justify="start">
           <Avatar
             fallback={chat?.name ? chat.name[0] : 'U'}
             src={(chat && chat.picture) || './avatar.png'}
@@ -225,7 +230,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
               color: '#fff',
               maxWidth: '60%',
               fontSize: '0.9rem',
-              borderRadius: '9999px'
+              borderRadius: '16px'
             }}
           >
             <TypingIndicator />
