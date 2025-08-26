@@ -172,11 +172,11 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
             {showDateLabel && (
               <Flex direction="column" align="center" my="3">
                 <Flex align="center" justify="center" gap="2" style={{ width: '100%' }}>
-                  <Box flexGrow="1" style={{ borderBottom: '1px solid var(--gray-a5)' }} />
+                  <Box flexGrow="1" style={{ borderBottom: '1px solid rgba(0,0,0,0.4)' }} />
                   <Text size="1" color="gray">
                     {dateLabel}
                   </Text>
-                  <Box flexGrow="1" style={{ borderBottom: '1px solid var(--gray-a5)' }} />
+                  <Box flexGrow="1" style={{ borderBottom: '1px solid rgba(0,0,0,0.4)' }} />
                 </Flex>
               </Flex>
             )}
