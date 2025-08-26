@@ -557,7 +557,7 @@ const ChatApp = () => {
   });
 
   const [authUser, setAuthUser] = useState(null);
-  const { data, loading, error } = useQuery(AUTH, {
+  const { data } = useQuery(AUTH, {
     fetchPolicy: 'network-only'
   });
   const user = data?.auth;
