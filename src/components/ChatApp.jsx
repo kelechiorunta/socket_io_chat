@@ -845,21 +845,17 @@ const ChatApp = () => {
     return format(date, 'MMMM d, yyyy');
   };
   return (
-    <div
-      className={`flex h-screen w-full ${
-        isDark ? 'bg-neutral-900 text-white' : 'bg-neutral-100 text-black'
-      }`}
-    >
+    <div className={`chat-app ${isDark ? 'dark' : 'light'}`}>
       <SocketNotifications socketInstance={socket} />
 
-      {/* Desktop / Tablet Layout */}
-      <div className="hidden md:flex flex-1">
+      {/* ===== Desktop / Tablet Layout ===== */}
+      <div className="layout-desktop">
         {/* Left Sidebar */}
-        <div className="w-20 border-r">
+        <div className="iconbar-container">
           <IconBar profile={signedUser} onUpdateProfile={() => {}} />
         </div>
 
-        <div className="w-1/3 border-r">
+        <div className="sidebar-container">
           <Sidebar
             onSelectChat={handleSelectChat}
             pic={data?.auth}
@@ -879,7 +875,7 @@ const ChatApp = () => {
         </div>
 
         {/* Chat Area */}
-        <div className="flex flex-col flex-1">
+        <div className="chat-area">
           {selectedChat ? (
             <>
               <ChatHeader
@@ -888,7 +884,7 @@ const ChatApp = () => {
                 selectedUser={selectedChat}
                 onlineUsers={onlineUsers}
               />
-              <Separator.Root className="bg-neutral-300 h-px w-full" />
+              <Separator.Root className="chat-separator" />
               <ChatBody
                 messages={messages}
                 chat={selectedChat}
@@ -898,17 +894,15 @@ const ChatApp = () => {
               <ChatInput input={input} setInput={handleTyping} onSend={sendMessage} />
             </>
           ) : (
-            <div className="flex flex-1 items-center justify-center text-neutral-400">
-              Select a chat to start messaging
-            </div>
+            <div className="chat-placeholder">Select a chat to start messaging</div>
           )}
         </div>
       </div>
 
-      {/* Mobile Layout */}
-      <div className="flex md:hidden flex-1">
+      {/* ===== Mobile Layout ===== */}
+      <div className="layout-mobile">
         {selectedChat ? (
-          <div className="flex flex-col w-full">
+          <div className="chat-mobile">
             <ChatHeader
               chat={selectedChat}
               pic={data?.auth}
