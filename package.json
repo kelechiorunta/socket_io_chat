@@ -60,8 +60,8 @@
   "scripts": {
     "start": "node server/index.js",
     "heroku-postbuild": "npm run build",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject",
     "format": "prettier --write ."
   },
@@ -84,6 +84,7 @@
     ]
   },
   "devDependencies": {
+    "@craco/craco": "^7.1.0",
     "prettier": "^3.6.2"
   }
 }
