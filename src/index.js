@@ -8,7 +8,7 @@ import client from './components/client.js';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from './components/ThemeContext.js';
 import { ChakraProvider } from '@chakra-ui/react';
-// import theme from './theme.js';
+import theme from './theme.js';
 // import '@radix-ui/themes/styles.css';
 // import '@radix-ui/themes/layout.css';
 
@@ -20,7 +20,7 @@ root.render(
     <BrowserRouter>
       <ApolloProvider client={client}>
         <ThemeProvider>
-          <ChakraProvider>
+          <ChakraProvider theme={theme}>
             <App />
           </ChakraProvider>
         </ThemeProvider>
