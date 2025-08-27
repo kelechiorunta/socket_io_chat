@@ -1,9 +1,7 @@
 // theme.js
 const theme = {
-  config: {
-    initialColorMode: 'light', // or 'dark'
-    useSystemColorMode: false
-  },
+  initialColorMode: 'light', // move to root
+  useSystemColorMode: false, // move to root
   colors: {
     brand: {
       50: '#e0f2f1',
