@@ -1,6 +1,6 @@
 import React, { useState, useEffect, memo } from 'react';
 import { io } from 'socket.io-client';
-import { Container, Row, Col, Card, Placeholder, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card, Placeholder } from 'react-bootstrap';
 import Sidebar from './Sidebar';
 import ChatHeader from './ChatHeader';
 import ChatBody from './ChatBody';
@@ -13,7 +13,7 @@ import debounce from 'lodash.debounce';
 import { format, isToday, isYesterday } from 'date-fns';
 import { MARK_MESSAGES_AS_READ, CLEAR_UNREAD, GET_UNREAD } from '../graphql/queries';
 import SocketNotifications from './Notifications/SocketNotifications';
-import { ArrowLeft } from 'lucide-react';
+// import { ArrowLeft } from 'lucide-react';
 
 const ChatApp = () => {
   // const client = useApolloClient();
