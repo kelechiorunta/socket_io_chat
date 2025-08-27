@@ -43,7 +43,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import client from './components/client.js';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from './components/ThemeContext.js';
-// import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -51,9 +51,9 @@ root.render(
     <BrowserRouter>
       <ApolloProvider client={client}>
         <ThemeProvider>
-          {/* <ChakraProvider> */}
-          <App />
-          {/* </ChakraProvider> */}
+          <ChakraProvider>
+            <App />
+          </ChakraProvider>
         </ThemeProvider>
       </ApolloProvider>
     </BrowserRouter>
