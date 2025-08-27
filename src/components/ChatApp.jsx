@@ -511,6 +511,54 @@ const ChatApp = () => {
               onlineUsers={onlineUsers}
             />
           </div>
+          {loading ? (
+            Array.from({ length: 5 }).map((_, idx) => (
+              <Card key={idx}>
+                <Card.Body className="d-flex align-items-center">
+                  <Placeholder className="rounded-circle me-3" style={{ width: 40, height: 40 }} />
+                  <div className="flex-grow-1">
+                    <Placeholder xs={6} /> <br />
+                    <Placeholder xs={4} />
+                  </div>
+                </Card.Body>
+              </Card>
+            ))
+          ) : error ? (
+            <div className="text-danger">Error fetching contacts</div>
+          ) : (
+            <Col
+              style={{
+                borderRadius: 20,
+                padding: 'auto 100px',
+                width: '100%',
+                display: 'flex',
+                overflowX: 'hidden',
+                overflowY: 'scroll',
+                maxHeight: '100vh'
+              }}
+              xs={10}
+              sm={10}
+              md={11}
+              lg
+              className="justify-content-end d-flex flex-column"
+            >
+              <ChatHeader
+                chat={selectedChat}
+                pic={data?.auth}
+                selectedUser={selectedChat}
+                // typingUserId={typingUserId}
+                onlineUsers={onlineUsers}
+              />
+              <ChatBody
+                messages={messages}
+                chat={selectedChat}
+                pic={data?.auth}
+                typingUsers={typingUsers}
+                // typingUserId={typingUserId}
+              />
+              <ChatInput input={input} setInput={handleTyping} onSend={sendMessage} />
+            </Col>
+          )}
 
           {/* CHAT VIEW */}
           <div
