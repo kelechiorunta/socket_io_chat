@@ -238,7 +238,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Flex, IconButton, Avatar, Text, Tooltip } from '@radix-ui/themes';
+import { Flex, IconButton, Avatar, Text, HoverCard } from '@radix-ui/themes';
 import { Home, Search, Bookmark, Share2, Settings, Moon, Sun, LogOutIcon } from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import Profile from './Profile';
@@ -284,44 +284,69 @@ const IconBar = ({ profile, onUpdateProfile }) => {
             { icon: Share2, label: 'Share' },
             { icon: Settings, label: 'Settings' }
           ].map(({ icon: Icon, label }) => (
-            <Tooltip key={label} content={label} side="right">
-              <Flex direction="column" align="center" style={{ cursor: 'pointer' }}>
-                <Icon size={20} />
-                <Text size="1">{label}</Text>
-              </Flex>
-            </Tooltip>
+            <HoverCard key={label}>
+              <HoverCard.Trigger>
+                <Flex direction="column" align="center" style={{ cursor: 'pointer' }}>
+                  <Icon size={20} />
+                  <Text size="1">{label}</Text>
+                </Flex>
+              </HoverCard.Trigger>
+              <HoverCard.Content side="right">
+                <Text size="2">{label}</Text>
+              </HoverCard.Content>
+            </HoverCard>
           ))}
         </Flex>
       </Flex>
 
       {/* Bottom actions */}
       <Flex direction="column" align="center" gap="3">
-        <Tooltip content="Toggle Theme" side="right">
-          <IconButton size="2" variant="soft" onClick={toggleTheme} style={{ borderRadius: '50%' }}>
-            {isDark ? <Sun size={18} /> : <Moon size={18} />}
-          </IconButton>
-        </Tooltip>
+        <HoverCard>
+          <HoverCard.Trigger>
+            <IconButton
+              size="2"
+              variant="soft"
+              onClick={toggleTheme}
+              style={{ borderRadius: '50%' }}
+            >
+              {isDark ? <Sun size={18} /> : <Moon size={18} />}
+            </IconButton>
+          </HoverCard.Trigger>
+          <HoverCard.Content side="right">
+            <Text size="2">Toggle Theme</Text>
+          </HoverCard.Content>
+        </HoverCard>
 
-        <Tooltip content="Logout" side="right">
-          <IconButton
-            size="2"
-            variant="soft"
-            onClick={handleLogout}
-            style={{ borderRadius: '50%' }}
-          >
-            <LogOutIcon size={18} />
-          </IconButton>
-        </Tooltip>
+        <HoverCard>
+          <HoverCard.Trigger>
+            <IconButton
+              size="2"
+              variant="soft"
+              onClick={handleLogout}
+              style={{ borderRadius: '50%' }}
+            >
+              <LogOutIcon size={18} />
+            </IconButton>
+          </HoverCard.Trigger>
+          <HoverCard.Content side="right">
+            <Text size="2">Logout</Text>
+          </HoverCard.Content>
+        </HoverCard>
 
-        <Tooltip content="Update Profile" side="right">
-          <Avatar
-            src={profile?.picture}
-            fallback="P"
-            size="2"
-            style={{ cursor: 'pointer' }}
-            onClick={() => setShowProfile(true)}
-          />
-        </Tooltip>
+        <HoverCard>
+          <HoverCard.Trigger>
+            <Avatar
+              src={profile?.picture}
+              fallback="P"
+              size="2"
+              style={{ cursor: 'pointer' }}
+              onClick={() => setShowProfile(true)}
+            />
+          </HoverCard.Trigger>
+          <HoverCard.Content side="right">
+            <Text size="2">Update Profile</Text>
+          </HoverCard.Content>
+        </HoverCard>
 
         <Profile
           show={showProfile}
