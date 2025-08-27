@@ -249,6 +249,9 @@ const IconBar = ({ profile, onUpdateProfile }) => {
   const navigate = useNavigate();
   const [showProfile, setShowProfile] = useState(false);
 
+  // Debugging logs
+  console.log('Profile prop:', profile);
+
   const handleLogout = async () => {
     await fetch('/api/logout', { method: 'GET', credentials: 'include' });
     localStorage.removeItem('currentUser');
@@ -258,6 +261,9 @@ const IconBar = ({ profile, onUpdateProfile }) => {
   const handleProfileUpdate = (newData) => {
     onUpdateProfile((prev) => ({ ...prev, ...newData }));
   };
+
+  // Ensure picture is a string (URL), otherwise undefined
+  const profilePic = typeof profile?.picture === 'string' ? profile.picture : undefined;
 
   return (
     <Flex
@@ -274,7 +280,7 @@ const IconBar = ({ profile, onUpdateProfile }) => {
     >
       {/* Top icons */}
       <Flex direction="column" align="center" gap="3">
-        <Avatar src={profile?.picture} fallback="U" size="2" />
+        <Avatar src={profilePic} fallback="U" size="2" />
 
         <Flex direction="column" align="center" gap="4">
           {[
@@ -283,19 +289,22 @@ const IconBar = ({ profile, onUpdateProfile }) => {
             { icon: Bookmark, label: 'Save' },
             { icon: Share2, label: 'Share' },
             { icon: Settings, label: 'Settings' }
-          ].map(({ icon: Icon, label }) => (
-            <HoverCard key={label}>
-              <HoverCard.Trigger asChild>
-                <Flex direction="column" align="center" style={{ cursor: 'pointer' }}>
-                  <Icon size={20} />
-                  <Text size="1">{String(label)}</Text>
-                </Flex>
-              </HoverCard.Trigger>
-              <HoverCard.Content side="right">
-                <Text size="2">{String(label)}</Text>
-              </HoverCard.Content>
-            </HoverCard>
-          ))}
+          ].map(({ icon: Icon, label }) => {
+            console.log('Rendering label:', label); // Debugging
+            return (
+              <HoverCard key={String(label)}>
+                <HoverCard.Trigger asChild>
+                  <Flex direction="column" align="center" style={{ cursor: 'pointer' }}>
+                    <Icon size={20} />
+                    <Text size="1">{String(label)}</Text>
+                  </Flex>
+                </HoverCard.Trigger>
+                <HoverCard.Content side="right">
+                  <Text size="2">{String(label)}</Text>
+                </HoverCard.Content>
+              </HoverCard>
+            );
+          })}
         </Flex>
       </Flex>
 
@@ -336,7 +345,7 @@ const IconBar = ({ profile, onUpdateProfile }) => {
         <HoverCard>
           <HoverCard.Trigger asChild>
             <Avatar
-              src={profile?.picture}
+              src={profilePic}
               fallback="P"
               size="2"
               style={{ cursor: 'pointer' }}
