@@ -44,7 +44,6 @@ import client from './components/client.js';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from './components/ThemeContext.js';
 import { ChakraProvider } from '@chakra-ui/react';
-import theme from './theme.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -52,7 +51,7 @@ root.render(
     <BrowserRouter>
       <ApolloProvider client={client}>
         <ThemeProvider>
-          <ChakraProvider theme={theme}>
+          <ChakraProvider>
             <App />
           </ChakraProvider>
         </ThemeProvider>
