@@ -47,53 +47,53 @@
 // export default ChatHeader;
 
 import { Video, Phone } from 'lucide-react';
-import { Avatar, Flex, Box, Text, IconButton } from '@radix-ui/themes';
+import { Avatar, Flex, Box, Text, IconButton } from '@chakra-ui/react';
 import { useTheme } from './ThemeContext';
 
-const ChatHeader = ({
-  username = 'Darshan Zalavadiya',
-  online = true,
-  onlineUsers,
-  pic,
-  selectedUser,
-  typingUserId
-}) => {
+const ChatHeader = ({ onlineUsers, selectedUser }) => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+
+  const isOnline = selectedUser && onlineUsers?.has(selectedUser._id);
 
   return (
     <Flex
       align="center"
-      justify="between"
-      p="3"
-      style={{
-        backgroundColor: isDark ? '#1f1d1d' : 'white',
-        color: isDark ? 'white' : 'black',
-        borderBottom: '1px solid rgba(0, 0, 0, 0.4)'
-      }}
+      justify="space-between"
+      p={3}
+      bg={isDark ? 'gray.900' : 'white'}
+      color={isDark ? 'white' : 'black'}
+      borderBottom="1px solid rgba(0, 0, 0, 0.4)"
     >
-      <Flex align="center" gap="3">
+      <Flex align="center" gap={3}>
         <Avatar
-          fallback={selectedUser?.username ? selectedUser.username[0] : 'U'}
-          src={selectedUser ? selectedUser.picture || './avatar.png' : './avatar.png'}
-          radius="full"
-          size="3"
+          name={selectedUser?.username || 'U'}
+          src={selectedUser?.picture || './avatar.png'}
+          size="sm"
         />
         <Box>
-          <Text weight="medium">{selectedUser && selectedUser.username}</Text>
-          <Text size="1" color={onlineUsers?.has(selectedUser?._id) ? 'green' : 'gray'}>
-            {onlineUsers?.has(selectedUser?._id) ? 'Online' : 'Offline'}
+          <Text fontWeight="medium">{selectedUser?.username}</Text>
+          <Text fontSize="sm" color={isOnline ? 'green.400' : 'gray.500'}>
+            {isOnline ? 'Online' : 'Offline'}
           </Text>
         </Box>
       </Flex>
 
-      <Flex gap="3" align="center">
-        <IconButton variant="ghost" color="gray" size="3">
-          <Video size={20} />
-        </IconButton>
-        <IconButton variant="ghost" color="gray" size="3">
-          <Phone size={20} />
-        </IconButton>
+      <Flex gap={3} align="center">
+        <IconButton
+          aria-label="Video Call"
+          icon={<Video size={20} />}
+          variant="ghost"
+          color="gray.500"
+          size="sm"
+        />
+        <IconButton
+          aria-label="Voice Call"
+          icon={<Phone size={20} />}
+          variant="ghost"
+          color="gray.500"
+          size="sm"
+        />
       </Flex>
     </Flex>
   );
