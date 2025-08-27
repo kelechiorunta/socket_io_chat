@@ -284,7 +284,7 @@ const IconBar = ({ profile, onUpdateProfile }) => {
             { icon: Share2, label: 'Share' },
             { icon: Settings, label: 'Settings' }
           ].map(({ icon: Icon, label }) => (
-            <Tooltip key={label} content={label}>
+            <Tooltip key={label} content={label} side="right">
               <Flex direction="column" align="center" style={{ cursor: 'pointer' }}>
                 <Icon size={20} />
                 <Text size="1">{label}</Text>
@@ -296,13 +296,13 @@ const IconBar = ({ profile, onUpdateProfile }) => {
 
       {/* Bottom actions */}
       <Flex direction="column" align="center" gap="3">
-        <Tooltip content="Toggle Theme">
+        <Tooltip content="Toggle Theme" side="right">
           <IconButton size="2" variant="soft" onClick={toggleTheme} style={{ borderRadius: '50%' }}>
             {isDark ? <Sun size={18} /> : <Moon size={18} />}
           </IconButton>
         </Tooltip>
 
-        <Tooltip content="Logout">
+        <Tooltip content="Logout" side="right">
           <IconButton
             size="2"
             variant="soft"
@@ -313,7 +313,7 @@ const IconBar = ({ profile, onUpdateProfile }) => {
           </IconButton>
         </Tooltip>
 
-        <Tooltip content="Update Profile">
+        <Tooltip content="Update Profile" side="right">
           <Avatar
             src={profile?.picture}
             fallback="P"
