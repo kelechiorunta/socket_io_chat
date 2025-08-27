@@ -490,12 +490,15 @@ const ChatApp = () => {
         <Col
           xs={mobileView === 'sidebar' ? 10 : 0}
           sm={10}
-          md={4}
-          lg={4}
+          md={5}
+          lg={5}
           className={`p-0 border-end h-100 ${
             mobileView === 'sidebar' ? 'd-block' : 'd-none d-sm-block'
           }`}
-          style={{ overflowY: 'auto' }}
+          style={{
+            overflowX: 'hidden',
+            overflowY: 'auto'
+          }}
         >
           {loading ? (
             Array.from({ length: 5 }).map((_, idx) => (
@@ -515,7 +518,7 @@ const ChatApp = () => {
             <Sidebar
               onSelectChat={(chat) => {
                 handleChatSelect(chat);
-                if (window.innerWidth < 768) setMobileView('chat'); // switch to chat on mobile
+                if (window.innerWidth < 768) setMobileView('chat'); // WhatsApp-like switcher on mobile
               }}
               pic={data && data.auth}
               authenticatedUser={authUser}
@@ -540,7 +543,7 @@ const ChatApp = () => {
           xs={mobileView === 'chat' ? 10 : 0}
           sm
           md={7}
-          lg={8}
+          lg={6}
           className={`h-100 d-flex flex-column ${
             mobileView === 'chat' ? 'd-flex' : 'd-none d-sm-flex'
           }`}
@@ -548,22 +551,14 @@ const ChatApp = () => {
         >
           {selectedChat ? (
             <>
-              {/* Back button on mobile */}
-              <div className="d-sm-none p-2 border-bottom">
-                <Button
-                  variant="outline-secondary"
-                  size="sm"
-                  onClick={() => setMobileView('sidebar')}
-                >
-                  <ArrowLeft size={18} className="me-1" /> Back
-                </Button>
-              </div>
-
               <ChatHeader
                 chat={selectedChat}
                 pic={data?.auth}
                 selectedUser={selectedChat}
                 onlineUsers={onlineUsers}
+                /** 👇 Pass prop to render back arrow on mobile */
+                showBackButton={window.innerWidth < 768}
+                onBack={() => setMobileView('sidebar')}
               />
               <ChatBody
                 messages={messages}
