@@ -118,10 +118,127 @@
 
 // export default IconBar;
 
+// import React, { useState } from 'react';
+// import { useNavigate } from 'react-router-dom';
+// // import * as Tooltip from '@radix-ui/react-tooltip';
+// import { Flex, IconButton, Avatar, Text, Tooltip } from '@radix-ui/themes';
+// import { Home, Search, Bookmark, Share2, Settings, Moon, Sun, LogOutIcon } from 'lucide-react';
+// import { useTheme } from './ThemeContext';
+// import Profile from './Profile';
+
+// const IconBar = ({ profile, onUpdateProfile }) => {
+//   const { theme, toggleTheme } = useTheme();
+//   const isDark = theme === 'dark';
+//   const navigate = useNavigate();
+//   const [showProfile, setShowProfile] = useState(false);
+
+//   const handleLogout = async () => {
+//     await fetch('/api/logout', { method: 'GET', credentials: 'include' });
+//     localStorage.removeItem('currentUser');
+//     navigate('/login');
+//   };
+
+//   const handleProfileUpdate = (newData) => {
+//     onUpdateProfile((prev) => ({ ...prev, ...newData }));
+//   };
+
+//   return (
+//     <Flex
+//       direction="column"
+//       justify="between"
+//       align="center"
+//       p="2"
+//       style={{
+//         height: '100vh',
+//         minWidth: '80px',
+//         borderRight: '1px solid rgba(0,0,0,0.4)',
+//         backgroundColor: isDark ? '#1f1d1d' : 'white'
+//       }}
+//     >
+//       {/* Top icons */}
+//       <Flex direction="column" align="center" gap="3">
+//         <Avatar src={profile?.picture} fallback="U" size="2" />
+
+//         <Flex direction="column" align="center" gap="4">
+//           {[
+//             { icon: Home, label: 'Home' },
+//             { icon: Search, label: 'Search' },
+//             { icon: Bookmark, label: 'Save' },
+//             { icon: Share2, label: 'Share' },
+//             { icon: Settings, label: 'Settings' }
+//           ].map(({ icon: Icon, label }) => (
+//             <Tooltip.Root key={label}>
+//               <Tooltip.Trigger asChild>
+//                 <Flex direction="column" align="center" style={{ cursor: 'pointer' }}>
+//                   <Icon size={20} />
+//                   <Text size="1">{label}</Text>
+//                 </Flex>
+//               </Tooltip.Trigger>
+//               <Tooltip.Content side="right">{label}</Tooltip.Content>
+//             </Tooltip.Root>
+//           ))}
+//         </Flex>
+//       </Flex>
+
+//       {/* Bottom actions */}
+//       <Flex direction="column" align="center" gap="3">
+//         <Tooltip.Root>
+//           <Tooltip.Trigger asChild>
+//             <IconButton
+//               size="2"
+//               variant="soft"
+//               onClick={toggleTheme}
+//               style={{ borderRadius: '50%' }}
+//             >
+//               {isDark ? <Sun size={18} /> : <Moon size={18} />}
+//             </IconButton>
+//           </Tooltip.Trigger>
+//           <Tooltip.Content side="right">Toggle Theme</Tooltip.Content>
+//         </Tooltip.Root>
+
+//         <Tooltip.Root>
+//           <Tooltip.Trigger asChild>
+//             <IconButton
+//               size="2"
+//               variant="soft"
+//               onClick={handleLogout}
+//               style={{ borderRadius: '50%' }}
+//             >
+//               <LogOutIcon size={18} />
+//             </IconButton>
+//           </Tooltip.Trigger>
+//           <Tooltip.Content side="right">Logout</Tooltip.Content>
+//         </Tooltip.Root>
+
+//         <Tooltip.Root>
+//           <Tooltip.Trigger asChild>
+//             <Avatar
+//               src={profile?.picture}
+//               fallback="P"
+//               size="2"
+//               style={{ cursor: 'pointer' }}
+//               onClick={() => setShowProfile(true)}
+//             />
+//           </Tooltip.Trigger>
+//           <Tooltip.Content side="right">Update Profile</Tooltip.Content>
+//         </Tooltip.Root>
+
+//         <Profile
+//           show={showProfile}
+//           handleClose={() => setShowProfile(false)}
+//           onProfileUpdate={handleProfileUpdate}
+//           user={profile}
+//         />
+//       </Flex>
+//     </Flex>
+//   );
+// };
+
+// export default IconBar;
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as Tooltip from '@radix-ui/react-tooltip';
-import { Flex, IconButton, Avatar, Text } from '@radix-ui/themes';
+import { Flex, IconButton, Avatar, Text, Tooltip } from '@radix-ui/themes';
 import { Home, Search, Bookmark, Share2, Settings, Moon, Sun, LogOutIcon } from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import Profile from './Profile';
@@ -167,61 +284,44 @@ const IconBar = ({ profile, onUpdateProfile }) => {
             { icon: Share2, label: 'Share' },
             { icon: Settings, label: 'Settings' }
           ].map(({ icon: Icon, label }) => (
-            <Tooltip.Root key={label}>
-              <Tooltip.Trigger asChild>
-                <Flex direction="column" align="center" style={{ cursor: 'pointer' }}>
-                  <Icon size={20} />
-                  <Text size="1">{label}</Text>
-                </Flex>
-              </Tooltip.Trigger>
-              <Tooltip.Content side="right">{label}</Tooltip.Content>
-            </Tooltip.Root>
+            <Tooltip key={label} content={label}>
+              <Flex direction="column" align="center" style={{ cursor: 'pointer' }}>
+                <Icon size={20} />
+                <Text size="1">{label}</Text>
+              </Flex>
+            </Tooltip>
           ))}
         </Flex>
       </Flex>
 
       {/* Bottom actions */}
       <Flex direction="column" align="center" gap="3">
-        <Tooltip.Root>
-          <Tooltip.Trigger asChild>
-            <IconButton
-              size="2"
-              variant="soft"
-              onClick={toggleTheme}
-              style={{ borderRadius: '50%' }}
-            >
-              {isDark ? <Sun size={18} /> : <Moon size={18} />}
-            </IconButton>
-          </Tooltip.Trigger>
-          <Tooltip.Content side="right">Toggle Theme</Tooltip.Content>
-        </Tooltip.Root>
+        <Tooltip content="Toggle Theme">
+          <IconButton size="2" variant="soft" onClick={toggleTheme} style={{ borderRadius: '50%' }}>
+            {isDark ? <Sun size={18} /> : <Moon size={18} />}
+          </IconButton>
+        </Tooltip>
 
-        <Tooltip.Root>
-          <Tooltip.Trigger asChild>
-            <IconButton
-              size="2"
-              variant="soft"
-              onClick={handleLogout}
-              style={{ borderRadius: '50%' }}
-            >
-              <LogOutIcon size={18} />
-            </IconButton>
-          </Tooltip.Trigger>
-          <Tooltip.Content side="right">Logout</Tooltip.Content>
-        </Tooltip.Root>
+        <Tooltip content="Logout">
+          <IconButton
+            size="2"
+            variant="soft"
+            onClick={handleLogout}
+            style={{ borderRadius: '50%' }}
+          >
+            <LogOutIcon size={18} />
+          </IconButton>
+        </Tooltip>
 
-        <Tooltip.Root>
-          <Tooltip.Trigger asChild>
-            <Avatar
-              src={profile?.picture}
-              fallback="P"
-              size="2"
-              style={{ cursor: 'pointer' }}
-              onClick={() => setShowProfile(true)}
-            />
-          </Tooltip.Trigger>
-          <Tooltip.Content side="right">Update Profile</Tooltip.Content>
-        </Tooltip.Root>
+        <Tooltip content="Update Profile">
+          <Avatar
+            src={profile?.picture}
+            fallback="P"
+            size="2"
+            style={{ cursor: 'pointer' }}
+            onClick={() => setShowProfile(true)}
+          />
+        </Tooltip>
 
         <Profile
           show={showProfile}
