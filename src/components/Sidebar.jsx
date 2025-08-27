@@ -437,10 +437,9 @@
 // };
 
 // export default Sidebar;
-
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Flex, Box, Text, Avatar, IconButton, Input, VStack } from '@chakra-ui/react';
 import { Moon, Sun, Search, Plus, Settings } from 'lucide-react';
-import { Flex, Box, Text, Avatar, IconButton, Separator, ScrollArea, Tabs } from '@radix-ui/themes';
 import { useTheme } from './ThemeContext';
 
 const Sidebar = ({
@@ -457,102 +456,64 @@ const Sidebar = ({
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === 'dark';
 
-  const [tab, setTab] = useState('all');
   const [search, setSearch] = useState('');
-  const [filteredUsers, setFilteredUsers] = useState(contacts);
-  const itemRefs = useRef([]);
+  const [filteredUsers, setFilteredUsers] = useState(contacts || []);
 
   useEffect(() => {
-    if (!search) {
-      setFilteredUsers(contacts);
-      return;
-    }
+    if (!search) return setFilteredUsers(contacts);
     setFilteredUsers(
-      contacts.filter((user) => user.username?.toLowerCase().includes(search.toLowerCase()))
+      contacts.filter((u) => u.username?.toLowerCase().includes(search.toLowerCase()))
     );
   }, [search, contacts]);
-
-  const handleSortContacts = () => {
-    setFilteredUsers((prev) => [...prev].sort((a, b) => (onlineUsers.has(b._id) ? 1 : -1)));
-  };
 
   return (
     <Flex
       direction="column"
-      p="3"
-      style={{
-        height: '100vh',
-        backgroundColor: isDark ? '#1f1d1d' : '#f7fef2',
-        color: isDark ? 'white' : 'black'
-      }}
+      p={3}
+      bg={isDark ? 'gray.900' : 'gray.50'}
+      color={isDark ? 'white' : 'black'}
+      h="100vh"
     >
       {/* Header */}
-      <Flex justify="between" align="center" mb="3">
-        <Text weight="bold" size="5" color="green">
+      <Flex justify="space-between" align="center" mb={3}>
+        <Text fontWeight="bold" fontSize="lg" color="green.400">
           JUSTCHAT
         </Text>
-        <IconButton variant="ghost" onClick={toggleTheme}>
-          {isDark ? <Sun size={18} /> : <Moon size={18} />}
-        </IconButton>
-      </Flex>
-
-      {/* Search Bar */}
-      <Flex
-        align="center"
-        gap="2"
-        mb="3"
-        p="2"
-        style={{
-          borderRadius: 8,
-          backgroundColor: isDark ? '#2a2a2a' : '#ffffff'
-        }}
-      >
-        <Search size={16} />
-        <input
-          style={{
-            flex: 1,
-            background: 'transparent',
-            border: 'none',
-            outline: 'none',
-            color: isDark ? 'white' : 'black'
-          }}
-          placeholder="Search..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+        <IconButton
+          icon={isDark ? <Sun size={18} /> : <Moon size={18} />}
+          aria-label="Toggle Theme"
+          onClick={toggleTheme}
+          variant="ghost"
+          size="sm"
         />
       </Flex>
 
-      {/* Tabs */}
-      <Tabs.Root value={tab} onValueChange={setTab}>
-        <Tabs.List>
-          <Tabs.Trigger value="all">All Chats</Tabs.Trigger>
-          <Tabs.Trigger value="groups">Groups</Tabs.Trigger>
-          <Tabs.Trigger value="contacts" onClick={handleSortContacts}>
-            Contacts
-          </Tabs.Trigger>
-        </Tabs.List>
-      </Tabs.Root>
+      {/* Search */}
+      <Flex mb={3}>
+        <Search size={16} style={{ marginRight: 8 }} />
+        <Input
+          placeholder="Search..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          bg={isDark ? 'gray.800' : 'white'}
+          color={isDark ? 'white' : 'black'}
+          size="sm"
+        />
+      </Flex>
 
-      <Separator my="2" />
+      {/* Replace Divider */}
+      <Box h="1px" w="full" bg={isDark ? 'gray.700' : 'gray.300'} mb={3} />
 
-      {/* Contacts List */}
-      <ScrollArea style={{ flex: 1 }}>
+      {/* Contacts */}
+      <VStack spacing={2} overflowY="auto" flex={1}>
         {loading ? (
-          Array.from({ length: 5 }).map((_, idx) => (
-            <Box
-              key={idx}
-              height="3"
-              mb="2"
-              style={{
-                borderRadius: 6,
-                backgroundColor: isDark ? '#333' : '#ddd'
-              }}
-            />
+          Array.from({ length: 5 }).map((_, i) => (
+            <Box key={i} h="6" w="full" bg={isDark ? 'gray.700' : 'gray.300'} rounded="md" />
           ))
         ) : error ? (
-          <Text color="red">Error fetching contacts</Text>
+          <Text color="red.500">Error fetching contacts</Text>
         ) : (
-          filteredUsers.map((user, index) => {
+          filteredUsers.map((user) => {
             const unread = unreadMap[user._id];
             const isTyping = typingUsers.has(user._id);
             const isSelected = selectedClient?._id === user._id;
@@ -560,62 +521,47 @@ const Sidebar = ({
             return (
               <Flex
                 key={user._id}
-                ref={(el) => (itemRefs.current[index] = el)}
                 align="center"
-                justify="between"
-                p="2"
-                mb="2"
-                style={{
-                  borderRadius: 8,
-                  cursor: 'pointer',
-                  backgroundColor: isSelected ? '#22c55e' : isDark ? '#2a2a2a' : '#f1f1f1',
-                  color: isSelected ? 'white' : 'inherit'
-                }}
+                justify="space-between"
+                p={2}
+                w="full"
+                rounded="md"
+                bg={isSelected ? 'green.400' : isDark ? 'gray.800' : 'gray.100'}
+                color={isSelected ? 'white' : 'inherit'}
+                cursor="pointer"
                 onClick={() => onSelectChat(user)}
               >
-                <Flex align="center" gap="3">
-                  <Box style={{ position: 'relative' }}>
-                    <Avatar
-                      src={user.picture}
-                      fallback={user.username.slice(0, 2).toUpperCase()}
-                      size="3"
-                    />
+                <Flex align="center" gap={3}>
+                  <Box position="relative">
+                    <Avatar src={user.picture} name={user.username} size="sm" />
                     <Box
-                      style={{
-                        position: 'absolute',
-                        top: '70%',
-                        left: '75%',
-                        width: 10,
-                        height: 10,
-                        borderRadius: '50%',
-                        border: '1px solid white',
-                        backgroundColor: onlineUsers.has(user._id) ? '#00e575' : 'gray'
-                      }}
+                      position="absolute"
+                      top="70%"
+                      left="75%"
+                      w={2.5}
+                      h={2.5}
+                      borderRadius="full"
+                      border="1px solid white"
+                      bg={onlineUsers.has(user._id) ? 'green.400' : 'gray.400'}
                     />
                   </Box>
-                  <Flex direction="column" style={{ minWidth: 0 }}>
-                    <Text weight="bold">{user.username}</Text>
-                    <Text
-                      size="1"
-                      color="gray"
-                      style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
-                    >
+                  <Box>
+                    <Text fontWeight="bold">{user.username}</Text>
+                    <Text fontSize="xs" color="gray.400">
                       {isTyping ? 'is typing...' : unread?.lastMessage || 'No messages'}
                     </Text>
-                  </Flex>
+                  </Box>
                 </Flex>
                 {unread?.count > 0 && (
                   <Flex
                     align="center"
                     justify="center"
-                    style={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: '50%',
-                      backgroundColor: '#22c55e',
-                      color: 'white',
-                      fontSize: '12px'
-                    }}
+                    w={5}
+                    h={5}
+                    borderRadius="full"
+                    bg="green.400"
+                    color="white"
+                    fontSize="xs"
                   >
                     {unread.count}
                   </Flex>
@@ -624,27 +570,31 @@ const Sidebar = ({
             );
           })
         )}
-      </ScrollArea>
+      </VStack>
+
+      {/* Replace Divider */}
+      <Box h="1px" w="full" bg={isDark ? 'gray.700' : 'gray.300'} my={3} />
 
       {/* Calls Section */}
-      <Flex justify="between" align="center" mt="3" mb="2">
-        <Text weight="medium">Calls</Text>
-        <Flex align="center" gap="1" style={{ color: 'gray' }}>
-          <Plus size={16} /> <Text size="1">New Meet</Text>
+      <Flex justify="space-between" align="center" mb={2}>
+        <Text fontWeight="medium">Calls</Text>
+        <Flex align="center" gap={1} color="gray.400">
+          <Plus size={16} /> <Text fontSize="xs">New Meet</Text>
         </Flex>
       </Flex>
 
-      <Separator my="2" />
+      {/* Replace Divider */}
+      <Box h="1px" w="full" bg={isDark ? 'gray.700' : 'gray.300'} mb={3} />
 
       {/* Profile */}
-      <Flex align="center" gap="2" mb="2">
-        <Avatar src={pic?.picture} fallback="U" size="3" />
-        <Text>Your Profile</Text>
+      <Flex align="center" gap={2} mb={2}>
+        <Avatar src={pic?.picture} name="User" size="sm" />
+        <Text fontSize="sm">Your Profile</Text>
       </Flex>
 
       {/* Settings */}
-      <Flex align="center" gap="2" style={{ cursor: 'pointer', color: 'gray' }}>
-        <Settings size={16} /> <Text size="1">Settings</Text>
+      <Flex align="center" gap={2} cursor="pointer" color="gray.400">
+        <Settings size={16} /> <Text fontSize="xs">Settings</Text>
       </Flex>
     </Flex>
   );
