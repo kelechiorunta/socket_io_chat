@@ -474,7 +474,7 @@ const ChatApp = () => {
       <SocketNotifications socketInstance={socket} />
 
       <Row className="h-100">
-        {/* IconBar Column - stays visible on all screens */}
+        {/* IconBar Column - always visible */}
         <Col
           xs={2}
           sm={1}
@@ -486,31 +486,17 @@ const ChatApp = () => {
           <IconBar profile={signedUser} onUpdateProfile={setSignedUser} />
         </Col>
 
-        {/* ===== Mobile: Switcher ===== */}
-        <Col xs={10} sm={11} md={11} lg={11} className="p-0 h-100">
-          {/* SIDEBAR VIEW */}
-          <div
-            className={`h-100 ${mobileView === 'sidebar' ? 'd-block' : 'd-none d-md-block'}`}
-            style={{ overflowY: 'auto' }}
-          >
-            <Sidebar
-              onSelectChat={handleChatSelect}
-              pic={data && data.auth}
-              authenticatedUser={authUser}
-              selectedChat={selectedChat}
-              isOnline={isOnline}
-              notifiedUser={notifiedUser}
-              loading={contacts_loading}
-              error={contacts_error}
-              isRead={read}
-              contacts={contacts?.users || []}
-              unreadMap={unreadMap}
-              typingUsers={typingUsers}
-              notificationMap={notificationMap}
-              selectedClient={selectedChat}
-              onlineUsers={onlineUsers}
-            />
-          </div>
+        {/* Sidebar Column */}
+        <Col
+          xs={mobileView === 'sidebar' ? 10 : 0}
+          sm={5}
+          md={4}
+          lg={3}
+          className={`p-0 border-end h-100 ${
+            mobileView === 'sidebar' ? 'd-block' : 'd-none d-sm-block'
+          }`}
+          style={{ overflowY: 'auto' }}
+        >
           {loading ? (
             Array.from({ length: 5 }).map((_, idx) => (
               <Card key={idx}>
@@ -526,27 +512,57 @@ const ChatApp = () => {
           ) : error ? (
             <div className="text-danger">Error fetching contacts</div>
           ) : (
-            <Col
-              style={{
-                borderRadius: 20,
-                padding: 'auto 100px',
-                width: '100%',
-                display: 'flex',
-                overflowX: 'hidden',
-                overflowY: 'scroll',
-                maxHeight: '100vh'
+            <Sidebar
+              onSelectChat={(chat) => {
+                handleChatSelect(chat);
+                if (window.innerWidth < 768) setMobileView('chat'); // switch to chat on mobile
               }}
-              xs={10}
-              sm={10}
-              md={11}
-              lg
-              className="justify-content-end d-flex flex-column"
-            >
+              pic={data && data.auth}
+              authenticatedUser={authUser}
+              selectedChat={selectedChat}
+              isOnline={isOnline}
+              notifiedUser={notifiedUser}
+              loading={contacts_loading}
+              error={contacts_error}
+              isRead={read}
+              contacts={contacts?.users || []}
+              unreadMap={unreadMap}
+              typingUsers={typingUsers}
+              notificationMap={notificationMap}
+              selectedClient={selectedChat}
+              onlineUsers={onlineUsers}
+            />
+          )}
+        </Col>
+
+        {/* Chat Column */}
+        <Col
+          xs={mobileView === 'chat' ? 10 : 0}
+          sm={6}
+          md={7}
+          lg={8}
+          className={`h-100 d-flex flex-column ${
+            mobileView === 'chat' ? 'd-flex' : 'd-none d-sm-flex'
+          }`}
+          style={{ overflow: 'hidden' }}
+        >
+          {selectedChat ? (
+            <>
+              {/* Back button on mobile */}
+              <div className="d-sm-none p-2 border-bottom">
+                <Button
+                  variant="outline-secondary"
+                  size="sm"
+                  onClick={() => setMobileView('sidebar')}
+                >
+                  <ArrowLeft size={18} className="me-1" /> Back
+                </Button>
+              </div>
+
               <ChatHeader
                 chat={selectedChat}
                 pic={data?.auth}
                 selectedUser={selectedChat}
-                // typingUserId={typingUserId}
                 onlineUsers={onlineUsers}
               />
               <ChatBody
@@ -554,50 +570,14 @@ const ChatApp = () => {
                 chat={selectedChat}
                 pic={data?.auth}
                 typingUsers={typingUsers}
-                // typingUserId={typingUserId}
               />
               <ChatInput input={input} setInput={handleTyping} onSend={sendMessage} />
-            </Col>
+            </>
+          ) : (
+            <div className="h-100 d-flex justify-content-center align-items-center text-muted">
+              Select a chat to start messaging
+            </div>
           )}
-
-          {/* CHAT VIEW */}
-          <div
-            className={`h-100 ${mobileView === 'chat' ? 'd-block' : 'd-none d-md-flex flex-column'}`}
-            style={{ overflow: 'hidden' }}
-          >
-            {selectedChat ? (
-              <>
-                {/* Back button only on mobile */}
-                <div className="d-md-none p-2 border-bottom">
-                  <Button
-                    variant="outline-secondary"
-                    size="sm"
-                    onClick={() => setMobileView('sidebar')}
-                  >
-                    <ArrowLeft size={18} className="me-1" /> Back
-                  </Button>
-                </div>
-
-                <ChatHeader
-                  chat={selectedChat}
-                  pic={data?.auth}
-                  selectedUser={selectedChat}
-                  onlineUsers={onlineUsers}
-                />
-                <ChatBody
-                  messages={messages}
-                  chat={selectedChat}
-                  pic={data?.auth}
-                  typingUsers={typingUsers}
-                />
-                <ChatInput input={input} setInput={handleTyping} onSend={sendMessage} />
-              </>
-            ) : (
-              <div className="h-100 d-flex justify-content-center align-items-center text-muted">
-                Select a chat to start messaging
-              </div>
-            )}
-          </div>
         </Col>
       </Row>
     </Container>
