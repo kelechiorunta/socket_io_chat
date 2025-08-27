@@ -285,14 +285,14 @@ const IconBar = ({ profile, onUpdateProfile }) => {
             { icon: Settings, label: 'Settings' }
           ].map(({ icon: Icon, label }) => (
             <HoverCard key={label}>
-              <HoverCard.Trigger>
+              <HoverCard.Trigger asChild>
                 <Flex direction="column" align="center" style={{ cursor: 'pointer' }}>
                   <Icon size={20} />
-                  <Text size="1">{label}</Text>
+                  <Text size="1">{String(label)}</Text>
                 </Flex>
               </HoverCard.Trigger>
               <HoverCard.Content side="right">
-                <Text size="2">{label}</Text>
+                <Text size="2">{String(label)}</Text>
               </HoverCard.Content>
             </HoverCard>
           ))}
@@ -302,7 +302,7 @@ const IconBar = ({ profile, onUpdateProfile }) => {
       {/* Bottom actions */}
       <Flex direction="column" align="center" gap="3">
         <HoverCard>
-          <HoverCard.Trigger>
+          <HoverCard.Trigger asChild>
             <IconButton
               size="2"
               variant="soft"
@@ -318,7 +318,7 @@ const IconBar = ({ profile, onUpdateProfile }) => {
         </HoverCard>
 
         <HoverCard>
-          <HoverCard.Trigger>
+          <HoverCard.Trigger asChild>
             <IconButton
               size="2"
               variant="soft"
@@ -334,7 +334,7 @@ const IconBar = ({ profile, onUpdateProfile }) => {
         </HoverCard>
 
         <HoverCard>
-          <HoverCard.Trigger>
+          <HoverCard.Trigger asChild>
             <Avatar
               src={profile?.picture}
               fallback="P"
