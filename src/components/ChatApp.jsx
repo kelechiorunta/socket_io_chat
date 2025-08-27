@@ -489,9 +489,9 @@ const ChatApp = () => {
         {/* Sidebar Column */}
         <Col
           xs={mobileView === 'sidebar' ? 10 : 0}
-          sm={5}
+          sm={10}
           md={4}
-          lg={3}
+          lg={4}
           className={`p-0 border-end h-100 ${
             mobileView === 'sidebar' ? 'd-block' : 'd-none d-sm-block'
           }`}
@@ -538,7 +538,7 @@ const ChatApp = () => {
         {/* Chat Column */}
         <Col
           xs={mobileView === 'chat' ? 10 : 0}
-          sm={6}
+          sm
           md={7}
           lg={8}
           className={`h-100 d-flex flex-column ${
