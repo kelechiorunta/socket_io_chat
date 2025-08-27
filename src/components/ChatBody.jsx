@@ -120,7 +120,7 @@
 // export default ChatBody;
 
 import React, { useEffect, useRef } from 'react';
-import { Avatar, Box, Flex, Text } from '@radix-ui/themes';
+import { Avatar, Box, Flex, Text } from '@chakra-ui/react';
 import { format, isToday, isYesterday } from 'date-fns';
 import { useTheme } from './ThemeContext';
 import TypingIndicator from './Indicators/TypingIndicator';
@@ -146,17 +146,15 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
 
   return (
     <Box
-      px="4"
-      py="3"
-      style={{
-        overflowY: 'auto',
-        flexGrow: 1,
-        backgroundImage: isDark ? "url('./background.jpg')" : "url('./backgroundII.png')",
-        backgroundSize: 'cover',
-        backgroundColor: isDark ? '#0d1717' : 'rgba(0,0,0,0.2)',
-        color: isDark ? 'white' : 'rgba(0,0,0,0.5)',
-        maxHeight: '100%'
-      }}
+      px={4}
+      py={3}
+      overflowY="auto"
+      flexGrow={1}
+      bg={isDark ? '#0d1717' : 'rgba(0,0,0,0.2)'}
+      maxHeight="100%"
+      color={isDark ? 'white' : 'rgba(0,0,0,0.5)'}
+      backgroundImage={isDark ? "url('./background.jpg')" : "url('./backgroundII.png')"}
+      backgroundSize="cover"
     >
       {messages.map((msg, index) => {
         const msgDate = new Date(msg.createdAt);
@@ -170,42 +168,34 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
         return (
           <React.Fragment key={index}>
             {showDateLabel && (
-              <Flex direction="column" align="center" style={{ margin: '12px 0' }}>
-                <Flex align="center" justify="center" gap="2" style={{ width: '100%' }}>
-                  <Box flexGrow="1" style={{ borderBottom: '1px solid rgba(0,0,0,0.4)' }} />
-                  <Text size="1" color="gray">
+              <Flex direction="column" align="center" my={3}>
+                <Flex align="center" justify="center" gap={2} w="full">
+                  <Box flexGrow={1} borderBottom="1px solid rgba(0,0,0,0.4)" />
+                  <Text fontSize="sm" color="gray.400">
                     {dateLabel}
                   </Text>
-                  <Box flexGrow="1" style={{ borderBottom: '1px solid rgba(0,0,0,0.4)' }} />
+                  <Box flexGrow={1} borderBottom="1px solid rgba(0,0,0,0.4)" />
                 </Flex>
               </Flex>
             )}
-            <Flex
-              align="center"
-              gap="2"
-              style={{ marginBottom: 8 }}
-              justify={isClient ? 'end' : 'start'}
-            >
+            <Flex align="center" gap={2} mb={2} justify={isClient ? 'flex-end' : 'flex-start'}>
               <Avatar
-                fallback={msg?.sender?.name ? msg.sender.name[0] : 'A'}
+                name={msg?.sender?.name || 'A'}
                 src={
                   msg?.sender?.picture ||
                   (chat && (isClient ? pic.picture : chat.picture)) ||
                   './Darshan.png'
                 }
-                radius="full"
-                size="2"
+                size="sm"
               />
               <Box
-                px="3"
-                py="2"
-                style={{
-                  backgroundColor: isClient ? '#005c4b' : '#3a3b3c',
-                  color: '#fff',
-                  maxWidth: '60%',
-                  fontSize: '0.9rem',
-                  borderRadius: '16px'
-                }}
+                px={3}
+                py={2}
+                maxW="60%"
+                borderRadius="16px"
+                bg={isClient ? '#005c4b' : '#3a3b3c'}
+                color="white"
+                fontSize="0.9rem"
               >
                 {msg.text || msg.content}
               </Box>
@@ -215,23 +205,20 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
       })}
 
       {[...typingUsers].length > 0 && (
-        <Flex align="center" gap="2" style={{ marginBottom: 8 }} justify="start">
+        <Flex align="center" gap={2} mb={2} justify="flex-start">
           <Avatar
-            fallback={chat?.name ? chat.name[0] : 'U'}
+            name={chat?.name || 'U'}
             src={(chat && chat.picture) || './avatar.png'}
-            radius="full"
-            size="2"
+            size="sm"
           />
           <Box
-            px="3"
-            py="2"
-            style={{
-              backgroundColor: '#3a3b3c',
-              color: '#fff',
-              maxWidth: '60%',
-              fontSize: '0.9rem',
-              borderRadius: '16px'
-            }}
+            px={3}
+            py={2}
+            maxW="60%"
+            borderRadius="16px"
+            bg="#3a3b3c"
+            color="white"
+            fontSize="0.9rem"
           >
             <TypingIndicator />
           </Box>
