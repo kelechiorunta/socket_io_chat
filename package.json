@@ -62,8 +62,8 @@
   "scripts": {
     "start": "node server/index.js",
     "heroku-postbuild": "npm run build",
-    "build": "craco build",
-    "test": "craco test",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "prettier --write ."
   },
@@ -90,9 +90,5 @@
     "cssnano": "^5.1.15",
     "postcss-calc": "^9.0.1",
     "prettier": "^3.6.2"
-  },
-  "overrides": {
-    "cssnano": "^5.1.15",
-    "postcss-calc": "^9.0.1"
   }
 }
