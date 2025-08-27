@@ -238,8 +238,8 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Flex, IconButton, Avatar, Text, HoverCard } from '@radix-ui/themes';
-import { Home, Search, Bookmark, Share2, Settings, Moon, Sun, LogOutIcon } from 'lucide-react';
+import { Flex, IconButton, Avatar, Text, Tooltip } from '@chakra-ui/react';
+import { Home, Search, Bookmark, Share2, Settings, Moon, Sun, LogOut } from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import Profile from './Profile';
 
@@ -248,9 +248,6 @@ const IconBar = ({ profile, onUpdateProfile }) => {
   const isDark = theme === 'dark';
   const navigate = useNavigate();
   const [showProfile, setShowProfile] = useState(false);
-
-  // Debugging logs
-  console.log('Profile prop:', profile);
 
   const handleLogout = async () => {
     await fetch('/api/logout', { method: 'GET', credentials: 'include' });
@@ -262,100 +259,75 @@ const IconBar = ({ profile, onUpdateProfile }) => {
     onUpdateProfile((prev) => ({ ...prev, ...newData }));
   };
 
-  // Ensure picture is a string (URL), otherwise undefined
   const profilePic = typeof profile?.picture === 'string' ? profile.picture : undefined;
+
+  const icons = [
+    { icon: Home, label: 'Home' },
+    { icon: Search, label: 'Search' },
+    { icon: Bookmark, label: 'Save' },
+    { icon: Share2, label: 'Share' },
+    { icon: Settings, label: 'Settings' }
+  ];
 
   return (
     <Flex
       direction="column"
-      justify="between"
+      justify="space-between"
       align="center"
-      p="2"
-      style={{
-        height: '100vh',
-        minWidth: '80px',
-        borderRight: '1px solid rgba(0,0,0,0.4)',
-        backgroundColor: isDark ? '#1f1d1d' : 'white'
-      }}
+      p={2}
+      bg={isDark ? 'gray.900' : 'white'}
+      h="100vh"
+      minW="80px"
+      borderRight="1px solid"
+      borderColor={isDark ? 'gray.700' : 'gray.200'}
     >
       {/* Top icons */}
-      <Flex direction="column" align="center" gap="3">
-        <Avatar src={profilePic} fallback="U" size="2" />
+      <Flex direction="column" align="center" gap={4}>
+        <Avatar src={profilePic} name="User" size="sm" mb={4} />
 
-        <Flex direction="column" align="center" gap="4">
-          {[
-            { icon: Home, label: 'Home' },
-            { icon: Search, label: 'Search' },
-            { icon: Bookmark, label: 'Save' },
-            { icon: Share2, label: 'Share' },
-            { icon: Settings, label: 'Settings' }
-          ].map(({ icon: Icon, label }) => {
-            console.log('Rendering label:', label); // Debugging
-            return (
-              <HoverCard key={String(label)}>
-                <HoverCard.Trigger asChild>
-                  <Flex direction="column" align="center" style={{ cursor: 'pointer' }}>
-                    <Icon size={20} />
-                    <Text size="1">{String(label)}</Text>
-                  </Flex>
-                </HoverCard.Trigger>
-                <HoverCard.Content side="right">
-                  <Text size="2">{String(label)}</Text>
-                </HoverCard.Content>
-              </HoverCard>
-            );
-          })}
-        </Flex>
+        {icons.map(({ icon: Icon, label }) => (
+          <Tooltip key={label} label={label} placement="right" hasArrow>
+            <Flex direction="column" align="center" cursor="pointer">
+              <Icon size={20} />
+              <Text fontSize="xs">{label}</Text>
+            </Flex>
+          </Tooltip>
+        ))}
       </Flex>
 
       {/* Bottom actions */}
-      <Flex direction="column" align="center" gap="3">
-        <HoverCard>
-          <HoverCard.Trigger asChild>
-            <IconButton
-              size="2"
-              variant="soft"
-              onClick={toggleTheme}
-              style={{ borderRadius: '50%' }}
-            >
-              {isDark ? <Sun size={18} /> : <Moon size={18} />}
-            </IconButton>
-          </HoverCard.Trigger>
-          <HoverCard.Content side="right">
-            <Text size="2">Toggle Theme</Text>
-          </HoverCard.Content>
-        </HoverCard>
+      <Flex direction="column" align="center" gap={3}>
+        <Tooltip label="Toggle Theme" placement="right" hasArrow>
+          <IconButton
+            aria-label="Toggle Theme"
+            icon={isDark ? <Sun size={18} /> : <Moon size={18} />}
+            onClick={toggleTheme}
+            size="sm"
+            variant="ghost"
+            borderRadius="full"
+          />
+        </Tooltip>
 
-        <HoverCard>
-          <HoverCard.Trigger asChild>
-            <IconButton
-              size="2"
-              variant="soft"
-              onClick={handleLogout}
-              style={{ borderRadius: '50%' }}
-            >
-              <LogOutIcon size={18} />
-            </IconButton>
-          </HoverCard.Trigger>
-          <HoverCard.Content side="right">
-            <Text size="2">Logout</Text>
-          </HoverCard.Content>
-        </HoverCard>
+        <Tooltip label="Logout" placement="right" hasArrow>
+          <IconButton
+            aria-label="Logout"
+            icon={<LogOut size={18} />}
+            onClick={handleLogout}
+            size="sm"
+            variant="ghost"
+            borderRadius="full"
+          />
+        </Tooltip>
 
-        <HoverCard>
-          <HoverCard.Trigger asChild>
-            <Avatar
-              src={profilePic}
-              fallback="P"
-              size="2"
-              style={{ cursor: 'pointer' }}
-              onClick={() => setShowProfile(true)}
-            />
-          </HoverCard.Trigger>
-          <HoverCard.Content side="right">
-            <Text size="2">Update Profile</Text>
-          </HoverCard.Content>
-        </HoverCard>
+        <Tooltip label="Update Profile" placement="right" hasArrow>
+          <Avatar
+            src={profilePic}
+            name="Profile"
+            size="sm"
+            cursor="pointer"
+            onClick={() => setShowProfile(true)}
+          />
+        </Tooltip>
 
         <Profile
           show={showProfile}
