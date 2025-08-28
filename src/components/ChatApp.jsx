@@ -355,11 +355,11 @@ const ChatApp = () => {
   };
 
   const [mobileView, setMobileView] = useState('sidebar'); // start on sidebar
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
 
   // 🔥 Watch window resize and update `isMobile`
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 992);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [isMobile]);
