@@ -362,7 +362,7 @@ const ChatApp = () => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [isMobile]);
 
   // When chat is selected, switch automatically if on mobile
   const handleChatSelect = (chat) => {
@@ -396,8 +396,8 @@ const ChatApp = () => {
         {/* Sidebar Column */}
         <Col
           xs={mobileView === 'sidebar' ? 10 : 0} // switcher mode on mobile
-          sm={5} // normal grid on tablet/web
-          md={5}
+          sm={7} // normal grid on tablet/web
+          md={7}
           lg={5}
           className={`p-0 border-end h-100 ${
             mobileView === 'sidebar' ? 'd-block' : 'd-none d-sm-block'
@@ -406,7 +406,7 @@ const ChatApp = () => {
             overflowX: 'hidden',
             overflowY: 'auto',
             padding: 10,
-            marginLeft: 20
+            marginLeft: 0
           }}
         >
           {loading ? (
@@ -447,8 +447,8 @@ const ChatApp = () => {
         {/* Chat Column */}
         <Col
           xs={mobileView === 'chat' ? 10 : 0} // switcher mode on mobile
-          sm={6} // normal grid on tablet/web
-          md={6}
+          sm={4} // normal grid on tablet/web
+          md={4}
           lg={6}
           className={`h-100 d-flex flex-column ${
             mobileView === 'chat' ? 'd-flex' : 'd-none d-sm-flex'
