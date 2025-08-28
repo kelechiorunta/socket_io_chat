@@ -354,7 +354,7 @@ const ChatApp = () => {
     return format(date, 'MMMM d, yyyy');
   };
 
-  const [mobileView, setMobileView] = useState('sidebar'); // 'sidebar' | 'chat'
+  const [mobileView, setMobileView] = useState(window.innerWidth < 968 ? 'chat' : 'sidebar'); // 'sidebar' | 'chat'
   const [isMobile, setIsMobile] = useState(window.innerWidth < 968);
 
   // 🔥 Watch window resize and update `isMobile`
