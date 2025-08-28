@@ -462,7 +462,7 @@ const ChatApp = () => {
                 pic={data?.auth}
                 selectedUser={selectedChat}
                 onlineUsers={onlineUsers}
-                showBackButton={isMobile} //{mobileView === 'chat' && window.innerWidth < 992}
+                showBackButton={isMobile || window.innerWidth < 992} //{mobileView === 'chat' && window.innerWidth < 992}
                 // back button only in switcher mode (xs/sm/md)
                 onBack={() => setMobileView('sidebar')}
               />
