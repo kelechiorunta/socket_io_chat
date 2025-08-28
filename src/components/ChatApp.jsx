@@ -354,12 +354,12 @@ const ChatApp = () => {
     return format(date, 'MMMM d, yyyy');
   };
 
-  const [mobileView, setMobileView] = useState('sidebar'); // always start in sidebar
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 968);
+  const [mobileView, setMobileView] = useState('sidebar'); // start on sidebar
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   // 🔥 Watch window resize and update `isMobile`
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 968);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -395,9 +395,12 @@ const ChatApp = () => {
 
         {/* Sidebar Column */}
         <Col
-          xs={isMobile ? (mobileView === 'sidebar' ? 10 : 0) : 5}
+          xs={mobileView === 'sidebar' ? 10 : 0} // switcher mode on mobile
+          sm={5} // normal grid on tablet/web
+          md={5}
+          lg={5}
           className={`p-0 border-end h-100 ${
-            isMobile ? (mobileView === 'sidebar' ? 'd-block' : 'd-none') : 'd-block'
+            mobileView === 'sidebar' ? 'd-block' : 'd-none d-sm-block'
           }`}
           style={{
             overflowX: 'hidden',
@@ -443,9 +446,12 @@ const ChatApp = () => {
 
         {/* Chat Column */}
         <Col
-          xs={isMobile ? (mobileView === 'chat' ? 10 : 0) : 7}
+          xs={mobileView === 'chat' ? 10 : 0} // switcher mode on mobile
+          sm={6} // normal grid on tablet/web
+          md={6}
+          lg={6}
           className={`h-100 d-flex flex-column ${
-            isMobile ? (mobileView === 'chat' ? 'd-flex' : 'd-none') : 'd-flex'
+            mobileView === 'chat' ? 'd-flex' : 'd-none d-sm-flex'
           }`}
           style={{ overflow: 'hidden' }}
         >
@@ -456,7 +462,7 @@ const ChatApp = () => {
                 pic={data?.auth}
                 selectedUser={selectedChat}
                 onlineUsers={onlineUsers}
-                showBackButton={isMobile && mobileView === 'chat'}
+                showBackButton={mobileView === 'chat'} // only on mobile switcher
                 onBack={() => setMobileView('sidebar')}
               />
               <ChatBody
