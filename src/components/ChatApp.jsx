@@ -395,12 +395,9 @@ const ChatApp = () => {
 
         {/* Sidebar Column */}
         <Col
-          xs={mobileView === 'sidebar' ? 10 : 0}
-          sm={10}
-          md={5}
-          lg={5}
+          xs={isMobile ? (mobileView === 'sidebar' ? 10 : 0) : 5}
           className={`p-0 border-end h-100 ${
-            mobileView === 'sidebar' ? 'd-block' : 'd-none d-sm-block'
+            isMobile ? (mobileView === 'sidebar' ? 'd-block' : 'd-none') : 'd-block'
           }`}
           style={{
             overflowX: 'hidden',
@@ -424,31 +421,23 @@ const ChatApp = () => {
           ) : error ? (
             <div className="text-danger">Error fetching contacts</div>
           ) : (
-            <Col
-              xs={isMobile ? (mobileView === 'sidebar' ? 10 : 0) : 5}
-              className={`p-0 border-end h-100 ${
-                isMobile ? (mobileView === 'sidebar' ? 'd-block' : 'd-none') : 'd-block'
-              }`}
-              style={{ overflowX: 'hidden', overflowY: 'auto', padding: 20, marginLeft: 20 }}
-            >
-              <Sidebar
-                onSelectChat={handleChatSelect}
-                pic={data && data.auth}
-                authenticatedUser={authUser}
-                selectedChat={selectedChat}
-                isOnline={isOnline}
-                notifiedUser={notifiedUser}
-                loading={contacts_loading}
-                error={contacts_error}
-                isRead={read}
-                contacts={contacts?.users || []}
-                unreadMap={unreadMap}
-                typingUsers={typingUsers}
-                notificationMap={notificationMap}
-                selectedClient={selectedChat}
-                onlineUsers={onlineUsers}
-              />
-            </Col>
+            <Sidebar
+              onSelectChat={handleChatSelect}
+              pic={data && data.auth}
+              authenticatedUser={authUser}
+              selectedChat={selectedChat}
+              isOnline={isOnline}
+              notifiedUser={notifiedUser}
+              loading={contacts_loading}
+              error={contacts_error}
+              isRead={read}
+              contacts={contacts?.users || []}
+              unreadMap={unreadMap}
+              typingUsers={typingUsers}
+              notificationMap={notificationMap}
+              selectedClient={selectedChat}
+              onlineUsers={onlineUsers}
+            />
           )}
         </Col>
 
