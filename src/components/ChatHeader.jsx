@@ -29,7 +29,7 @@ const ChatHeader = ({
           <Button
             variant="outline-secondary"
             size="sm"
-            className="me-2 d-sm-none" // 👈 only visible on mobile
+            className="me-2" // 👈 only visible on mobile d-sm-none
             onClick={onBack}
           >
             <ArrowLeft size={18} />
