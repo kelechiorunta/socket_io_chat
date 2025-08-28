@@ -354,7 +354,7 @@ const ChatApp = () => {
     return format(date, 'MMMM d, yyyy');
   };
 
-  const [mobileView, setMobileView] = useState(window.innerWidth < 968 ? 'chat' : 'sidebar'); // 'sidebar' | 'chat'
+  const [mobileView, setMobileView] = useState('sidebar'); // always start in sidebar
   const [isMobile, setIsMobile] = useState(window.innerWidth < 968);
 
   // 🔥 Watch window resize and update `isMobile`
@@ -404,7 +404,9 @@ const ChatApp = () => {
           }`}
           style={{
             overflowX: 'hidden',
-            overflowY: 'auto'
+            overflowY: 'auto',
+            padding: 10,
+            marginLeft: 20
           }}
         >
           {loading ? (
@@ -422,37 +424,39 @@ const ChatApp = () => {
           ) : error ? (
             <div className="text-danger">Error fetching contacts</div>
           ) : (
-            <Sidebar
-              onSelectChat={(chat) => {
-                handleChatSelect(chat);
-                if (isMobile) setMobileView('chat'); // WhatsApp-like switcher on mobile
-              }}
-              pic={data && data.auth}
-              authenticatedUser={authUser}
-              selectedChat={selectedChat}
-              isOnline={isOnline}
-              notifiedUser={notifiedUser}
-              loading={contacts_loading}
-              error={contacts_error}
-              isRead={read}
-              contacts={contacts?.users || []}
-              unreadMap={unreadMap}
-              typingUsers={typingUsers}
-              notificationMap={notificationMap}
-              selectedClient={selectedChat}
-              onlineUsers={onlineUsers}
-            />
+            <Col
+              xs={isMobile ? (mobileView === 'sidebar' ? 10 : 0) : 5}
+              className={`p-0 border-end h-100 ${
+                isMobile ? (mobileView === 'sidebar' ? 'd-block' : 'd-none') : 'd-block'
+              }`}
+              style={{ overflowX: 'hidden', overflowY: 'auto', padding: 20, marginLeft: 20 }}
+            >
+              <Sidebar
+                onSelectChat={handleChatSelect}
+                pic={data && data.auth}
+                authenticatedUser={authUser}
+                selectedChat={selectedChat}
+                isOnline={isOnline}
+                notifiedUser={notifiedUser}
+                loading={contacts_loading}
+                error={contacts_error}
+                isRead={read}
+                contacts={contacts?.users || []}
+                unreadMap={unreadMap}
+                typingUsers={typingUsers}
+                notificationMap={notificationMap}
+                selectedClient={selectedChat}
+                onlineUsers={onlineUsers}
+              />
+            </Col>
           )}
         </Col>
 
         {/* Chat Column */}
         <Col
-          xs={mobileView === 'chat' ? 10 : 0}
-          sm
-          md={6}
-          lg={6}
+          xs={isMobile ? (mobileView === 'chat' ? 10 : 0) : 7}
           className={`h-100 d-flex flex-column ${
-            mobileView === 'chat' ? 'd-flex' : 'd-none d-sm-flex'
+            isMobile ? (mobileView === 'chat' ? 'd-flex' : 'd-none') : 'd-flex'
           }`}
           style={{ overflow: 'hidden' }}
         >
@@ -463,8 +467,7 @@ const ChatApp = () => {
                 pic={data?.auth}
                 selectedUser={selectedChat}
                 onlineUsers={onlineUsers}
-                /** 👇 Pass prop to render back arrow on mobile */
-                showBackButton={isMobile && mobileView === 'chat'} // 👈 only on mobile + chat view
+                showBackButton={isMobile && mobileView === 'chat'}
                 onBack={() => setMobileView('sidebar')}
               />
               <ChatBody
