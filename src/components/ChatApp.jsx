@@ -395,12 +395,12 @@ const ChatApp = () => {
 
         {/* Sidebar Column */}
         <Col
-          xs={mobileView === 'sidebar' ? 10 : 0} // switcher mode on mobile
-          sm={7} // normal grid on tablet/web
-          md={7}
-          lg={5}
+          xs={mobileView === 'sidebar' ? 10 : 0} // xs: switcher mode
+          sm={mobileView === 'sidebar' ? 11 : 0} // sm: still switcher, full width
+          md={mobileView === 'sidebar' ? 11 : 0} // md: same as tablet (switcher, full width)
+          lg={5} // lg+: grid mode
           className={`p-0 border-end h-100 ${
-            mobileView === 'sidebar' ? 'd-block' : 'd-none d-sm-block'
+            mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block'
           }`}
           style={{
             overflowX: 'hidden',
@@ -446,12 +446,12 @@ const ChatApp = () => {
 
         {/* Chat Column */}
         <Col
-          xs={mobileView === 'chat' ? 10 : 0} // switcher mode on mobile
-          sm={4} // normal grid on tablet/web
-          md={4}
-          lg={6}
+          xs={mobileView === 'chat' ? 10 : 0} // xs: switcher mode
+          sm={mobileView === 'chat' ? 11 : 0} // sm: still switcher, full width
+          md={mobileView === 'chat' ? 11 : 0} // md: same as tablet (switcher, full width)
+          lg={6} // lg+: grid mode
           className={`h-100 d-flex flex-column ${
-            mobileView === 'chat' ? 'd-flex' : 'd-none d-sm-flex'
+            mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'
           }`}
           style={{ overflow: 'hidden' }}
         >
@@ -462,7 +462,8 @@ const ChatApp = () => {
                 pic={data?.auth}
                 selectedUser={selectedChat}
                 onlineUsers={onlineUsers}
-                showBackButton={mobileView === 'chat'} // only on mobile switcher
+                showBackButton={mobileView === 'chat' && window.innerWidth < 992}
+                // back button only in switcher mode (xs/sm/md)
                 onBack={() => setMobileView('sidebar')}
               />
               <ChatBody
