@@ -406,7 +406,7 @@ const ChatApp = () => {
             overflowX: 'hidden',
             overflowY: 'auto',
             padding: 10,
-            marginLeft: 4
+            marginLeft: 10
           }}
         >
           {loading ? (
@@ -462,7 +462,7 @@ const ChatApp = () => {
                 pic={data?.auth}
                 selectedUser={selectedChat}
                 onlineUsers={onlineUsers}
-                showBackButton={mobileView === 'chat' && window.innerWidth < 992}
+                showBackButton={isMobile} //{mobileView === 'chat' && window.innerWidth < 992}
                 // back button only in switcher mode (xs/sm/md)
                 onBack={() => setMobileView('sidebar')}
               />
