@@ -406,7 +406,7 @@ const ChatApp = () => {
             overflowX: 'hidden',
             overflowY: 'auto',
             padding: 10,
-            marginLeft: 0
+            marginLeft: 4
           }}
         >
           {loading ? (
