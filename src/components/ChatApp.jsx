@@ -355,117 +355,24 @@ const ChatApp = () => {
   };
 
   const [mobileView, setMobileView] = useState('sidebar'); // 'sidebar' | 'chat'
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 968);
 
-  // Switch automatically when chat selected (mobile only)
+  // 🔥 Watch window resize and update `isMobile`
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 968);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // When chat is selected, switch automatically if on mobile
   const handleChatSelect = (chat) => {
     handleSelectChat(chat);
-    if (window.innerWidth < 968) {
+    if (isMobile) {
       setMobileView('chat');
     }
   };
 
   return (
-    // <Container
-    //   fluid
-    //   className={`${isDark ? 'bg-dark text-light' : 'bg-light text-black'} p-0`}
-    //   style={{ height: 'max-content', overflowY: 'auto', overflowX: 'hidden' }}
-    // >
-    //   <SocketNotifications socketInstance={socket} />
-
-    //   <Row className="h-100 flex-xs-row flex-md-row flex-sm-row flex-lg-row">
-    //     {/* IconBar Column */}
-    //     <Col
-    //       xs={1}
-    //       sm={1}
-    //       md={1}
-    //       lg={1}
-    //       style={{ position: 'sticky', maxWidth: 50 }}
-    //       className="p-0 border-end"
-    //     >
-    //       {/* <IconBar pic={data && data.auth}/> */}
-    //       <IconBar profile={signedUser} onUpdateProfile={setSignedUser} />
-    //     </Col>
-
-    //     {/* Sidebar Column */}
-    //     <Col
-    //       xs={10}
-    //       sm={10}
-    //       md={10}
-    //       lg={5}
-    //       style={{ margin: 'auto', marginLeft: 20, paddingLeft: 20, overflowX: 'hidden' }}
-    //       className=" border-end "
-    //     >
-    //       <Sidebar
-    //         onSelectChat={handleSelectChat}
-    //         pic={data && data.auth}
-    //         authenticatedUser={authUser}
-    //         selectedChat={selectedChat}
-    //         // typingUserId={typingUserId}
-    //         isOnline={isOnline}
-    //         notifiedUser={notifiedUser}
-    //         loading={contacts_loading}
-    //         error={contacts_error}
-    //         isRead={read}
-    //         // isActiveRecipient={isActive}
-    //         contacts={contacts?.users || []}
-    //         unreadMap={unreadMap}
-    //         typingUsers={typingUsers}
-    //         notificationMap={notificationMap}
-    //         selectedClient={selectedChat}
-    //         onlineUsers={onlineUsers}
-    //       />
-    //     </Col>
-
-    //     {loading ? (
-    //       Array.from({ length: 5 }).map((_, idx) => (
-    //         <Card key={idx}>
-    //           <Card.Body className="d-flex align-items-center">
-    //             <Placeholder className="rounded-circle me-3" style={{ width: 40, height: 40 }} />
-    //             <div className="flex-grow-1">
-    //               <Placeholder xs={6} /> <br />
-    //               <Placeholder xs={4} />
-    //             </div>
-    //           </Card.Body>
-    //         </Card>
-    //       ))
-    //     ) : error ? (
-    //       <div className="text-danger">Error fetching contacts</div>
-    //     ) : (
-    //       <Col
-    //         style={{
-    //           borderRadius: 20,
-    //           padding: 'auto 100px',
-    //           width: '100%',
-    //           display: 'flex',
-    //           overflowX: 'hidden',
-    //           overflowY: 'scroll',
-    //           maxHeight: '100vh'
-    //         }}
-    //         xs={10}
-    //         sm={10}
-    //         md={11}
-    //         lg
-    //         className="justify-content-end d-flex flex-column"
-    //       >
-    //         <ChatHeader
-    //           chat={selectedChat}
-    //           pic={data?.auth}
-    //           selectedUser={selectedChat}
-    //           // typingUserId={typingUserId}
-    //           onlineUsers={onlineUsers}
-    //         />
-    //         <ChatBody
-    //           messages={messages}
-    //           chat={selectedChat}
-    //           pic={data?.auth}
-    //           typingUsers={typingUsers}
-    //           // typingUserId={typingUserId}
-    //         />
-    //         <ChatInput input={input} setInput={handleTyping} onSend={sendMessage} />
-    //       </Col>
-    //     )}
-    //   </Row>
-    // </Container>
     <Container
       fluid
       className={`${isDark ? 'bg-dark text-light' : 'bg-light text-black'} p-0`}
@@ -543,7 +450,7 @@ const ChatApp = () => {
           xs={mobileView === 'chat' ? 10 : 0}
           sm
           md={7}
-          lg={6}
+          lg={7}
           className={`h-100 d-flex flex-column ${
             mobileView === 'chat' ? 'd-flex' : 'd-none d-sm-flex'
           }`}
@@ -569,7 +476,7 @@ const ChatApp = () => {
               <ChatInput input={input} setInput={handleTyping} onSend={sendMessage} />
             </>
           ) : (
-            <div className="h-100 d-flex justify-content-center align-items-center text-muted">
+            <div className="h-100 d-flex justify-content-center align-items-center text-muted text-white">
               Select a chat to start messaging
             </div>
           )}
