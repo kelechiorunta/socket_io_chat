@@ -359,7 +359,7 @@ const ChatApp = () => {
   // Switch automatically when chat selected (mobile only)
   const handleChatSelect = (chat) => {
     handleSelectChat(chat);
-    if (window.innerWidth < 868) {
+    if (window.innerWidth < 968) {
       setMobileView('chat');
     }
   };
@@ -518,7 +518,7 @@ const ChatApp = () => {
             <Sidebar
               onSelectChat={(chat) => {
                 handleChatSelect(chat);
-                if (window.innerWidth < 868) setMobileView('chat'); // WhatsApp-like switcher on mobile
+                if (window.innerWidth < 968) setMobileView('chat'); // WhatsApp-like switcher on mobile
               }}
               pic={data && data.auth}
               authenticatedUser={authUser}
@@ -557,7 +557,7 @@ const ChatApp = () => {
                 selectedUser={selectedChat}
                 onlineUsers={onlineUsers}
                 /** 👇 Pass prop to render back arrow on mobile */
-                showBackButton={window.innerWidth < 768}
+                showBackButton={window.innerWidth < 968}
                 onBack={() => setMobileView('sidebar')}
               />
               <ChatBody

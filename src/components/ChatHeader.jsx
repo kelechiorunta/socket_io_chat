@@ -9,7 +9,7 @@ const ChatHeader = ({
   pic,
   selectedUser,
   typingUserId,
-  showBackButton = false, // 👈 new prop
+  showBackButton, // 👈 new prop
   onBack // 👈 new prop
 }) => {
   const { theme } = useTheme();
