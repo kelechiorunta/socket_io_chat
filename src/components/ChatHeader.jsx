@@ -1,5 +1,5 @@
-import { Video, Phone } from 'lucide-react';
-import { Image } from 'react-bootstrap';
+import { Video, Phone, ArrowLeft } from 'lucide-react';
+import { Image, Button } from 'react-bootstrap';
 import { useTheme } from './ThemeContext';
 
 const ChatHeader = ({
@@ -8,7 +8,9 @@ const ChatHeader = ({
   onlineUsers,
   pic,
   selectedUser,
-  typingUserId
+  typingUserId,
+  showBackButton = false, // 👈 new prop
+  onBack // 👈 new prop
 }) => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
@@ -16,13 +18,23 @@ const ChatHeader = ({
   return (
     <div
       style={{
-        backgroundColor: isDark ? ' #1f1d1d' : 'white',
+        backgroundColor: isDark ? '#1f1d1d' : 'white',
         color: isDark ? 'white' : 'black'
       }}
       className="d-flex align-items-center justify-content-between p-3 border-bottom border-dark"
     >
-      {/* bg-dark text-white */}
+      {/* Left side: Back button + avatar + username */}
       <div className="d-flex align-items-center">
+        {showBackButton && (
+          <Button
+            variant="outline-secondary"
+            size="sm"
+            className="me-2 d-sm-none" // 👈 only visible on mobile
+            onClick={onBack}
+          >
+            <ArrowLeft size={18} />
+          </Button>
+        )}
         <Image
           src={selectedUser ? selectedUser.picture || './avatar.png' : './avatar.png'}
           alt="Avatar"
@@ -36,6 +48,8 @@ const ChatHeader = ({
           </div>
         </div>
       </div>
+
+      {/* Right side: action icons */}
       <div className="d-flex gap-3">
         <Video />
         <Phone />
