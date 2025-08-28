@@ -359,7 +359,7 @@ const ChatApp = () => {
   // Switch automatically when chat selected (mobile only)
   const handleChatSelect = (chat) => {
     handleSelectChat(chat);
-    if (window.innerWidth < 768) {
+    if (window.innerWidth < 868) {
       setMobileView('chat');
     }
   };
@@ -518,7 +518,7 @@ const ChatApp = () => {
             <Sidebar
               onSelectChat={(chat) => {
                 handleChatSelect(chat);
-                if (window.innerWidth < 768) setMobileView('chat'); // WhatsApp-like switcher on mobile
+                if (window.innerWidth < 868) setMobileView('chat'); // WhatsApp-like switcher on mobile
               }}
               pic={data && data.auth}
               authenticatedUser={authUser}
