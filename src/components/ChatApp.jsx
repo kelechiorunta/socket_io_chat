@@ -395,12 +395,12 @@ const ChatApp = () => {
 
         {/* Sidebar Column */}
         <Col
-          xs={10}
-          sm={10}
-          md={10}
+          xs={11}
+          sm={11}
+          md={11}
           lg={5}
           className={`p-0 border-end h-100 ${
-            mobileView === 'sidebar' ? 'd-block' : 'd-block' //: 'd-none d-lg-block d-xs-block'
+            mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block d-xs-block'
           }`}
           style={{
             overflowX: 'hidden',
@@ -446,7 +446,7 @@ const ChatApp = () => {
 
         {/* Chat Column */}
         <Col
-          xs={10}
+          xs={12}
           sm={10}
           md={10}
           lg={6}
