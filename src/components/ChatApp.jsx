@@ -455,24 +455,30 @@ const ChatApp = () => {
           }`}
           style={{ overflow: 'hidden' }}
         >
-          {/* {selectedChat ? ( */}
-          {/* <> */}
-          <ChatHeader
-            chat={selectedChat}
-            pic={data?.auth}
-            selectedUser={selectedChat}
-            onlineUsers={onlineUsers}
-            showBackButton={isMobile || window.innerWidth < 992} //{mobileView === 'chat' && window.innerWidth < 992}
-            // back button only in switcher mode (xs/sm/md)
-            onBack={() => setMobileView('sidebar')}
-          />
-          <ChatBody
-            messages={messages}
-            chat={selectedChat}
-            pic={data?.auth}
-            typingUsers={typingUsers}
-          />
-          <ChatInput input={input} setInput={handleTyping} onSend={sendMessage} />
+          {selectedChat ? (
+            <>
+              <ChatHeader
+                chat={selectedChat}
+                pic={data?.auth}
+                selectedUser={selectedChat}
+                onlineUsers={onlineUsers}
+                showBackButton={isMobile || window.innerWidth < 992} //{mobileView === 'chat' && window.innerWidth < 992}
+                // back button only in switcher mode (xs/sm/md)
+                onBack={() => setMobileView('sidebar')}
+              />
+              <ChatBody
+                messages={messages}
+                chat={selectedChat}
+                pic={data?.auth}
+                typingUsers={typingUsers}
+              />
+              <ChatInput input={input} setInput={handleTyping} onSend={sendMessage} />
+            </>
+          ) : (
+            <div className="h-100 d-flex justify-content-center align-items-center text-muted text-white">
+              Select a chat to start messaging
+            </div>
+          )}
         </Col>
       </Row>
     </Container>
