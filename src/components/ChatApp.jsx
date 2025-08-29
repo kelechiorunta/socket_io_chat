@@ -395,8 +395,8 @@ const ChatApp = () => {
 
         {/* Sidebar Column */}
         <Col
-          xs={mobileView === 'sidebar' ? 10 : 0} // xs: switcher mode
-          sm={mobileView === 'sidebar' ? 11 : 0} // sm: still switcher, full width
+          xs={mobileView === 'sidebar' ? 10 : 4} // xs: switcher mode
+          sm={mobileView === 'sidebar' ? 11 : 4} // sm: still switcher, full width
           md={mobileView === 'sidebar' ? 11 : 0} // md: same as tablet (switcher, full width)
           lg={5} // lg+: grid mode
           className={`p-0 border-end h-100 ${mobileView === 'sidebar' ? 'd-block' : 'd-block'}`}
