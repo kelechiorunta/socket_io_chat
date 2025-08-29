@@ -395,11 +395,13 @@ const ChatApp = () => {
 
         {/* Sidebar Column */}
         <Col
-          xs={mobileView === 'sidebar' ? 10 : 4} // xs: switcher mode
-          sm={mobileView === 'sidebar' ? 11 : 4} // sm: still switcher, full width
-          md={mobileView === 'sidebar' ? 11 : 0} // md: same as tablet (switcher, full width)
-          lg={5} // lg+: grid mode
-          className={`p-0 border-end h-100 ${mobileView === 'sidebar' ? 'd-block' : 'd-block'}`}
+          xs={12}
+          sm={12}
+          md={12}
+          lg={5}
+          className={`p-0 border-end h-100 ${
+            mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block'
+          }`}
           style={{
             overflowX: 'hidden',
             overflowY: 'auto',
@@ -444,13 +446,11 @@ const ChatApp = () => {
 
         {/* Chat Column */}
         <Col
-          xs={mobileView === 'chat' ? 10 : 0} // xs: switcher mode
-          sm={mobileView === 'chat' ? 11 : 0} // sm: still switcher, full width
-          md={mobileView === 'chat' ? 11 : 0} // md: same as tablet (switcher, full width)
-          lg={6} // lg+: grid mode
-          className={`h-100 d-flex flex-column ${
-            mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'
-          }`}
+          xs={12}
+          sm={12}
+          md={12}
+          lg={6}
+          className={`h-100 flex-column ${mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'}`}
           style={{ overflow: 'hidden' }}
         >
           {selectedChat ? (
@@ -460,9 +460,8 @@ const ChatApp = () => {
                 pic={data?.auth}
                 selectedUser={selectedChat}
                 onlineUsers={onlineUsers}
-                showBackButton={isMobile || window.innerWidth < 992} //{mobileView === 'chat' && window.innerWidth < 992}
-                // back button only in switcher mode (xs/sm/md)
-                onBack={() => setMobileView('sidebar')}
+                showBackButton={window.innerWidth < 992}
+                onBack={() => setMobileView('sidebar')} // 👈 back button to show sidebar
               />
               <ChatBody
                 messages={messages}
@@ -473,7 +472,10 @@ const ChatApp = () => {
               <ChatInput input={input} setInput={handleTyping} onSend={sendMessage} />
             </>
           ) : (
-            <div className="h-100 d-flex justify-content-center align-items-center text-muted text-white">
+            <div
+              className="h-100 d-flex justify-content-center align-items-center text-muted text-white"
+              style={{ color: 'white' }}
+            >
               Select a chat to start messaging
             </div>
           )}
