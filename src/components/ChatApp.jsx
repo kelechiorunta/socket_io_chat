@@ -399,9 +399,7 @@ const ChatApp = () => {
           sm={12}
           md={12}
           lg={5}
-          className={`p-0 border-end h-100 ${
-            mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block'
-          }`}
+          className={`p-0 border-end h-100`}
           style={{
             overflowX: 'hidden',
             overflowY: 'auto',
