@@ -395,12 +395,12 @@ const ChatApp = () => {
 
         {/* Sidebar Column */}
         <Col
-          xs={11}
+          xs={10}
           sm={11}
           md={11}
           lg={5}
           className={`p-0 border-end h-100 ${
-            mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block d-xs-block'
+            mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block'
           }`}
           style={{
             overflowX: 'hidden',
@@ -447,8 +447,8 @@ const ChatApp = () => {
         {/* Chat Column */}
         <Col
           xs={12}
-          sm={10}
-          md={10}
+          sm={11}
+          md={11}
           lg={6}
           className={`h-100 flex-column ${mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'}`}
           style={{ overflow: 'hidden' }}
@@ -461,7 +461,7 @@ const ChatApp = () => {
                 selectedUser={selectedChat}
                 onlineUsers={onlineUsers}
                 showBackButton={window.innerWidth < 992}
-                onBack={() => setMobileView('sidebar')} // 👈 back button to show sidebar
+                onBack={() => setMobileView('sidebar')}
               />
               <ChatBody
                 messages={messages}
@@ -472,10 +472,7 @@ const ChatApp = () => {
               <ChatInput input={input} setInput={handleTyping} onSend={sendMessage} />
             </>
           ) : (
-            <div
-              className="h-100 d-flex justify-content-center align-items-center text-muted text-white"
-              style={{ color: 'white' }}
-            >
+            <div className="h-100 d-flex justify-content-center align-items-center text-muted text-white">
               Select a chat to start messaging
             </div>
           )}
