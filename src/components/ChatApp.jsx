@@ -383,7 +383,19 @@ const ChatApp = () => {
       <Row className="h-100">
         {/* IconBar Column - always visible */}
         <Col
-          xs={mobileView === 'sidebar' ? 10 : 0} // 👈 take 10/12 width in mobile when active
+          xs={2}
+          sm={1}
+          md={1}
+          lg={1}
+          style={{ position: 'sticky', maxWidth: 60 }}
+          className="p-0 border-end"
+        >
+          <IconBar profile={signedUser} onUpdateProfile={setSignedUser} />
+        </Col>
+
+        {/* Sidebar Column */}
+        <Col
+          xs={mobileView === 'sidebar' ? 10 : 0} // 👈 takes 10 cols in mobile
           sm={mobileView === 'sidebar' ? 11 : 0}
           md={mobileView === 'sidebar' ? 11 : 0}
           lg={5} // 👈 grid mode for desktop
@@ -435,7 +447,7 @@ const ChatApp = () => {
 
         {/* Chat Column */}
         <Col
-          xs={mobileView === 'chat' ? 10 : 0} // 👈 same logic: 10/12 when chat is active
+          xs={mobileView === 'chat' ? 10 : 0} // 👈 takes 10 cols in mobile
           sm={mobileView === 'chat' ? 11 : 0}
           md={mobileView === 'chat' ? 11 : 0}
           lg={6}
@@ -450,7 +462,7 @@ const ChatApp = () => {
                 selectedUser={selectedChat}
                 onlineUsers={onlineUsers}
                 showBackButton={window.innerWidth < 992}
-                onBack={() => setMobileView('sidebar')} // 👈 back button shows Sidebar
+                onBack={() => setMobileView('sidebar')} // 👈 back button for switcher mode
               />
               <ChatBody
                 messages={messages}
@@ -461,7 +473,7 @@ const ChatApp = () => {
               <ChatInput input={input} setInput={handleTyping} onSend={sendMessage} />
             </>
           ) : (
-            <div className="h-100 d-flex justify-content-center align-items-center text-muted">
+            <div className="h-100 d-flex justify-content-center align-items-center text-muted text-white">
               Select a chat to start messaging
             </div>
           )}
