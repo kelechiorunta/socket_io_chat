@@ -383,22 +383,10 @@ const ChatApp = () => {
       <Row className="h-100">
         {/* IconBar Column - always visible */}
         <Col
-          xs={2}
-          sm={1}
-          md={1}
-          lg={1}
-          style={{ position: 'sticky', maxWidth: 60 }}
-          className="p-0 border-end"
-        >
-          <IconBar profile={signedUser} onUpdateProfile={setSignedUser} />
-        </Col>
-
-        {/* Sidebar Column */}
-        <Col
-          xs={10}
-          sm={11}
-          md={11}
-          lg={5}
+          xs={mobileView === 'sidebar' ? 10 : 0} // 👈 take 10/12 width in mobile when active
+          sm={mobileView === 'sidebar' ? 11 : 0}
+          md={mobileView === 'sidebar' ? 11 : 0}
+          lg={5} // 👈 grid mode for desktop
           className={`p-0 border-end h-100 ${
             mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block'
           }`}
@@ -406,7 +394,8 @@ const ChatApp = () => {
             overflowX: 'hidden',
             overflowY: 'auto',
             padding: 10,
-            marginLeft: 10
+            marginLeft: 10,
+            maxWidth: '100vw'
           }}
         >
           {loading ? (
@@ -446,11 +435,11 @@ const ChatApp = () => {
 
         {/* Chat Column */}
         <Col
-          xs={12}
-          sm={11}
-          md={11}
+          xs={mobileView === 'chat' ? 10 : 0} // 👈 same logic: 10/12 when chat is active
+          sm={mobileView === 'chat' ? 11 : 0}
+          md={mobileView === 'chat' ? 11 : 0}
           lg={6}
-          className={`h-100 flex-column ${mobileView === 'chat' ? 'd-block' : 'd-none d-lg-flex'}`}
+          className={`h-100 flex-column ${mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'}`}
           style={{ overflow: 'hidden' }}
         >
           {selectedChat ? (
@@ -461,7 +450,7 @@ const ChatApp = () => {
                 selectedUser={selectedChat}
                 onlineUsers={onlineUsers}
                 showBackButton={window.innerWidth < 992}
-                onBack={() => setMobileView('sidebar')}
+                onBack={() => setMobileView('sidebar')} // 👈 back button shows Sidebar
               />
               <ChatBody
                 messages={messages}
@@ -472,7 +461,7 @@ const ChatApp = () => {
               <ChatInput input={input} setInput={handleTyping} onSend={sendMessage} />
             </>
           ) : (
-            <div className="h-100 d-flex justify-content-center align-items-center text-muted text-white">
+            <div className="h-100 d-flex justify-content-center align-items-center text-muted">
               Select a chat to start messaging
             </div>
           )}
