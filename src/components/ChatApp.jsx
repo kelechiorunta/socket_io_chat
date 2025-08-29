@@ -397,10 +397,10 @@ const ChatApp = () => {
         <Col
           xs={10}
           sm={10}
-          md={6}
+          md={10}
           lg={5}
           className={`p-0 border-end h-100 ${
-            mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block d-xs-block'
+            mobileView === 'sidebar' ? 'd-block' : 'd-block' //: 'd-none d-lg-block d-xs-block'
           }`}
           style={{
             overflowX: 'hidden',
@@ -448,7 +448,7 @@ const ChatApp = () => {
         <Col
           xs={10}
           sm={10}
-          md={6}
+          md={10}
           lg={6}
           className={`h-100 flex-column ${mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'}`}
           style={{ overflow: 'hidden' }}
