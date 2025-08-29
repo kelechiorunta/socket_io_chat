@@ -395,9 +395,9 @@ const ChatApp = () => {
 
         {/* Sidebar Column */}
         <Col
-          xs={mobileView === 'sidebar' ? 10 : 0} // 👈 takes 10 cols in mobile
-          sm={mobileView === 'sidebar' ? 11 : 0}
-          md={mobileView === 'sidebar' ? 11 : 0}
+          xs={mobileView === 'sidebar' ? 10 : 10} // 👈 takes 10 cols in mobile
+          sm={mobileView === 'sidebar' ? 11 : 11}
+          md={mobileView === 'sidebar' ? 11 : 11}
           lg={5} // 👈 grid mode for desktop
           className={`p-0 border-end h-100 ${
             mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block'
@@ -407,7 +407,9 @@ const ChatApp = () => {
             overflowY: 'auto',
             padding: 10,
             marginLeft: 10,
-            maxWidth: '100vw'
+            maxWidth: '100vw',
+            minWidth: '300px',
+            width: '100%'
           }}
         >
           {loading ? (
