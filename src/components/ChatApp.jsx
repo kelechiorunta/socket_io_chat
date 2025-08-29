@@ -450,7 +450,7 @@ const ChatApp = () => {
           sm={11}
           md={11}
           lg={6}
-          className={`h-100 flex-column ${mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'}`}
+          className={`h-100 flex-column ${mobileView === 'chat' ? 'd-block' : 'd-none d-lg-flex'}`}
           style={{ overflow: 'hidden' }}
         >
           {selectedChat ? (
