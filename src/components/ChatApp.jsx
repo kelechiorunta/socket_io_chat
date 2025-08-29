@@ -400,7 +400,7 @@ const ChatApp = () => {
           md={6}
           lg={5}
           className={`p-0 border-end h-100 ${
-            mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block'
+            mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block d-xs-block'
           }`}
           style={{
             overflowX: 'hidden',
