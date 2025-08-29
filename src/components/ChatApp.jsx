@@ -395,11 +395,13 @@ const ChatApp = () => {
 
         {/* Sidebar Column */}
         <Col
-          xs={8}
-          sm={8}
-          md={8}
+          xs={10}
+          sm={10}
+          md={6}
           lg={5}
-          className={`p-0 border-end h-100 ${mobileView === 'sidebar' && 'd-block'}`}
+          className={`p-0 border-end h-100 ${
+            mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block'
+          }`}
           style={{
             overflowX: 'hidden',
             overflowY: 'auto',
@@ -444,8 +446,8 @@ const ChatApp = () => {
 
         {/* Chat Column */}
         <Col
-          xs={3}
-          sm={3}
+          xs={10}
+          sm={10}
           md={6}
           lg={6}
           className={`h-100 flex-column ${mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'}`}
