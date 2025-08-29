@@ -399,9 +399,7 @@ const ChatApp = () => {
           sm={mobileView === 'sidebar' ? 11 : 0} // sm: still switcher, full width
           md={mobileView === 'sidebar' ? 11 : 0} // md: same as tablet (switcher, full width)
           lg={5} // lg+: grid mode
-          className={`p-0 border-end h-100 ${
-            mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block'
-          }`}
+          className={`p-0 border-end h-100 ${mobileView === 'sidebar' ? 'd-block' : 'd-block'}`}
           style={{
             overflowX: 'hidden',
             overflowY: 'auto',
