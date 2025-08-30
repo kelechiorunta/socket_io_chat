@@ -19,7 +19,9 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  useEffect(scrollToBottom, [messages]);
+  const isTyper = typingUsers.has(pic?._id);
+
+  useEffect(scrollToBottom, [messages, isTyper]);
 
   let lastMessageDate = null;
 
@@ -38,6 +40,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
       {messages.map((msg, index) => {
         const msgDate = new Date(msg.createdAt);
         const dateLabel = formatDateLabel(msgDate);
+        const isTyping = typingUsers.has(pic?._id);
 
         const showDateLabel = !lastMessageDate || formatDateLabel(lastMessageDate) !== dateLabel;
         lastMessageDate = msgDate;
@@ -93,24 +96,25 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
           </React.Fragment>
         );
       })}
-      {[...typingUsers].length > 0 && (
-        <div className="d-flex align-items-center gap-2 mb-2 justify-content-start">
-          <Avatar src={(chat && chat.picture) || './avatar.png'} size={32} />
-          <div
-            className="px-3 py-2 rounded-pill"
-            style={{
-              backgroundColor: '#3a3b3c',
-              color: '#fff',
-              maxWidth: '60%',
-              fontSize: '0.9rem',
-              display: 'flex',
-              alignItems: 'center'
-            }}
-          >
-            <TypingIndicator />
+      {[...typingUsers].length > 0 &&
+        typingUsers.has(
+          <div className="d-flex align-items-center gap-2 mb-2 justify-content-start">
+            <Avatar src={(chat && chat.picture) || './avatar.png'} size={32} />
+            <div
+              className="px-3 py-2 rounded-pill"
+              style={{
+                backgroundColor: '#3a3b3c',
+                color: '#fff',
+                maxWidth: '60%',
+                fontSize: '0.9rem',
+                display: 'flex',
+                alignItems: 'center'
+              }}
+            >
+              <TypingIndicator />
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       <div ref={chatEndRef} />
     </div>

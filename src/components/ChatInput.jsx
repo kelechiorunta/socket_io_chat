@@ -5,7 +5,7 @@ import { useTheme } from './ThemeContext';
 import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
 
-const ChatInput = ({ input, setInput, onSend }) => {
+const ChatInput = ({ input, setInput, onSend, isMobile }) => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
   const [showPicker, setShowPicker] = useState(false);
@@ -33,12 +33,16 @@ const ChatInput = ({ input, setInput, onSend }) => {
         <Button variant="outline-secondary" onClick={() => setShowPicker(!showPicker)}>
           <Smile size={18} />
         </Button>
-        <Button variant="outline-secondary">
-          <Paperclip size={18} />
-        </Button>
-        <Button variant="outline-secondary">
-          <Image size={18} />
-        </Button>
+        {!isMobile && (
+          <Button variant="outline-secondary">
+            <Paperclip size={18} />
+          </Button>
+        )}
+        {!isMobile && (
+          <Button variant="outline-secondary">
+            <Image size={18} />
+          </Button>
+        )}
         <FormControl
           placeholder="Message......."
           value={input}
@@ -52,9 +56,11 @@ const ChatInput = ({ input, setInput, onSend }) => {
         <Button variant="outline-secondary" onClick={onSend}>
           <Send size={18} />
         </Button>
-        <Button variant="outline-secondary">
-          <Mic size={18} />
-        </Button>
+        {!isMobile && (
+          <Button variant="outline-secondary">
+            <Mic size={18} />
+          </Button>
+        )}
       </InputGroup>
     </div>
   );
