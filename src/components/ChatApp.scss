@@ -1,0 +1,46 @@
+// First, override Bootstrap variables BEFORE importing Bootstrap
+$grid-breakpoints: (
+  xs: 0,
+  xxs: 0,
+  // 👈 custom extra breakpoint
+  sm: 400px,
+  // 👈 treat <400px as extra small
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+$container-max-widths: (
+  sm: 100%,
+  // force full width below 400px
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1320px
+);
+
+// Import Bootstrap with your overrides applied
+@import '~bootstrap/scss/bootstrap';
+
+// ============================
+// Custom fixes for chat layout
+// ============================
+
+/* Force Sidebar to take full width below 400px */
+@media (max-width: 399px) {
+  .chat-sidebar {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    flex: 1 1 100% !important;
+  }
+
+  .chat-iconbar {
+    display: none !important; // collapse the icon bar completely
+  }
+
+  .chat-chatcol {
+    display: none !important; // only show when chat is active
+  }
+}
