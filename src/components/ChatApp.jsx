@@ -408,8 +408,8 @@ const ChatApp = () => {
             padding: 10,
             marginLeft: 10,
             maxWidth: '100vw',
-            minWidth: '300px',
-            width: '100%'
+            minWidth: '300px'
+            // width: '100%'
           }}
         >
           {loading ? (
