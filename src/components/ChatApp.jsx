@@ -399,9 +399,7 @@ const ChatApp = () => {
           sm={mobileView === 'sidebar' ? 11 : 0}
           md={mobileView === 'sidebar' ? 11 : 0}
           lg={5} // 👈 grid mode for desktop
-          className={`p-0 border-end h-100 ${
-            mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block'
-          }`}
+          className={`p-0 border-end h-100 ${mobileView === 'sidebar' ? 'd-block' : 'd-lg-block'}`}
           style={{
             overflowX: 'hidden',
             overflowY: 'auto',
