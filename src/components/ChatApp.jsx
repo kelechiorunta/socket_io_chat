@@ -405,8 +405,9 @@ const ChatApp = () => {
           style={{
             overflowX: 'hidden',
             overflowY: 'auto',
-            padding: 10,
-            marginLeft: mobileView === 'sidebar' ? 'auto' : 'auto',
+            padding: 4,
+            margin: mobileView === 'sidebar' ? 'auto' : 'auto',
+            width: '100%',
             maxWidth: '100vw'
           }}
         >
