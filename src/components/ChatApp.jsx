@@ -473,7 +473,12 @@ const ChatApp = () => {
                 pic={data?.auth}
                 typingUsers={typingUsers}
               />
-              <ChatInput input={input} setInput={handleTyping} onSend={sendMessage} />
+              <ChatInput
+                input={input}
+                setInput={handleTyping}
+                onSend={sendMessage}
+                isMobile={isMobile}
+              />
             </>
           ) : (
             <div className="h-100 d-flex justify-content-center align-items-center text-muted text-white">
