@@ -324,7 +324,7 @@ const Sidebar = ({
                       maxWidth: '500px'
                     }}
                   >
-                    <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <div
                         style={{
                           textAlign: 'left',
