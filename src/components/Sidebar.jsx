@@ -432,8 +432,10 @@ const Sidebar = ({
         <div className="d-flex align-items-center gap-2 mb-2">
           <Avatar src={pic && pic.picture} size={32} />
           {/* <span>{pic.username}</span> */}
-          <p style={{ fontStyle: 'italic', fontSize: 16 }}>
+          <p style={{ fontStyle: 'italic', fontSize: 9 }}>
             <AnimateText
+              textHeight="auto"
+              textSize="10px"
               texts={[`Welcome, ${pic.username}`, `Click on the avatar to update profile`]}
             />
           </p>
