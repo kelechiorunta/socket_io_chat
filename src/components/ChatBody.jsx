@@ -40,7 +40,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
       {messages.map((msg, index) => {
         const msgDate = new Date(msg.createdAt);
         const dateLabel = formatDateLabel(msgDate);
-        const isTyping = typingUsers.has(pic?._id);
+        // const isTyping = typingUsers.has(pic?._id);
 
         const showDateLabel = !lastMessageDate || formatDateLabel(lastMessageDate) !== dateLabel;
         lastMessageDate = msgDate;
