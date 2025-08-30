@@ -1,7 +1,17 @@
 import './Sidebar.scss';
 import React, { useState, useEffect, useRef } from 'react';
-import { Form, InputGroup, ButtonGroup, Placeholder, Card } from 'react-bootstrap';
-import { Search, Plus, Sun, Moon, Settings } from 'lucide-react';
+import {
+  Form,
+  InputGroup,
+  ButtonGroup,
+  Placeholder,
+  Card,
+  Badge,
+  Stack,
+  Col,
+  Row
+} from 'react-bootstrap';
+import { Search, Sun, Moon } from 'lucide-react';
 import Avatar from './Avatar';
 import Button from './Button';
 import { useTheme } from './ThemeContext';
@@ -313,13 +323,15 @@ const Sidebar = ({
                     ></div>
                   </div>
 
+                  {/* Edit the display of unread Msg and timeStamp */}
                   {/* Username & Message */}
-                  <div
+                  {/* <div
                     style={{
                       display: 'flex',
                       width: '100%',
                       justifyContent: 'space-between',
-                      alignItems: 'flex-start'
+                      alignItems: 'flex-start',
+                      maxWidth: '100%'
                     }}
                   >
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -368,8 +380,57 @@ const Sidebar = ({
                         )}
                       </div>
                     </div>
-                    {/* <p>{unreadData?.timeStamp && unreadData?.timeStamp}</p> */}
-                  </div>
+                    <p>{unreadData?.timeStamp && unreadData?.timeStamp}</p>
+                  </div> */}
+
+                  <Row
+                    className={`align-items-center py-2 px-3 border-bottom ${
+                      isDark ? 'bg-dark text-light' : 'bg-white text-dark'
+                    }`}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {/* Avatar (optional, left side) */}
+                    <Col xs="auto" className="pe-2">
+                      <div
+                        className="rounded-circle bg-secondary"
+                        style={{ width: 40, height: 40 }}
+                      ></div>
+                    </Col>
+
+                    {/* Middle: Username + last message */}
+                    <Col className="flex-grow-1">
+                      <Stack gap={1}>
+                        <div className="fw-bold text-truncate">{user.username}</div>
+                        <div
+                          className={`small text-truncate ${
+                            isDark ? 'text-light opacity-75' : 'text-muted'
+                          }`}
+                        >
+                          {isTyping ? (
+                            <span className="text-success">is typing...</span>
+                          ) : (
+                            unreadData?.lastMessage || 'No messages'
+                          )}
+                        </div>
+                      </Stack>
+                    </Col>
+
+                    {/* Right: Timestamp + unread badge */}
+                    <Col xs="auto" className="text-end">
+                      <Stack gap={1} className="align-items-end">
+                        {unreadData?.timeStamp && (
+                          <small className={`${isDark ? 'text-light opacity-75' : 'text-muted'}`}>
+                            {unreadData.timeStamp}
+                          </small>
+                        )}
+                        {unreadData?.unreadCount > 0 && (
+                          <Badge bg="success" pill>
+                            {unreadData.unreadCount}
+                          </Badge>
+                        )}
+                      </Stack>
+                    </Col>
+                  </Row>
 
                   {/* /{unreadMap[user._id] > 0 && ( */}
                   {/* <span className="badge bg-danger">{unreadMap[user._id]}</span> */}
@@ -415,15 +476,15 @@ const Sidebar = ({
       </div>
 
       {/* Calls Section */}
-      <div className="d-flex justify-content-between align-items-center mb-2 mt-3">
+      {/* <div className="d-flex justify-content-between align-items-center mb-2 mt-3">
         <h5 className="mb-0">Calls</h5>
         <div className="d-flex align-items-center gap-1 text-muted">
           <Plus size={16} /> <small>New Meet</small>
         </div>
-      </div>
+      </div> */}
 
       {/* Footer/Profile */}
-      <div className="mt-auto pt-3 border-top border-secondary">
+      {/* <div className="mt-auto pt-3 border-top border-secondary">
         <div className="d-flex align-items-center gap-2 mb-2">
           <Avatar src={pic && pic.picture} size={32} />
           <span>Your Profile</span>
@@ -431,7 +492,7 @@ const Sidebar = ({
         <div className="d-flex align-items-center gap-2 text-muted cursor-pointer">
           <Settings size={16} /> <small>Settings</small>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
