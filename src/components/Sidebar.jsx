@@ -324,7 +324,7 @@ const Sidebar = ({
                       maxWidth: '100%'
                     }}
                   >
-                    <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', width: 'max-content' }}>
                       <div
                         style={{
                           textAlign: 'left',
@@ -370,7 +370,7 @@ const Sidebar = ({
                         )}
                       </div>
                     </div>
-                    <p style={{ width: '100%', margin: 'auto' }}>
+                    <p style={{ width: 'auto', margin: 'auto' }}>
                       {unreadData?.timeStamp && unreadData?.timeStamp}
                     </p>
                   </div>
