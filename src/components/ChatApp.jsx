@@ -406,7 +406,7 @@ const ChatApp = () => {
             overflowX: 'hidden',
             overflowY: 'auto',
             padding: 10,
-            marginLeft: 'auto',
+            marginLeft: 10,
             maxWidth: '100vw'
           }}
         >
