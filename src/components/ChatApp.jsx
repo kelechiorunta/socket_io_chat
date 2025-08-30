@@ -381,33 +381,33 @@ const ChatApp = () => {
       <SocketNotifications socketInstance={socket} />
 
       <Row className="h-100">
-        {/* IconBar Column - always visible */}
+        {/* IconBar Column */}
         <Col
           xs={mobileView === 'sidebar' ? 0 : 2}
           sm={1}
           md={1}
           lg={1}
           style={{ position: 'sticky', maxWidth: 60 }}
-          className="p-0 border-end"
+          className="p-0 border-end chat-iconbar" // 👈 added hook
         >
           <IconBar profile={signedUser} onUpdateProfile={setSignedUser} />
         </Col>
 
         {/* Sidebar Column */}
         <Col
-          xs={mobileView === 'sidebar' ? 10 : 0} // 👈 takes 10 cols in mobile
+          xs={mobileView === 'sidebar' ? 10 : 0}
           sm={mobileView === 'sidebar' ? 11 : 0}
           md={mobileView === 'sidebar' ? 11 : 0}
-          lg={5} // 👈 grid mode for desktop
-          className={`p-0 border-end h-100 ${mobileView === 'sidebar' ? 'd-block' : 'd-block'}`}
+          lg={5}
+          className={`p-0 border-end h-100 chat-sidebar ${
+            mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block'
+          }`}
           style={{
             overflowX: 'hidden',
             overflowY: 'auto',
             padding: 10,
             marginLeft: 'auto',
-            maxWidth: '100vw',
-            minWidth: '300px'
-            // width: '100%'
+            maxWidth: '100vw'
           }}
         >
           {loading ? (
@@ -447,11 +447,13 @@ const ChatApp = () => {
 
         {/* Chat Column */}
         <Col
-          xs={mobileView === 'chat' ? 10 : 0} // 👈 takes 10 cols in mobile
+          xs={mobileView === 'chat' ? 10 : 0}
           sm={mobileView === 'chat' ? 11 : 0}
           md={mobileView === 'chat' ? 11 : 0}
           lg={6}
-          className={`h-100 flex-column ${mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'}`}
+          className={`h-100 flex-column chat-chatcol ${
+            mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'
+          }`}
           style={{ overflow: 'hidden' }}
         >
           {selectedChat ? (
@@ -462,7 +464,7 @@ const ChatApp = () => {
                 selectedUser={selectedChat}
                 onlineUsers={onlineUsers}
                 showBackButton={window.innerWidth < 992}
-                onBack={() => setMobileView('sidebar')} // 👈 back button for switcher mode
+                onBack={() => setMobileView('sidebar')}
               />
               <ChatBody
                 messages={messages}
