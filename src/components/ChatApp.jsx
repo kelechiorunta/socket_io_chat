@@ -383,7 +383,7 @@ const ChatApp = () => {
       <Row className="h-100">
         {/* IconBar Column - always visible */}
         <Col
-          xs={2}
+          xs={0}
           sm={1}
           md={1}
           lg={1}
@@ -395,7 +395,7 @@ const ChatApp = () => {
 
         {/* Sidebar Column */}
         <Col
-          xs={mobileView === 'sidebar' ? 10 : 0} // 👈 takes 10 cols in mobile
+          xs={mobileView === 'sidebar' ? 12 : 0} // 👈 takes 10 cols in mobile
           sm={mobileView === 'sidebar' ? 11 : 0}
           md={mobileView === 'sidebar' ? 11 : 0}
           lg={5} // 👈 grid mode for desktop
