@@ -2,7 +2,13 @@ import './animateText.scss';
 import React, { useEffect, useRef } from 'react';
 import { animateText } from './animate.js';
 
-const AnimateText = ({ texts = [], speed = 100, delay = 5000 }) => {
+const AnimateText = ({
+  texts = [],
+  speed = 100,
+  delay = 5000,
+  textSize = '2.75rem',
+  textHeight = '30px'
+}) => {
   const textRef = useRef(null);
 
   useEffect(() => {
@@ -44,11 +50,11 @@ const AnimateText = ({ texts = [], speed = 100, delay = 5000 }) => {
         justifyContent: 'center',
         width: '100%',
         fontWeight: 'bolder',
-        fontSize: '2.75rem',
+        fontSize: textSize,
         textAlign: 'center',
         margin: 'auto',
         // padding: '0.5rem',
-        height: '30px'
+        height: textHeight
 
         // fontFamily: 'monospace'
         // color: 'black'
