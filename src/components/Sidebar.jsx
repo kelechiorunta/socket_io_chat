@@ -5,6 +5,7 @@ import { Search, Sun, Moon, Plus, Settings } from 'lucide-react';
 import Avatar from './Avatar';
 import Button from './Button';
 import { useTheme } from './ThemeContext';
+import AnimateText from './AnimateText/AnimateText';
 
 const Sidebar = ({
   onSelectChat,
@@ -419,7 +420,7 @@ const Sidebar = ({
       </div>
 
       {/* Calls Section */}
-      <div className=" fs-1 d-flex justify-content-between align-items-center mb-2 mt-3">
+      <div className="d-flex justify-content-between align-items-center mb-2 mt-3">
         <h5 className="mb-0">Calls</h5>
         <div className="d-flex align-items-center gap-1 text-muted">
           <Plus size={16} /> <small>New Meet</small>
@@ -427,10 +428,15 @@ const Sidebar = ({
       </div>
 
       {/* Footer/Profile */}
-      <div className="fs-1 mt-auto pt-3 border-top border-secondary">
+      <div className="mt-auto pt-3 border-top border-secondary">
         <div className="d-flex align-items-center gap-2 mb-2">
           <Avatar src={pic && pic.picture} size={32} />
-          <span>{pic.username}</span>
+          {/* <span>{pic.username}</span> */}
+          <p style={{ fontStyle: 'italic', fontSize: 16 }}>
+            <AnimateText
+              texts={[`Welcome, ${pic.username}`, `Click on the avatar to update profile`]}
+            />
+          </p>
         </div>
         <div className="d-flex align-items-center gap-2 text-muted cursor-pointer">
           <Settings size={16} /> <small>Settings</small>
