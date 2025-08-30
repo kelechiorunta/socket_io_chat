@@ -383,7 +383,7 @@ const ChatApp = () => {
       <Row className="h-100">
         {/* IconBar Column - always visible */}
         <Col
-          xs={0}
+          xs={mobileView === 'sidebar' ? 0 : 2}
           sm={1}
           md={1}
           lg={1}
