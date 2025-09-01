@@ -450,7 +450,7 @@ const ChatApp = () => {
 
         {/* Chat Column */}
         <Col
-          xs={mobileView === 'chat' ? 10 : 0}
+          xs={mobileView === 'chat' ? 12 : 0}
           sm={mobileView === 'chat' ? 11 : 0}
           md={mobileView === 'chat' ? 11 : 0}
           lg={6}
