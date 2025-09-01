@@ -389,7 +389,7 @@ const ChatApp = () => {
           lg={1}
           style={{ position: 'sticky', maxWidth: 60 }}
           className={`p-0 border-end chat-iconbar ${
-            mobileView === 'sidebar' ? 'd-none' : 'd-block d-lg-block'
+            mobileView === 'chat' ? 'd-none' : 'd-block d-lg-block'
           }`} // 👈 added hook
         >
           <IconBar profile={signedUser} onUpdateProfile={setSignedUser} />
