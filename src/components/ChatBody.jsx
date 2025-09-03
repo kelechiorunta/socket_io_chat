@@ -96,25 +96,24 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
           </React.Fragment>
         );
       })}
-      {[...typingUsers].length > 0 &&
-        typingUsers.has(
-          <div className="d-flex align-items-center gap-2 mb-2 justify-content-start">
-            <Avatar src={(chat && chat.picture) || './avatar.png'} size={32} />
-            <div
-              className="px-3 py-2 rounded-pill"
-              style={{
-                backgroundColor: '#3a3b3c',
-                color: '#fff',
-                maxWidth: '60%',
-                fontSize: '0.9rem',
-                display: 'flex',
-                alignItems: 'center'
-              }}
-            >
-              <TypingIndicator />
-            </div>
+      {[...typingUsers].length > 0 && typingUsers.has(chat._id) && (
+        <div className="d-flex align-items-center gap-2 mb-2 justify-content-start">
+          <Avatar src={(chat && chat.picture) || './avatar.png'} size={32} />
+          <div
+            className="px-3 py-2 rounded-pill"
+            style={{
+              backgroundColor: '#3a3b3c',
+              color: '#fff',
+              maxWidth: '60%',
+              fontSize: '0.9rem',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
+            <TypingIndicator />
           </div>
-        )}
+        </div>
+      )}
 
       <div ref={chatEndRef} />
     </div>
