@@ -249,7 +249,8 @@ const resolvers = {
         // Return UnreadResult format
         return {
           count: unreadEntry?.count || 0,
-          lastMessage: unreadEntry?.lastMessage || ''
+          lastMessage: unreadEntry?.lastMessage || '',
+          timeStamp: unreadEntry?.updatedAt || ''
         };
       } catch (err) {
         console.error('❌ getUnread error:', err);

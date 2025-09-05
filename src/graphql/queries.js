@@ -56,6 +56,8 @@ export const GET_UNREAD = gql`
     getUnread(senderId: $senderId, recipientId: $recipientId) {
       count
       lastMessage
+      updatedAt
+      createdAt
     }
   }
 `;

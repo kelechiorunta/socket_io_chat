@@ -104,7 +104,7 @@ const Sidebar = ({
     >
       {/* Header */}
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="h6" sx={{ color: '#00e575', fontWeight: 'bold' }}>
+        <Typography variant="h6" sx={{ color: '#00e575', fontWeight: 'bold', padding: 2 }}>
           JUSTCHAT
         </Typography>
         <Box display="flex" gap={1}>
@@ -314,17 +314,17 @@ const Sidebar = ({
       </Box>
 
       {/* Calls Section */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+      {/* <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
         <Typography variant="subtitle1">Calls</Typography>
         <Box display="flex" alignItems="center" gap={1} color="text.secondary">
           <Plus size={16} /> <Typography variant="caption">New Meet</Typography>
         </Box>
       </Box>
 
-      <Divider />
+      <Divider /> */}
 
       {/* Footer */}
-      <Box mt="auto" pt={2}>
+      {/* <Box mt="auto" pt={2}>
         <Box display="flex" alignItems="center" gap={2} mb={1}>
           <Avatar src={pic?.picture} size={32} />
           <Typography variant="caption" fontStyle="italic">
@@ -338,7 +338,7 @@ const Sidebar = ({
         <Box display="flex" alignItems="center" gap={1} color="text.secondary">
           <Settings size={16} /> <Typography variant="caption">Settings</Typography>
         </Box>
-      </Box>
+      </Box> */}
     </Box>
   );
 };
