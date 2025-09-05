@@ -1,6 +1,6 @@
 import React, { useState, useEffect, memo } from 'react';
 import { io } from 'socket.io-client';
-// import { Container, Row, Col, Card, Placeholder } from 'react-bootstrap';
+import { Container, Row, Col, Card, Placeholder } from 'react-bootstrap';
 import Sidebar from './Sidebar';
 import ChatHeader from './ChatHeader';
 import ChatBody from './ChatBody';
@@ -13,7 +13,7 @@ import debounce from 'lodash.debounce';
 import { format, isToday, isYesterday } from 'date-fns';
 import { MARK_MESSAGES_AS_READ, CLEAR_UNREAD, GET_UNREAD } from '../graphql/queries';
 import SocketNotifications from './Notifications/SocketNotifications';
-import { Box, Grid, Card, CardContent, Skeleton, Typography } from '@mui/material';
+// import { Box, Grid, Card, CardContent, Skeleton, Typography } from '@mui/material';
 // import { ArrowLeft } from 'lucide-react';
 
 const ChatApp = () => {
@@ -374,194 +374,66 @@ const ChatApp = () => {
   };
 
   return (
-    <Box
-      sx={{
-        height: '100vh',
-        overflow: 'hidden',
-        bgcolor: isDark ? 'grey.900' : 'grey.100',
-        color: isDark ? 'grey.100' : 'grey.900'
-      }}
-    >
-      <SocketNotifications socketInstance={socket} />
-
-      <Grid container sx={{ height: '100%' }}>
-        {/* IconBar Column */}
-        <Grid
-          item
-          xs={mobileView === 'sidebar' ? 0 : 2}
-          sm={1}
-          md={1}
-          lg={1}
-          sx={{
-            position: 'sticky',
-            maxWidth: 60,
-            borderRight: 1,
-            borderColor: 'divider',
-            display: mobileView === 'chat' ? 'none' : { xs: 'block', lg: 'block' }
-          }}
-        >
-          <IconBar profile={signedUser} onUpdateProfile={setSignedUser} />
-        </Grid>
-
-        {/* Sidebar Column */}
-        <Grid
-          item
-          xs={mobileView === 'sidebar' ? 10 : 0}
-          sm={mobileView === 'sidebar' ? 10 : 0}
-          md={mobileView === 'sidebar' ? 10 : 0}
-          lg={5}
-          sx={{
-            borderRight: 1,
-            borderColor: 'divider',
-            height: '100%',
-            overflowX: 'hidden',
-            overflowY: 'auto',
-            p: 1,
-            display: mobileView === 'sidebar' ? 'block' : { xs: 'none', lg: 'block' }
-          }}
-        >
-          {loading ? (
-            Array.from({ length: 5 }).map((_, idx) => (
-              <Card key={idx} sx={{ mb: 1 }}>
-                <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <Skeleton variant="circular" width={40} height={40} />
-                  <Box flex={1}>
-                    <Skeleton width="60%" />
-                    <Skeleton width="40%" />
-                  </Box>
-                </CardContent>
-              </Card>
-            ))
-          ) : error ? (
-            <Typography color="error">Error fetching contacts</Typography>
-          ) : (
-            <Sidebar
-              onSelectChat={handleChatSelect}
-              pic={data && data.auth}
-              authenticatedUser={authUser}
-              selectedChat={selectedChat}
-              isOnline={isOnline}
-              notifiedUser={notifiedUser}
-              loading={contacts_loading}
-              error={contacts_error}
-              isRead={read}
-              contacts={contacts?.users || []}
-              unreadMap={unreadMap}
-              typingUsers={typingUsers}
-              notificationMap={notificationMap}
-              selectedClient={selectedChat}
-              onlineUsers={onlineUsers}
-            />
-          )}
-        </Grid>
-
-        {/* Chat Column */}
-        <Grid
-          item
-          xs={mobileView === 'chat' ? 12 : 0}
-          sm={mobileView === 'chat' ? 11 : 0}
-          md={mobileView === 'chat' ? 11 : 0}
-          lg={6}
-          sx={{
-            height: '100%',
-            display: mobileView === 'chat' ? 'flex' : { xs: 'none', lg: 'flex' },
-            flexDirection: 'column',
-            overflow: 'hidden'
-          }}
-        >
-          {selectedChat ? (
-            <>
-              <ChatHeader
-                chat={selectedChat}
-                pic={data?.auth}
-                selectedUser={selectedChat}
-                onlineUsers={onlineUsers}
-                showBackButton={window.innerWidth < 992}
-                onBack={() => setMobileView('sidebar')}
-              />
-              <ChatBody
-                messages={messages}
-                chat={selectedChat}
-                pic={data?.auth}
-                typingUsers={typingUsers}
-              />
-              <ChatInput
-                input={input}
-                setInput={handleTyping}
-                onSend={sendMessage}
-                isMobile={isMobile}
-              />
-            </>
-          ) : (
-            <Box
-              sx={{
-                flex: 1,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                color: 'text.secondary'
-              }}
-            >
-              Select a chat to start messaging
-            </Box>
-          )}
-        </Grid>
-      </Grid>
-    </Box>
-    // <Container
-    //   fluid
-    //   className={`${isDark ? 'bg-dark text-light' : 'bg-light text-black'} p-0`}
-    //   style={{ height: '100vh', overflow: 'hidden' }}
+    // <Box
+    //   sx={{
+    //     height: '100vh',
+    //     overflow: 'hidden',
+    //     bgcolor: isDark ? 'grey.900' : 'grey.100',
+    //     color: isDark ? 'grey.100' : 'grey.900'
+    //   }}
     // >
     //   <SocketNotifications socketInstance={socket} />
 
-    //   <Row className="h-100">
+    //   <Grid container sx={{ height: '100%' }}>
     //     {/* IconBar Column */}
-    //     <Col
+    //     <Grid
+    //       item
     //       xs={mobileView === 'sidebar' ? 0 : 2}
     //       sm={1}
     //       md={1}
     //       lg={1}
-    //       style={{ position: 'sticky', maxWidth: 60 }}
-    //       className={`p-0 border-end chat-iconbar ${
-    //         mobileView === 'chat' ? 'd-none' : 'd-block d-lg-block'
-    //       }`} // 👈 added hook
+    //       sx={{
+    //         position: 'sticky',
+    //         maxWidth: 60,
+    //         borderRight: 1,
+    //         borderColor: 'divider',
+    //         display: mobileView === 'chat' ? 'none' : { xs: 'block', lg: 'block' }
+    //       }}
     //     >
     //       <IconBar profile={signedUser} onUpdateProfile={setSignedUser} />
-    //     </Col>
+    //     </Grid>
 
     //     {/* Sidebar Column */}
-    //     <Col
+    //     <Grid
+    //       item
     //       xs={mobileView === 'sidebar' ? 10 : 0}
     //       sm={mobileView === 'sidebar' ? 10 : 0}
     //       md={mobileView === 'sidebar' ? 10 : 0}
     //       lg={5}
-    //       className={`p-0 border-end h-100 chat-sidebar ${
-    //         mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block'
-    //       }`}
-    //       style={{
+    //       sx={{
+    //         borderRight: 1,
+    //         borderColor: 'divider',
+    //         height: '100%',
     //         overflowX: 'hidden',
     //         overflowY: 'auto',
-    //         padding: 4,
-    //         margin: mobileView === 'sidebar' ? 'auto' : 'auto',
-    //         // width: '100%',
-    //         maxWidth: '100vw'
+    //         p: 1,
+    //         display: mobileView === 'sidebar' ? 'block' : { xs: 'none', lg: 'block' }
     //       }}
     //     >
     //       {loading ? (
     //         Array.from({ length: 5 }).map((_, idx) => (
-    //           <Card key={idx}>
-    //             <Card.Body className="d-flex align-items-center">
-    //               <Placeholder className="rounded-circle me-3" style={{ width: 40, height: 40 }} />
-    //               <div className="flex-grow-1">
-    //                 <Placeholder xs={6} /> <br />
-    //                 <Placeholder xs={4} />
-    //               </div>
-    //             </Card.Body>
+    //           <Card key={idx} sx={{ mb: 1 }}>
+    //             <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+    //               <Skeleton variant="circular" width={40} height={40} />
+    //               <Box flex={1}>
+    //                 <Skeleton width="60%" />
+    //                 <Skeleton width="40%" />
+    //               </Box>
+    //             </CardContent>
     //           </Card>
     //         ))
     //       ) : error ? (
-    //         <div className="text-danger">Error fetching contacts</div>
+    //         <Typography color="error">Error fetching contacts</Typography>
     //       ) : (
     //         <Sidebar
     //           onSelectChat={handleChatSelect}
@@ -581,18 +453,21 @@ const ChatApp = () => {
     //           onlineUsers={onlineUsers}
     //         />
     //       )}
-    //     </Col>
+    //     </Grid>
 
     //     {/* Chat Column */}
-    //     <Col
+    //     <Grid
+    //       item
     //       xs={mobileView === 'chat' ? 12 : 0}
     //       sm={mobileView === 'chat' ? 11 : 0}
     //       md={mobileView === 'chat' ? 11 : 0}
     //       lg={6}
-    //       className={`h-100 flex-column chat-chatcol ${
-    //         mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'
-    //       }`}
-    //       style={{ overflow: 'hidden' }}
+    //       sx={{
+    //         height: '100%',
+    //         display: mobileView === 'chat' ? 'flex' : { xs: 'none', lg: 'flex' },
+    //         flexDirection: 'column',
+    //         overflow: 'hidden'
+    //       }}
     //     >
     //       {selectedChat ? (
     //         <>
@@ -618,13 +493,139 @@ const ChatApp = () => {
     //           />
     //         </>
     //       ) : (
-    //         <div className="h-100 d-flex justify-content-center align-items-center text-muted text-white">
+    //         <Box
+    //           sx={{
+    //             flex: 1,
+    //             display: 'flex',
+    //             justifyContent: 'center',
+    //             alignItems: 'center',
+    //             color: 'text.secondary'
+    //           }}
+    //         >
     //           Select a chat to start messaging
-    //         </div>
+    //         </Box>
     //       )}
-    //     </Col>
-    //   </Row>
-    // </Container>
+    //     </Grid>
+    //   </Grid>
+    // </Box>
+
+    <Container
+      fluid
+      className={`${isDark ? 'bg-dark text-light' : 'bg-light text-black'} p-0`}
+      style={{ height: '100vh', overflow: 'hidden' }}
+    >
+      <SocketNotifications socketInstance={socket} />
+
+      <Row className="h-100">
+        {/* IconBar Column */}
+        <Col
+          xs={mobileView === 'sidebar' ? 0 : 2}
+          sm={1}
+          md={1}
+          lg={1}
+          style={{ position: 'sticky', maxWidth: 60 }}
+          className={`p-0 border-end chat-iconbar ${
+            mobileView === 'chat' ? 'd-none' : 'd-block d-lg-block'
+          }`} // 👈 added hook
+        >
+          <IconBar profile={signedUser} onUpdateProfile={setSignedUser} />
+        </Col>
+
+        {/* Sidebar Column */}
+        <Col
+          xs={mobileView === 'sidebar' ? 10 : 0}
+          sm={mobileView === 'sidebar' ? 10 : 0}
+          md={mobileView === 'sidebar' ? 10 : 0}
+          lg={5}
+          className={`p-0 border-end h-100 chat-sidebar ${
+            mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block'
+          }`}
+          style={{
+            overflowX: 'hidden',
+            overflowY: 'auto',
+            padding: 4,
+            margin: mobileView === 'sidebar' ? 'auto' : 'auto',
+            // width: '100%',
+            maxWidth: '100vw'
+          }}
+        >
+          {loading ? (
+            Array.from({ length: 5 }).map((_, idx) => (
+              <Card key={idx}>
+                <Card.Body className="d-flex align-items-center">
+                  <Placeholder className="rounded-circle me-3" style={{ width: 40, height: 40 }} />
+                  <div className="flex-grow-1">
+                    <Placeholder xs={6} /> <br />
+                    <Placeholder xs={4} />
+                  </div>
+                </Card.Body>
+              </Card>
+            ))
+          ) : error ? (
+            <div className="text-danger">Error fetching contacts</div>
+          ) : (
+            <Sidebar
+              onSelectChat={handleChatSelect}
+              pic={data && data.auth}
+              authenticatedUser={authUser}
+              selectedChat={selectedChat}
+              isOnline={isOnline}
+              notifiedUser={notifiedUser}
+              loading={contacts_loading}
+              error={contacts_error}
+              isRead={read}
+              contacts={contacts?.users || []}
+              unreadMap={unreadMap}
+              typingUsers={typingUsers}
+              notificationMap={notificationMap}
+              selectedClient={selectedChat}
+              onlineUsers={onlineUsers}
+            />
+          )}
+        </Col>
+
+        {/* Chat Column */}
+        <Col
+          xs={mobileView === 'chat' ? 12 : 0}
+          sm={mobileView === 'chat' ? 11 : 0}
+          md={mobileView === 'chat' ? 11 : 0}
+          lg={6}
+          className={`h-100 flex-column chat-chatcol ${
+            mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'
+          }`}
+          style={{ overflow: 'hidden' }}
+        >
+          {selectedChat ? (
+            <>
+              <ChatHeader
+                chat={selectedChat}
+                pic={data?.auth}
+                selectedUser={selectedChat}
+                onlineUsers={onlineUsers}
+                showBackButton={window.innerWidth < 992}
+                onBack={() => setMobileView('sidebar')}
+              />
+              <ChatBody
+                messages={messages}
+                chat={selectedChat}
+                pic={data?.auth}
+                typingUsers={typingUsers}
+              />
+              <ChatInput
+                input={input}
+                setInput={handleTyping}
+                onSend={sendMessage}
+                isMobile={isMobile}
+              />
+            </>
+          ) : (
+            <div className="h-100 d-flex justify-content-center align-items-center text-muted text-white">
+              Select a chat to start messaging
+            </div>
+          )}
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
