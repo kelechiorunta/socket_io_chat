@@ -527,7 +527,7 @@ const ChatApp = () => {
           sm={mobileView === 'chat' ? 0 : 1} //{1}
           md={1}
           lg={1}
-          style={{ position: 'sticky', maxWidth: 50 }}
+          style={{ position: 'sticky', maxWidth: 60 }}
           className={`p-0 border-end chat-iconbar ${
             mobileView === 'chat' ? 'd-none' : 'd-block d-lg-block'
           }`} // 👈 added hook
@@ -537,8 +537,8 @@ const ChatApp = () => {
 
         {/* Sidebar Column */}
         <Col
-          xs={mobileView === 'sidebar' ? 10 : 0}
-          sm={mobileView === 'sidebar' ? 10 : 0}
+          xs={mobileView === 'sidebar' ? 11 : 0}
+          sm={mobileView === 'sidebar' ? 11 : 0}
           md={mobileView === 'sidebar' ? 10 : 0}
           lg={5}
           className={`p-0 border-end h-100 chat-sidebar ${
