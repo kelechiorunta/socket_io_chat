@@ -18,6 +18,7 @@ export const GET_CONTACTS = gql`
         count
         lastMessage
         updatedAt
+        createdAt
       }
     }
   }
@@ -46,6 +47,7 @@ export const AUTH = gql`
         count
         lastMessage
         updatedAt
+        createdAt
       }
     }
   }
@@ -92,6 +94,8 @@ export const CREATE_UNREAD = gql`
     createUnread(senderId: $senderId, recipientId: $recipientId, newMessage: $newMessage) {
       count
       lastMessage
+      createdAt
+      updatedAt
     }
   }
 `;
