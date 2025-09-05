@@ -217,7 +217,7 @@ const Sidebar = ({
       </Box>
 
       {/* Contact List */}
-      <Box flex={1} overflow="auto" mb={2}>
+      <Box flex={1} overflow="auto" mb={2} minHeight={'100vh'}>
         {loading ? (
           Array.from({ length: 5 }).map((_, idx) => (
             <Card key={idx} sx={{ mb: 1, bgcolor: isDark ? 'grey.900' : 'grey.100' }}>
