@@ -12,6 +12,8 @@
     "@emotion/styled": "^11.14.1",
     "@graphql-tools/load-files": "^7.0.1",
     "@graphql-tools/schema": "^10.0.23",
+    "@mui/icons-material": "^7.3.2",
+    "@mui/material": "^7.3.2",
     "@radix-ui/themes": "^3.2.1",
     "@upstash/ratelimit": "^2.0.6",
     "@upstash/redis": "^1.35.3",
