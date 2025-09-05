@@ -335,10 +335,10 @@ const Sidebar = ({
                     ) : (
                       <Box
                         sx={{
-                          bgcolor: 'success.main',
-                          borderRadius: '50%',
-                          width: 20,
-                          height: 20,
+                          // bgcolor: '',
+                          // borderRadius: '50%',
+                          // width: 20,
+                          // height: 20,
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
