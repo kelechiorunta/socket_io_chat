@@ -249,17 +249,18 @@ const Sidebar = ({
                     display: 'flex',
                     alignItems: 'center',
                     gap: 2,
-                    justifyContent: 'space-between',
-                    width: '100%'
+                    width: '100%',
+                    p: 1.5
                   }}
                 >
+                  {/* Avatar + online dot */}
                   <Box position="relative">
-                    <Avatar src={user?.picture || './Darshan.png'} size={40} />
+                    <Avatar src={user?.picture || './Darshan.png'} sx={{ width: 40, height: 40 }} />
                     <Box
                       sx={{
                         position: 'absolute',
                         top: '70%',
-                        left: '80%',
+                        left: '75%',
                         width: 10,
                         height: 10,
                         borderRadius: '50%',
@@ -267,55 +268,68 @@ const Sidebar = ({
                       }}
                     />
                   </Box>
-                  <Box width={'100%'} flex={1} justifyContent={'space-between'}>
-                    <Box position={'relative'} flex={1} justifyItems={'flex-start'}>
-                      <Typography fontWeight="bold">{user.username}</Typography>
-                      <Typography
-                        variant="body2"
-                        color={isTyping ? '#00e575' : isDark ? 'grey.400' : 'grey.600'} //{isDark ? 'grey.400' : 'grey.600'}
-                        noWrap
+
+                  {/* Middle (username + last message) */}
+                  <Box
+                    sx={{
+                      flex: 1,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      overflow: 'hidden'
+                    }}
+                  >
+                    <Typography fontWeight="bold" noWrap>
+                      {user.username}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color={isTyping ? '#00e575' : isDark ? 'grey.400' : 'grey.600'}
+                      noWrap
+                      sx={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                      }}
+                    >
+                      {isTyping ? 'is typing...' : unreadData?.lastMessage || 'No messages'}
+                    </Typography>
+                  </Box>
+
+                  {/* Right (time + count) */}
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'flex-end',
+                      minWidth: 50
+                    }}
+                  >
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        whiteSpace: 'nowrap',
+                        mb: 0.5
+                      }}
+                    >
+                      {unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.time}
+                    </Typography>
+                    {unreadData?.count > 0 && (
+                      <Box
                         sx={{
-                          maxWidth: '200px', // 👈 set a width/limit
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          display: 'block'
+                          bgcolor: 'success.main',
+                          borderRadius: '50%',
+                          width: 20,
+                          height: 20,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: 'white',
+                          fontSize: 12
                         }}
                       >
-                        {isTyping ? 'is typing...' : unreadData?.lastMessage || 'No messages'}
-                      </Typography>
-                    </Box>
-                    <Box flex={1} justifyItems={'flex-start'}>
-                      <Typography
-                        noWrap
-                        sx={{
-                          // maxWidth: '100px', // 👈 set a width/limit
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          display: 'block'
-                        }}
-                        variant="caption"
-                      >
-                        {unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.time}
-                      </Typography>
-                      {unreadData?.count > 0 && (
-                        <Box
-                          sx={{
-                            ml: 1,
-                            bgcolor: 'success.main',
-                            borderRadius: '100%',
-                            width: 24,
-                            height: 24,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: 'white',
-                            fontSize: 12
-                          }}
-                        >
-                          {unreadData.count}
-                        </Box>
-                      )}
-                    </Box>
+                        {unreadData.count}
+                      </Box>
+                    )}
                   </Box>
                 </CardContent>
               </Card>
