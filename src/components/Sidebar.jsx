@@ -332,6 +332,7 @@ const Sidebar = ({
                       </Box>
                     ) : (
                       <Box
+                        color={isDark ? 'white' : 'grey.400'}
                         sx={{
                           // bgcolor: '',
                           // borderRadius: '50%',
@@ -340,7 +341,6 @@ const Sidebar = ({
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          color: 'white',
                           fontSize: 12
                         }}
                       >
