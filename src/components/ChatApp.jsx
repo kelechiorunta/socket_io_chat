@@ -524,15 +524,15 @@ const ChatApp = () => {
         {/* IconBar Column */}
         <Col
           xs={mobileView === 'sidebar' ? 0 : 2}
-          sm={1}
+          sm={mobileView === 'chat' ? 0 : 1} //{1}
           md={1}
           lg={1}
-          style={{ position: 'sticky', maxWidth: 60 }}
+          style={{ position: 'sticky', maxWidth: 50 }}
           className={`p-0 border-end chat-iconbar ${
             mobileView === 'chat' ? 'd-none' : 'd-block d-lg-block'
           }`} // 👈 added hook
         >
-          <IconBar profile={signedUser} onUpdateProfile={setSignedUser} />
+          <IconBar mobileView={mobileView} profile={signedUser} onUpdateProfile={setSignedUser} />
         </Col>
 
         {/* Sidebar Column */}
