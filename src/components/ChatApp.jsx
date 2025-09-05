@@ -555,7 +555,7 @@ const ChatApp = () => {
           }}
         >
           {loading ? (
-            Array.from({ length: 5 }).map((_, idx) => (
+            Array.from({ length: contacts?.length || null }).map((_, idx) => (
               <Card key={idx}>
                 <Card.Body className="d-flex align-items-center">
                   <Placeholder className="rounded-circle me-3" style={{ width: 40, height: 40 }} />
