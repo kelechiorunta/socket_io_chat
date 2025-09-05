@@ -104,7 +104,7 @@ const Sidebar = ({
     >
       {/* Header */}
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="h6" sx={{ color: '#00e575', fontWeight: 'bold', padding: 2 }}>
+        <Typography variant="h6" sx={{ color: '#00e575', fontWeight: 'bold', paddingLeft: 2 }}>
           JUSTCHAT
         </Typography>
         <Box display="flex" gap={1}>
@@ -285,7 +285,16 @@ const Sidebar = ({
                       {isTyping ? 'is typing...' : unreadData?.lastMessage || 'No messages'}
                     </Typography>
                   </Box>
-                  <Typography variant="caption">
+                  <Typography
+                    noWrap
+                    sx={{
+                      maxWidth: '100px', // 👈 set a width/limit
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      display: 'block'
+                    }}
+                    variant="caption"
+                  >
                     {unreadData?.timeStamp && unreadData?.timeStamp}
                   </Typography>
                   {unreadData?.count > 0 && (
@@ -293,7 +302,7 @@ const Sidebar = ({
                       sx={{
                         ml: 1,
                         bgcolor: 'success.main',
-                        borderRadius: '50%',
+                        borderRadius: '100%',
                         width: 24,
                         height: 24,
                         display: 'flex',
