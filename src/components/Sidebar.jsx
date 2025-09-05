@@ -249,7 +249,8 @@ const Sidebar = ({
                     display: 'flex',
                     alignItems: 'center',
                     gap: 2,
-                    justifyContent: 'space-between'
+                    justifyContent: 'space-between',
+                    width: '100%'
                   }}
                 >
                   <Box position="relative">
@@ -266,53 +267,55 @@ const Sidebar = ({
                       }}
                     />
                   </Box>
-                  <Box position={'relative'} flex={1} justifyItems={'flex-start'}>
-                    <Typography fontWeight="bold">{user.username}</Typography>
-                    <Typography
-                      variant="body2"
-                      color={isTyping ? '#00e575' : isDark ? 'grey.400' : 'grey.600'} //{isDark ? 'grey.400' : 'grey.600'}
-                      noWrap
-                      sx={{
-                        maxWidth: '200px', // 👈 set a width/limit
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        display: 'block'
-                      }}
-                    >
-                      {isTyping ? 'is typing...' : unreadData?.lastMessage || 'No messages'}
-                    </Typography>
-                  </Box>
-                  <Box flex={1} justifyItems={'flex-start'}>
-                    <Typography
-                      noWrap
-                      sx={{
-                        maxWidth: '100px', // 👈 set a width/limit
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        display: 'block'
-                      }}
-                      variant="caption"
-                    >
-                      {unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.time}
-                    </Typography>
-                    {unreadData?.count > 0 && (
-                      <Box
+                  <Box width={'100%'} flex={1} justifyContent={'space-between'}>
+                    <Box position={'relative'} flex={1} justifyItems={'flex-start'}>
+                      <Typography fontWeight="bold">{user.username}</Typography>
+                      <Typography
+                        variant="body2"
+                        color={isTyping ? '#00e575' : isDark ? 'grey.400' : 'grey.600'} //{isDark ? 'grey.400' : 'grey.600'}
+                        noWrap
                         sx={{
-                          ml: 1,
-                          bgcolor: 'success.main',
-                          borderRadius: '100%',
-                          width: 24,
-                          height: 24,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: 'white',
-                          fontSize: 12
+                          maxWidth: '200px', // 👈 set a width/limit
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          display: 'block'
                         }}
                       >
-                        {unreadData.count}
-                      </Box>
-                    )}
+                        {isTyping ? 'is typing...' : unreadData?.lastMessage || 'No messages'}
+                      </Typography>
+                    </Box>
+                    <Box flex={1} justifyItems={'flex-start'}>
+                      <Typography
+                        noWrap
+                        sx={{
+                          // maxWidth: '100px', // 👈 set a width/limit
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          display: 'block'
+                        }}
+                        variant="caption"
+                      >
+                        {unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.time}
+                      </Typography>
+                      {unreadData?.count > 0 && (
+                        <Box
+                          sx={{
+                            ml: 1,
+                            bgcolor: 'success.main',
+                            borderRadius: '100%',
+                            width: 24,
+                            height: 24,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: 'white',
+                            fontSize: 12
+                          }}
+                        >
+                          {unreadData.count}
+                        </Box>
+                      )}
+                    </Box>
                   </Box>
                 </CardContent>
               </Card>
