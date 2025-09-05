@@ -192,7 +192,12 @@ const Sidebar = ({
       )}
 
       {/* Tabs */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+      <Box
+        display={{ xs: 'none', sm: 'flex' }} // 👈 hidden on xs (mobile), flex from sm and up
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
+      >
         <Typography variant="subtitle1">Messages</Typography>
         <ButtonGroup size="small" variant="outlined">
           <Button variant={tab === 'all' ? 'contained' : 'outlined'} onClick={() => setTab('all')}>
@@ -266,7 +271,17 @@ const Sidebar = ({
                   </Box>
                   <Box flex={1} justifyItems={'flex-start'}>
                     <Typography fontWeight="bold">{user.username}</Typography>
-                    <Typography variant="body2" color={isDark ? 'grey.400' : 'grey.600'} noWrap>
+                    <Typography
+                      variant="body2"
+                      color={isDark ? 'grey.400' : 'grey.600'}
+                      noWrap
+                      sx={{
+                        maxWidth: '200px', // 👈 set a width/limit
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: 'block'
+                      }}
+                    >
                       {isTyping ? 'is typing...' : unreadData?.lastMessage || 'No messages'}
                     </Typography>
                   </Box>
