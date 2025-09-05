@@ -203,6 +203,7 @@ const ChatApp = () => {
         setMessages((prev) => [...prev, msg]);
       } else {
         if (msg.sender?._id !== user?._id) {
+          console.log(msg.createdAt);
           setUnreadMap((prev) => {
             const prevCount = prev[msg.sender?._id]?.count || 0;
 
@@ -259,7 +260,7 @@ const ChatApp = () => {
       socket.off('isConnected');
       socket.off('typing');
     };
-  }, [selectedChat?._id, socket, user?._id, currentContacts, selectedChat]); // ✅ Run only once
+  }, [selectedChat?._id, socket, user?._id, currentContacts, selectedChat, unreadMap]); // ✅ Run only once
 
   useEffect(() => {
     if (!socket) return;
@@ -592,7 +593,7 @@ const ChatApp = () => {
         <Col
           xs={mobileView === 'chat' ? 12 : 0}
           sm={mobileView === 'chat' ? 12 : 0}
-          md={mobileView === 'chat' ? 11 : 0}
+          md={mobileView === 'chat' ? 12 : 0}
           lg={6}
           className={`h-100 flex-column chat-chatcol ${
             mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'
