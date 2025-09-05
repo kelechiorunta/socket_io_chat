@@ -10,7 +10,7 @@ import { useTheme } from './ThemeContext';
 import { AUTH, GET_CONTACTS } from '../graphql/queries';
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import debounce from 'lodash.debounce';
-import { format, isToday, isYesterday } from 'date-fns';
+// import { format, isToday, isYesterday } from 'date-fns';
 import { MARK_MESSAGES_AS_READ, CLEAR_UNREAD, GET_UNREAD } from '../graphql/queries';
 import SocketNotifications from './Notifications/SocketNotifications';
 // import { Box, Grid, Card, CardContent, Skeleton, Typography } from '@mui/material';
@@ -353,11 +353,11 @@ const ChatApp = () => {
     }
   };
 
-  const formatDateLabel = (date) => {
-    if (isToday(date)) return 'Today';
-    if (isYesterday(date)) return 'Yesterday';
-    return format(date, 'MMMM d, yyyy');
-  };
+  // const formatDateLabel = (date) => {
+  //   if (isToday(date)) return 'Today';
+  //   if (isYesterday(date)) return 'Yesterday';
+  //   return format(date, 'MMMM d, yyyy');
+  // };
 
   const [mobileView, setMobileView] = useState('sidebar'); // start on sidebar
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
