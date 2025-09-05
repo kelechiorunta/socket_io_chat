@@ -10,7 +10,7 @@ import {
   Skeleton,
   Typography,
   Divider,
-  Box,
+  Box
 } from '@mui/material';
 import { Search, Sun, Moon, Plus, Settings } from 'lucide-react';
 import Avatar from './Avatar';
@@ -40,7 +40,7 @@ const Sidebar = ({
   typingUsers,
   contacts,
   onlineUsers,
-  authenticatedUser,
+  authenticatedUser
 }) => {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === 'dark';
@@ -94,11 +94,12 @@ const Sidebar = ({
     <Box
       sx={{
         height: '100%',
+        minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
         bgcolor: isDark ? '#1f1d1d' : '#f7fef2',
         color: isDark ? '#f7fef2' : '#1f1d1d',
-        p: 2,
+        p: 2
       }}
     >
       {/* Header */}
@@ -142,12 +143,12 @@ const Sidebar = ({
             <InputAdornment position="start">
               <Search size={16} />
             </InputAdornment>
-          ),
+          )
         }}
         sx={{
           mb: 2,
           bgcolor: isDark ? 'grey.800' : 'white',
-          input: { color: isDark ? 'white' : 'black' },
+          input: { color: isDark ? 'white' : 'black' }
         }}
       />
 
@@ -165,7 +166,7 @@ const Sidebar = ({
             overflowY: 'auto',
             border: '1px solid #ccc',
             borderRadius: 1,
-            boxShadow: 3,
+            boxShadow: 3
           }}
         >
           {searchResults.map((user, index) => (
@@ -180,7 +181,7 @@ const Sidebar = ({
                 cursor: 'pointer',
                 bgcolor: index === focusedIndex ? 'success.main' : 'transparent',
                 color: index === focusedIndex ? 'white' : 'inherit',
-                borderBottom: '1px solid #eee',
+                borderBottom: '1px solid #eee'
               }}
             >
               <Avatar src={user.picture || './Darshan.png'} size={30} />
@@ -245,7 +246,7 @@ const Sidebar = ({
                   mb: 1,
                   cursor: 'pointer',
                   bgcolor: isSelected ? 'success.main' : isDark ? 'grey.800' : 'grey.200',
-                  color: isSelected ? 'white' : isDark ? 'white' : 'black',
+                  color: isSelected ? 'white' : isDark ? 'white' : 'black'
                 }}
               >
                 <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -259,20 +260,14 @@ const Sidebar = ({
                         width: 10,
                         height: 10,
                         borderRadius: '50%',
-                        bgcolor: onlineUsers.has(user._id) ? '#00e575' : 'grey.400',
+                        bgcolor: onlineUsers.has(user._id) ? '#00e575' : 'grey.400'
                       }}
                     />
                   </Box>
-                  <Box flex={1}>
+                  <Box flex={1} justifyItems={'flex-start'}>
                     <Typography fontWeight="bold">{user.username}</Typography>
-                    <Typography
-                      variant="body2"
-                      color={isDark ? 'grey.400' : 'grey.600'}
-                      noWrap
-                    >
-                      {isTyping
-                        ? 'is typing...'
-                        : unreadData?.lastMessage || 'No messages'}
+                    <Typography variant="body2" color={isDark ? 'grey.400' : 'grey.600'} noWrap>
+                      {isTyping ? 'is typing...' : unreadData?.lastMessage || 'No messages'}
                     </Typography>
                   </Box>
                   <Typography variant="caption">
@@ -290,7 +285,7 @@ const Sidebar = ({
                         alignItems: 'center',
                         justifyContent: 'center',
                         color: 'white',
-                        fontSize: 12,
+                        fontSize: 12
                       }}
                     >
                       {unreadData.count}
@@ -321,10 +316,7 @@ const Sidebar = ({
             <AnimateText
               textHeight="auto"
               textSize="10px"
-              texts={[
-                `Welcome, ${pic.username}`,
-                `Click on the avatar to update profile`,
-              ]}
+              texts={[`Welcome, ${pic.username}`, `Click on the avatar to update profile`]}
             />
           </Typography>
         </Box>
@@ -337,7 +329,6 @@ const Sidebar = ({
 };
 
 export default Sidebar;
-
 
 // REACT-BOOTSTRAP COMPONENTS
 // import './Sidebar.scss';
