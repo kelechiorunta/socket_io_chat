@@ -275,6 +275,7 @@ const Sidebar = ({
                       flex: 1,
                       display: 'flex',
                       flexDirection: 'column',
+                      alignItems: 'flex-start',
                       overflow: 'hidden'
                     }}
                   >
