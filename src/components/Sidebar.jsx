@@ -243,8 +243,8 @@ const Sidebar = ({
             const unreadData = unreadMap[user?._id];
             const isTyping = typingUsers.has(user?._id);
             const isSelected = selectedClient?._id === user?._id;
-            const time = parseTimestamp(unreadData)?.time;
-            const date = parseTimestamp(unreadData)?.date;
+            // const time = parseTimestamp(unreadData)?.time;
+            // const date = parseTimestamp(unreadData)?.date;
 
             return (
               <Card
@@ -298,7 +298,7 @@ const Sidebar = ({
                     }}
                     variant="caption"
                   >
-                    {time && date && `${time}, ${date}`}
+                    {unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.time}
                   </Typography>
                   {unreadData?.count > 0 && (
                     <Box
