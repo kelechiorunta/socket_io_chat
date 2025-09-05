@@ -250,7 +250,8 @@ const resolvers = {
         return {
           count: unreadEntry?.count || 0,
           lastMessage: unreadEntry?.lastMessage || '',
-          updatedAt: unreadEntry?.updatedAt || ''
+          updatedAt: unreadEntry?.updatedAt || '',
+          createdAt: unreadEntry?.createdAt || ''
         };
       } catch (err) {
         console.error('❌ getUnread error:', err);
