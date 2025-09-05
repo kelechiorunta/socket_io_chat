@@ -55,7 +55,7 @@ export function parseTimestamp(timestamp) {
 
   // Today
   if (dateObj >= startOfToday) {
-    return { time, date: time }; // WhatsApp shows only the time
+    return { time, date: 'Today' }; // WhatsApp shows only the time
   }
 
   // Yesterday
