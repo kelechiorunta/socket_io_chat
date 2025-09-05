@@ -211,7 +211,7 @@ const ChatApp = () => {
               [msg.sender?._id]: {
                 count: prevCount + 1,
                 lastMessage: msg.lastMessage || msg.content,
-                timeStamp: formatDateLabel(msg.createdAt)
+                timeStamp: msg.createdAt
               }
             };
           });
