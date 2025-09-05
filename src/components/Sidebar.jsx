@@ -316,7 +316,7 @@ const Sidebar = ({
                     >
                       {unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.time}
                     </Typography>
-                    {unreadData?.count > 0 && (
+                    {unreadData?.count > 0 ? (
                       <Box
                         sx={{
                           bgcolor: 'success.main',
@@ -331,6 +331,22 @@ const Sidebar = ({
                         }}
                       >
                         {unreadData.count}
+                      </Box>
+                    ) : (
+                      <Box
+                        sx={{
+                          bgcolor: 'success.main',
+                          borderRadius: '50%',
+                          width: 20,
+                          height: 20,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: 'white',
+                          fontSize: 12
+                        }}
+                      >
+                        {unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.date}
                       </Box>
                     )}
                   </Box>
