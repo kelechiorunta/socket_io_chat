@@ -94,9 +94,13 @@ const ChatApp = () => {
             }
           });
 
-          const { count, lastMessage } = data?.getUnread || {};
+          const { count, lastMessage, updatedAt } = data?.getUnread || {};
 
-          unreadMapTemp[contact._id] = { count: count || 0, lastMessage: lastMessage || '' };
+          unreadMapTemp[contact._id] = {
+            count: count || 0,
+            lastMessage: lastMessage || '',
+            timeStamp: updatedAt || ''
+          };
           notificationMapTemp[contact._id] = lastMessage || '';
         } catch (err) {
           console.error(`❌ Failed to fetch unread count for ${contact?._id}`, err);
