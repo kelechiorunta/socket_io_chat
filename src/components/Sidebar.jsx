@@ -18,19 +18,6 @@ import { useTheme } from './ThemeContext';
 import { parseTimestamp } from '../helper/helper';
 // import AnimateText from './AnimateText/AnimateText';
 
-// interface SidebarProps {
-//   onSelectChat: (user: any) => void;
-//   pic: any;
-//   loading: boolean;
-//   error: boolean;
-//   selectedClient: any;
-//   unreadMap: Record<string, any>;
-//   typingUsers: Set<string>;
-//   contacts: any[];
-//   onlineUsers: Set<string>;
-//   authenticatedUser: any;
-// }
-
 const Sidebar = ({
   onSelectChat,
   pic,
@@ -276,7 +263,7 @@ const Sidebar = ({
                     <Typography fontWeight="bold">{user.username}</Typography>
                     <Typography
                       variant="body2"
-                      color={isDark ? 'grey.400' : 'grey.600'}
+                      color={isTyping ? '#00e575' : isDark ? 'grey.400' : 'grey.600'} //{isDark ? 'grey.400' : 'grey.600'}
                       noWrap
                       sx={{
                         maxWidth: '200px', // 👈 set a width/limit
@@ -288,36 +275,38 @@ const Sidebar = ({
                       {isTyping ? 'is typing...' : unreadData?.lastMessage || 'No messages'}
                     </Typography>
                   </Box>
-                  <Typography
-                    noWrap
-                    sx={{
-                      maxWidth: '100px', // 👈 set a width/limit
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      display: 'block'
-                    }}
-                    variant="caption"
-                  >
-                    {unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.time}
-                  </Typography>
-                  {unreadData?.count > 0 && (
-                    <Box
+                  <Box flex={1} justifyItems={'flex-start'}>
+                    <Typography
+                      noWrap
                       sx={{
-                        ml: 1,
-                        bgcolor: 'success.main',
-                        borderRadius: '100%',
-                        width: 24,
-                        height: 24,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'white',
-                        fontSize: 12
+                        maxWidth: '100px', // 👈 set a width/limit
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: 'block'
                       }}
+                      variant="caption"
                     >
-                      {unreadData.count}
-                    </Box>
-                  )}
+                      {unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.time}
+                    </Typography>
+                    {unreadData?.count > 0 && (
+                      <Box
+                        sx={{
+                          ml: 1,
+                          bgcolor: 'success.main',
+                          borderRadius: '100%',
+                          width: 24,
+                          height: 24,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: 'white',
+                          fontSize: 12
+                        }}
+                      >
+                        {unreadData.count}
+                      </Box>
+                    )}
+                  </Box>
                 </CardContent>
               </Card>
             );
