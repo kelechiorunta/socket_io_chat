@@ -244,7 +244,14 @@ const Sidebar = ({
                   color: isSelected ? 'white' : isDark ? 'white' : 'black'
                 }}
               >
-                <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <CardContent
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 2,
+                    justifyContent: 'space-between'
+                  }}
+                >
                   <Box position="relative">
                     <Avatar src={user?.picture || './Darshan.png'} size={40} />
                     <Box
@@ -259,7 +266,7 @@ const Sidebar = ({
                       }}
                     />
                   </Box>
-                  <Box flex={1} justifyItems={'flex-start'}>
+                  <Box position={'relative'} flex={1} justifyItems={'flex-start'}>
                     <Typography fontWeight="bold">{user.username}</Typography>
                     <Typography
                       variant="body2"

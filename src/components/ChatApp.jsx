@@ -537,8 +537,8 @@ const ChatApp = () => {
 
         {/* Sidebar Column */}
         <Col
-          xs={mobileView === 'sidebar' ? 11 : 0}
-          sm={mobileView === 'sidebar' ? 11 : 0}
+          xs={mobileView === 'sidebar' ? 10 : 0}
+          sm={mobileView === 'sidebar' ? 10 : 0}
           md={mobileView === 'sidebar' ? 10 : 0}
           lg={5}
           className={`p-0 border-end h-100 chat-sidebar ${

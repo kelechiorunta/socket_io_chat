@@ -41,7 +41,7 @@ const IconBar = ({ profile, onUpdateProfile, mobileView }) => {
       className="d-flex flex-column justify-content-between align-items-center p-2"
       style={{
         height: '100vh',
-        minWidth: '60px',
+        minWidth: '80px',
         color: textColor,
         backgroundColor: bgColor,
         borderRight: `1px solid ${borderColor}`
