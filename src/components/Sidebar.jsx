@@ -9,13 +9,13 @@ import {
   CardContent,
   Skeleton,
   Typography,
-  Divider,
+  // Divider,
   Box
 } from '@mui/material';
-import { Search, Sun, Moon, Plus, Settings } from 'lucide-react';
+import { Search, Sun, Moon } from 'lucide-react';
 import Avatar from './Avatar';
 import { useTheme } from './ThemeContext';
-import AnimateText from './AnimateText/AnimateText';
+// import AnimateText from './AnimateText/AnimateText';
 
 // interface SidebarProps {
 //   onSelectChat: (user: any) => void;
