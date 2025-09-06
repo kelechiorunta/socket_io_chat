@@ -541,7 +541,7 @@ const ChatApp = () => {
           xs={mobileView === 'sidebar' ? 10 : 0}
           sm={mobileView === 'sidebar' ? 10 : 0}
           md={mobileView === 'sidebar' ? 10 : 0}
-          lg={6}
+          lg={5}
           className={`p-0 border-end h-100 chat-sidebar ${
             mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block'
           }`}
@@ -549,9 +549,9 @@ const ChatApp = () => {
             overflowX: 'hidden',
             overflowY: 'auto',
             padding: 4,
-            // margin: mobileView === 'sidebar' ? 'auto' : 'auto',
+            margin: mobileView === 'sidebar' ? 'auto' : 'auto',
             // width: '100%',
-            maxWidth: 'max-content' //'100vw'
+            maxWidth: '100vw'
           }}
         >
           {/* {loading ? (
@@ -594,7 +594,7 @@ const ChatApp = () => {
           xs={mobileView === 'chat' ? 12 : 0}
           sm={mobileView === 'chat' ? 12 : 0}
           md={mobileView === 'chat' ? 12 : 0}
-          lg={5}
+          lg={6}
           className={`h-100 flex-column chat-chatcol ${
             mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'
           }`}
