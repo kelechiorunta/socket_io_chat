@@ -549,13 +549,13 @@ const ChatApp = () => {
             overflowX: 'hidden',
             overflowY: 'auto',
             padding: 4,
-            margin: mobileView === 'sidebar' ? 'auto' : 'auto'
-            // width: '100%',
-            // maxWidth: '100vw'
+            margin: mobileView === 'sidebar' ? 'auto' : 'auto',
+            width: '100%',
+            maxWidth: '100vw'
           }}
         >
           {loading ? (
-            Array.from({ length: contacts ? contacts.users?.length - 1 : null }).map((_, idx) => (
+            Array.from({ length: contacts ? contacts.users?.length - 1 : 15 }).map((_, idx) => (
               <Card style={{ width: 300 }} key={idx}>
                 <Card.Body className="d-flex align-items-center">
                   <Placeholder className="rounded-circle me-3" style={{ width: 40, height: 40 }} />
