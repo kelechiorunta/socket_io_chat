@@ -533,7 +533,7 @@ const ChatApp = () => {
             mobileView === 'chat' ? 'd-none' : 'd-block d-lg-block'
           }`} // 👈 added hook
         >
-          <IconBar mobileView={mobileView} profile={signedUser} onUpdateProfile={setSignedUser} />
+          <IconBar isMobile={isMobile} profile={signedUser} onUpdateProfile={setSignedUser} />
         </Col>
 
         {/* Sidebar Column */}
