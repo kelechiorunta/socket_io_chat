@@ -213,7 +213,10 @@ const Sidebar = ({
       <Box flex={1} overflow="auto" mb={2} minHeight={'100vh'} height={'100%'} margin={'auto'}>
         {loading ? (
           Array.from({ length: 15 }).map((_, idx) => (
-            <Card key={idx} sx={{ mb: 1, bgcolor: isDark ? 'grey.900' : 'grey.100' }}>
+            <Card
+              key={idx}
+              sx={{ minWidth: 300, mb: 1, bgcolor: isDark ? 'grey.900' : 'grey.100' }}
+            >
               <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <Skeleton variant="circular" width={40} height={40} />
                 <Box flex={1}>
