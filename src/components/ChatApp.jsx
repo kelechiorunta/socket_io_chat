@@ -8,7 +8,7 @@ import ChatInput from './ChatInput';
 import IconBar from './IconBar';
 import { useTheme } from './ThemeContext';
 import { AUTH, GET_CONTACTS } from '../graphql/queries';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import debounce from 'lodash.debounce';
 // import { format, isToday, isYesterday } from 'date-fns';
 import { MARK_MESSAGES_AS_READ, CLEAR_UNREAD, GET_UNREAD } from '../graphql/queries';
@@ -40,21 +40,7 @@ const ChatApp = () => {
   const [isOnline, setIsOnline] = useState(null);
   const [notifiedUser, setNotifiedUser] = useState(null);
   const [clearUnread] = useMutation(CLEAR_UNREAD);
-  const [getUnread] = useQuery(GET_UNREAD);
-
-  // const { data: refetchData, refetch } = useQuery(GET_UNREAD, {
-  //   variables: { senderId: someId, recipientId: user?._id },
-  //   skip: !user
-  // });
-
-  // // Revalidate instantly when needed
-  // const refreshUnread = async () => {
-  //   try {
-  //     await refetch();
-  //   } catch (err) {
-  //     console.error('Failed to refetch unread messages', err);
-  //   }
-  // };
+  const [getUnread] = useLazyQuery(GET_UNREAD);
   // const [profileUser, setUpdatedProfileUser] = useState(null);s
 
   const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
@@ -101,12 +87,12 @@ const ChatApp = () => {
 
       const promises = currentContacts.map(async (contact) => {
         try {
-          const { data, refetch } = await getUnread({
+          const { data } = await getUnread({
             variables: {
               senderId: contact._id,
-              recipientId: user._id,
-              skip: !user
-            }
+              recipientId: user._id
+            },
+            nextFetchPolicy: 'network-only'
           });
 
           const { count, lastMessage, updatedAt } = data?.getUnread || {};
@@ -117,13 +103,6 @@ const ChatApp = () => {
             timeStamp: updatedAt || ''
           };
           notificationMapTemp[contact._id] = lastMessage || '';
-          // const refreshUnread = async () => {
-          // try {
-          await refetch();
-          // } catch (err) {
-          // console.error('Failed to refetch unread messages', err);
-          // }
-          // };
         } catch (err) {
           console.error(`❌ Failed to fetch unread count for ${contact?._id}`, err);
         }
