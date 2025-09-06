@@ -541,7 +541,7 @@ const ChatApp = () => {
           xs={mobileView === 'sidebar' ? 10 : 0}
           sm={mobileView === 'sidebar' ? 10 : 0}
           md={mobileView === 'sidebar' ? 10 : 0}
-          lg={4}
+          lg={5}
           className={`p-0 border-end h-100 chat-sidebar ${
             mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block'
           }`}
@@ -594,7 +594,7 @@ const ChatApp = () => {
           xs={mobileView === 'chat' ? 12 : 0}
           sm={mobileView === 'chat' ? 12 : 0}
           md={mobileView === 'chat' ? 12 : 0}
-          lg={7}
+          lg={6}
           className={`h-100 flex-column chat-chatcol ${
             mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'
           }`}
