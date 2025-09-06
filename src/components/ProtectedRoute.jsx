@@ -85,7 +85,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { Modal, Spinner } from 'react-bootstrap';
+// import { Modal, Spinner } from 'react-bootstrap';
+import { Modal, Box, CircularProgress, Typography } from '@mui/material';
 
 export default function ProtectedRoute() {
   const [isAuthenticated, setIsAuthenticated] = useState(null); // null = loading
@@ -124,30 +125,63 @@ export default function ProtectedRoute() {
     checkAuth();
   }, []);
 
-  // 🌀 While checking auth
+  // // 🌀 While checking auth
+  // if (isAuthenticated === null) {
+  //   return (
+  //     <Modal show centered backdrop="static" keyboard={false}>
+  //       <Modal.Body
+  //         className="d-flex flex-column align-items-center justify-content-center"
+  //         style={{
+  //           padding: '2rem',
+  //           fontFamily: 'Segoe UI, Roboto, sans-serif',
+  //           fontSize: '1.1rem',
+  //           textAlign: 'center',
+  //           minHeight: '200px'
+  //         }}
+  //       >
+  //         <Spinner
+  //           animation="border"
+  //           role="status"
+  //           variant="primary"
+  //           style={{ width: '3rem', height: '3rem' }}
+  //         />
+  //         <div className="mt-4" style={{ fontWeight: '500', color: '#333' }}>
+  //           Authenticating, please wait...
+  //         </div>
+  //       </Modal.Body>
+  //     </Modal>
+  //   );
+  // }
+
   if (isAuthenticated === null) {
     return (
-      <Modal show centered backdrop="static" keyboard={false}>
-        <Modal.Body
-          className="d-flex flex-column align-items-center justify-content-center"
-          style={{
-            padding: '2rem',
-            fontFamily: 'Segoe UI, Roboto, sans-serif',
-            fontSize: '1.1rem',
-            textAlign: 'center',
-            minHeight: '200px'
+      <Modal open aria-labelledby="auth-loading" aria-describedby="authenticating-message">
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            bgcolor: 'background.paper',
+            borderRadius: 3,
+            p: 4,
+            boxShadow: 24,
+            minWidth: 300,
+            textAlign: 'center'
           }}
         >
-          <Spinner
-            animation="border"
-            role="status"
-            variant="primary"
-            style={{ width: '3rem', height: '3rem' }}
-          />
-          <div className="mt-4" style={{ fontWeight: '500', color: '#333' }}>
+          <CircularProgress size={50} sx={{ color: '#bb86fc', mb: 3 }} />
+          <Typography
+            id="authenticating-message"
+            sx={{ fontWeight: 500, fontSize: '1.1rem', color: '#333' }}
+          >
             Authenticating, please wait...
-          </div>
-        </Modal.Body>
+          </Typography>
+        </Box>
       </Modal>
     );
   }
