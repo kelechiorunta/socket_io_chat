@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Profile from './Profile';
 
-const IconBar = ({ profile, onUpdateProfile, mobileView }) => {
+const IconBar = ({ profile, onUpdateProfile, isMobile }) => {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === 'dark';
   const navigate = useNavigate();
@@ -60,14 +60,14 @@ const IconBar = ({ profile, onUpdateProfile, mobileView }) => {
             <OverlayTrigger
               key={label}
               placement="right"
-              overlay={<Tooltip id={`tooltip-${label}`}>{mobileView !== 'chat' && label}</Tooltip>}
+              overlay={<Tooltip id={`tooltip-${label}`}>{!isMobile && label}</Tooltip>}
             >
               <Nav.Link
                 href="#"
                 className={`d-flex flex-column align-items-center ${textColor === 'white' ? 'text-white' : 'text-black'}`}
               >
                 <Icon size={20} />
-                <small style={{ fontSize: '0.7rem' }}>{mobileView !== 'chat' && label}</small>
+                <small style={{ fontSize: '0.7rem' }}>{!isMobile && label}</small>
               </Nav.Link>
             </OverlayTrigger>
           ))}
