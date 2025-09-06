@@ -541,20 +541,20 @@ const ChatApp = () => {
           xs={mobileView === 'sidebar' ? 10 : 0}
           sm={mobileView === 'sidebar' ? 10 : 0}
           md={mobileView === 'sidebar' ? 10 : 0}
-          lg={3}
+          lg={4}
           className={`p-0 border-end h-100 chat-sidebar ${
             mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block'
           }`}
           style={{
             overflowX: 'hidden',
             overflowY: 'auto',
-            padding: 4,
+            padding: 2,
             margin: mobileView === 'sidebar' ? 'auto' : 'auto',
             // width: '100%',
             maxWidth: '100vw'
           }}
         >
-          {loading ? (
+          {/* {loading ? (
             Array.from({ length: contacts ? contacts.users?.length - 1 : null }).map((_, idx) => (
               <Card style={{ width: 300 }} key={idx}>
                 <Card.Body className="d-flex align-items-center">
@@ -568,25 +568,25 @@ const ChatApp = () => {
             ))
           ) : error ? (
             <div className="text-danger">Error fetching contacts</div>
-          ) : (
-            <Sidebar
-              onSelectChat={handleChatSelect}
-              pic={data && data.auth}
-              authenticatedUser={authUser}
-              selectedChat={selectedChat}
-              isOnline={isOnline}
-              notifiedUser={notifiedUser}
-              loading={contacts_loading}
-              error={contacts_error}
-              isRead={read}
-              contacts={contacts?.users || []}
-              unreadMap={unreadMap}
-              typingUsers={typingUsers}
-              notificationMap={notificationMap}
-              selectedClient={selectedChat}
-              onlineUsers={onlineUsers}
-            />
-          )}
+          ) : ( */}
+          <Sidebar
+            onSelectChat={handleChatSelect}
+            pic={data && data.auth}
+            authenticatedUser={authUser}
+            selectedChat={selectedChat}
+            isOnline={isOnline}
+            notifiedUser={notifiedUser}
+            loading={contacts_loading}
+            error={contacts_error}
+            isRead={read}
+            contacts={contacts?.users || []}
+            unreadMap={unreadMap}
+            typingUsers={typingUsers}
+            notificationMap={notificationMap}
+            selectedClient={selectedChat}
+            onlineUsers={onlineUsers}
+          />
+          {/* )} */}
         </Col>
 
         {/* Chat Column */}
@@ -594,7 +594,7 @@ const ChatApp = () => {
           xs={mobileView === 'chat' ? 12 : 0}
           sm={mobileView === 'chat' ? 12 : 0}
           md={mobileView === 'chat' ? 12 : 0}
-          lg={8}
+          lg={7}
           className={`h-100 flex-column chat-chatcol ${
             mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'
           }`}
