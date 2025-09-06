@@ -541,7 +541,7 @@ const ChatApp = () => {
           xs={mobileView === 'sidebar' ? 10 : 0}
           sm={mobileView === 'sidebar' ? 10 : 0}
           md={mobileView === 'sidebar' ? 10 : 0}
-          lg={5}
+          lg={3}
           className={`p-0 border-end h-100 chat-sidebar ${
             mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block'
           }`}
@@ -555,7 +555,7 @@ const ChatApp = () => {
           }}
         >
           {loading ? (
-            Array.from({ length: contacts ? contacts.users?.length - 1 : 15 }).map((_, idx) => (
+            Array.from({ length: contacts ? contacts.users?.length - 1 : null }).map((_, idx) => (
               <Card style={{ width: 300 }} key={idx}>
                 <Card.Body className="d-flex align-items-center">
                   <Placeholder className="rounded-circle me-3" style={{ width: 40, height: 40 }} />
@@ -594,7 +594,7 @@ const ChatApp = () => {
           xs={mobileView === 'chat' ? 12 : 0}
           sm={mobileView === 'chat' ? 12 : 0}
           md={mobileView === 'chat' ? 12 : 0}
-          lg={6}
+          lg={8}
           className={`h-100 flex-column chat-chatcol ${
             mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'
           }`}
