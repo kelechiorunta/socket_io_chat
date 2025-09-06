@@ -44,16 +44,26 @@ import client from './components/client.js';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from './components/ThemeContext.js';
 
+import { createTheme, ThemeProvider as MaterialProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  typography: {
+    fontFamily: 'Raleway, Arial, sans-serif'
+  }
+});
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ApolloProvider client={client}>
-        <ThemeProvider>
-          {/* <ChakraProvider> */}
-          <App />
-          {/* </ChakraProvider> */}
-        </ThemeProvider>
+        <MaterialProvider theme={theme}>
+          <ThemeProvider>
+            {/* <ChakraProvider> */}
+            <App />
+            {/* </ChakraProvider> */}
+          </ThemeProvider>
+        </MaterialProvider>
       </ApolloProvider>
     </BrowserRouter>
   </React.StrictMode>
