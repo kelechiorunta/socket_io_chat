@@ -1,6 +1,6 @@
 import React, { useState, useEffect, memo } from 'react';
 import { io } from 'socket.io-client';
-import { Container, Row, Col, Card, Placeholder } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import Sidebar from './Sidebar';
 import ChatHeader from './ChatHeader';
 import ChatBody from './ChatBody';
@@ -67,7 +67,7 @@ const ChatApp = () => {
   });
 
   const [authUser, setAuthUser] = useState(null);
-  const { data, loading, error } = useQuery(AUTH, {
+  const { data } = useQuery(AUTH, {
     fetchPolicy: 'network-only'
   });
   const user = data?.auth;
