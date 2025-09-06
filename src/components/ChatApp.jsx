@@ -550,8 +550,7 @@ const ChatApp = () => {
             overflowY: 'auto',
             padding: 2,
             margin: mobileView === 'sidebar' ? 'auto' : 'auto',
-            // width: '100%',
-            maxWidth: '100vw'
+            maxWidth: 'max-content' //'100vw'
           }}
         >
           {/* {loading ? (
