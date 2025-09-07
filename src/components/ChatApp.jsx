@@ -151,17 +151,48 @@ const ChatApp = () => {
     };
   }, []);
 
-  //Broadcast message to receiver from sender
-  const sendMessage = () => {
-    if (socket && input.trim() && selectedChat) {
-      const payload = {
-        content: input,
-        receiverId: selectedChat._id // make sure this matches backend user ID
-      };
+  // //Broadcast message to receiver from sender
+  // const sendMessage = () => {
+  //   if (socket && input.trim() && selectedChat) {
+  //     const payload = {
+  //       content: input,
+  //       receiverId: selectedChat._id // make sure this matches backend user ID
+  //     };
 
+  //     socket.emit('sendMessage', payload);
+  //     // setMessages(prev => [...prev, { text: input, from: 'client' }]);
+  //     setInput('');
+  //   }
+  // };
+
+  const sendMessage = (formData) => {
+    if (!socket || !selectedChat) return;
+
+    const payload = {
+      receiverId: selectedChat._id,
+      content: formData.get('content'),
+      hasFile: !!formData.get('file')
+    };
+
+    if (formData.get('file')) {
+      const file = formData.get('file');
+
+      // send file as binary buffer via socket
+      const reader = new FileReader();
+      reader.onload = () => {
+        socket.emit('sendMessage', {
+          ...payload,
+          file: {
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            data: reader.result
+          }
+        });
+      };
+      reader.readAsArrayBuffer(file);
+    } else {
       socket.emit('sendMessage', payload);
-      // setMessages(prev => [...prev, { text: input, from: 'client' }]);
-      setInput('');
     }
   };
 
@@ -196,9 +227,40 @@ const ChatApp = () => {
       socket.emit('isOnline', { receiverId: selectedChat._id, senderId: user._id });
     }
 
+    // socket.on('newMessage', (msg) => {
+    //   const isSender = msg.sender?._id === selectedChat?._id;
+    //   const isReceiver = msg.receiver?._id === selectedChat?._id;
+
+    //   if (isSender || isReceiver) {
+    //     setMessages((prev) => [...prev, msg]);
+    //   } else {
+    //     if (msg.sender?._id !== user?._id) {
+    //       console.log(msg.createdAt);
+    //       setUnreadMap((prev) => {
+    //         const prevCount = prev[msg.sender?._id]?.count || 0;
+
+    //         return {
+    //           ...prev,
+    //           [msg.sender?._id]: {
+    //             count: prevCount + 1,
+    //             lastMessage: msg.lastMessage || msg.content,
+    //             timeStamp: msg.createdAt
+    //           }
+    //         };
+    //       });
+    //     }
+    //   }
+    // });
+
     socket.on('newMessage', (msg) => {
       const isSender = msg.sender?._id === selectedChat?._id;
       const isReceiver = msg.receiver?._id === selectedChat?._id;
+
+      // If message has an image
+      if (msg.hasImage && msg.imageId) {
+        // Build download URL for GridFS
+        msg.imageUrl = `/chat-pictures/${msg.imageId}`;
+      }
 
       if (isSender || isReceiver) {
         setMessages((prev) => [...prev, msg]);
@@ -212,7 +274,7 @@ const ChatApp = () => {
               ...prev,
               [msg.sender?._id]: {
                 count: prevCount + 1,
-                lastMessage: msg.lastMessage || msg.content,
+                lastMessage: msg.lastMessage || msg.content || (msg.hasImage ? '[Image]' : ''),
                 timeStamp: msg.createdAt
               }
             };
@@ -393,7 +455,7 @@ const ChatApp = () => {
     <Container
       fluid
       className={`${isDark ? 'bg-dark text-light' : 'bg-light text-black'} p-0`}
-      style={{ height: '100vh', overflow: 'hidden' }}
+      style={{ height: '95vh', overflow: 'hidden' }}
     >
       <SocketNotifications socketInstance={socket} />
 

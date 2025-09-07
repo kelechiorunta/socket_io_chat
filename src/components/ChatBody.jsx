@@ -145,6 +145,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
 
         return (
           <React.Fragment key={index}>
+            {/* Date separator */}
             {showDateLabel && (
               <Box display="flex" alignItems="center" justifyContent="center" my={2}>
                 <Divider sx={{ flex: 1 }} />
@@ -158,6 +159,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
               </Box>
             )}
 
+            {/* Message row */}
             <Box
               display="flex"
               alignItems="flex-end"
@@ -165,6 +167,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
               gap={1}
               mb={2}
             >
+              {/* Avatar for non-client */}
               {!isClient && (
                 <Avatar
                   src={msg?.sender?.picture || (chat && chat.picture) || './Darshan.png'}
@@ -172,10 +175,33 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
                 />
               )}
 
+              {/* Bubble */}
               <MessageBubble elevation={1} isClient={isClient ? 1 : 0}>
-                {msg.text || msg.content}
+                {/* Text */}
+                {msg.content && (
+                  <Typography variant="body2" sx={{ color: '#fff', wordBreak: 'break-word' }}>
+                    {msg.content}
+                  </Typography>
+                )}
+
+                {/* Image */}
+                {msg.hasImage && msg.imageUrl && (
+                  <Box mt={msg.content ? 1 : 0}>
+                    <img
+                      src={msg.imageUrl}
+                      alt="attachment"
+                      style={{
+                        maxWidth: '200px',
+                        borderRadius: '8px',
+                        marginTop: msg.content ? '5px' : 0,
+                        display: 'block'
+                      }}
+                    />
+                  </Box>
+                )}
               </MessageBubble>
 
+              {/* Avatar for client */}
               {isClient && (
                 <Avatar src={pic?.picture || './Darshan.png'} sx={{ width: 32, height: 32 }} />
               )}
@@ -184,6 +210,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
         );
       })}
 
+      {/* Typing indicator */}
       {[...typingUsers].length > 0 && typingUsers.has(chat._id) && (
         <Box display="flex" alignItems="center" gap={1} mb={2}>
           <Avatar src={(chat && chat.picture) || './avatar.png'} sx={{ width: 32, height: 32 }} />
@@ -194,7 +221,6 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
           </MessageBubble>
         </Box>
       )}
-
       <div ref={chatEndRef} />
     </Box>
   );
