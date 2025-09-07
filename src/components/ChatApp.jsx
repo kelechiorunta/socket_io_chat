@@ -393,12 +393,7 @@ const ChatApp = () => {
     <Container
       fluid
       className={`${isDark ? 'bg-dark text-light' : 'bg-light text-black'} p-0`}
-      style={{
-        minHeight: '100vh',
-        // height: !isIconBarOpen && '100%',
-        maxHeight: '100vh',
-        overflow: 'hidden'
-      }}
+      style={{ minHeigh: '100vh', maxHeight: '100%', overflow: 'hidden' }}
     >
       <SocketNotifications socketInstance={socket} />
 
@@ -481,7 +476,7 @@ const ChatApp = () => {
           className={`h-100 flex-column chat-chatcol ${
             mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'
           }`}
-          style={{ minHeight: '100vh', height: '100%', overflow: 'hidden' }}
+          style={{ overflow: 'hidden' }}
         >
           {selectedChat ? (
             <>
