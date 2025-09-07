@@ -393,7 +393,7 @@ const ChatApp = () => {
     <Container
       fluid
       className={`${isDark ? 'bg-dark text-light' : 'bg-light text-black'} p-0`}
-      style={{ height: '100vh', overflow: 'hidden' }}
+      style={{ minHeight: '100vh', height: '100%', overflow: 'hidden' }}
     >
       <SocketNotifications socketInstance={socket} />
 
@@ -428,7 +428,7 @@ const ChatApp = () => {
 
         {/* Sidebar Column */}
         <Col
-          xs={mobileView === 'sidebar' ? 10 : 0}
+          xs={mobileView === 'sidebar' ? (isIconBarOpen ? 10 : 12) : 0}
           sm={mobileView === 'sidebar' ? 10 : 0}
           md={mobileView === 'sidebar' ? 10 : 0}
           lg={5}
