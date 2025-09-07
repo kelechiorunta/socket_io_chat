@@ -70,8 +70,8 @@ export function parseTimestamp(timestamp) {
   if (dateObj >= sevenDaysAgo) {
     // return date in format "7/9/2025"
     const formattedDate = dateObj.toLocaleDateString([], {
+      month: 'short',
       day: 'numeric',
-      month: 'numeric',
       year: 'numeric'
     });
     return { time, date: formattedDate };
