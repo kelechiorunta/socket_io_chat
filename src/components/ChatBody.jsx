@@ -34,7 +34,8 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
         backgroundSize: 'cover',
         backgroundColor: isDark ? '#0d1717' : 'rgba(0,0,0,0.2)',
         color: isDark ? 'white' : 'rgba(0,0,0,0.5)',
-        maxHeight: '100%'
+        maxHeight: '100%',
+        minHeight: '100vh'
       }}
     >
       {messages.map((msg, index) => {
