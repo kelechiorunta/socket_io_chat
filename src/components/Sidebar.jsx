@@ -9,9 +9,11 @@ import {
   CardContent,
   Skeleton,
   Typography,
+  IconButton,
   // Divider,
   Box
 } from '@mui/material';
+import { Menu, Close } from '@mui/icons-material';
 import { Search, Sun, Moon } from 'lucide-react';
 import Avatar from './Avatar';
 import { useTheme } from './ThemeContext';
@@ -28,7 +30,10 @@ const Sidebar = ({
   typingUsers,
   contacts,
   onlineUsers,
-  authenticatedUser
+  authenticatedUser,
+  isCollapsible,
+  isIconBarOpen,
+  setIsIconBarOpen
 }) => {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === 'dark';
@@ -40,6 +45,11 @@ const Sidebar = ({
   const itemRefs = useRef({});
   const [searchResults, setSearchResults] = useState([]);
   const inputRef = useRef(null);
+  // const [isIconBarOpen, setIsIconBarOpen] = useState(!isCollapsible);
+
+  // useEffect(() => {
+  //   setIsIconBarOpen(!isCollapsible); // auto-collapse when window is small
+  // }, [isCollapsible]);
 
   useEffect(() => {
     const el = itemRefs.current[focusedIndex];
@@ -92,6 +102,27 @@ const Sidebar = ({
     >
       {/* Header */}
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        <Box display="flex" alignItems="center" gap={1}>
+          {isCollapsible && (
+            <IconButton
+              size="small"
+              onClick={() => setIsIconBarOpen((prev) => !prev)}
+              sx={{ color: '#00e575' }}
+            >
+              {isIconBarOpen ? <Close /> : <Menu />}
+            </IconButton>
+          )}
+          <Typography variant="h6" sx={{ color: '#00e575', fontWeight: 'bold', pl: 1 }}>
+            JUSTCHAT
+          </Typography>
+        </Box>
+
+        <Box display="flex" gap={1}>
+          <Sun role="button" onClick={isDark ? toggleTheme : undefined} />
+          <Moon role="button" onClick={!isDark ? toggleTheme : undefined} />
+        </Box>
+      </Box>
+      {/* <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
         <Typography variant="h6" sx={{ color: '#00e575', fontWeight: 'bold', paddingLeft: 2 }}>
           JUSTCHAT
         </Typography>
@@ -99,7 +130,7 @@ const Sidebar = ({
           <Sun role="button" onClick={isDark ? toggleTheme : undefined} />
           <Moon role="button" onClick={!isDark ? toggleTheme : undefined} />
         </Box>
-      </Box>
+      </Box> */}
 
       {/* Search Bar */}
       <TextField
@@ -210,13 +241,10 @@ const Sidebar = ({
       </Box>
 
       {/* Contact List */}
-      <Box flex={1} overflow="auto" mb={2} minHeight={'100vh'} height={'100%'} >
+      <Box flex={1} overflow="auto" mb={2} minHeight={'100vh'} height={'100%'}>
         {loading ? (
           Array.from({ length: 15 }).map((_, idx) => (
-            <Card
-              key={idx}
-              sx={{ mb: 1, bgcolor: isDark ? 'grey.900' : 'grey.100' }}
-            >
+            <Card key={idx} sx={{ mb: 1, bgcolor: isDark ? 'grey.900' : 'grey.100' }}>
               <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <Skeleton variant="circular" width={40} height={40} />
                 <Box flex={1}>

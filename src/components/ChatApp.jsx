@@ -375,6 +375,12 @@ const ChatApp = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, [isMobile, isCollapsible]);
 
+  const [isIconBarOpen, setIsIconBarOpen] = useState(!isCollapsible);
+
+  useEffect(() => {
+    setIsIconBarOpen(!isCollapsible); // auto-collapse when screen < 400px
+  }, [isCollapsible]);
+
   // When chat is selected, switch automatically if on mobile
   const handleChatSelect = (chat) => {
     handleSelectChat(chat);
@@ -393,7 +399,21 @@ const ChatApp = () => {
 
       <Row className="h-100">
         {/* IconBar Column */}
-        <Col
+        {isIconBarOpen && (
+          <Col
+            xs={mobileView === 'sidebar' ? 0 : 2}
+            sm={mobileView === 'chat' ? 0 : 1}
+            md={1}
+            lg={1}
+            style={{ position: 'sticky', maxWidth: 60 }}
+            className={`p-0 border-end chat-iconbar ${
+              mobileView === 'chat' ? 'd-none' : 'd-block d-lg-block'
+            }`}
+          >
+            <IconBar isMobile={isMobile} profile={signedUser} onUpdateProfile={setSignedUser} />
+          </Col>
+        )}
+        {/* <Col
           xs={mobileView === 'sidebar' ? 0 : 2}
           sm={mobileView === 'chat' ? 0 : 1} //{1}
           md={1}
@@ -404,7 +424,7 @@ const ChatApp = () => {
           }`} // 👈 added hook
         >
           <IconBar isMobile={isMobile} profile={signedUser} onUpdateProfile={setSignedUser} />
-        </Col>
+        </Col> */}
 
         {/* Sidebar Column */}
         <Col
@@ -440,6 +460,9 @@ const ChatApp = () => {
             notificationMap={notificationMap}
             selectedClient={selectedChat}
             onlineUsers={onlineUsers}
+            isCollapsible={isCollapsible}
+            isIconBarOpen={isIconBarOpen}
+            setIsIconBarOpen={setIsIconBarOpen}
           />
           {/* )} */}
         </Col>
