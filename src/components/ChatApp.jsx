@@ -476,7 +476,7 @@ const ChatApp = () => {
           className={`h-100 flex-column chat-chatcol ${
             mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'
           }`}
-          style={{ overflow: 'hidden', overflowY: 'auto' }}
+          style={{ overflow: 'hidden' }}
         >
           {selectedChat ? (
             <>
