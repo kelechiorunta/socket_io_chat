@@ -38,6 +38,7 @@
     "lodash": "^4.17.21",
     "lucide-react": "^0.515.0",
     "mongoose": "^8.15.2",
+    "multer": "^2.0.2",
     "node-fetch": "^3.3.2",
     "nodemailer": "^7.0.5",
     "passport": "^0.7.0",
