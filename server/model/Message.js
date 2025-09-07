@@ -59,6 +59,7 @@ const messageSchema = new mongoose.Schema({
   // 👇 Link to picture if any
   hasImage: { type: Boolean, default: false },
   imageFileId: { type: mongoose.Schema.Types.ObjectId, ref: 'ChatPicture', required: false },
+  imageUrl: { type: String, required: false },
 
   createdAt: { type: Date, default: Date.now }
 });
@@ -96,8 +97,8 @@ messageSchema.post('save', async function (doc, next) {
         fileId: doc.imageFileId,
         senderId: doc.sender,
         receiverId: doc.receiver,
-        messageId: doc._id,
-        pictureUrl: `/api/chat-pictures/${doc.imageFileId.toString()}`
+        messageId: doc._id
+        // pictureUrl: `/api/chat-pictures/${doc.imageFileId.toString()}`
       });
     }
     next();
