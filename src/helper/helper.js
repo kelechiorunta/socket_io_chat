@@ -66,9 +66,15 @@ export function parseTimestamp(timestamp) {
   // Same week (within last 7 days)
   const sevenDaysAgo = new Date(startOfToday);
   sevenDaysAgo.setDate(startOfToday.getDate() - 7);
+
   if (dateObj >= sevenDaysAgo) {
-    const weekday = dateObj.toLocaleDateString([], { weekday: 'short' }); // e.g. "Mon"
-    return { time, date: weekday };
+    // return date in format "7/9/2025"
+    const formattedDate = dateObj.toLocaleDateString([], {
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric'
+    });
+    return { time, date: formattedDate };
   }
 
   // Fallback → short date
