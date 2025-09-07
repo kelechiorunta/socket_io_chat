@@ -176,7 +176,7 @@ const ChatApp = () => {
 
     if (formData.get('file')) {
       const file = formData.get('file');
-
+      console.log(file);
       // send file as binary buffer via socket
       const reader = new FileReader();
       reader.onload = () => {
@@ -455,7 +455,7 @@ const ChatApp = () => {
     <Container
       fluid
       className={`${isDark ? 'bg-dark text-light' : 'bg-light text-black'} p-0`}
-      style={{ height: '95vh', overflow: 'hidden' }}
+      style={{ height: isIconBarOpen ? '100vh' : '95vh', overflow: 'hidden' }}
     >
       <SocketNotifications socketInstance={socket} />
 
