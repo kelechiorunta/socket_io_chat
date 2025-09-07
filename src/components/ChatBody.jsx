@@ -34,6 +34,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
         backgroundSize: 'cover',
         backgroundColor: isDark ? '#0d1717' : 'rgba(0,0,0,0.2)',
         color: isDark ? 'white' : 'rgba(0,0,0,0.5)',
+        minHeight: '100vh',
         maxHeight: '100%'
       }}
     >
