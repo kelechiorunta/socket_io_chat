@@ -395,8 +395,8 @@ const ChatApp = () => {
       className={`${isDark ? 'bg-dark text-light' : 'bg-light text-black'} p-0`}
       style={{
         minHeight: '100vh',
-        height: !isIconBarOpen && '100%',
-        maxHeight: isIconBarOpen && '100vh',
+        // height: !isIconBarOpen && '100%',
+        maxHeight: '100vh',
         overflow: 'hidden'
       }}
     >
