@@ -393,7 +393,7 @@ const ChatApp = () => {
     <Container
       fluid
       className={`${isDark ? 'bg-dark text-light' : 'bg-light text-black'} p-0`}
-      style={{ minHeigh: '100vh', maxHeight: '100%', overflow: 'hidden' }}
+      style={{ minHeigh: '100vh', maxHeight: '100%', overflow: 'hidden', overflowY: 'auto' }}
     >
       <SocketNotifications socketInstance={socket} />
 

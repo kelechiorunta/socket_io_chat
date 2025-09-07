@@ -91,6 +91,7 @@ const Sidebar = ({
   return (
     <Box
       sx={{
+        maxHeight: '100vh',
         height: '100%',
         minHeight: '100vh',
         display: 'flex',
