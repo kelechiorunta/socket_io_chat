@@ -416,8 +416,8 @@ io.on('connection', (socket) => {
               content: message.content,
               createdAt: message.createdAt,
               hasImage: true,
-              imageId: message.imageFileId,
-              imageUrl: message.imageUrl,
+              imageId: message.imageFileId || fileId,
+              imageUrl: message.imageUrl || `/chat-pictures/${fileId}`,
               lastMessage: content,
               unreadCounts: recipientUser.unreadCounts,
               unreadMsgs: recipientUser.unread
