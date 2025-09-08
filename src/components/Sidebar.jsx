@@ -272,7 +272,7 @@ const Sidebar = ({
                 sx={{
                   mb: 1,
                   cursor: 'pointer',
-                  bgcolor: isSelected ? 'ThreeDLightShadow' : isDark ? 'grey.800' : 'grey.200',
+                  bgcolor: isSelected ? 'ThreeDLightShadow' : isDark ? 'grey.800' : 'grey.200', //success.main
                   color: isSelected ? 'white' : isDark ? 'white' : 'black'
                 }}
               >

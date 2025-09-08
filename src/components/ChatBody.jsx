@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Avatar, Box, Typography, Divider } from '@mui/material';
 // import { styled } from '@mui/system';
 // import Avatar from './Avatar';
@@ -6,6 +6,8 @@ import { format, isToday, isYesterday } from 'date-fns';
 import { useTheme } from './ThemeContext';
 import TypingIndicator from './Indicators/TypingIndicator';
 import MessageBubble from './MessageBubble';
+import { useQuery } from '@apollo/client';
+import { GET_MESSAGES } from '../graphql/queries'; // your GraphQL query
 
 const formatDateLabel = (date) => {
   if (isToday(date)) return 'Today';
@@ -13,10 +15,18 @@ const formatDateLabel = (date) => {
   return format(date, 'MMMM d, yyyy');
 };
 
-const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
+const ChatBody = ({ messages = [], pic, chat, typingUsers, newUploadTrigger, chatId }) => {
   const chatEndRef = useRef(null);
   const { theme } = useTheme();
-  const [imgSrc, setImgSrc] = useState([]);
+  // const [imgSrc, setImgSrc] = useState([]);
+
+  // Apollo query
+  const { data, loading, error, refetch } = useQuery(GET_MESSAGES, {
+    variables: { chatId },
+    fetchPolicy: 'network-only' // always fresh data
+  });
+
+  const chatmessages = data?.messages || [];
 
   const isDark = theme === 'dark';
   const scrollToBottom = () => {
@@ -32,10 +42,20 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
       if (m.imageUrl) {
         const img = new Image();
         img.src = `${m.imageUrl}?t=${Date.now()}`; // prefetch
-        setImgSrc((prev) => [...prev, `${m.imageUrl}`]);
+        // setImgSrc((prev) => [...prev, `${m.imageUrl}`]);
       }
     });
   }, [messages, pic, chat]);
+
+  // 🔄 Refetch messages when a new upload completes
+  useEffect(() => {
+    if (newUploadTrigger) {
+      refetch(); // force get new imageUrl
+    }
+  }, [newUploadTrigger, refetch]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   let lastMessageDate = null;
 
@@ -107,10 +127,10 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
                 )}
 
                 {/* Image */}
-                {msg.imageUrl && (
+                {chatmessages && chatmessages[index].imageUrl && (
                   <Box mt={msg.content ? 1 : 0}>
                     <img
-                      src={`${msg.imageUrl || imgSrc[index]}?t=${new Date(msg.createdAt).getTime()}`} // cache-buster
+                      src={chatmessages[index].imageUrl} // already cache-busted from backend
                       alt="attachment"
                       style={{
                         maxWidth: '200px',
