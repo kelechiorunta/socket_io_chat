@@ -21,7 +21,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers, newUploadTrigger, cha
   // const [imgSrc, setImgSrc] = useState([]);
 
   // Apollo query
-  const { data, loading, error, refetch } = useQuery(GET_MESSAGES, {
+  const { data, refetch } = useQuery(GET_MESSAGES, {
     variables: { chatId },
     fetchPolicy: 'network-only' // always fresh data
   });
@@ -54,8 +54,8 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers, newUploadTrigger, cha
     }
   }, [newUploadTrigger, refetch]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  // if (loading) return <p>Loading...</p>;
+  // if (error) return <p>Error: {error.message}</p>;
 
   let lastMessageDate = null;
 
