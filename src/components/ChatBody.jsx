@@ -127,10 +127,24 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers, newUploadTrigger, cha
                 )}
 
                 {/* Image */}
-                {chatmessages && chatmessages[index].imageUrl && (
+                {chatmessages && chatmessages[index].imageUrl ? (
                   <Box mt={msg.content ? 1 : 0}>
                     <img
                       src={chatmessages[index].imageUrl} // already cache-busted from backend
+                      alt="attachment"
+                      style={{
+                        maxWidth: '200px',
+                        maxHeight: '200px',
+                        borderRadius: '8px',
+                        marginTop: msg.content ? '5px' : 0,
+                        display: 'block'
+                      }}
+                    />
+                  </Box>
+                ) : (
+                  <Box mt={msg.content ? 1 : 0}>
+                    <img
+                      src={msg.imageUrl} // already cache-busted from backend
                       alt="attachment"
                       style={{
                         maxWidth: '200px',
