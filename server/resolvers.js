@@ -180,6 +180,7 @@
 
 // export default resolvers
 
+import ChatMessage from './model/ChatMessage.js';
 import UnreadMsg from './model/UnreadMsg.js';
 import User from './model/User.js';
 
@@ -256,6 +257,27 @@ const resolvers = {
       } catch (err) {
         console.error('❌ getUnread error:', err);
         throw new Error('Failed to get unread count');
+      }
+    },
+    messages: async (_, { chatId }, context) => {
+      try {
+        if (!context?.user) throw new Error('Unauthorized');
+
+        const msgs = await ChatMessage.find({ chat: chatId })
+          .populate('sender')
+          .populate('receiver')
+          .sort({ createdAt: 1 });
+
+        // ✅ attach imageUrl dynamically here
+        return msgs.map((m) => ({
+          ...m.toObject(),
+          imageUrl: m.imageFileId
+            ? `https://socketiochat-production.up.railway.app/chat-pictures/${m.imageFileId.toString()}?t=${Date.now()}`
+            : null
+        }));
+      } catch (err) {
+        console.error('❌ messages resolver error:', err);
+        throw new Error('Failed to fetch messages');
       }
     }
   },
