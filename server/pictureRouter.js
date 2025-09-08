@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 
 const pictureRouter = express.Router();
 
-pictureRouter.get('/:id', (req, res) => {
+pictureRouter.get('/:id', async (req, res) => {
   try {
     const db = mongoose.connection.db;
     const bucket = new GridFSBucket(db, {
@@ -12,9 +12,15 @@ pictureRouter.get('/:id', (req, res) => {
     });
 
     const fileId = new mongoose.Types.ObjectId(req.params.id);
+    // Check if file exists
+    const files = await bucket.find({ fileId }).toArray();
+    if (!files || files.length === 0) {
+      res.status(404).json({ error: 'File not found' });
+      return;
+    }
     //   bucket.openDownloadStream(fileId).pipe(res);
     const downloadStream = bucket.openDownloadStream(fileId);
-
+    res.set('Content-Type', files[0].contentType || 'application/octet-stream');
     downloadStream.on('data', (chunk) => {
       res.write(chunk);
     });
