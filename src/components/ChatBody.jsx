@@ -143,7 +143,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
 
         const isClient = msg?.sender?._id === pic?._id || msg.from === 'client';
 
-        console.log(msg.imageUrl);
+        console.log('PICTURES', msg.imageUrl);
 
         return (
           <React.Fragment key={index}>
@@ -194,6 +194,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
                       alt="attachment"
                       style={{
                         maxWidth: '200px',
+                        maxHeight: '200px',
                         borderRadius: '8px',
                         marginTop: msg.content ? '5px' : 0,
                         display: 'block'
