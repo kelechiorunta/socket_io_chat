@@ -105,3 +105,19 @@ export const CLEAR_UNREAD = gql`
     clearUnread(senderId: $senderId, recipientId: $recipientId)
   }
 `;
+
+export const GET_MESSAGES = gql`
+  query GetMessages($chatId: ID!) {
+    messages(chatId: $chatId) {
+      _id
+      sender {
+        _id
+        username
+        picture
+      }
+      content
+      createdAt
+      imageUrl
+    }
+  }
+`;
