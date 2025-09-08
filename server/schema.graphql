@@ -2,7 +2,7 @@ type Query {
   users: [User]!
   auth: User
   getUnread(senderId: ID!, recipientId: ID!): UnreadResult
-  messages(chatId: ID!): [Message!]!
+  messages(chatId: ID!): [Message]
 }
 
 type Mutation {
@@ -86,12 +86,12 @@ type UnreadMsg {
 }
 
 type Message {
-  _id: ID!
-  chat: ID!
-  sender: User!
-  receiver: User!
+  _id: ID
+  chat: ID
+  sender: User
+  receiver: User
   content: String
-  createdAt: String!
-  updatedAt: String!
+  createdAt: String
+  updatedAt: String
   imageUrl: String
 }
