@@ -130,7 +130,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers, newUploadTrigger, cha
                 {chatmessages && chatmessages[index].imageUrl ? (
                   <Box mt={msg.content ? 1 : 0}>
                     <img
-                      src={chatmessages[index].imageUrl} // already cache-busted from backend
+                      src={chatmessages[index]?.imageUrl || msg.imageUrl} // already cache-busted from backend
                       alt="attachment"
                       style={{
                         maxWidth: '200px',
