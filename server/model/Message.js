@@ -97,8 +97,8 @@ messageSchema.post('save', async function (doc, next) {
         fileId: doc.imageFileId,
         senderId: doc.sender,
         receiverId: doc.receiver,
-        messageId: doc._id
-        // pictureUrl: `/api/chat-pictures/${doc.imageFileId.toString()}`
+        messageId: doc._id,
+        pictureUrl: `/chat-pictures/${doc.imageFileId.toString()}`
       });
     }
     next();
