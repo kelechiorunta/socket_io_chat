@@ -153,7 +153,7 @@ const ChatInput = ({ input, setInput, onSend, isMobile }) => {
                   <Paperclip size={18} />
                 </IconButton>
               )}
-              {!isMobile && (
+              {isMobile && (
                 <IconButton onClick={() => fileInputRef.current.click()}>
                   <Image size={18} />
                 </IconButton>

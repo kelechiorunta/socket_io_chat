@@ -173,7 +173,7 @@ const ChatApp = () => {
       content: formData.get('content'),
       hasFile: !!formData.get('file')
     };
-    console.log(payload);
+    console.log('MyPayload', payload);
 
     if (formData.get('file')) {
       const file = formData.get('file');
