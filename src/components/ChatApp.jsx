@@ -177,7 +177,7 @@ const ChatApp = () => {
 
     if (formData.get('file')) {
       const file = formData.get('file');
-      console.log(file);
+      console.log('hello');
       // send file as binary buffer via socket
       const reader = new FileReader();
       reader.onload = () => {
