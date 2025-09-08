@@ -25,7 +25,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
 
   const isTyper = typingUsers.has(pic?._id);
 
-  useEffect(scrollToBottom, [messages, isTyper, pic, chat]);
+  useEffect(scrollToBottom, [messages, isTyper]);
 
   useEffect(() => {
     messages.forEach((m) => {
