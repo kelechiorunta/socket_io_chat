@@ -16,7 +16,7 @@ const formatDateLabel = (date) => {
 const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
   const chatEndRef = useRef(null);
   const { theme } = useTheme();
-  const [imgSrc, setImgSrc] = useState('');
+  const [imgSrc, setImgSrc] = useState([]);
 
   const isDark = theme === 'dark';
   const scrollToBottom = () => {
@@ -32,10 +32,10 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
       if (m.imageUrl) {
         const img = new Image();
         img.src = `${m.imageUrl}?t=${Date.now()}`; // prefetch
-        setImgSrc(`${m.imageUrl}?t=${Date.now()}`);
+        setImgSrc((prev) => [...prev, `${m.imageUrl}`]);
       }
     });
-  }, [messages, pic, chat]);
+  }, [messages, pic, chat, imgSrc]);
 
   let lastMessageDate = null;
 
@@ -110,7 +110,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
                 {msg.imageUrl && (
                   <Box mt={msg.content ? 1 : 0}>
                     <img
-                      src={imgSrc} //{`${msg.imageUrl}?t=${new Date(msg.createdAt).getTime()}`} // cache-buster
+                      src={`${msg.imageUrl || imgSrc[index]}?t=${new Date(msg.createdAt).getTime()}`} // cache-buster
                       alt="attachment"
                       style={{
                         maxWidth: '200px',
