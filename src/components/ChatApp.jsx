@@ -257,10 +257,10 @@ const ChatApp = () => {
       const isReceiver = msg.receiver?._id === selectedChat?._id;
 
       // If message has an image
-      if (msg.hasImage && msg.imageId) {
-        // Build download URL for GridFS
-        msg.imageUrl = `/chat-pictures/${msg.imageId}`;
-      }
+      // if (msg.hasImage && msg.imageId) {
+      //   // Build download URL for GridFS
+      //   msg.imageUrl = `/chat-pictures/${msg.imageId}`;
+      // }
 
       if (isSender || isReceiver) {
         setMessages((prev) => [...prev, msg]);

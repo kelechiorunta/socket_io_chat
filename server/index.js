@@ -404,7 +404,7 @@ io.on('connection', (socket) => {
           await chat.save();
 
           // emit to both users
-          io.to(senderId).to(receiverId).emit('newMessage', message);
+          // io.to(senderId).to(receiverId).emit('newMessage', message);
           // ✅ Emit updated message to both users
           [senderId, receiverId].forEach((id) => {
             io.to(id).emit('newMessage', {
@@ -416,6 +416,7 @@ io.on('connection', (socket) => {
               createdAt: message.createdAt,
               hasImage: message.hasImage,
               imageId: message.imageFileId,
+              urlImage: `/chat-pictures/${message.imageFileId}`,
               lastMessage: content,
               unreadCounts: recipientUser.unreadCounts,
               unreadMsgs: recipientUser.unread
