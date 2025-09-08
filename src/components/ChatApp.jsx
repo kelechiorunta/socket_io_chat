@@ -36,6 +36,8 @@ const ChatApp = () => {
       console.log('Contacts updated!');
     }
   });
+  const [chatId, setChatId] = useState(null);
+  const [triggerUpload, setTriggerUpload] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [isOnline, setIsOnline] = useState(null);
   const [notifiedUser, setNotifiedUser] = useState(null);
@@ -263,6 +265,8 @@ const ChatApp = () => {
       //   msg.imageUrl = `/chat-pictures/${msg.imageId}`;
       // }
       console.log(msg);
+      setChatId(msg?._id);
+      setTriggerUpload(msg?.hasImage);
       if (isSender || isReceiver) {
         setMessages((prev) => [...prev, msg]);
       } else {
@@ -556,6 +560,8 @@ const ChatApp = () => {
                 chat={selectedChat}
                 pic={data?.auth}
                 typingUsers={typingUsers}
+                newUploadTrigger={triggerUpload}
+                chatId={chatId}
               />
               <ChatInput
                 input={input}
