@@ -35,7 +35,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
         setImgSrc((prev) => [...prev, `${m.imageUrl}`]);
       }
     });
-  }, [messages, pic, chat, imgSrc]);
+  }, [messages, pic, chat]);
 
   let lastMessageDate = null;
 
