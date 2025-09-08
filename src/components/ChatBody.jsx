@@ -29,97 +29,6 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
   let lastMessageDate = null;
 
   return (
-    // <div
-    //   className="flex-grow-1 px-4 py-3"
-    //   style={{
-    //     overflowY: 'scroll',
-    //     backgroundImage: isDark ? "url('./background.jpg')" : "url('./backgroundII.png')",
-    //     backgroundSize: 'cover',
-    //     backgroundColor: isDark ? '#0d1717' : 'rgba(0,0,0,0.2)',
-    //     color: isDark ? 'white' : 'rgba(0,0,0,0.5)',
-    //     maxHeight: '100%'
-    //   }}
-    // >
-    //   {messages.map((msg, index) => {
-    //     const msgDate = new Date(msg.createdAt);
-    //     const dateLabel = formatDateLabel(msgDate);
-    //     // const isTyping = typingUsers.has(pic?._id);
-
-    //     const showDateLabel = !lastMessageDate || formatDateLabel(lastMessageDate) !== dateLabel;
-    //     lastMessageDate = msgDate;
-
-    //     const isClient = msg?.sender?._id === pic?._id || msg.from === 'client';
-    //     // const isTyping = typingUsers.has(msg?.sender?._id) || typingUsers.has(msg?.receiver?._id);
-
-    //     return (
-    //       <React.Fragment key={index}>
-    //         {showDateLabel && (
-    //           <div className="text-center my-3" style={{ fontSize: '0.8rem' }}>
-    //             <div
-    //               style={{
-    //                 display: 'flex',
-    //                 justifyContent: 'space-evenly',
-    //                 width: '100%',
-    //                 alignItems: 'center'
-    //               }}
-    //             >
-    //               <hr style={{ width: '100%' }} />
-    //               <p style={{ width: '100%', marginTop: 15 }}>{dateLabel} </p>
-    //               <hr style={{ width: '100%' }} />
-    //             </div>
-    //           </div>
-    //         )}
-    //         <div
-    //           className={`d-flex align-items-center gap-2 mb-2 ${
-    //             isClient ? 'justify-content-end' : 'justify-content-start'
-    //           }`}
-    //         >
-    //           <Avatar
-    //             src={
-    //               msg?.sender?.picture ||
-    //               (chat && (isClient ? pic.picture : chat.picture)) ||
-    //               './Darshan.png'
-    //             }
-    //             size={32}
-    //           />
-    //           <div
-    //             className="px-3 py-2 rounded-pill"
-    //             style={{
-    //               backgroundColor: isClient ? '#005c4b' : '#3a3b3c',
-    //               color: '#fff',
-    //               maxWidth: '60%',
-    //               fontSize: '0.9rem',
-    //               display: 'flex',
-    //               alignItems: 'center'
-    //             }}
-    //           >
-    //             {msg.text || msg.content}
-    //           </div>
-    //         </div>
-    //       </React.Fragment>
-    //     );
-    //   })}
-    //   {[...typingUsers].length > 0 && typingUsers.has(chat._id) && (
-    //     <div className="d-flex align-items-center gap-2 mb-2 justify-content-start">
-    //       <Avatar src={(chat && chat.picture) || './avatar.png'} size={32} />
-    //       <div
-    //         className="px-3 py-2 rounded-pill"
-    //         style={{
-    //           backgroundColor: '#3a3b3c',
-    //           color: '#fff',
-    //           maxWidth: '60%',
-    //           fontSize: '0.9rem',
-    //           display: 'flex',
-    //           alignItems: 'center'
-    //         }}
-    //       >
-    //         <TypingIndicator />
-    //       </div>
-    //     </div>
-    //   )}
-
-    //   <div ref={chatEndRef} />
-    // </div>
     <Box
       flexGrow={1}
       px={2}
@@ -146,7 +55,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
         console.log('messages', msg);
 
         return (
-          <React.Fragment key={index}>
+          <React.Fragment key={msg._id || index}>
             {/* Date separator */}
             {showDateLabel && (
               <Box display="flex" alignItems="center" justifyContent="center" my={2}>
@@ -190,7 +99,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
                 {msg.imageUrl && (
                   <Box mt={msg.content ? 1 : 0}>
                     <img
-                      src={msg.imageUrl}
+                      src={`${msg.imageUrl}?t=${new Date(msg.createdAt).getTime()}`} // 👈 cache-buster
                       alt="attachment"
                       style={{
                         maxWidth: '200px',
@@ -230,6 +139,101 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
 };
 
 export default ChatBody;
+// Last ChatInput with Bootstrap
+
+// <div
+//   className="flex-grow-1 px-4 py-3"
+//   style={{
+//     overflowY: 'scroll',
+//     backgroundImage: isDark ? "url('./background.jpg')" : "url('./backgroundII.png')",
+//     backgroundSize: 'cover',
+//     backgroundColor: isDark ? '#0d1717' : 'rgba(0,0,0,0.2)',
+//     color: isDark ? 'white' : 'rgba(0,0,0,0.5)',
+//     maxHeight: '100%'
+//   }}
+// >
+//   {messages.map((msg, index) => {
+//     const msgDate = new Date(msg.createdAt);
+//     const dateLabel = formatDateLabel(msgDate);
+//     // const isTyping = typingUsers.has(pic?._id);
+
+//     const showDateLabel = !lastMessageDate || formatDateLabel(lastMessageDate) !== dateLabel;
+//     lastMessageDate = msgDate;
+
+//     const isClient = msg?.sender?._id === pic?._id || msg.from === 'client';
+//     // const isTyping = typingUsers.has(msg?.sender?._id) || typingUsers.has(msg?.receiver?._id);
+
+//     return (
+//       <React.Fragment key={index}>
+//         {showDateLabel && (
+//           <div className="text-center my-3" style={{ fontSize: '0.8rem' }}>
+//             <div
+//               style={{
+//                 display: 'flex',
+//                 justifyContent: 'space-evenly',
+//                 width: '100%',
+//                 alignItems: 'center'
+//               }}
+//             >
+//               <hr style={{ width: '100%' }} />
+//               <p style={{ width: '100%', marginTop: 15 }}>{dateLabel} </p>
+//               <hr style={{ width: '100%' }} />
+//             </div>
+//           </div>
+//         )}
+//         <div
+//           className={`d-flex align-items-center gap-2 mb-2 ${
+//             isClient ? 'justify-content-end' : 'justify-content-start'
+//           }`}
+//         >
+//           <Avatar
+//             src={
+//               msg?.sender?.picture ||
+//               (chat && (isClient ? pic.picture : chat.picture)) ||
+//               './Darshan.png'
+//             }
+//             size={32}
+//           />
+//           <div
+//             className="px-3 py-2 rounded-pill"
+//             style={{
+//               backgroundColor: isClient ? '#005c4b' : '#3a3b3c',
+//               color: '#fff',
+//               maxWidth: '60%',
+//               fontSize: '0.9rem',
+//               display: 'flex',
+//               alignItems: 'center'
+//             }}
+//           >
+//             {msg.text || msg.content}
+//           </div>
+//         </div>
+//       </React.Fragment>
+//     );
+//   })}
+//   {[...typingUsers].length > 0 && typingUsers.has(chat._id) && (
+//     <div className="d-flex align-items-center gap-2 mb-2 justify-content-start">
+//       <Avatar src={(chat && chat.picture) || './avatar.png'} size={32} />
+//       <div
+//         className="px-3 py-2 rounded-pill"
+//         style={{
+//           backgroundColor: '#3a3b3c',
+//           color: '#fff',
+//           maxWidth: '60%',
+//           fontSize: '0.9rem',
+//           display: 'flex',
+//           alignItems: 'center'
+//         }}
+//       >
+//         <TypingIndicator />
+//       </div>
+//     </div>
+//   )}
+
+//   <div ref={chatEndRef} />
+// </div>
+
+//BOOTSTRAP
 
 // import React, { useEffect, useRef } from 'react';
 // import { Avatar, Box, Flex, Text } from '@chakra-ui/react';
