@@ -267,7 +267,7 @@ const ChatApp = () => {
         setMessages((prev) => [...prev, msg]);
       } else {
         if (msg.sender?._id !== user?._id) {
-          console.log(msg.createdAt);
+          console.log(msg);
           setUnreadMap((prev) => {
             const prevCount = prev[msg.sender?._id]?.count || 0;
 
