@@ -132,6 +132,7 @@ const ChatInput = ({ input, setInput, onSend, isMobile }) => {
       />
 
       <TextField
+        style={{ color: isDark ? 'white' : 'black' }}
         fullWidth
         placeholder="Message..."
         value={input}
