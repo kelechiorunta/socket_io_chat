@@ -12,7 +12,21 @@ pictureRouter.get('/:id', (req, res) => {
     });
 
     const fileId = new mongoose.Types.ObjectId(req.params.id);
-    bucket.openDownloadStream(fileId).pipe(res);
+    //   bucket.openDownloadStream(fileId).pipe(res);
+    const downloadStream = bucket.openDownloadStream(fileId);
+
+    downloadStream.on('data', (chunk) => {
+      res.write(chunk);
+    });
+
+    downloadStream.on('error', (err) => {
+      console.error('❌ GridFS error:', err);
+      res.sendStatus(404);
+    });
+
+    downloadStream.on('end', () => {
+      res.end();
+    });
   } catch (err) {
     res.status(500).json({ error: 'Image not found' });
   }

@@ -397,7 +397,7 @@ io.on('connection', (socket) => {
             content,
             hasImage: true,
             imageFileId: fileId,
-            imageUrl: `/chat-pictures/${fileId}`
+            imageUrl: `/chat-pictures/${fileId.toString()}`
           });
 
           await message.save();
@@ -416,8 +416,8 @@ io.on('connection', (socket) => {
               content: message.content,
               createdAt: message.createdAt,
               hasImage: true,
-              imageId: message.imageFileId || fileId,
-              imageUrl: message.imageUrl || `/chat-pictures/${fileId}`,
+              imageId: fileId || message.imageFileId,
+              imageUrl: `/chat-pictures/${fileId.toString()}` || message.imageUrl,
               lastMessage: content,
               unreadCounts: recipientUser.unreadCounts,
               unreadMsgs: recipientUser.unread
