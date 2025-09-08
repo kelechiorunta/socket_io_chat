@@ -26,6 +26,15 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
 
   useEffect(scrollToBottom, [messages, isTyper]);
 
+  useEffect(() => {
+    messages.forEach((m) => {
+      if (m.imageUrl) {
+        const img = new Image();
+        img.src = `${m.imageUrl}?t=${Date.now()}`; // prefetch
+      }
+    });
+  }, [messages]);
+
   let lastMessageDate = null;
 
   return (
@@ -99,7 +108,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
                 {msg.imageUrl && (
                   <Box mt={msg.content ? 1 : 0}>
                     <img
-                      src={`${msg.imageUrl}?t=${new Date(msg.createdAt).getTime()}`} // 👈 cache-buster
+                      src={`${msg.imageUrl}?t=${new Date(msg.createdAt).getTime()}`} // cache-buster
                       alt="attachment"
                       style={{
                         maxWidth: '200px',
