@@ -185,7 +185,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
                 )}
 
                 {/* Image */}
-                {msg.hasImage && msg.imageUrl && (
+                {msg.imageUrl && (
                   <Box mt={msg.content ? 1 : 0}>
                     <img
                       src={msg.imageUrl}
