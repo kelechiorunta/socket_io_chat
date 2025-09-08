@@ -262,12 +262,12 @@ const ChatApp = () => {
       //   // Build download URL for GridFS
       //   msg.imageUrl = `/chat-pictures/${msg.imageId}`;
       // }
-
+      console.log(msg);
       if (isSender || isReceiver) {
         setMessages((prev) => [...prev, msg]);
       } else {
         if (msg.sender?._id !== user?._id) {
-          console.log(msg);
+          // console.log(msg);
           setUnreadMap((prev) => {
             const prevCount = prev[msg.sender?._id]?.count || 0;
 

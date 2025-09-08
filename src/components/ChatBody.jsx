@@ -143,6 +143,8 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
 
         const isClient = msg?.sender?._id === pic?._id || msg.from === 'client';
 
+        console.log(msg.imageUrl);
+
         return (
           <React.Fragment key={index}>
             {/* Date separator */}
