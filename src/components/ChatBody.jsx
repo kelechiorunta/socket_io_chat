@@ -1,19 +1,19 @@
 import React, { useEffect, useRef } from 'react';
-import { Avatar, Box, Typography, Divider } from '@mui/material';
+import { Avatar, Box, Typography } from '@mui/material';
 // import { styled } from '@mui/system';
 // import Avatar from './Avatar';
-import { format, isToday, isYesterday } from 'date-fns';
+// import { format, isToday, isYesterday } from 'date-fns';
 import { useTheme } from './ThemeContext';
 import TypingIndicator from './Indicators/TypingIndicator';
 import MessageBubble from './MessageBubble';
 // import { useQuery } from '@apollo/client';
 // import { GET_MESSAGES } from '../graphql/queries'; // your GraphQL query
 
-const formatDateLabel = (date) => {
-  if (isToday(date)) return 'Today';
-  if (isYesterday(date)) return 'Yesterday';
-  return format(date, 'MMMM d, yyyy');
-};
+// const formatDateLabel = (date) => {
+//   if (isToday(date)) return 'Today';
+//   if (isYesterday(date)) return 'Yesterday';
+//   return format(date, 'MMMM d, yyyy');
+// };
 
 const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
   const chatEndRef = useRef(null);
@@ -76,9 +76,9 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
     >
       {messages.map((msg, index) => {
         const msgDate = new Date(msg.createdAt);
-        const dateLabel = formatDateLabel(msgDate);
+        // const dateLabel = formatDateLabel(msgDate);
 
-        const showDateLabel = !lastMessageDate || formatDateLabel(lastMessageDate) !== dateLabel;
+        // const showDateLabel = !lastMessageDate || formatDateLabel(lastMessageDate) !== dateLabel;
         lastMessageDate = msgDate;
 
         const isClient = msg?.sender?._id === pic?._id || msg.from === 'client';
@@ -88,7 +88,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
         return (
           <React.Fragment key={msg._id || index}>
             {/* Date separator */}
-            {showDateLabel && (
+            {/* {showDateLabel && (
               <Box display="flex" alignItems="center" justifyContent="center" my={2}>
                 <Divider sx={{ flex: 1 }} />
                 <Typography
@@ -99,7 +99,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
                 </Typography>
                 <Divider sx={{ flex: 1 }} />
               </Box>
-            )}
+            )} */}
 
             {/* Message row */}
             <Box
