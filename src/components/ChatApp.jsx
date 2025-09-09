@@ -82,7 +82,7 @@ const ChatApp = () => {
   const [unreadMap, setUnreadMap] = useState({});
   const [notificationMap, setNotificationMap] = useState({});
   const [fetchChats] = useLazyQuery(FETCH_CHATS, {
-    fetchPolicy: 'cache-and-network' // 👈 ensures fresh fetch
+    fetchPolicy: 'network-only' // 👈 ensures fresh fetch
   });
 
   useEffect(() => {
