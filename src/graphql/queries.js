@@ -131,16 +131,47 @@ export const FETCH_CHATS = gql`
           _id
           username
           picture
+          gender
+          lastMessage
+          lastMessageCount
+          isOnline
+          unread {
+            sender {
+              _id
+              username
+              picture
+            }
+            count
+            lastMessage
+            updatedAt
+            createdAt
+          }
         }
         receiver {
           _id
           username
           picture
+          gender
+          lastMessage
+          lastMessageCount
+          isOnline
+          unread {
+            sender {
+              _id
+              username
+              picture
+            }
+            count
+            lastMessage
+            updatedAt
+            createdAt
+          }
         }
         content
         createdAt
         imageUrl
         placeholderUrl
+        hasImage
       }
       notifiedUser {
         _id
