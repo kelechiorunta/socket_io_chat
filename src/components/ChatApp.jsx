@@ -347,7 +347,7 @@ const ChatApp = () => {
       socket.off('isConnected');
       socket.off('typing');
     };
-  }, [selectedChat?._id, socket, user?._id, currentContacts, selectedChat, unreadMap]); // ✅ Run only once
+  }, [selectedChat?._id, socket, user?._id, currentContacts, selectedChat, unreadMap, fetchChats]); // ✅ Run only once
 
   useEffect(() => {
     if (!socket) return;
