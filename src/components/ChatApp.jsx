@@ -13,6 +13,8 @@ import debounce from 'lodash.debounce';
 // import { format, isToday, isYesterday } from 'date-fns';
 import { MARK_MESSAGES_AS_READ, CLEAR_UNREAD, GET_UNREAD } from '../graphql/queries';
 import SocketNotifications from './Notifications/SocketNotifications';
+import { FETCH_CHATS } from '../graphql/queries';
+
 // import { Box, Grid, Card, CardContent, Skeleton, Typography } from '@mui/material';
 // import { ArrowLeft } from 'lucide-react';
 
@@ -374,6 +376,10 @@ const ChatApp = () => {
     }
   }, [currentContacts, onlineUsers, user]);
 
+  const [fetchChats] = useLazyQuery(FETCH_CHATS, {
+    fetchPolicy: 'network-only' // 👈 ensures fresh fetch
+  });
+
   const handleSelectChat = async (chatUser) => {
     setSelectedChat(chatUser);
     setUnreadMap((prev) => {
@@ -396,30 +402,46 @@ const ChatApp = () => {
         senderId: chatUser?._id,
         receiverId: storedUser?._id || knownOnlineUserId || currentUser?._id
       });
-
-      try {
-        const res = await fetch(
-          `/api/getChatHistory?userId=${chatUser?._id}&currentUserId=${currentUser?._id}`,
-          {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          }
-        );
-
-        if (!res.ok) {
-          throw new Error('Failed to fetch chat history');
-        }
-
-        const history = await res.json();
-        setMessages(history.messages);
-        setNotifiedUser(history.notifiedUser);
-      } catch (error) {
-        console.error('Error fetching chat history:', error);
-      }
     }
+    // 🚀 Run GraphQL lazy query instead of fetch()
+    try {
+      const { data } = await fetchChats({
+        variables: {
+          userId: chatUser?._id,
+          currentUserId: currentUser?._id
+        }
+      });
+
+      if (data?.fetch_chats) {
+        setMessages(data.fetch_chats.messages);
+        setNotifiedUser(data.fetch_chats.notifiedUser);
+      }
+    } catch (error) {
+      console.error('Error fetching chat history:', error);
+    }
+    //   try {
+    //     const res = await fetch(
+    //       `/api/getChatHistory?userId=${chatUser?._id}&currentUserId=${currentUser?._id}`,
+    //       {
+    //         method: 'GET',
+    //         credentials: 'include',
+    //         headers: {
+    //           'Content-Type': 'application/json'
+    //         }
+    //       }
+    //     );
+
+    //     if (!res.ok) {
+    //       throw new Error('Failed to fetch chat history');
+    //     }
+
+    //     const history = await res.json();
+    //     setMessages(history.messages);
+    //     setNotifiedUser(history.notifiedUser);
+    //   } catch (error) {
+    //     console.error('Error fetching chat history:', error);
+    //   }
+    // }
   };
 
   // const formatDateLabel = (date) => {
