@@ -285,13 +285,13 @@ const resolvers = {
         // ✅ Fetch sender and receiver messages
         const messages = await ChatMessage.find({
           $or: [
-            { sender: userId, recipient: currentUserId },
-            { sender: currentUserId, recipient: userId }
+            { sender: userId, receiver: currentUserId },
+            { sender: currentUserId, receiver: userId }
           ]
         })
           .sort({ createdAt: 1 }) // oldest → newest
           .populate('sender', '_id username picture')
-          .populate('recipient', '_id username picture');
+          .populate('receiver', '_id username picture');
 
         // ✅ Optionally fetch "notifiedUser"
         const notifiedUser = await User.findById(userId);
