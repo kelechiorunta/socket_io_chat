@@ -132,7 +132,7 @@ export const FETCH_CHATS = gql`
           username
           picture
         }
-        recipient {
+        receiver {
           _id
           username
           picture
