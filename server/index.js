@@ -14,6 +14,7 @@ import { graphqlHTTP } from 'express-graphql';
 import passport from 'passport';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import sharp from 'sharp';
 import { GridFSBucket } from 'mongodb';
 // import Message from './model/Message.js';
 import ConnectMongoDBSession from 'connect-mongodb-session';
@@ -373,54 +374,77 @@ io.on('connection', (socket) => {
       }
       //
       let fileId = null;
-      if (hasFile && file) {
-        // save file to GridFS
-        const db = mongoose.connection.db;
-        const bucket = new GridFSBucket(db, {
-          bucketName: 'chatPictures'
-        });
+      let placeholderImgId = null;
 
+      if (hasFile && file) {
+        const db = mongoose.connection.db;
+        const bucket = new GridFSBucket(db, { bucketName: 'chatPictures' });
+
+        const buffer = Buffer.from(file.data);
+
+        // ✅ Create a placeholder (tiny blurred thumbnail)
+        const placeholderBuffer = await sharp(buffer)
+          .resize({ width: 20 }) // small thumbnail
+          .blur() // add blur effect for lazy loading
+          .toBuffer();
+
+        // Upload main file
         const uploadStream = bucket.openUploadStream(file.name, {
           contentType: file.type,
           metadata: { senderId, receiverId }
         });
 
-        uploadStream.end(Buffer.from(file.data));
+        uploadStream.end(buffer);
 
         uploadStream.on('finish', async () => {
           fileId = uploadStream.id;
 
-          let message = new ChatMessage({
-            chat: chat._id,
-            sender: senderId,
-            receiver: receiverId,
-            content,
-            hasImage: true,
-            imageFileId: fileId,
-            imageUrl: `/chat-pictures/${fileId.toString()}?t=${Date.now()}`
+          // Upload placeholder file
+          const placeholderStream = bucket.openUploadStream(`${file.name}-placeholder`, {
+            contentType: file.type,
+            metadata: { senderId, receiverId, placeholder: true }
           });
 
-          await message.save();
-          chat.messages.push(message._id);
-          await chat.save();
+          placeholderStream.end(placeholderBuffer);
 
-          // emit to both users
-          // io.to(senderId).to(receiverId).emit('newMessage', message);
-          // ✅ Emit updated message to both users
-          [senderId, receiverId].forEach((id) => {
-            io.to(id).emit('newMessage', {
-              _id: message._id,
-              chatId: chat._id,
-              sender: message.sender,
-              receiver: message.receiver,
-              content: message.content,
-              createdAt: message.createdAt,
+          placeholderStream.on('finish', async () => {
+            placeholderImgId = placeholderStream.id;
+
+            // ✅ Save message with both full & placeholder image IDs
+            let message = new ChatMessage({
+              chat: chat._id,
+              sender: senderId,
+              receiver: receiverId,
+              content,
               hasImage: true,
-              imageId: fileId || message.imageFileId,
-              imageUrl: `/chat-pictures/${fileId.toString()}?t=${Date.now()}` || message.imageUrl,
-              lastMessage: content,
-              unreadCounts: recipientUser.unreadCounts,
-              unreadMsgs: recipientUser.unread
+              imageFileId: fileId,
+              placeholderImgId, // ✅ new field
+              imageUrl: `/chat-pictures/${fileId.toString()}?t=${Date.now()}`,
+              placeholderUrl: `/chat-pictures/${placeholderImgId.toString()}`
+            });
+
+            await message.save();
+            chat.messages.push(message._id);
+            await chat.save();
+
+            // ✅ Emit to both users
+            [senderId, receiverId].forEach((id) => {
+              io.to(id).emit('newMessage', {
+                _id: message._id,
+                chatId: chat._id,
+                sender: message.sender,
+                receiver: message.receiver,
+                content: message.content,
+                createdAt: message.createdAt,
+                hasImage: true,
+                imageId: fileId,
+                placeholderId: placeholderImgId,
+                imageUrl: message.imageUrl,
+                placeholderUrl: message.placeholderUrl, // ✅ send placeholder to client
+                lastMessage: content,
+                unreadCounts: recipientUser.unreadCounts,
+                unreadMsgs: recipientUser.unread
+              });
             });
           });
         });
