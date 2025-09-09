@@ -151,6 +151,19 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
                     style={{ maxWidth: '200px', maxHeight: '200px', borderRadius: '8px' }}
                   />
                 )}
+                {msg.hasImage && (
+                  <img
+                    src={msg.placeholderUrl || msg.imageUrl} // show placeholder first
+                    data-src={msg.imageUrl} // actual full image
+                    alt="attachment"
+                    className="lazyload"
+                    style={{
+                      maxWidth: '200px',
+                      maxHeight: '200px',
+                      borderRadius: '8px'
+                    }}
+                  />
+                )}
               </MessageBubble>
 
               {/* Avatar for client */}
