@@ -84,7 +84,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
 
         const isClient = msg?.sender?._id === pic?._id || msg.from === 'client';
 
-        console.log('messages', msg);
+        // console.log('messages', msg);
 
         return (
           <React.Fragment key={msg._id || index}>
@@ -151,7 +151,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
                     style={{ maxWidth: '200px', maxHeight: '200px', borderRadius: '8px' }}
                   />
                 )}
-                {msg.hasImage && (
+                {/* {msg.hasImage && (
                   <img
                     src={msg.placeholderUrl || msg.imageUrl} // show placeholder first
                     data-src={msg.imageUrl} // actual full image
@@ -163,7 +163,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
                       borderRadius: '8px'
                     }}
                   />
-                )}
+                )} */}
               </MessageBubble>
 
               {/* Avatar for client */}
