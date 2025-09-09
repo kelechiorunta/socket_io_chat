@@ -140,6 +140,7 @@ export const FETCH_CHATS = gql`
         content
         createdAt
         imageUrl
+        placeholderUrl
       }
       notifiedUser {
         _id

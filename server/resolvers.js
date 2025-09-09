@@ -301,6 +301,9 @@ const resolvers = {
           ...msg.toObject(),
           imageUrl: msg.imageFileId
             ? `https://socketiochat-production.up.railway.app/chat-pictures/${msg.imageFileId.toString()}?t=${Date.now()}`
+            : null,
+          placholderUrl: msg.placeholderImgId
+            ? `https://socketiochat-production.up.railway.app/chat-pictures/${msg.placeholderImgId.toString()}?t=${Date.now()}`
             : null
         }));
 
