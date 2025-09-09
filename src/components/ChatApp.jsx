@@ -81,6 +81,9 @@ const ChatApp = () => {
 
   const [unreadMap, setUnreadMap] = useState({});
   const [notificationMap, setNotificationMap] = useState({});
+  const [fetchChats] = useLazyQuery(FETCH_CHATS, {
+    fetchPolicy: 'network-only' // 👈 ensures fresh fetch
+  });
 
   useEffect(() => {
     if (!user || !contacts || contacts.length === 0) return;
@@ -257,7 +260,7 @@ const ChatApp = () => {
     //   }
     // });
 
-    socket.on('newMessage', (msg) => {
+    socket.on('newMessage', async (msg) => {
       const isSender = msg.sender?._id === selectedChat?._id;
       const isReceiver = msg.receiver?._id === selectedChat?._id;
 
@@ -269,6 +272,20 @@ const ChatApp = () => {
       console.log(msg);
       setChatId(msg?._id);
       setTriggerUpload(msg?.hasImage);
+      // 🔄 If the message has an image, refetch the full chat
+      if (msg.hasImage && msg.imageUrl) {
+        try {
+          await fetchChats({
+            variables: {
+              userId: msg.receiver?._id,
+              currentUserId: msg.sender?._id
+            }
+          });
+        } catch (err) {
+          console.error('Refetch failed:', err);
+        }
+      }
+
       if (isSender || isReceiver) {
         setMessages((prev) => [...prev, msg]);
       } else {
@@ -376,9 +393,9 @@ const ChatApp = () => {
     }
   }, [currentContacts, onlineUsers, user]);
 
-  const [fetchChats] = useLazyQuery(FETCH_CHATS, {
-    fetchPolicy: 'network-only' // 👈 ensures fresh fetch
-  });
+  // const [fetchChats] = useLazyQuery(FETCH_CHATS, {
+  //   fetchPolicy: 'network-only' // 👈 ensures fresh fetch
+  // });
 
   const handleSelectChat = async (chatUser) => {
     setSelectedChat(chatUser);
