@@ -82,7 +82,6 @@ type ChatMessage {
   imageUrl: String
   placeholderUrl: String
 }
-}
 
 type UnreadMsg {
   _id: ID!
