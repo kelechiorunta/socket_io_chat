@@ -302,7 +302,7 @@ const resolvers = {
           imageUrl: msg.imageFileId
             ? `https://socketiochat-production.up.railway.app/chat-pictures/${msg.imageFileId.toString()}?t=${Date.now()}`
             : null,
-          placholderUrl: msg.placeholderImgId
+          placeholderUrl: msg.placeholderImgId
             ? `https://socketiochat-production.up.railway.app/chat-pictures/${msg.placeholderImgId.toString()}?t=${Date.now()}`
             : null
         }));
