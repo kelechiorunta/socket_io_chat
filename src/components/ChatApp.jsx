@@ -291,6 +291,7 @@ const ChatApp = () => {
             });
 
             if (data?.fetch_chats) {
+              console.log('MESSAGES WITH IMAGES COMING THROUGH', msg.imageUrl);
               setMessages(data.fetch_chats.messages);
               setNotifiedUser(data.fetch_chats.notifiedUser);
             }
