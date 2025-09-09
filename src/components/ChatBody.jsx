@@ -84,7 +84,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
 
         const isClient = msg?.sender?._id === pic?._id || msg.from === 'client';
 
-        // console.log('messages', msg);
+        console.log('messages', msg);
 
         return (
           <React.Fragment key={msg._id || index}>
