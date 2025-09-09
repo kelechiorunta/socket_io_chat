@@ -279,6 +279,39 @@ const resolvers = {
         console.error('❌ messages resolver error:', err);
         throw new Error('Failed to fetch messages');
       }
+    },
+    fetch_chats: async (_, { userId, currentUserId }) => {
+      try {
+        // ✅ Fetch sender and receiver messages
+        const messages = await ChatMessage.find({
+          $or: [
+            { sender: userId, recipient: currentUserId },
+            { sender: currentUserId, recipient: userId }
+          ]
+        })
+          .sort({ createdAt: 1 }) // oldest → newest
+          .populate('sender', '_id username picture')
+          .populate('recipient', '_id username picture');
+
+        // ✅ Optionally fetch "notifiedUser"
+        const notifiedUser = await User.findById(userId);
+
+        // ✅ Transform messages to include imageUrl from GridFS
+        const enhancedMessages = messages.map((msg) => ({
+          ...msg.toObject(),
+          imageUrl: msg.imageFileId
+            ? `https://socketiochat-production.up.railway.app/chat-pictures/${msg.imageFileId.toString()}?t=${Date.now()}`
+            : null
+        }));
+
+        return {
+          messages: enhancedMessages,
+          notifiedUser
+        };
+      } catch (err) {
+        console.error('❌ fetch_chats error:', err);
+        throw new Error('Failed to fetch chat history');
+      }
     }
   },
 
