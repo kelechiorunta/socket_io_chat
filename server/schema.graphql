@@ -81,6 +81,7 @@ type ChatMessage {
   updatedAt: String
   imageUrl: String
   placeholderUrl: String
+  hasImage: Boolean
 }
 
 type UnreadMsg {
@@ -103,4 +104,5 @@ type Message {
   updatedAt: String
   imageUrl: String
   placeholderUrl: String
+  hasImage: Boolean
 }
