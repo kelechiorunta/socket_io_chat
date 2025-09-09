@@ -57,7 +57,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
   // if (loading) return <p>Loading...</p>;
   // if (error) return <p>Error: {error.message}</p>;
 
-  let lastMessageDate = null;
+  // let lastMessageDate = null;
 
   return (
     <Box
@@ -75,11 +75,11 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
       }}
     >
       {messages.map((msg, index) => {
-        const msgDate = new Date(msg.createdAt);
+        // const msgDate = new Date(msg.createdAt);
         // const dateLabel = formatDateLabel(msgDate);
 
         // const showDateLabel = !lastMessageDate || formatDateLabel(lastMessageDate) !== dateLabel;
-        lastMessageDate = msgDate;
+        // lastMessageDate = msgDate;
 
         const isClient = msg?.sender?._id === pic?._id || msg.from === 'client';
 
