@@ -38,8 +38,8 @@ const ChatApp = () => {
       console.log('Contacts updated!');
     }
   });
-  const [chatId, setChatId] = useState(null);
-  const [triggerUpload, setTriggerUpload] = useState(null);
+  // const [chatId, setChatId] = useState(null);
+  // const [triggerUpload, setTriggerUpload] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [isOnline, setIsOnline] = useState(null);
   const [notifiedUser, setNotifiedUser] = useState(null);
@@ -270,37 +270,38 @@ const ChatApp = () => {
       //   msg.imageUrl = `/chat-pictures/${msg.imageId}`;
       // }
       console.log(msg);
-      setChatId(msg?._id);
-      setTriggerUpload(msg?.hasImage);
+      // setChatId(msg?._id);
+      // setTriggerUpload(msg?.hasImage);
+      if (msg.hasImage && msg.imageUrl) {
+        try {
+          // await fetchChats({
+          //   variables: {
+          //     userId: msg.receiver?._id,
+          //     currentUserId: msg.sender?._id
+          //   }
+          // });
+          const { data } = await fetchChats({
+            variables: {
+              userId: selectedChat?._id,
+              currentUserId: user?._id
+            },
+            nextFetchPolicy: 'network-only'
+          });
+          console.log('DATA', data);
+
+          if (data?.fetch_chats) {
+            console.log('MESSAGES WITH IMAGES COMING THROUGH', msg.imageUrl);
+            setMessages(data.fetch_chats.messages);
+            setNotifiedUser(data.fetch_chats.notifiedUser);
+          }
+        } catch (err) {
+          console.error('Refetch failed:', err);
+        }
+      }
 
       if (isSender || isReceiver) {
         // 🔄 If the message has an image, refetch the full chat
-        if (msg.hasImage && msg.imageUrl) {
-          try {
-            // await fetchChats({
-            //   variables: {
-            //     userId: msg.receiver?._id,
-            //     currentUserId: msg.sender?._id
-            //   }
-            // });
-            const { data } = await fetchChats({
-              variables: {
-                userId: selectedChat?._id,
-                currentUserId: user?._id
-              },
-              nextFetchPolicy: 'network-only'
-            });
-            console.log('DATA', data);
 
-            if (data?.fetch_chats) {
-              console.log('MESSAGES WITH IMAGES COMING THROUGH', msg.imageUrl);
-              setMessages(data.fetch_chats.messages);
-              setNotifiedUser(data.fetch_chats.notifiedUser);
-            }
-          } catch (err) {
-            console.error('Refetch failed:', err);
-          }
-        }
         setMessages((prev) => [...prev, msg]);
       } else {
         if (msg.sender?._id !== user?._id) {
@@ -617,8 +618,8 @@ const ChatApp = () => {
                 chat={selectedChat}
                 pic={data?.auth}
                 typingUsers={typingUsers}
-                newUploadTrigger={triggerUpload}
-                chatId={chatId}
+                // newUploadTrigger={triggerUpload}
+                // chatId={chatId}
               />
               <ChatInput
                 input={input}
