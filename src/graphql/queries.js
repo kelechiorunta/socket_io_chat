@@ -121,3 +121,31 @@ export const GET_MESSAGES = gql`
     }
   }
 `;
+
+export const FETCH_CHATS = gql`
+  query FetchChats($userId: ID!, $currentUserId: ID!) {
+    fetch_chats(userId: $userId, currentUserId: $currentUserId) {
+      messages {
+        _id
+        sender {
+          _id
+          username
+          picture
+        }
+        recipient {
+          _id
+          username
+          picture
+        }
+        content
+        createdAt
+        imageUrl
+      }
+      notifiedUser {
+        _id
+        username
+        picture
+      }
+    }
+  }
+`;
