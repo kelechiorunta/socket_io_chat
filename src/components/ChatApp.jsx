@@ -285,10 +285,12 @@ const ChatApp = () => {
             // });
             const { data } = await fetchChats({
               variables: {
-                userId: msg.receiver?._id,
-                currentUserId: msg.sender?._id
-              }
+                userId: selectedChat?._id,
+                currentUserId: user?._id
+              },
+              nextFetchPolicy: 'network-only'
             });
+            console.log('DATA', data);
 
             if (data?.fetch_chats) {
               console.log('MESSAGES WITH IMAGES COMING THROUGH', msg.imageUrl);
