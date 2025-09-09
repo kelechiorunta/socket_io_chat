@@ -272,21 +272,32 @@ const ChatApp = () => {
       console.log(msg);
       setChatId(msg?._id);
       setTriggerUpload(msg?.hasImage);
-      // 🔄 If the message has an image, refetch the full chat
-      if (msg.hasImage && msg.imageUrl) {
-        try {
-          await fetchChats({
-            variables: {
-              userId: msg.receiver?._id,
-              currentUserId: msg.sender?._id
-            }
-          });
-        } catch (err) {
-          console.error('Refetch failed:', err);
-        }
-      }
 
       if (isSender || isReceiver) {
+        // 🔄 If the message has an image, refetch the full chat
+        if (msg.hasImage && msg.imageUrl) {
+          try {
+            // await fetchChats({
+            //   variables: {
+            //     userId: msg.receiver?._id,
+            //     currentUserId: msg.sender?._id
+            //   }
+            // });
+            const { data } = await fetchChats({
+              variables: {
+                userId: msg.receiver?._id,
+                currentUserId: msg.sender?._id
+              }
+            });
+
+            if (data?.fetch_chats) {
+              setMessages(data.fetch_chats.messages);
+              setNotifiedUser(data.fetch_chats.notifiedUser);
+            }
+          } catch (err) {
+            console.error('Refetch failed:', err);
+          }
+        }
         setMessages((prev) => [...prev, msg]);
       } else {
         if (msg.sender?._id !== user?._id) {
@@ -582,7 +593,11 @@ const ChatApp = () => {
           className={`h-100 flex-column chat-chatcol ${
             mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'
           }`}
-          style={{ overflow: 'hidden' }}
+          style={{
+            overflow: 'hidden',
+            margin: mobileView === 'sidebar' ? 'auto' : 'auto',
+            maxWidth: '100vw'
+          }}
         >
           {selectedChat ? (
             <>
