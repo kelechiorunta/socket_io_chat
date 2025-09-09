@@ -82,7 +82,7 @@ const ChatApp = () => {
   const [unreadMap, setUnreadMap] = useState({});
   const [notificationMap, setNotificationMap] = useState({});
   const [fetchChats] = useLazyQuery(FETCH_CHATS, {
-    fetchPolicy: 'network-only' // 👈 ensures fresh fetch
+    fetchPolicy: 'cache-and-network' // 👈 ensures fresh fetch
   });
 
   useEffect(() => {
@@ -180,11 +180,11 @@ const ChatApp = () => {
       content: formData.get('content'),
       hasFile: !!formData.get('file')
     };
-    console.log('MyPayload', payload);
+    // console.log('MyPayload', payload);
 
     if (formData.get('file')) {
       const file = formData.get('file');
-      console.log('hello');
+      // console.log('hello');
       // send file as binary buffer via socket
       const reader = new FileReader();
       reader.onload = () => {
@@ -270,22 +270,15 @@ const ChatApp = () => {
       //   msg.imageUrl = `/chat-pictures/${msg.imageId}`;
       // }
       console.log(msg);
-      // setChatId(msg?._id);
-      // setTriggerUpload(msg?.hasImage);
+
       if (msg.hasImage && msg.imageUrl) {
         try {
-          // await fetchChats({
-          //   variables: {
-          //     userId: msg.receiver?._id,
-          //     currentUserId: msg.sender?._id
-          //   }
-          // });
           const { data } = await fetchChats({
             variables: {
               userId: selectedChat?._id,
               currentUserId: user?._id
             },
-            nextFetchPolicy: 'network-only'
+            nextFetchPolicy: 'cache-and-network'
           });
           console.log('DATA', data);
 

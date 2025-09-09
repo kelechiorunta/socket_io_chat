@@ -6,6 +6,7 @@ import { Avatar, Box, Typography } from '@mui/material';
 import { useTheme } from './ThemeContext';
 import TypingIndicator from './Indicators/TypingIndicator';
 import MessageBubble from './MessageBubble';
+import ProgressiveImage from './ProgressiveImage';
 // import { useQuery } from '@apollo/client';
 // import { GET_MESSAGES } from '../graphql/queries'; // your GraphQL query
 
@@ -127,7 +128,7 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
                 )}
 
                 {/* Image */}
-                {msg.imageUrl && (
+                {/* {msg.imageUrl && (
                   <Box mt={msg.content ? 1 : 0}>
                     <img
                       src={msg.imageUrl} // already cache-busted from backend
@@ -141,6 +142,14 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
                       }}
                     />
                   </Box>
+                )} */}
+                {msg.hasImage && (
+                  <ProgressiveImage
+                    placeholderSrc={msg.placeholderUrl}
+                    src={msg.imageUrl}
+                    alt="attachment"
+                    style={{ maxWidth: '200px', maxHeight: '200px', borderRadius: '8px' }}
+                  />
                 )}
               </MessageBubble>
 
