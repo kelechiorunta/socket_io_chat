@@ -508,7 +508,7 @@ const ChatApp = () => {
     <Container
       fluid
       className={`${isDark ? 'bg-dark text-light' : 'bg-light text-black'} p-0`}
-      style={{ height: isIconBarOpen ? '100vh' : '95vh', overflow: 'hidden' }}
+      style={{ height: isIconBarOpen ? '100vh' : '90vh', overflow: 'hidden' }}
     >
       <SocketNotifications socketInstance={socket} />
 
@@ -596,7 +596,7 @@ const ChatApp = () => {
             margin: mobileView === 'sidebar' ? 'auto' : 'auto',
             padding: 0,
             // width: '100%',
-            maxWidth: '100vw'
+            maxWidth: '120vw'
           }}
         >
           {selectedChat ? (
