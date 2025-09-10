@@ -18,7 +18,7 @@ const ChatHeader = ({ isDark, showBackButton, onBack, selectedUser, onlineUsers 
       px={2}
       py={1.5}
       sx={{
-        backgroundColor: isDark ? 'grey.800' : 'white', //'#1f1d1d', //: 'white',
+        backgroundColor: isDark ? '#1f1d1d' : 'GrayText', //'grey.800' : 'white', //'#1f1d1d', //: 'white',
         color: isDark ? 'white' : 'black',
         borderBottom: '1px solid',
         borderColor: isDark ? 'grey.800' : 'grey.300'
@@ -42,7 +42,12 @@ const ChatHeader = ({ isDark, showBackButton, onBack, selectedUser, onlineUsers 
           sx={{ width: 40, height: 40, mr: 1.5 }}
         />
 
-        <Box justifyContent={'flex-start'} alignContent={'center'} flexDirection={'column'}>
+        <Box
+          display={'flex'}
+          justifyContent={'flex-start'}
+          alignContent={'center'}
+          flexDirection={'column'}
+        >
           <Typography variant="subtitle1" fontWeight="bold">
             {selectedUser?.username}
           </Typography>
