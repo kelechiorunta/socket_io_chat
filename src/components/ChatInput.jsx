@@ -140,7 +140,7 @@ const ChatInput = ({ input, setInput, onSend, isMobile }) => {
         variant="outlined"
         size="small"
         sx={{
-          bgcolor: isDark ? 'white' : 'grey.900',
+          bgcolor: isDark ? 'grey.900' : 'white',
           color: isDark ? 'white' : 'black'
         }}
         InputProps={{

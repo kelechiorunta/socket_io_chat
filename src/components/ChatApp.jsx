@@ -594,7 +594,7 @@ const ChatApp = () => {
             overflow: 'hidden',
             margin: mobileView === 'sidebar' ? 'auto' : 'auto',
             padding: 0,
-            width: '100%',
+            // width: '100%',
             maxWidth: '100vw'
           }}
         >
