@@ -272,15 +272,8 @@ const Sidebar = ({
                 sx={{
                   mb: 1,
                   cursor: 'pointer',
-                  bgcolor: isSelected ? 'ThreeDLightShadow' : isDark ? 'grey.800' : 'grey.200', //success.main
+                  bgcolor: isSelected ? 'success.info' : isDark ? 'grey.800' : 'grey.200', //success.main
                   color: isSelected ? 'white' : isDark ? 'white' : 'black'
-                }}
-                style={{
-                  backgroundColor: isSelected
-                    ? 'ThreeDLightShadow'
-                    : isDark
-                      ? 'grey.800'
-                      : 'grey.200'
                 }}
               >
                 <CardContent
@@ -323,7 +316,7 @@ const Sidebar = ({
                     </Typography>
                     <Typography
                       variant="body2"
-                      color={isTyping ? '#00e575' : isDark ? 'grey.400' : 'grey.600'}
+                      color={isTyping ? '#00e575' : isDark ? 'grey.400' : 'grey.100'}
                       noWrap
                       sx={{
                         overflow: 'hidden',
@@ -347,6 +340,7 @@ const Sidebar = ({
                     <Typography
                       variant="caption"
                       sx={{
+                        color: unreadData?.count > 0 ? 'success.main' : 'white',
                         whiteSpace: 'nowrap',
                         mb: 0.5
                       }}
