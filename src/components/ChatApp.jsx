@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useEffect, memo, useDeferredValue } from 'react';
 import { io } from 'socket.io-client';
 import { Container, Row, Col } from 'react-bootstrap';
 import Sidebar from './Sidebar';
@@ -11,7 +11,7 @@ import { AUTH, GET_CONTACTS } from '../graphql/queries';
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import debounce from 'lodash.debounce';
 // import { format, isToday, isYesterday } from 'date-fns';
-import { MARK_MESSAGES_AS_READ, GET_UNREAD } from '../graphql/queries';
+import { MARK_MESSAGES_AS_READ, GET_UNREAD, CLEAR_UNREAD } from '../graphql/queries';
 import SocketNotifications from './Notifications/SocketNotifications';
 import { FETCH_CHATS } from '../graphql/queries';
 
@@ -43,7 +43,7 @@ const ChatApp = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [isOnline, setIsOnline] = useState(null);
   const [notifiedUser, setNotifiedUser] = useState(null);
-  // const [clearUnread] = useMutation(CLEAR_UNREAD);
+  const [clearUnread] = useMutation(CLEAR_UNREAD);
   const [getUnread] = useLazyQuery(GET_UNREAD);
   // const [profileUser, setUpdatedProfileUser] = useState(null);s
 
@@ -413,21 +413,21 @@ const ChatApp = () => {
       return updated;
     });
 
-    // const storedUser = localStorage.getItem('currentUser');
-    // const onlineIds = onlineUsers && Array.from(onlineUsers);
-    // const knownOnlineUserId = onlineIds.find((id) => id === currentUser?._id);
-    // await clearUnread({
-    //   variables: {
-    //     senderId: chatUser?._id,
-    //     recipientId: storedUser?._id || knownOnlineUserId || currentUser?._id
-    //   }
-    // });
-    // if (socket && (storedUser || currentUser) && chatUser) {
-    //   socket.emit('markAsRead', {
-    //     senderId: chatUser?._id,
-    //     receiverId: storedUser?._id || knownOnlineUserId || currentUser?._id
-    //   });
-    // }
+    const storedUser = localStorage.getItem('currentUser');
+    const onlineIds = onlineUsers && Array.from(onlineUsers);
+    const knownOnlineUserId = onlineIds.find((id) => id === currentUser?._id);
+    await clearUnread({
+      variables: {
+        senderId: chatUser?._id,
+        recipientId: storedUser?._id || knownOnlineUserId || currentUser?._id
+      }
+    });
+    if (socket && (storedUser || currentUser) && chatUser) {
+      socket.emit('markAsRead', {
+        senderId: chatUser?._id,
+        receiverId: storedUser?._id || knownOnlineUserId || currentUser?._id
+      });
+    }
     // 🚀 Run GraphQL lazy query instead of fetch()
     try {
       const { data } = await fetchChats({
@@ -503,6 +503,8 @@ const ChatApp = () => {
       setMobileView('chat');
     }
   };
+
+  const deferredMsgs = useDeferredValue(messages);
 
   return (
     <Container
@@ -610,7 +612,7 @@ const ChatApp = () => {
                 onBack={() => setMobileView('sidebar')}
               />
               <ChatBody
-                messages={messages}
+                messages={deferredMsgs || messages}
                 chat={selectedChat}
                 pic={data?.auth}
                 typingUsers={typingUsers}
