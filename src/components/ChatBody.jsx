@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import { Avatar, Box, Typography } from '@mui/material';
 // import { styled } from '@mui/system';
 // import Avatar from './Avatar';
@@ -16,27 +16,18 @@ import ProgressiveImage from './ProgressiveImage';
 //   return format(date, 'MMMM d, yyyy');
 // };
 
-const ChatBody = ({ messages, pic, chat, typingUsers }) => {
+const ChatBody = memo(({ messages, pic, chat, typingUsers }) => {
   const chatEndRef = useRef(null);
   const { theme } = useTheme();
-  // const [imgSrc, setImgSrc] = useState([]);
-
-  // Apollo query
-  // const { data, refetch } = useQuery(GET_MESSAGES, {
-  //   variables: { chatId },
-  //   fetchPolicy: 'network-only' // always fresh data
-  // });
-
-  // const chatmessages = data?.messages || [];
 
   const isDark = theme === 'dark';
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // const isTyper = typingUsers.has(pic?._id);
+  const isTyper = typingUsers.has(pic?._id);
 
-  useEffect(scrollToBottom, []);
+  useEffect(scrollToBottom, [isTyper]);
 
   // useEffect(() => {
   //   messages.forEach((m) => {
@@ -174,7 +165,7 @@ const ChatBody = ({ messages, pic, chat, typingUsers }) => {
       <div ref={chatEndRef} />
     </Box>
   );
-};
+});
 
 export default ChatBody;
 // Last ChatInput with Bootstrap
