@@ -16,7 +16,7 @@ import ProgressiveImage from './ProgressiveImage';
 //   return format(date, 'MMMM d, yyyy');
 // };
 
-const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
+const ChatBody = ({ messages, pic, chat, typingUsers }) => {
   const chatEndRef = useRef(null);
   const { theme } = useTheme();
   // const [imgSrc, setImgSrc] = useState([]);
@@ -34,9 +34,9 @@ const ChatBody = ({ messages = [], pic, chat, typingUsers }) => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const isTyper = typingUsers.has(pic?._id);
+  // const isTyper = typingUsers.has(pic?._id);
 
-  useEffect(scrollToBottom, [messages, isTyper]);
+  useEffect(scrollToBottom, []);
 
   // useEffect(() => {
   //   messages.forEach((m) => {
