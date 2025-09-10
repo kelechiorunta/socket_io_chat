@@ -272,8 +272,15 @@ const Sidebar = ({
                 sx={{
                   mb: 1,
                   cursor: 'pointer',
-                  bgcolor: isSelected ? 'ThreeDLightShadow' : isDark ? 'grey.800' : 'grey.200', //success.main
+                  bgcolor: isSelected ? 'ThreeDLightShadow' : isDark ? 'white' : 'wheat', // : 'grey.200', //success.main
                   color: isSelected ? 'white' : isDark ? 'white' : 'black'
+                }}
+                style={{
+                  backgroundColor: isSelected
+                    ? 'ThreeDLightShadow'
+                    : isDark
+                      ? 'grey.800'
+                      : 'grey.200'
                 }}
               >
                 <CardContent

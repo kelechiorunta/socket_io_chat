@@ -82,7 +82,7 @@ const ChatApp = () => {
   const [unreadMap, setUnreadMap] = useState({});
   const [notificationMap, setNotificationMap] = useState({});
   const [fetchChats] = useLazyQuery(FETCH_CHATS, {
-    fetchPolicy: 'cache-and-network' // 👈 ensures fresh fetch
+    fetchPolicy: 'cache-only' // 👈 ensures fresh fetch
   });
 
   useEffect(() => {
@@ -587,12 +587,14 @@ const ChatApp = () => {
           sm={mobileView === 'chat' ? 12 : 0}
           md={mobileView === 'chat' ? 12 : 0}
           lg={6}
-          className={`h-100 flex-column chat-chatcol ${
+          className={`p-0 h-100 flex-column chat-chatcol ${
             mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'
           }`}
           style={{
             overflow: 'hidden',
             margin: mobileView === 'sidebar' ? 'auto' : 'auto',
+            padding: 0,
+            width: '100%',
             maxWidth: '100vw'
           }}
         >
