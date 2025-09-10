@@ -140,7 +140,7 @@ const ChatInput = ({ input, setInput, onSend, isMobile }) => {
         variant="outlined"
         size="small"
         sx={{
-          bgcolor: isDark ? 'grey.900' : 'white',
+          bgcolor: isDark ? 'white' : 'grey.900',
           color: isDark ? 'white' : 'black'
         }}
         InputProps={{
@@ -176,7 +176,11 @@ const ChatInput = ({ input, setInput, onSend, isMobile }) => {
         }}
       />
 
-      {file && <Box sx={{ mt: 1, fontSize: 12, color: 'grey.500' }}>📎 {file.name} selected</Box>}
+      {file && (
+        <Box sx={{ mt: 1, fontSize: 12, color: isDark ? 'white' : 'grey.500' }}>
+          📎 {file.name} selected
+        </Box>
+      )}
     </Box>
   );
 };
