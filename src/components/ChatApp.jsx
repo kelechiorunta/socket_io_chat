@@ -43,7 +43,7 @@ const ChatApp = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [isOnline, setIsOnline] = useState(null);
   const [notifiedUser, setNotifiedUser] = useState(null);
-  const [clearUnread] = useMutation(CLEAR_UNREAD);
+  // const [clearUnread] = useMutation(CLEAR_UNREAD);
   const [getUnread] = useLazyQuery(GET_UNREAD);
   // const [profileUser, setUpdatedProfileUser] = useState(null);s
 
@@ -306,7 +306,7 @@ const ChatApp = () => {
               ...prev,
               [msg.sender?._id]: {
                 count: prevCount + 1,
-                lastMessage: msg.lastMessage || msg.content || (msg.hasImage ? '[Image]' : ''),
+                lastMessage: msg.content || msg.lastMessage || (msg.hasImage ? '[Image]' : ''),
                 timeStamp: msg.createdAt
               }
             };
@@ -413,21 +413,21 @@ const ChatApp = () => {
       return updated;
     });
 
-    const storedUser = localStorage.getItem('currentUser');
-    const onlineIds = onlineUsers && Array.from(onlineUsers);
-    const knownOnlineUserId = onlineIds.find((id) => id === currentUser?._id);
-    await clearUnread({
-      variables: {
-        senderId: chatUser?._id,
-        recipientId: storedUser?._id || knownOnlineUserId || currentUser?._id
-      }
-    });
-    if (socket && (storedUser || currentUser) && chatUser) {
-      socket.emit('markAsRead', {
-        senderId: chatUser?._id,
-        receiverId: storedUser?._id || knownOnlineUserId || currentUser?._id
-      });
-    }
+    // const storedUser = localStorage.getItem('currentUser');
+    // const onlineIds = onlineUsers && Array.from(onlineUsers);
+    // const knownOnlineUserId = onlineIds.find((id) => id === currentUser?._id);
+    // await clearUnread({
+    //   variables: {
+    //     senderId: chatUser?._id,
+    //     recipientId: storedUser?._id || knownOnlineUserId || currentUser?._id
+    //   }
+    // });
+    // if (socket && (storedUser || currentUser) && chatUser) {
+    //   socket.emit('markAsRead', {
+    //     senderId: chatUser?._id,
+    //     receiverId: storedUser?._id || knownOnlineUserId || currentUser?._id
+    //   });
+    // }
     // 🚀 Run GraphQL lazy query instead of fetch()
     try {
       const { data } = await fetchChats({

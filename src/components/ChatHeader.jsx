@@ -18,7 +18,7 @@ const ChatHeader = ({ isDark, showBackButton, onBack, selectedUser, onlineUsers 
       px={2}
       py={1.5}
       sx={{
-        backgroundColor: isDark ? 'black' : '#1f1d1d', //: 'white',
+        backgroundColor: isDark ? 'grey.800' : 'white', //'#1f1d1d', //: 'white',
         color: isDark ? 'white' : 'black',
         borderBottom: '1px solid',
         borderColor: isDark ? 'grey.800' : 'grey.300'
