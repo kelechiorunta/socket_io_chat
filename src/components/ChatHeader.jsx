@@ -45,7 +45,7 @@ const ChatHeader = ({ isDark, showBackButton, onBack, selectedUser, onlineUsers 
         <Box
           display={'flex'}
           justifyContent={'flex-start'}
-          alignContent={'center'}
+          alignContent={'flex-start'}
           flexDirection={'column'}
         >
           <Typography variant="subtitle1" fontWeight="bold">
@@ -53,7 +53,7 @@ const ChatHeader = ({ isDark, showBackButton, onBack, selectedUser, onlineUsers 
           </Typography>
           <Typography
             variant="caption"
-            sx={{ color: onlineUsers?.has(selectedUser?._id) ? '#00e676' : 'grey.500' }}
+            sx={{ color: onlineUsers?.has(selectedUser?._id) ? '#00e676' : 'black' }} //'grey.500'
           >
             {onlineUsers?.has(selectedUser?._id) ? 'Online' : 'Offline'}
           </Typography>
