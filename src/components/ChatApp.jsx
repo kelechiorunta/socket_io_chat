@@ -434,7 +434,8 @@ const ChatApp = () => {
         variables: {
           userId: chatUser?._id,
           currentUserId: currentUser?._id
-        }
+        },
+        nextFetchPolicy: 'cache-only'
       });
 
       if (data?.fetch_chats) {
