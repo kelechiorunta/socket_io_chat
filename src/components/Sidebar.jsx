@@ -272,7 +272,7 @@ const Sidebar = ({
                 sx={{
                   mb: 1,
                   cursor: 'pointer',
-                  bgcolor: isSelected ? 'success.info' : isDark ? 'grey.800' : 'grey.200', //success.main
+                  bgcolor: isSelected ? 'success.main' : isDark ? 'grey.800' : 'grey.200',
                   color: isSelected ? 'white' : isDark ? 'white' : 'black'
                 }}
               >
@@ -316,7 +316,7 @@ const Sidebar = ({
                     </Typography>
                     <Typography
                       variant="body2"
-                      color={isTyping ? '#00e575' : isDark ? 'grey.400' : 'grey.100'}
+                      color={isTyping ? '#00e575' : isDark ? 'grey.400' : 'grey.600'}
                       noWrap
                       sx={{
                         overflow: 'hidden',
@@ -340,7 +340,6 @@ const Sidebar = ({
                     <Typography
                       variant="caption"
                       sx={{
-                        color: unreadData?.count > 0 ? 'success.main' : 'white',
                         whiteSpace: 'nowrap',
                         mb: 0.5
                       }}

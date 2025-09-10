@@ -4,68 +4,68 @@ import { ArrowLeft, Phone, Video } from 'lucide-react';
 
 const ChatHeader = ({ isDark, showBackButton, onBack, selectedUser, onlineUsers }) => {
   return (
-    <div
-      style={{
-        backgroundColor: isDark ? '#1f1d1d' : 'white',
-        color: isDark ? 'white' : 'black'
+    // <div
+    //   style={{
+    //     backgroundColor: isDark ? '#1f1d1d' : 'white',
+    //     color: isDark ? 'white' : 'black'
+    //   }}
+    //   className="d-flex align-items-center justify-content-between p-3 border-bottom border-dark"
+    // >
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      px={2}
+      py={1.5}
+      sx={{
+        backgroundColor: isDark ? 'black' : '#1f1d1d', //: 'white',
+        color: isDark ? 'white' : 'black',
+        borderBottom: '1px solid',
+        borderColor: isDark ? 'grey.800' : 'grey.300'
       }}
-      className="d-flex align-items-center justify-content-between p-3 border-bottom border-dark"
     >
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        px={2}
-        py={1.5}
-        sx={{
-          backgroundColor: isDark ? '#1f1d1d' : 'white',
-          color: isDark ? 'white' : 'black',
-          borderBottom: '1px solid',
-          borderColor: isDark ? 'grey.800' : 'grey.300'
-        }}
-      >
-        {/* Left side: back button + avatar + username */}
-        <Box display="flex" alignItems="center">
-          {showBackButton && (
-            <IconButton
-              size="small"
-              onClick={onBack}
-              sx={{ display: { xs: 'inline-flex', sm: 'none' }, mr: 1 }}
-            >
-              <ArrowLeft size={20} />
-            </IconButton>
-          )}
-
-          <Avatar
-            src={selectedUser?.picture || './avatar.png'}
-            alt="Avatar"
-            sx={{ width: 40, height: 40, mr: 1.5 }}
-          />
-
-          <Box justifyContent={'flex-start'} alignContent={'center'} flexDirection={'column'}>
-            <Typography variant="subtitle1" fontWeight="bold">
-              {selectedUser?.username}
-            </Typography>
-            <Typography
-              variant="caption"
-              sx={{ color: onlineUsers?.has(selectedUser?._id) ? '#00e676' : 'grey.500' }}
-            >
-              {onlineUsers?.has(selectedUser?._id) ? 'Online' : 'Offline'}
-            </Typography>
-          </Box>
-        </Box>
-
-        {/* Right side: actions */}
-        <Box display="flex" alignItems="center" gap={2}>
-          <IconButton>
-            <Video size={20} />
+      {/* Left side: back button + avatar + username */}
+      <Box display="flex" alignItems="center">
+        {showBackButton && (
+          <IconButton
+            size="small"
+            onClick={onBack}
+            sx={{ display: { xs: 'inline-flex', sm: 'none' }, mr: 1 }}
+          >
+            <ArrowLeft size={20} />
           </IconButton>
-          <IconButton>
-            <Phone size={20} />
-          </IconButton>
+        )}
+
+        <Avatar
+          src={selectedUser?.picture || './avatar.png'}
+          alt="Avatar"
+          sx={{ width: 40, height: 40, mr: 1.5 }}
+        />
+
+        <Box justifyContent={'flex-start'} alignContent={'center'} flexDirection={'column'}>
+          <Typography variant="subtitle1" fontWeight="bold">
+            {selectedUser?.username}
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{ color: onlineUsers?.has(selectedUser?._id) ? '#00e676' : 'grey.500' }}
+          >
+            {onlineUsers?.has(selectedUser?._id) ? 'Online' : 'Offline'}
+          </Typography>
         </Box>
       </Box>
-    </div>
+
+      {/* Right side: actions */}
+      <Box display="flex" alignItems="center" gap={2}>
+        <IconButton>
+          <Video size={20} />
+        </IconButton>
+        <IconButton>
+          <Phone size={20} />
+        </IconButton>
+      </Box>
+    </Box>
+    // </div>
   );
 };
 
