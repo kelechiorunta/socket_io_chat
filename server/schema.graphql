@@ -11,6 +11,7 @@ type Mutation {
   createUnread(input: CreateUnreadInput!): UnreadResult
   clearUnread(senderId: ID!, recipientId: ID!): Boolean
   updateProfile(input: UpdateProfileInput!): UpdateProfileResponse!
+   deleteMessage(messageId: ID!, senderId: ID!): DeleteMessageResponse!
 }
 
 type ChatHistoryResponse {
@@ -105,4 +106,10 @@ type Message {
   imageUrl: String
   placeholderUrl: String
   hasImage: Boolean
+}
+
+type DeleteMessageResponse {
+  success: Boolean!
+  messageId: ID
+  error: String
 }

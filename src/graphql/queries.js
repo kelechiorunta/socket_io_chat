@@ -181,3 +181,13 @@ export const FETCH_CHATS = gql`
     }
   }
 `;
+
+export const DELETE_MESSAGE = gql`
+  mutation DeleteMessage($messageId: ID!, $senderId: ID!) {
+    deleteMessage(messageId: $messageId, senderId: $senderId) {
+      success
+      messageId
+      error
+    }
+  }
+`;
