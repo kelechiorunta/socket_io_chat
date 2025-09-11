@@ -28,6 +28,7 @@ const ChatHeader = ({ isDark, showBackButton, onBack, selectedUser, onlineUsers 
       <Box display="flex" alignItems="center">
         {showBackButton && (
           <IconButton
+            color={isDark ? 'white' : 'black'}
             size="small"
             onClick={onBack}
             sx={{ display: { xs: 'inline-flex', sm: 'none' }, mr: 1 }}
@@ -53,7 +54,9 @@ const ChatHeader = ({ isDark, showBackButton, onBack, selectedUser, onlineUsers 
           </Typography>
           <Typography
             variant="caption"
-            sx={{ color: onlineUsers?.has(selectedUser?._id) ? '#00e676' : 'black' }} //'grey.500'
+            sx={{
+              color: onlineUsers?.has(selectedUser?._id) ? '#00e676' : isDark ? 'white' : 'grey.500'
+            }} //'grey.500'
           >
             🎉 {onlineUsers?.has(selectedUser?._id) ? 'Online' : 'Offline'}
           </Typography>
