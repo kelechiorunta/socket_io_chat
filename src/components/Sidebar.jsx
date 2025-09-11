@@ -316,7 +316,7 @@ const Sidebar = ({
                     </Typography>
                     <Typography
                       variant="body2"
-                      color={isTyping ? '#00e575' : isDark ? 'grey.400' : 'grey.600'}
+                      color={isTyping ? '#00e575' : isDark ? 'white' : 'grey.800'}
                       noWrap
                       sx={{
                         overflow: 'hidden',
