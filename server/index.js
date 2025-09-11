@@ -5,10 +5,10 @@ import express from 'express';
 import { Server } from 'socket.io';
 import cors from 'cors';
 // import { createHandler } from 'graphql-http/lib/use/express';
-import { loadFilesSync } from '@graphql-tools/load-files';
+// import { loadFilesSync } from '@graphql-tools/load-files';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import resolvers from './resolvers.js';
-import { fileURLToPath } from 'url';
+// import { fileURLToPath } from 'url';
 import { connectDB } from './db.js';
 import { graphqlHTTP } from 'express-graphql';
 import passport from 'passport';
@@ -16,6 +16,8 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import sharp from 'sharp';
 import { GridFSBucket } from 'mongodb';
+// import fs from 'fs';
+import typeDefs from './schema.js';
 // import Message from './model/Message.js';
 import ConnectMongoDBSession from 'connect-mongodb-session';
 import session from 'express-session';
@@ -28,15 +30,17 @@ import Chat from './model/Chat.js';
 import User from './model/User.js';
 import UnreadMsg from './model/UnreadMsg.js';
 import { rateLimitMiddleware } from './middleware.js';
+
 // import { loginSession } from './middleware.js';
 dotenv.config();
 
 connectDB(process.env.MONGO_URI);
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
-const typeDefs = loadFilesSync(path.join(__dirname, './schema.graphql'));
+// const typeDefs = loadFilesSync(path.join(__dirname, './schema.graphql'));
+// const typeDefs = fs.readFileSync(path.join(__dirname, './schema.graphql'), 'utf8');
 const schema = makeExecutableSchema({
   typeDefs,
   resolvers
