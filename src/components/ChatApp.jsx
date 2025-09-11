@@ -505,6 +505,7 @@ const ChatApp = () => {
   };
 
   const deferredMsgs = useDeferredValue(messages);
+  const deferredTypers = useDeferredValue(typingUsers);
 
   return (
     <Container
@@ -615,7 +616,7 @@ const ChatApp = () => {
                 messages={deferredMsgs || messages}
                 chat={selectedChat}
                 pic={data?.auth}
-                typingUsers={typingUsers}
+                typingUsers={deferredTypers || typingUsers}
                 // newUploadTrigger={triggerUpload}
                 // chatId={chatId}
               />
