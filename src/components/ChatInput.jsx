@@ -70,14 +70,14 @@
 
 import { useState, useRef } from 'react';
 import { Send, Mic, Image, Paperclip, Smile } from 'lucide-react';
-import { useTheme } from './ThemeContext';
+// import { useTheme } from './ThemeContext';
 import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
 import { TextField, IconButton, Box } from '@mui/material';
 
-const ChatInput = ({ input, setInput, onSend, isMobile }) => {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
+const ChatInput = ({ isDark, input, setInput, onSend, isMobile }) => {
+  // const { theme } = useTheme();
+  // const isDark = theme === 'dark';
   const [showPicker, setShowPicker] = useState(false);
   const [file, setFile] = useState(null);
 
@@ -120,7 +120,7 @@ const ChatInput = ({ input, setInput, onSend, isMobile }) => {
     >
       {showPicker && (
         <Box sx={{ position: 'absolute', bottom: '60px', zIndex: 1000 }}>
-          <Picker data={data} onEmojiSelect={addEmoji} theme={isDark ? 'dark' : 'light'} />
+          <Picker data={data} onEmojiSelect={addEmoji} theme={isDark ? 'light' : 'light'} />
         </Box>
       )}
 
@@ -140,13 +140,16 @@ const ChatInput = ({ input, setInput, onSend, isMobile }) => {
         variant="outlined"
         size="small"
         sx={{
-          bgcolor: isDark ? 'grey.900' : 'white',
+          bgcolor: isDark ? 'grey.500' : 'white', //grey.900' : 'white',
           color: isDark ? 'white' : 'black'
         }}
         InputProps={{
           startAdornment: (
             <>
-              <IconButton onClick={() => setShowPicker(!showPicker)}>
+              <IconButton
+                color={isDark ? 'white' : 'black'}
+                onClick={() => setShowPicker(!showPicker)}
+              >
                 <Smile size={18} />
               </IconButton>
               {!isMobile && (
@@ -155,7 +158,10 @@ const ChatInput = ({ input, setInput, onSend, isMobile }) => {
                 </IconButton>
               )}
               {isMobile && (
-                <IconButton onClick={() => fileInputRef.current.click()}>
+                <IconButton
+                  color={isDark ? 'white' : 'black'}
+                  onClick={() => fileInputRef.current.click()}
+                >
                   <Image size={18} />
                 </IconButton>
               )}
@@ -163,7 +169,7 @@ const ChatInput = ({ input, setInput, onSend, isMobile }) => {
           ),
           endAdornment: (
             <>
-              <IconButton onClick={handleSend}>
+              <IconButton color={isDark ? 'white' : 'black'} onClick={handleSend}>
                 <Send size={18} />
               </IconButton>
               {!isMobile && (
