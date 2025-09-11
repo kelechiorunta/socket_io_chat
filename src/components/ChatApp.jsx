@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo, useDeferredValue } from 'react';
+import React, { useState, useEffect, memo, useDeferredValue, useMemo } from 'react';
 import { io } from 'socket.io-client';
 import { Container, Row, Col } from 'react-bootstrap';
 import Sidebar from './Sidebar';
@@ -82,7 +82,7 @@ const ChatApp = () => {
   const [unreadMap, setUnreadMap] = useState({});
   const [notificationMap, setNotificationMap] = useState({});
   const [fetchChats] = useLazyQuery(FETCH_CHATS, {
-    fetchPolicy: 'cache-and-network' // 👈 ensures fresh fetch
+    fetchPolicy: 'cache-first' // 👈 ensures fresh fetch
   });
 
   useEffect(() => {
@@ -204,11 +204,17 @@ const ChatApp = () => {
     }
   };
 
-  const emitTyping = debounce((receiverId) => {
-    if (socket && receiverId && user?._id) {
-      socket.emit('typing', { receiverId });
-    }
-  }, 500);
+  const deferredInput = useDeferredValue(input);
+
+  const emitTyping = useMemo(
+    () =>
+      debounce((receiverId) => {
+        if (socket && receiverId && user?._id) {
+          socket.emit('typing', { receiverId });
+        }
+      }, 500),
+    [socket, user?._id]
+  );
 
   const handleTyping = (val) => {
     setInput(val);
@@ -602,7 +608,7 @@ const ChatApp = () => {
             maxWidth: '120vw'
           }}
         >
-          {selectedChat ? (
+          {selectedChat && messages ? (
             <>
               <ChatHeader
                 chat={selectedChat}
@@ -621,7 +627,7 @@ const ChatApp = () => {
                 // chatId={chatId}
               />
               <ChatInput
-                input={input}
+                input={deferredInput || input}
                 setInput={handleTyping}
                 onSend={sendMessage}
                 isMobile={isMobile}
