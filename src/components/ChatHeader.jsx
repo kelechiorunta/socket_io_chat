@@ -54,7 +54,9 @@ const ChatHeader = ({ isDark, showBackButton, onBack, selectedUser, onlineUsers 
           </Typography>
           <Typography
             variant="caption"
-            sx={{ color: onlineUsers?.has(selectedUser?._id) ? '#00e676' : 'grey.500' }} //'grey.500'
+            sx={{
+              color: onlineUsers?.has(selectedUser?._id) ? '#00e676' : isDark ? 'white' : 'grey.500'
+            }} //'grey.500'
           >
             🎉 {onlineUsers?.has(selectedUser?._id) ? 'Online' : 'Offline'}
           </Typography>
