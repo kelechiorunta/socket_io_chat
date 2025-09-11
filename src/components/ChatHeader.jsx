@@ -33,7 +33,7 @@ const ChatHeader = ({ isDark, showBackButton, onBack, selectedUser, onlineUsers 
             onClick={onBack}
             sx={{ display: { xs: 'inline-flex', sm: 'none' }, mr: 1 }}
           >
-            <ArrowLeft size={20} />
+            <ArrowLeft color={isDark ? 'white' : 'black'} size={20} />
           </IconButton>
         )}
 
