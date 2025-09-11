@@ -1,0 +1,364 @@
+Statistical profiling result from isolate-0x7fc11a800000-42688-v8.log, (3250 ticks, 3054 unaccounted, 0 excluded).
+
+ [Shared libraries]:
+   ticks  total  nonlib   name
+
+ [JavaScript]:
+   ticks  total  nonlib   name
+     21    0.6%    0.6%  Builtin: LoadIC
+     13    0.4%    0.4%  JS: *resolve node:path:1181:10
+      9    0.3%    0.3%  Builtin: BaselineOutOfLinePrologue
+      8    0.2%    0.2%  Builtin: CallFunction_ReceiverIsAny
+      6    0.2%    0.2%  Builtin: StringAdd_CheckNone
+      6    0.2%    0.2%  Builtin: FindOrderedHashMapEntry
+      5    0.2%    0.2%  Builtin: StrictEqual_Baseline
+      5    0.2%    0.2%  Builtin: StoreIC
+      5    0.2%    0.2%  Builtin: LoadIC_NoFeedback
+      5    0.2%    0.2%  Builtin: CallFunction_ReceiverIsNotNullOrUndefined
+      4    0.1%    0.1%  Builtin: StringSubstring
+      4    0.1%    0.1%  Builtin: KeyedStoreIC_Megamorphic
+      4    0.1%    0.1%  Builtin: KeyedLoadIC
+      3    0.1%    0.1%  JS: *Module._nodeModulePaths node:internal/modules/cjs/loader:841:37
+      3    0.1%    0.1%  Builtin: ToBooleanForBaselineJump
+      3    0.1%    0.1%  Builtin: KeyedLoadIC_PolymorphicName
+      3    0.1%    0.1%  Builtin: GetProperty
+      3    0.1%    0.1%  Builtin: FastNewClosure
+      3    0.1%    0.1%  Builtin: CreateShallowObjectLiteral
+      3    0.1%    0.1%  Builtin: CallFunction_ReceiverIsNullOrUndefined
+      2    0.1%    0.1%  Builtin: StringPrototypeCharCodeAt
+      2    0.1%    0.1%  Builtin: KeyedStoreIC
+      2    0.1%    0.1%  Builtin: EnqueueMicrotask
+      2    0.1%    0.1%  Builtin: Call_ReceiverIsNullOrUndefined_Baseline_Compact
+      2    0.1%    0.1%  Builtin: Call_ReceiverIsNullOrUndefined
+      1    0.0%    0.0%  RegExp: ^((?:@[^/\\%]+\/)?[^./\\%][^/\\%]*)(\/.*)?$
+      1    0.0%    0.0%  JS: ~parseOptions /Users/mac/Kelechi/node-chat-app/node_modules/mongodb/lib/connection_string.js:186:22
+      1    0.0%    0.0%  JS: ~overRest /Users/mac/Kelechi/node-chat-app/node_modules/lodash/lodash.js:6610:22
+      1    0.0%    0.0%  JS: ~listOnTimeout node:internal/timers:524:25
+      1    0.0%    0.0%  JS: ~getObserverType node:internal/perf/observe:134:25
+      1    0.0%    0.0%  JS: ~get search node:internal/url:1076:13
+      1    0.0%    0.0%  JS: ~forEachMimeType /Users/mac/Kelechi/node-chat-app/node_modules/mime-types/index.js:158:52
+      1    0.0%    0.0%  JS: ~configSecureContext node:internal/tls/secure-context:129:29
+      1    0.0%    0.0%  JS: ~cjsPreparseModuleExports node:internal/modules/esm/translators:315:34
+      1    0.0%    0.0%  JS: ~buildInterfaces /Users/mac/Kelechi/node-chat-app/node_modules/graphql/utilities/extendSchema.js:496:27
+      1    0.0%    0.0%  JS: ~ServerDescriptionChangedEvent /Users/mac/Kelechi/node-chat-app/node_modules/mongodb/lib/sdam/events.js:12:16
+      1    0.0%    0.0%  JS: ~Connection /Users/mac/Kelechi/node-chat-app/node_modules/mongodb/lib/cmap/connection.js:43:16
+      1    0.0%    0.0%  JS: ~<anonymous> node:internal/validators:300:39
+      1    0.0%    0.0%  JS: ~<anonymous> /Users/mac/Kelechi/node-chat-app/node_modules/validator/index.js:1:1
+      1    0.0%    0.0%  JS: ~<anonymous> /Users/mac/Kelechi/node-chat-app/node_modules/mongodb-connection-string-url/lib/index.js:1:1
+      1    0.0%    0.0%  JS: ^toUTF8 /Users/mac/Kelechi/node-chat-app/node_modules/bson/lib/bson.cjs:276:11
+      1    0.0%    0.0%  JS: ^readFileSync node:fs:442:22
+      1    0.0%    0.0%  JS: ^parseSource node:internal/deps/cjs-module-lexer/lexer:85:22
+      1    0.0%    0.0%  JS: ^makeRequireFunction node:internal/modules/helpers:133:29
+      1    0.0%    0.0%  JS: ^isUint8Array node:internal/util/types:13:22
+      1    0.0%    0.0%  JS: ^isURL node:internal/url:763:15
+      1    0.0%    0.0%  JS: ^identifier node:internal/deps/cjs-module-lexer/lexer:1119:21
+      1    0.0%    0.0%  JS: ^getOptionValue node:internal/options:44:24
+      1    0.0%    0.0%  JS: ^getCLIOptionsFromBinding node:internal/options:19:34
+      1    0.0%    0.0%  JS: ^clearTimeout node:timers:184:22
+      1    0.0%    0.0%  JS: ^Module._findPath node:internal/modules/cjs/loader:668:28
+      1    0.0%    0.0%  JS: ^Module node:internal/modules/cjs/loader:291:16
+      1    0.0%    0.0%  JS: ^<anonymous> node:internal/fs/utils:693:42
+      1    0.0%    0.0%  JS: ^<anonymous> node:internal/fs/promises:428:5
+      1    0.0%    0.0%  JS: *realpathSync node:fs:2652:22
+      1    0.0%    0.0%  JS: *normalizeString node:path:79:25
+      1    0.0%    0.0%  Builtin: ToString
+      1    0.0%    0.0%  Builtin: StringEqual
+      1    0.0%    0.0%  Builtin: StoreInArrayLiteralICBaseline
+      1    0.0%    0.0%  Builtin: StoreIC_NoFeedback
+      1    0.0%    0.0%  Builtin: StoreFastElementIC_Standard
+      1    0.0%    0.0%  Builtin: SetConstructor
+      1    0.0%    0.0%  Builtin: ReturnReceiver
+      1    0.0%    0.0%  Builtin: ResumeGeneratorTrampoline
+      1    0.0%    0.0%  Builtin: RegExpPrototypeTest
+      1    0.0%    0.0%  Builtin: RegExpPrototypeExec
+      1    0.0%    0.0%  Builtin: RecordWriteSaveFP
+      1    0.0%    0.0%  Builtin: MapPrototypeSet
+      1    0.0%    0.0%  Builtin: MapPrototypeGet
+      1    0.0%    0.0%  Builtin: LoadICTrampoline
+      1    0.0%    0.0%  Builtin: LoadICBaseline
+      1    0.0%    0.0%  Builtin: LoadGlobalIC_NoFeedback
+      1    0.0%    0.0%  Builtin: LessThanOrEqual_Baseline
+      1    0.0%    0.0%  Builtin: KeyedLoadIC_Megamorphic
+      1    0.0%    0.0%  Builtin: KeyedHasIC_PolymorphicName
+      1    0.0%    0.0%  Builtin: InterpreterEntryTrampoline
+      1    0.0%    0.0%  Builtin: InstanceOf_Baseline
+      1    0.0%    0.0%  Builtin: Increment_Baseline
+      1    0.0%    0.0%  Builtin: FulfillPromise
+      1    0.0%    0.0%  Builtin: FindOrderedHashSetEntry
+      1    0.0%    0.0%  Builtin: FastNewRestArguments
+      1    0.0%    0.0%  Builtin: Decrement_Baseline
+      1    0.0%    0.0%  Builtin: CreateTypedArray
+      1    0.0%    0.0%  Builtin: CreateEmptyLiteralObject
+      1    0.0%    0.0%  Builtin: CompileLazy
+      1    0.0%    0.0%  Builtin: CloneObjectIC
+      1    0.0%    0.0%  Builtin: Call_ReceiverIsAny
+      1    0.0%    0.0%  Builtin: CallWithArrayLike
+      1    0.0%    0.0%  Builtin: CallVarargs
+      1    0.0%    0.0%  Builtin: CallApiCallback
+      1    0.0%    0.0%  Builtin: BaselineLeaveFrame
+      1    0.0%    0.0%  Builtin: AsyncGeneratorPrototypeReturn
+      1    0.0%    0.0%  Builtin: ArrayPrototypeJoin
+      1    0.0%    0.0%  Builtin: ArrayFilter
+      1    0.0%    0.0%  Builtin: ArrayBufferIsView
+
+ [C++]:
+   ticks  total  nonlib   name
+
+ [Summary]:
+   ticks  total  nonlib   name
+    196    6.0%    6.0%  JavaScript
+      0    0.0%    0.0%  C++
+    117    3.6%    3.6%  GC
+      0    0.0%          Shared libraries
+   3054   94.0%          Unaccounted
+
+ [C++ entry points]:
+   ticks    cpp   total   name
+
+ [Bottom up (heavy) profile]:
+  Note: percentage shows a share of a particular caller in the total
+  amount of its parent calls.
+  Callers occupying less than 1.0% are not shown.
+
+   ticks parent  name
+   3054   94.0%  UNKNOWN
+    775   25.4%    JS: ^wrapSafe node:internal/modules/cjs/loader:1430:18
+    775  100.0%      JS: ^Module._compile node:internal/modules/cjs/loader:1489:37
+    763   98.5%        JS: ^Module._extensions..js node:internal/modules/cjs/loader:1562:37
+    763  100.0%          JS: ^Module.load node:internal/modules/cjs/loader:1262:33
+    763  100.0%            JS: ^Module._load node:internal/modules/cjs/loader:1008:24
+     12    1.5%        JS: ~Module._extensions..js node:internal/modules/cjs/loader:1562:37
+     12  100.0%          JS: ^Module.load node:internal/modules/cjs/loader:1262:33
+      9   75.0%            JS: ^Module._load node:internal/modules/cjs/loader:1008:24
+      3   25.0%            JS: ~Module._load node:internal/modules/cjs/loader:1008:24
+    617   20.2%    JS: ^readFileSync node:fs:442:22
+    608   98.5%      JS: ^getMaybeCachedSource node:internal/modules/cjs/loader:1543:30
+    584   96.1%        JS: ^Module._extensions..js node:internal/modules/cjs/loader:1562:37
+    584  100.0%          JS: ^Module.load node:internal/modules/cjs/loader:1262:33
+    584  100.0%            JS: ^Module._load node:internal/modules/cjs/loader:1008:24
+     24    3.9%        JS: ~Module._extensions..js node:internal/modules/cjs/loader:1562:37
+     23   95.8%          JS: ^Module.load node:internal/modules/cjs/loader:1262:33
+     22   95.7%            JS: ^Module._load node:internal/modules/cjs/loader:1008:24
+      1    4.3%            JS: ~Module._load node:internal/modules/cjs/loader:1008:24
+      1    4.2%          JS: ~Module.load node:internal/modules/cjs/loader:1262:33
+      1  100.0%            JS: ~Module._load node:internal/modules/cjs/loader:1008:24
+    113    3.7%    JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+    100   88.5%      JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      8    8.0%        JS: ~<anonymous> node:internal/streams/duplex:1:1
+      8  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      8  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      8    8.0%        JS: ~<anonymous> node:crypto:1:1
+      8  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      8  100.0%            JS: ~compileForPublicLoader node:internal/bootstrap/realm:331:25
+      6    6.0%        JS: ~<anonymous> node:internal/fs/promises:1:1
+      6  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      6  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      6    6.0%        JS: ~<anonymous> node:http:1:1
+      6  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      6  100.0%            JS: ~compileForPublicLoader node:internal/bootstrap/realm:331:25
+      5    5.0%        JS: ~<anonymous> node:_http_agent:1:1
+      5  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      5  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      4    4.0%        JS: ~initCJSParseSync node:internal/modules/esm/translators:81:26
+      4  100.0%          JS: ~commonjsStrategy node:internal/modules/esm/translators:288:54
+      4  100.0%            JS: ~#translate node:internal/modules/esm/loader:423:13
+      4    4.0%        JS: ~<anonymous> node:tls:1:1
+      4  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      4  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      4    4.0%        JS: ~<anonymous> node:net:1:1
+      4  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      4  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      4    4.0%        JS: ~<anonymous> node:_http_client:1:1
+      4  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      4  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      3    3.0%        JS: ~getSource node:internal/modules/esm/load:42:25
+      3  100.0%          JS: ~defaultLoad node:internal/modules/esm/load:112:27
+      3  100.0%            JS: ~load node:internal/modules/esm/loader:652:13
+      3    3.0%        JS: ~defaultResolve node:internal/modules/esm/loader:632:17
+      3  100.0%          JS: ~#cachedDefaultResolve node:internal/modules/esm/loader:585:24
+      3  100.0%            JS: ~resolve node:internal/modules/esm/loader:569:10
+      3    3.0%        JS: ~<anonymous> node:stream:1:1
+      3  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      3  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      3    3.0%        JS: ~<anonymous> node:internal/child_process:1:1
+      3  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      3  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      2    2.0%        JS: ~lazyWebCrypto node:crypto:125:23
+      2  100.0%          JS: ~get node:crypto:370:8
+      2  100.0%            Builtin: ReflectGet
+      2    2.0%        JS: ~lazyLoadStreams node:fs:3080:25
+      2  100.0%          JS: ~get ReadStream node:fs:3227:17
+      2  100.0%            JS: ~<anonymous> /Users/mac/Kelechi/node-chat-app/node_modules/destroy/index.js:1:1
+      2    2.0%        JS: ~asyncRunEntryPointWithESMLoader node:internal/modules/run_main:104:47
+      2  100.0%          JS: ~runEntryPointWithESMLoader node:internal/modules/run_main:140:36
+      2  100.0%            JS: ~executeUserEntryPoint node:internal/modules/run_main:155:31
+      2    2.0%        JS: ~<anonymous> node:perf_hooks:1:1
+      2  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      2  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      2    2.0%        JS: ~<anonymous> node:internal/streams/operators:1:1
+      2  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      2  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      2    2.0%        JS: ~<anonymous> node:internal/readline/interface:1:1
+      2  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      2  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      2    2.0%        JS: ~<anonymous> node:child_process:1:1
+      2  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      2  100.0%            JS: ^compileForPublicLoader node:internal/bootstrap/realm:331:25
+      2    2.0%        JS: ~<anonymous> node:assert:1:1
+      2  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      2  100.0%            JS: ^compileForPublicLoader node:internal/bootstrap/realm:331:25
+      1    1.0%        JS: ~newResolveCache node:internal/modules/esm/loader:55:25
+      1  100.0%          JS: ~<instance_members_initializer> node:internal/modules/esm/loader:107:1
+      1  100.0%            JS: ~ModuleLoader node:internal/modules/esm/loader:147:14
+      1    1.0%        JS: ~load node:internal/modules/esm/loader:652:13
+      1  100.0%          JS: ~loadAndTranslate node:internal/modules/esm/loader:476:25
+      1  100.0%            JS: ~#createModuleJob node:internal/modules/esm/loader:493:19
+      1    1.0%        JS: ~getTranslators node:internal/modules/esm/loader:73:24
+      1  100.0%          JS: ~<instance_members_initializer> node:internal/modules/esm/loader:107:1
+      1  100.0%            JS: ~ModuleLoader node:internal/modules/esm/loader:147:14
+      1    1.0%        JS: ~get node:dns:367:8
+      1  100.0%          JS: ~dnsReqRetryTimeout /Users/mac/Kelechi/node-chat-app/node_modules/mongoose/node_modules/mongodb/lib/connection_string.js:27:45
+      1  100.0%            JS: ~resolveSRVRecord /Users/mac/Kelechi/node-chat-app/node_modules/mongoose/node_modules/mongodb/lib/connection_string.js:50:32
+      1    1.0%        JS: ~<anonymous> node:tty:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      1  100.0%            JS: ~compileForPublicLoader node:internal/bootstrap/realm:331:25
+      1    1.0%        JS: ~<anonymous> node:internal/streams/readable:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      1    1.0%        JS: ~<anonymous> node:internal/streams/pipeline:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      1    1.0%        JS: ~<anonymous> node:internal/streams/compose:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      1    1.0%        JS: ~<anonymous> node:internal/perf/timerify:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      1    1.0%        JS: ~<anonymous> node:internal/perf/performance:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      1    1.0%        JS: ~<anonymous> node:internal/modules/esm/resolve:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      1    1.0%        JS: ~<anonymous> node:internal/modules/esm/loader:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      1    1.0%        JS: ~<anonymous> node:internal/modules/esm/get_format:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      1    1.0%        JS: ~<anonymous> node:internal/crypto/pbkdf2:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      1    1.0%        JS: ~<anonymous> node:internal/crypto/hkdf:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      1    1.0%        JS: ~<anonymous> node:internal/cluster/primary:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      1    1.0%        JS: ~<anonymous> node:https:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      1  100.0%            JS: ^compileForPublicLoader node:internal/bootstrap/realm:331:25
+      1    1.0%        JS: ~<anonymous> node:dns:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      1  100.0%            JS: ^compileForPublicLoader node:internal/bootstrap/realm:331:25
+      1    1.0%        JS: ~<anonymous> node:cluster:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      1    1.0%        JS: ~<anonymous> node:_tls_wrap:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      1    1.0%        JS: ~<anonymous> node:_tls_common:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      1    1.0%        JS: ~<anonymous> node:_http_common:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:383:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:420:24
+      1    1.0%        JS: ~#createModuleJob node:internal/modules/esm/loader:493:19
+      1  100.0%          JS: ~#getJobFromResolveResult node:internal/modules/esm/loader:263:27
+      1  100.0%            JS: ~getModuleJobForImport node:internal/modules/esm/loader:235:30
+     11    9.7%      JS: ^compileForPublicLoader node:internal/bootstrap/realm:331:25
+     11  100.0%        JS: ^loadBuiltinModule node:internal/modules/helpers:99:27
+     11  100.0%          JS: ^Module._load node:internal/modules/cjs/loader:1008:24
+      9   81.8%            JS: ^Module.require node:internal/modules/cjs/loader:1290:36
+      2   18.2%            JS: *Module.require node:internal/modules/cjs/loader:1290:36
+      2    1.8%      JS: ~compileForPublicLoader node:internal/bootstrap/realm:331:25
+      2  100.0%        JS: ~loadBuiltinModule node:internal/modules/helpers:99:27
+      2  100.0%          JS: ~builtinStrategy node:internal/modules/esm/translators:384:52
+      1   50.0%            JS: ~#translate node:internal/modules/esm/loader:423:13
+      1   50.0%            JS: ^#translate node:internal/modules/esm/loader:423:13
+     94    3.1%    JS: *tryExtensions node:internal/modules/cjs/loader:532:23
+     84   89.4%      JS: ^Module._findPath node:internal/modules/cjs/loader:668:28
+     84  100.0%        JS: ^Module._resolveFilename node:internal/modules/cjs/loader:1131:35
+     84  100.0%          JS: ^Module._load node:internal/modules/cjs/loader:1008:24
+     84  100.0%            JS: *Module.require node:internal/modules/cjs/loader:1290:36
+     10   10.6%      JS: ^tryPackage node:internal/modules/cjs/loader:474:20
+     10  100.0%        JS: ^Module._findPath node:internal/modules/cjs/loader:668:28
+     10  100.0%          JS: ^Module._resolveFilename node:internal/modules/cjs/loader:1131:35
+     10  100.0%            JS: ^Module._load node:internal/modules/cjs/loader:1008:24
+     84    2.8%    JS: ^read node:internal/modules/package_json_reader:48:14
+     70   83.3%      JS: ^readPackage node:internal/modules/package_json_reader:140:21
+     64   91.4%        JS: ^resolveExports node:internal/modules/cjs/loader:626:24
+     64  100.0%          JS: ^Module._findPath node:internal/modules/cjs/loader:668:28
+     56   87.5%            JS: ^Module._resolveFilename node:internal/modules/cjs/loader:1131:35
+      8   12.5%            JS: ~Module._resolveFilename node:internal/modules/cjs/loader:1131:35
+      4    5.7%        JS: ~resolveExports node:internal/modules/cjs/loader:626:24
+      3   75.0%          JS: ~Module._findPath node:internal/modules/cjs/loader:668:28
+      3  100.0%            JS: ~Module._resolveFilename node:internal/modules/cjs/loader:1131:35
+      1   25.0%          JS: ^Module._findPath node:internal/modules/cjs/loader:668:28
+      1  100.0%            JS: ~Module._resolveFilename node:internal/modules/cjs/loader:1131:35
+      2    2.9%        JS: ^readPackageScope node:internal/modules/package_json_reader:149:26
+      2  100.0%          JS: ^Module._extensions..js node:internal/modules/cjs/loader:1562:37
+      2  100.0%            JS: ^Module.load node:internal/modules/cjs/loader:1262:33
+      8    9.5%      JS: ^packageResolve node:internal/modules/esm/resolve:818:24
+      7   87.5%        JS: ^moduleResolve node:internal/modules/esm/resolve:915:23
+      7  100.0%          JS: ^defaultResolve node:internal/modules/esm/resolve:1083:24
+      7  100.0%            JS: ^defaultResolve node:internal/modules/esm/loader:632:17
+      1   12.5%        JS: ~moduleResolve node:internal/modules/esm/resolve:915:23
+      1  100.0%          JS: ~defaultResolve node:internal/modules/esm/resolve:1083:24
+      1  100.0%            JS: ^defaultResolve node:internal/modules/esm/loader:632:17
+      3    3.6%      JS: ~packageResolve node:internal/modules/esm/resolve:818:24
+      3  100.0%        JS: ~moduleResolve node:internal/modules/esm/resolve:915:23
+      3  100.0%          JS: ~defaultResolve node:internal/modules/esm/resolve:1083:24
+      2   66.7%            JS: ^defaultResolve node:internal/modules/esm/loader:632:17
+      1   33.3%            JS: ~defaultResolve node:internal/modules/esm/loader:632:17
+      1    1.2%      JS: ^getPackageScopeConfig node:internal/modules/esm/package_config:28:31
+      1  100.0%        JS: ^getFileProtocolModuleFormat node:internal/modules/esm/get_format:117:37
+      1  100.0%          JS: ^defaultGetFormatWithoutErrors node:internal/modules/esm/get_format:214:39
+      1  100.0%            JS: ^defaultResolve node:internal/modules/esm/resolve:1083:24
+      1    1.2%      JS: *readPackageScope node:internal/modules/package_json_reader:149:26
+      1  100.0%        JS: ^Module._extensions..js node:internal/modules/cjs/loader:1562:37
+      1  100.0%          JS: ^Module.load node:internal/modules/cjs/loader:1262:33
+      1  100.0%            JS: ^Module._load node:internal/modules/cjs/loader:1008:24
+      1    1.2%      JS: *readPackage node:internal/modules/package_json_reader:140:21
+      1  100.0%        JS: ^resolveExports node:internal/modules/cjs/loader:626:24
+      1  100.0%          JS: ^Module._findPath node:internal/modules/cjs/loader:668:28
+      1  100.0%            JS: ^Module._resolveFilename node:internal/modules/cjs/loader:1131:35
+     36    1.2%    JS: ~configSecureContext node:internal/tls/secure-context:129:29
+     36  100.0%      JS: ~createSecureContext node:_tls_common:96:29
+     36  100.0%        JS: ~connect node:_tls_wrap:1742:35
+     35   97.2%          JS: ~makeSocket /Users/mac/Kelechi/node-chat-app/node_modules/mongoose/node_modules/mongodb/lib/cmap/connect.js:247:26
+     35  100.0%            JS: ~<anonymous> /Users/mac/Kelechi/node-chat-app/node_modules/mongoose/node_modules/mongodb/lib/sdam/monitor.js:255:6
+      1    2.8%          JS: ~makeSocket /Users/mac/Kelechi/node-chat-app/node_modules/mongodb/lib/cmap/connect.js:247:26
+      1  100.0%            JS: ~connect /Users/mac/Kelechi/node-chat-app/node_modules/mongodb/lib/cmap/connect.js:19:23
+     36    1.2%    JS: ^compileSourceTextModule node:internal/modules/esm/utils:338:33
+     36  100.0%      JS: ^moduleStrategy node:internal/modules/esm/translators:141:50
+     36  100.0%        JS: ^#translate node:internal/modules/esm/loader:423:13
+     36  100.0%          JS: ^loadAndTranslate node:internal/modules/esm/loader:476:25
+     36  100.0%            Builtin: AsyncFunctionAwaitResolveClosure
+     32    1.0%    JS: *stat node:internal/modules/cjs/loader:226:14
+     25   78.1%      JS: ^Module._findPath node:internal/modules/cjs/loader:668:28
+     25  100.0%        JS: ^Module._resolveFilename node:internal/modules/cjs/loader:1131:35
+     25  100.0%          JS: ^Module._load node:internal/modules/cjs/loader:1008:24
+     24   96.0%            JS: *Module.require node:internal/modules/cjs/loader:1290:36
+      1    4.0%            JS: ^Module.require node:internal/modules/cjs/loader:1290:36
+      7   21.9%      JS: ^tryFile node:internal/modules/cjs/loader:517:17
+      4   57.1%        JS: ^tryPackage node:internal/modules/cjs/loader:474:20
+      4  100.0%          JS: ^Module._findPath node:internal/modules/cjs/loader:668:28
+      4  100.0%            JS: ^Module._resolveFilename node:internal/modules/cjs/loader:1131:35
+      2   28.6%        JS: ^tryExtensions node:internal/modules/cjs/loader:532:23
+      2  100.0%          JS: ^Module._findPath node:internal/modules/cjs/loader:668:28
+      2  100.0%            JS: ^Module._resolveFilename node:internal/modules/cjs/loader:1131:35
+      1   14.3%        JS: ^finalizeEsmResolution node:internal/modules/cjs/loader:1226:31
+      1  100.0%          JS: ^resolveExports node:internal/modules/cjs/loader:626:24
+      1  100.0%            JS: ^Module._findPath node:internal/modules/cjs/loader:668:28
+

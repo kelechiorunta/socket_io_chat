@@ -66,7 +66,7 @@
     "yup": "^1.6.1"
   },
   "scripts": {
-    "start": "node server/index.js",
+    "start": "node server/server.js",
     "heroku-postbuild": "npm run build",
     "build": "npm run bundle:schema && react-scripts build",
     "bundle:schema": "node server/bundle-schema.js",
