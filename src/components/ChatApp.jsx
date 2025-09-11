@@ -437,13 +437,6 @@ const ChatApp = () => {
     }
     // 🚀 Run GraphQL lazy query instead of fetch()
     try {
-      // const { data } = await fetchChats({
-      //   variables: {
-      //     userId: chatUser?._id,
-      //     currentUserId: currentUser?._id
-      //   },
-      //   nextFetchPolicy: 'cache-only'
-      // });
       const { data } = await fetchChats({
         variables: { userId: chatUser?._id, currentUserId: currentUser?._id },
         fetchPolicy: 'network-only', // 🚀 always go to server
@@ -617,11 +610,12 @@ const ChatApp = () => {
           {selectedChat && messages ? (
             <>
               <ChatHeader
+                isDark={isDark}
                 chat={selectedChat}
                 pic={data?.auth}
                 selectedUser={selectedChat}
                 onlineUsers={onlineUsers}
-                showBackButton={window.innerWidth < 992}
+                showBackButton={isMobile || window.innerWidth < 992}
                 onBack={() => setMobileView('sidebar')}
               />
               <ChatBody
@@ -633,6 +627,7 @@ const ChatApp = () => {
                 // chatId={chatId}
               />
               <ChatInput
+                isDark={isDark}
                 input={input}
                 setInput={handleTyping}
                 onSend={sendMessage}
