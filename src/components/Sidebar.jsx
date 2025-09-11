@@ -99,7 +99,8 @@ const Sidebar = ({
         flexDirection: 'column',
         bgcolor: isDark ? '#1f1d1d' : '#f7fef2',
         color: isDark ? '#f7fef2' : '#1f1d1d',
-        p: 2
+        p: 2,
+        paddingLeft: 4
       }}
     >
       {/* Header */}
