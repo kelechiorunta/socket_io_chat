@@ -578,7 +578,15 @@ app.get('*', (req, res) => {
 });
 
 app.use(rateLimitMiddleware);
-
-server.listen(PORT, () => {
-  console.log(`WebSocket server listening on ws://localhost:${PORT}`);
+// ✅ Important: Sticky-session connection handler
+process.on('message', (message, connection) => {
+  if (message !== 'sticky-session:connection') return;
+  server.emit('connection', connection);
+  connection.resume();
 });
+
+// ❌ Do NOT call server.listen() — master binds the port
+console.log(`👷 Worker ${process.pid} ready`);
+// server.listen(PORT, () => {
+//   console.log(`WebSocket server listening on ws://localhost:${PORT}`);
+// });
