@@ -284,6 +284,7 @@ const ChatApp = () => {
               userId: selectedChat?._id,
               currentUserId: user?._id
             },
+            fetchPolicy: 'network-only',
             nextFetchPolicy: 'network-only'
           });
           console.log('DATA', data);
