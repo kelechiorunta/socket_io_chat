@@ -180,6 +180,7 @@
 
 // export default resolvers
 
+import Chat from './model/Chat.js';
 import ChatMessage from './model/ChatMessage.js';
 import UnreadMsg from './model/UnreadMsg.js';
 import User from './model/User.js';
@@ -452,6 +453,40 @@ const resolvers = {
         console.error('❌ markMessagesAsRead error:', err);
         return false;
       }
+    }
+  },
+  deleteMessage: async (_, { messageId, senderId }) => {
+    try {
+      // ✅ Find the message by ID
+      const message = await ChatMessage.findById(messageId);
+      if (!message) {
+        throw new Error('Message not found');
+      }
+
+      // ✅ Ensure only the sender can delete their own message
+      if (message.sender.toString() !== senderId) {
+        throw new Error('Not authorized to delete this message');
+      }
+
+      // ✅ Remove message reference from Chat
+      await Chat.findByIdAndUpdate(message.chat, {
+        $pull: { messages: message._id }
+      });
+
+      // ✅ Delete the actual message
+      await message.deleteOne();
+
+      return {
+        success: true,
+        messageId
+      };
+    } catch (error) {
+      console.error('❌ deleteMessage error:', error);
+      return {
+        success: false,
+        messageId: null,
+        error: error.message
+      };
     }
   }
 };
