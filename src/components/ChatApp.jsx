@@ -554,14 +554,15 @@ const ChatApp = () => {
           xs={mobileView === 'sidebar' ? (isIconBarOpen ? 10 : 12) : 0}
           sm={mobileView === 'sidebar' ? 10 : 0}
           md={mobileView === 'sidebar' ? 10 : 0}
-          lg={5}
+          lg
+          // lg={5}
           className={`p-0 border-end h-100 chat-sidebar ${
             mobileView === 'sidebar' ? 'd-block' : 'd-none d-lg-block'
           }`}
           style={{
             overflowX: 'hidden',
             overflowY: 'auto',
-            padding: 4,
+            // padding: 4,
             margin: mobileView === 'sidebar' ? 'auto' : 'auto',
             // width: '100%',
             maxWidth: '100vw'
