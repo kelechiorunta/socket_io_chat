@@ -436,12 +436,17 @@ const ChatApp = () => {
     }
     // 🚀 Run GraphQL lazy query instead of fetch()
     try {
+      // const { data } = await fetchChats({
+      //   variables: {
+      //     userId: chatUser?._id,
+      //     currentUserId: currentUser?._id
+      //   },
+      //   nextFetchPolicy: 'cache-only'
+      // });
       const { data } = await fetchChats({
-        variables: {
-          userId: chatUser?._id,
-          currentUserId: currentUser?._id
-        },
-        nextFetchPolicy: 'cache-only'
+        variables: { userId: chatUser?._id, currentUserId: currentUser?._id },
+        fetchPolicy: 'network-only', // 🚀 always go to server
+        nextFetchPolicy: 'cache-first' // fallback for later renders
       });
 
       if (data?.fetch_chats) {

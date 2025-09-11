@@ -282,7 +282,7 @@ const resolvers = {
     },
     fetch_chats: async (_, { userId, currentUserId }) => {
       try {
-        // ✅ Fetch sender and receiver messages
+        // ✅ Fetch sender and receiver messages with lean (plain JS objects, much faster)
         const messages = await ChatMessage.find({
           $or: [
             { sender: userId, receiver: currentUserId },
@@ -291,14 +291,15 @@ const resolvers = {
         })
           .sort({ createdAt: 1 }) // oldest → newest
           .populate('sender', '_id username picture')
-          .populate('receiver', '_id username picture');
+          .populate('receiver', '_id username picture')
+          .lean(); // ⚡ returns plain JS objects instead of full mongoose docs
 
-        // ✅ Optionally fetch "notifiedUser"
-        const notifiedUser = await User.findById(userId);
+        // ✅ Optionally fetch "notifiedUser" with lean
+        const notifiedUser = await User.findById(userId).lean();
 
-        // ✅ Transform messages to include imageUrl from GridFS
+        // ✅ Transform messages to include image/placeholder URLs
         const enhancedMessages = messages.map((msg) => ({
-          ...msg.toObject(),
+          ...msg,
           imageUrl: msg.imageFileId
             ? `https://socketiochat-production.up.railway.app/chat-pictures/${msg.imageFileId.toString()}?t=${Date.now()}`
             : null,
@@ -316,6 +317,42 @@ const resolvers = {
         throw new Error('Failed to fetch chat history');
       }
     }
+    // fetch_chats: async (_, { userId, currentUserId }) => {
+    //   try {
+    //     // ✅ Fetch sender and receiver messages
+    //     const messages = await ChatMessage.find({
+    //       $or: [
+    //         { sender: userId, receiver: currentUserId },
+    //         { sender: currentUserId, receiver: userId }
+    //       ]
+    //     })
+    //       .sort({ createdAt: 1 }) // oldest → newest
+    //       .populate('sender', '_id username picture')
+    //       .populate('receiver', '_id username picture');
+
+    //     // ✅ Optionally fetch "notifiedUser"
+    //     const notifiedUser = await User.findById(userId);
+
+    //     // ✅ Transform messages to include imageUrl from GridFS
+    //     const enhancedMessages = messages.map((msg) => ({
+    //       ...msg.toObject(),
+    //       imageUrl: msg.imageFileId
+    //         ? `https://socketiochat-production.up.railway.app/chat-pictures/${msg.imageFileId.toString()}?t=${Date.now()}`
+    //         : null,
+    //       placeholderUrl: msg.placeholderImgId
+    //         ? `https://socketiochat-production.up.railway.app/chat-pictures/${msg.placeholderImgId.toString()}?t=${Date.now()}`
+    //         : null
+    //     }));
+
+    //     return {
+    //       messages: enhancedMessages,
+    //       notifiedUser
+    //     };
+    //   } catch (err) {
+    //     console.error('❌ fetch_chats error:', err);
+    //     throw new Error('Failed to fetch chat history');
+    //   }
+    // }
   },
 
   Mutation: {
