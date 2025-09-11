@@ -284,7 +284,7 @@ const ChatApp = () => {
               userId: selectedChat?._id,
               currentUserId: user?._id
             },
-            nextFetchPolicy: 'cache-and-network'
+            nextFetchPolicy: 'network-only'
           });
           console.log('DATA', data);
 
@@ -446,7 +446,7 @@ const ChatApp = () => {
       const { data } = await fetchChats({
         variables: { userId: chatUser?._id, currentUserId: currentUser?._id },
         fetchPolicy: 'network-only', // 🚀 always go to server
-        nextFetchPolicy: 'cache-and-network' // fallback for later renders
+        nextFetchPolicy: 'cache-first' // fallback for later renders
       });
 
       if (data?.fetch_chats) {
