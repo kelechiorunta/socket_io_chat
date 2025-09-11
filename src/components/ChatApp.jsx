@@ -586,6 +586,7 @@ const ChatApp = () => {
             isCollapsible={isCollapsible}
             isIconBarOpen={isIconBarOpen}
             setIsIconBarOpen={setIsIconBarOpen}
+            isDark={isDark}
           />
           {/* )} */}
         </Col>
@@ -595,7 +596,8 @@ const ChatApp = () => {
           xs={mobileView === 'chat' ? 12 : 0}
           sm={mobileView === 'chat' ? 12 : 0}
           md={mobileView === 'chat' ? 12 : 0}
-          lg={6}
+          lg
+          xl
           className={`p-0 h-100 flex-column chat-chatcol ${
             mobileView === 'chat' ? 'd-flex' : 'd-none d-lg-flex'
           }`}

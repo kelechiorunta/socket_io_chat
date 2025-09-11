@@ -33,10 +33,11 @@ const Sidebar = ({
   authenticatedUser,
   isCollapsible,
   isIconBarOpen,
-  setIsIconBarOpen
+  setIsIconBarOpen,
+  isDark
 }) => {
-  const { theme, toggleTheme } = useTheme();
-  const isDark = theme === 'dark';
+  const { toggleTheme } = useTheme();
+  // const isDark = theme === 'dark';
 
   const [tab, setTab] = useState('all');
   const [search, setSearch] = useState('');
@@ -272,7 +273,7 @@ const Sidebar = ({
                 sx={{
                   mb: 1,
                   cursor: 'pointer',
-                  bgcolor: isSelected ? 'success.main' : isDark ? 'grey.800' : 'grey.200',
+                  bgcolor: isSelected ? 'ButtonFace' : isDark ? 'grey.800' : 'grey.200',
                   color: isSelected ? 'white' : isDark ? 'white' : 'black'
                 }}
               >
