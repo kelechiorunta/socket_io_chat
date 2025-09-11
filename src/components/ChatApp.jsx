@@ -204,7 +204,7 @@ const ChatApp = () => {
     }
   };
 
-  const deferredInput = useDeferredValue(input);
+  // const deferredInput = useDeferredValue(input);
 
   const emitTyping = useMemo(
     () =>
@@ -627,7 +627,7 @@ const ChatApp = () => {
                 // chatId={chatId}
               />
               <ChatInput
-                input={deferredInput || input}
+                input={input}
                 setInput={handleTyping}
                 onSend={sendMessage}
                 isMobile={isMobile}
