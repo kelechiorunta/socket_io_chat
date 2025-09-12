@@ -138,24 +138,29 @@ const server = http.createServer(app);
 const io = new Server(server, { cors: corsOption });
 
 // ✅ Setup Redis adapter so all workers share socket state
-
 let pubClient;
 let subClient;
+let redisReady = false; // ✅ Prevent multiple connects
 
 async function setupRedisAdapter(io) {
-  if (!pubClient || !subClient) {
-    // Avoid re-creating clients if they already exist
+  if (redisReady) {
+    console.log('⚡ Redis already connected, skipping setup.');
+    return;
+  }
+
+  if (!pubClient) {
     pubClient = createClient({ url: process.env.REDIS_URL || process.env.UPSTASH_REDIS_REST_URL });
     subClient = pubClient.duplicate();
 
     pubClient.on('error', (err) => console.error('❌ Redis Pub Error:', err));
     subClient.on('error', (err) => console.error('❌ Redis Sub Error:', err));
 
-    await pubClient.connect();
-    await subClient.connect();
+    await Promise.all([pubClient.connect(), subClient.connect()]);
+    console.log('✅ Redis connected for worker:', process.pid);
   }
 
   io.adapter(createAdapter(pubClient, subClient));
+  redisReady = true;
 }
 
 await setupRedisAdapter(io);
