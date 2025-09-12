@@ -11,7 +11,12 @@ import { AUTH, GET_CONTACTS } from '../graphql/queries';
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import debounce from 'lodash.debounce';
 // import { format, isToday, isYesterday } from 'date-fns';
-import { MARK_MESSAGES_AS_READ, GET_UNREAD, CLEAR_UNREAD } from '../graphql/queries';
+import {
+  MARK_MESSAGES_AS_READ,
+  GET_UNREAD,
+  CLEAR_UNREAD,
+  DELETE_MESSAGE
+} from '../graphql/queries';
 import SocketNotifications from './Notifications/SocketNotifications';
 import { FETCH_CHATS } from '../graphql/queries';
 
@@ -45,7 +50,26 @@ const ChatApp = () => {
   const [notifiedUser, setNotifiedUser] = useState(null);
   const [clearUnread] = useMutation(CLEAR_UNREAD);
   const [getUnread] = useLazyQuery(GET_UNREAD);
-  // const [profileUser, setUpdatedProfileUser] = useState(null);s
+  // const [profileUser, setUpdatedProfileUser] = useState(null);
+
+  const [deleteMessage] = useMutation(DELETE_MESSAGE);
+
+  const handleDelete = async (messageId, senderId) => {
+    try {
+      const { data } = await deleteMessage({
+        variables: { messageId, senderId }
+      });
+
+      if (data.deleteMessage.success) {
+        console.log('✅ Message deleted:', data.deleteMessage.messageId);
+        // Optimistically remove from UI (or refetch query)
+      } else {
+        console.error('❌ Delete failed:', data.deleteMessage.error);
+      }
+    } catch (err) {
+      console.error('❌ Error deleting message:', err);
+    }
+  };
 
   const [markMessagesAsRead] = useMutation(MARK_MESSAGES_AS_READ, {
     update(cache, { data, variables }) {
@@ -565,7 +589,7 @@ const ChatApp = () => {
             // padding: 4,
             margin: mobileView === 'sidebar' ? 'auto' : 'auto',
             // width: '100%',
-            maxWidth: '100vw'
+            // maxWidth: '100vw'
           }}
         >
           <Sidebar
@@ -626,6 +650,7 @@ const ChatApp = () => {
                 chat={selectedChat}
                 pic={data?.auth}
                 typingUsers={deferredTypers || typingUsers}
+                handleDelete={handleDelete}
                 // newUploadTrigger={triggerUpload}
                 // chatId={chatId}
               />

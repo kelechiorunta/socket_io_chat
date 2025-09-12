@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { Avatar, Box, Typography } from '@mui/material';
 // import { styled } from '@mui/system';
 // import Avatar from './Avatar';
@@ -6,7 +6,8 @@ import { Avatar, Box, Typography } from '@mui/material';
 import { useTheme } from './ThemeContext';
 import TypingIndicator from './Indicators/TypingIndicator';
 import MessageBubble from './MessageBubble';
-import ProgressiveImage from './ProgressiveImage';
+// import ProgressiveImage from './ProgressiveImage';
+import HoverableMessage from './HoverableMessage';
 // import { useQuery } from '@apollo/client';
 // import { GET_MESSAGES } from '../graphql/queries'; // your GraphQL query
 
@@ -16,7 +17,7 @@ import ProgressiveImage from './ProgressiveImage';
 //   return format(date, 'MMMM d, yyyy');
 // };
 
-const ChatBody = memo(({ messages, pic, chat, typingUsers }) => {
+const ChatBody = memo(({ messages, pic, chat, typingUsers, handleDelete }) => {
   const chatEndRef = useRef(null);
   const { theme } = useTheme();
 
@@ -74,7 +75,7 @@ const ChatBody = memo(({ messages, pic, chat, typingUsers }) => {
         // lastMessageDate = msgDate;
 
         const isClient = msg?.sender?._id === pic?._id || msg.from === 'client';
-
+        // const isOwn = msg.sender._id === currentUserId;
         // console.log('messages', msg);
 
         return (
@@ -92,61 +93,15 @@ const ChatBody = memo(({ messages, pic, chat, typingUsers }) => {
                 <Divider sx={{ flex: 1 }} />
               </Box>
             )} */}
-
-            {/* Message row */}
-            <Box
-              display="flex"
-              alignItems="flex-end"
-              justifyContent={isClient ? 'flex-end' : 'flex-start'}
-              gap={1}
-              mb={2}
-            >
-              {/* Avatar for non-client */}
-              {!isClient && (
-                <Avatar
-                  src={msg?.sender?.picture || (chat && chat.picture) || './Darshan.png'}
-                  sx={{ width: 32, height: 32 }}
-                />
-              )}
-
-              {/* Bubble */}
-              <MessageBubble elevation={1} isClient={isClient ? 1 : 0}>
-                {/* Text */}
-                {msg.content && (
-                  <Typography variant="body2" sx={{ color: '#fff', wordBreak: 'break-word' }}>
-                    {msg.content}
-                  </Typography>
-                )}
-
-                {/* Image */}
-                {msg.hasImage && (
-                  <ProgressiveImage
-                    placeholderSrc={msg.placeholderUrl}
-                    src={msg.imageUrl}
-                    alt="attachment"
-                    style={{ maxWidth: '200px', maxHeight: '200px', borderRadius: '8px' }}
-                  />
-                )}
-                {/* {msg.hasImage && (
-                  <img
-                    src={msg.placeholderUrl || msg.imageUrl} // show placeholder first
-                    data-src={msg.imageUrl} // actual full image
-                    alt="attachment"
-                    className="lazyload"
-                    style={{
-                      maxWidth: '200px',
-                      maxHeight: '200px',
-                      borderRadius: '8px'
-                    }}
-                  />
-                )} */}
-              </MessageBubble>
-
-              {/* Avatar for client */}
-              {isClient && (
-                <Avatar src={pic?.picture || './Darshan.png'} sx={{ width: 32, height: 32 }} />
-              )}
-            </Box>
+            <HoverableMessage
+              key={msg._id || index}
+              msg={msg}
+              isClient={isClient}
+              chat={chat}
+              pic={pic}
+              onDelete={handleDelete} // connect Apollo useMutation
+              // onEdit={onEditMessage} // open edit modal
+            />
           </React.Fragment>
         );
       })}
