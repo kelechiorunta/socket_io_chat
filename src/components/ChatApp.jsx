@@ -52,7 +52,22 @@ const ChatApp = () => {
   const [getUnread] = useLazyQuery(GET_UNREAD);
   // const [profileUser, setUpdatedProfileUser] = useState(null);
 
-  const [deleteMessage] = useMutation(DELETE_MESSAGE);
+  // const [deleteMessage] = useMutation(DELETE_MESSAGE);
+  const [deleteMessage] = useMutation(DELETE_MESSAGE, {
+    update(cache, { data }) {
+      if (!data?.deleteMessage?.success) return;
+
+      const deletedId = data.deleteMessage.messageId;
+
+      cache.modify({
+        fields: {
+          messages(existingMessageRefs = [], { readField }) {
+            return existingMessageRefs.filter((msgRef) => readField('_id', msgRef) !== deletedId);
+          }
+        }
+      });
+    }
+  });
 
   const handleDelete = async (messageId, senderId) => {
     try {
