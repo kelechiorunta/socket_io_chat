@@ -585,9 +585,9 @@ const ChatApp = () => {
           }`}
           style={{
             overflowX: 'hidden',
-            overflowY: 'auto',
+            overflowY: 'auto'
             // padding: 4,
-            margin: mobileView === 'sidebar' ? 'auto' : 'auto',
+            // margin: mobileView === 'sidebar' ? 'auto' : 'auto',
             // width: '100%',
             // maxWidth: '100vw'
           }}
