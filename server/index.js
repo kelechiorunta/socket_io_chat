@@ -140,7 +140,21 @@ const io = new Server(server, { cors: corsOption });
 // ✅ Setup Redis adapter so all workers share socket state
 // await setupRedisAdapter(io);
 
-const { pubClient, subClient } = await getRedisClients();
+// ✅ Initialize Redis once
+const { pubClient, subClient } = getRedisClients();
+
+// Only connect once (lazyConnect prevents double-connecting)
+await Promise.all([
+  pubClient.connect().catch((err) => {
+    if (err.message.includes('already connecting')) return;
+    throw err;
+  }),
+  subClient.connect().catch((err) => {
+    if (err.message.includes('already connecting')) return;
+    throw err;
+  })
+]);
+
 io.adapter(createAdapter(pubClient, subClient));
 // ✅ Redis-based online users key
 const ONLINE_USERS_KEY = 'online_users';
