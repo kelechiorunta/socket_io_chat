@@ -77,6 +77,7 @@ const ChatApp = () => {
 
       if (data.deleteMessage.success) {
         console.log('✅ Message deleted:', data.deleteMessage.messageId);
+        setMessages((prev) => prev.filter((msg) => msg._id !== data.deleteMessage.messageId));
         // Optimistically remove from UI (or refetch query)
       } else {
         console.error('❌ Delete failed:', data.deleteMessage.error);
