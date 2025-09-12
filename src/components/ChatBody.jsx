@@ -6,10 +6,7 @@ import { Avatar, Box, Typography } from '@mui/material';
 import { useTheme } from './ThemeContext';
 import TypingIndicator from './Indicators/TypingIndicator';
 import MessageBubble from './MessageBubble';
-// import ProgressiveImage from './ProgressiveImage';
 import HoverableMessage from './HoverableMessage';
-// import { useQuery } from '@apollo/client';
-// import { GET_MESSAGES } from '../graphql/queries'; // your GraphQL query
 
 // const formatDateLabel = (date) => {
 //   if (isToday(date)) return 'Today';
@@ -28,7 +25,7 @@ const ChatBody = memo(({ messages, pic, chat, typingUsers, handleDelete }) => {
 
   const isTyper = typingUsers.has(pic?._id);
 
-  useEffect(scrollToBottom, [messages, isTyper]);
+  useEffect(scrollToBottom, [isTyper]);
 
   // useEffect(() => {
   //   messages.forEach((m) => {
