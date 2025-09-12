@@ -31,7 +31,7 @@ import User from './model/User.js';
 import UnreadMsg from './model/UnreadMsg.js';
 import { rateLimitMiddleware } from './middleware.js';
 
-import setupRedisAdapter from './setupRedisAdapter.js';
+// import setupRedisAdapter from './setupRedisAdapter.js';
 import { getRedisClients } from './getRedisClient.js';
 import { createAdapter } from '@socket.io/redis-adapter';
 
@@ -138,7 +138,7 @@ const server = http.createServer(app);
 const io = new Server(server, { cors: corsOption });
 
 // ✅ Setup Redis adapter so all workers share socket state
-await setupRedisAdapter(io);
+// await setupRedisAdapter(io);
 
 const { pubClient, subClient } = await getRedisClients();
 io.adapter(createAdapter(pubClient, subClient));
