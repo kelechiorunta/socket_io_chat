@@ -30,10 +30,10 @@ import Chat from './model/Chat.js';
 import User from './model/User.js';
 import UnreadMsg from './model/UnreadMsg.js';
 import { rateLimitMiddleware } from './middleware.js';
-// import Redis from 'ioredis';
-// import { createClient } from 'graphql-http';
+
+import setupRedisAdapter from './setupRedisAdapter.js';
+import { getRedisClients } from './getRedisClient.js';
 import { createAdapter } from '@socket.io/redis-adapter';
-import { createClient } from 'redis';
 
 // import { loginSession } from './middleware.js';
 dotenv.config();
@@ -138,32 +138,10 @@ const server = http.createServer(app);
 const io = new Server(server, { cors: corsOption });
 
 // ✅ Setup Redis adapter so all workers share socket state
-let pubClient;
-let subClient;
-let redisReady = false; // ✅ Prevent multiple connects
-
-async function setupRedisAdapter(io) {
-  if (redisReady) {
-    console.log('⚡ Redis already connected, skipping setup.');
-    return;
-  }
-
-  if (!pubClient) {
-    pubClient = createClient({ url: process.env.REDIS_URL || process.env.UPSTASH_REDIS_REST_URL });
-    subClient = pubClient.duplicate();
-
-    pubClient.on('error', (err) => console.error('❌ Redis Pub Error:', err));
-    subClient.on('error', (err) => console.error('❌ Redis Sub Error:', err));
-
-    await Promise.all([pubClient.connect(), subClient.connect()]);
-    console.log('✅ Redis connected for worker:', process.pid);
-  }
-
-  io.adapter(createAdapter(pubClient, subClient));
-  redisReady = true;
-}
-
 await setupRedisAdapter(io);
+
+const { pubClient, subClient } = await getRedisClients();
+io.adapter(createAdapter(pubClient, subClient));
 // ✅ Redis-based online users key
 const ONLINE_USERS_KEY = 'online_users';
 
