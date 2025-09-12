@@ -30,8 +30,10 @@ import Chat from './model/Chat.js';
 import User from './model/User.js';
 import UnreadMsg from './model/UnreadMsg.js';
 import { rateLimitMiddleware } from './middleware.js';
-import Redis from 'ioredis';
+// import Redis from 'ioredis';
+// import { createClient } from 'graphql-http';
 import { createAdapter } from '@socket.io/redis-adapter';
+import { createClient } from 'redis';
 
 // import { loginSession } from './middleware.js';
 dotenv.config();
@@ -136,11 +138,27 @@ const server = http.createServer(app);
 const io = new Server(server, { cors: corsOption });
 
 // ✅ Setup Redis adapter so all workers share socket state
-const pubClient = new Redis(process.env.REDIS_URL);
-const subClient = pubClient.duplicate();
-await Promise.all([pubClient.connect(), subClient.connect()]); // ensure connections
-io.adapter(createAdapter(pubClient, subClient));
 
+let pubClient;
+let subClient;
+
+async function setupRedisAdapter(io) {
+  if (!pubClient || !subClient) {
+    // Avoid re-creating clients if they already exist
+    pubClient = createClient({ url: process.env.REDIS_URL || process.env.UPSTASH_REDIS_REST_URL });
+    subClient = pubClient.duplicate();
+
+    pubClient.on('error', (err) => console.error('❌ Redis Pub Error:', err));
+    subClient.on('error', (err) => console.error('❌ Redis Sub Error:', err));
+
+    await pubClient.connect();
+    await subClient.connect();
+  }
+
+  io.adapter(createAdapter(pubClient, subClient));
+}
+
+await setupRedisAdapter(io);
 // ✅ Redis-based online users key
 const ONLINE_USERS_KEY = 'online_users';
 
