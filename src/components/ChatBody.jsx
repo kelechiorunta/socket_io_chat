@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import { Avatar, Box, Typography } from '@mui/material';
 // import { styled } from '@mui/system';
 // import Avatar from './Avatar';
