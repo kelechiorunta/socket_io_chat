@@ -274,7 +274,7 @@ const Sidebar = ({
                 sx={{
                   mb: 1,
                   cursor: 'pointer',
-                  bgcolor: isSelected ? 'ButtonFace' : isDark ? 'grey.800' : 'grey.200',
+                  bgcolor: isSelected ? 'AppWorkspace' : isDark ? 'grey.800' : 'grey.200',
                   color: isSelected ? 'white' : isDark ? 'white' : 'black'
                 }}
               >
