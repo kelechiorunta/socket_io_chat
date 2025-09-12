@@ -357,7 +357,7 @@ const resolvers = {
   },
 
   Mutation: {
-    deleteMessage: async (_, { messageId, senderId }) => {
+    deleteMessage: async (_, { messageId, senderId }, { ioInstance }) => {
       try {
         // ✅ Find the message by ID
         const message = await ChatMessage.findById(messageId);
@@ -377,6 +377,10 @@ const resolvers = {
 
         // ✅ Delete the actual message
         await message.deleteOne();
+
+        if (ioInstance) {
+          ioInstance.emit('messageDeleted', { messageId: message._id });
+        }
 
         return {
           success: true,

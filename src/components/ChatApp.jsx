@@ -77,7 +77,7 @@ const ChatApp = () => {
 
       if (data.deleteMessage.success) {
         console.log('✅ Message deleted:', data.deleteMessage.messageId);
-        setMessages((prev) => prev.filter((msg) => msg._id !== data.deleteMessage.messageId));
+        // setMessages((prev) => prev.filter((msg) => msg._id !== data.deleteMessage.messageId));
         // Optimistically remove from UI (or refetch query)
       } else {
         console.error('❌ Delete failed:', data.deleteMessage.error);
@@ -395,14 +395,28 @@ const ChatApp = () => {
       }, 2000);
     });
 
+    socket.on('messageDeleted', ({ messageId }) => {
+      setMessages((prev) => prev.filter((msg) => msg._id !== messageId));
+    });
+
     return () => {
       socket.off('newMessage');
       socket.off('userOnline');
       socket.off('userOffline');
       socket.off('isConnected');
       socket.off('typing');
+      socket.off('messageDeleted');
     };
-  }, [selectedChat?._id, socket, user?._id, currentContacts, selectedChat, unreadMap, fetchChats]); // ✅ Run only once
+  }, [
+    selectedChat?._id,
+    socket,
+    user?._id,
+    currentContacts,
+    selectedChat,
+    unreadMap,
+    fetchChats,
+    messages
+  ]); // ✅ Run only once
 
   useEffect(() => {
     if (!socket) return;
