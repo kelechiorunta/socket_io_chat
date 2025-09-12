@@ -30,6 +30,8 @@ import Chat from './model/Chat.js';
 import User from './model/User.js';
 import UnreadMsg from './model/UnreadMsg.js';
 import { rateLimitMiddleware } from './middleware.js';
+import Redis from 'ioredis';
+import { createAdapter } from '@socket.io/redis-adapter';
 
 // import { loginSession } from './middleware.js';
 dotenv.config();
@@ -47,7 +49,7 @@ const schema = makeExecutableSchema({
 });
 
 const app = express();
-const PORT = process.env.PORT || 7334;
+// const PORT = process.env.PORT || 7334;
 
 // const ALLOWED_ORIGINS = 'http://localhost:7334,http://localhost:3000,http://localhost:3001,https://chatvercelsocketio.vercel.app,https://socketiochat-production.up.railway.app'
 // const allowedOrigins = ALLOWED_ORIGINS.split(',');
@@ -133,6 +135,16 @@ app.set('trust proxy', true); // Trust Railway's proxy
 const server = http.createServer(app);
 const io = new Server(server, { cors: corsOption });
 
+// ✅ Setup Redis adapter so all workers share socket state
+const pubClient = new Redis(process.env.REDIS_URL);
+const subClient = pubClient.duplicate();
+await Promise.all([pubClient.connect(), subClient.connect()]); // ensure connections
+io.adapter(createAdapter(pubClient, subClient));
+
+// ✅ Redis-based online users key
+const ONLINE_USERS_KEY = 'online_users';
+
+// app.set('io', io); (this stays as is)
 app.set('io', io);
 
 // Middleware to enable GraphQL Introspection and Client Queries
@@ -153,7 +165,7 @@ app.use(
   })
 );
 
-const onlineUsers = new Map();
+// const onlineUsers = new Map();
 const signedInUsers = new Set();
 
 io.engine.on('connection', (socket) => {
@@ -179,7 +191,8 @@ io.on('connection', (socket) => {
 
   socket.on('isLoggedIn', async ({ userId }) => {
     socket.data.userId = userId;
-    onlineUsers.set(userId, socket.id);
+    // onlineUsers.set(userId, socket.id);
+    await pubClient.hset(ONLINE_USERS_KEY, userId, socket.id); //
     const signedInUser = await User.findById(userId);
     if (signedInUser) {
       signedInUser.isOnline = true;
@@ -194,7 +207,9 @@ io.on('connection', (socket) => {
     // Notify others this user came online
 
     // ✅ Send current online users to the newly logged-in user
-    const otherOnlineUsers = [...onlineUsers.keys()].filter((id) => id !== userId);
+    // const otherOnlineUsers = [...onlineUsers.keys()].filter((id) => id !== userId);
+    const allOnline = await pubClient.hkeys(ONLINE_USERS_KEY);
+    const otherOnlineUsers = allOnline.filter((id) => id !== userId);
     // Set isOnline = true in DB for others (optional if you want to persist status)
     for (const id of otherOnlineUsers) {
       const userDoc = await User.findById(id);
@@ -206,11 +221,13 @@ io.on('connection', (socket) => {
     socket.emit('currentlyOnline', { userIds: otherOnlineUsers, online: true });
   });
 
-  socket.on('isOnline', ({ receiverId, senderId }) => {
+  socket.on('isOnline', async ({ receiverId, senderId }) => {
     //const senderId = socket.data.userId;
     if (!receiverId || !senderId) return;
 
-    const receiverSocketId = onlineUsers.get(receiverId);
+    // const receiverSocketId = onlineUsers.get(receiverId);
+    const receiverSocketId = await pubClient.hget(ONLINE_USERS_KEY, receiverId);
+
     if (receiverSocketId) {
       io.to(receiverSocketId).emit('isConnected', { currentUser: senderId });
     }
@@ -546,9 +563,11 @@ io.on('connection', (socket) => {
   //     io.to(receiverId).emit('typing', { from: senderId });
   // });
 
-  socket.on('typing', ({ receiverId }) => {
+  socket.on('typing', async ({ receiverId }) => {
     const senderId = socket.data.userId;
-    const receiverSocketId = onlineUsers.get(receiverId);
+    // const receiverSocketId = onlineUsers.get(receiverId);
+    const receiverSocketId = await pubClient.hget(ONLINE_USERS_KEY, receiverId);
+
     if (receiverSocketId) {
       io.to(receiverSocketId).emit('typing', { from: senderId });
     }
@@ -562,7 +581,9 @@ io.on('connection', (socket) => {
       if (signedOutUser) {
         signedOutUser.isOnline = false;
         await signedOutUser.save();
-        onlineUsers.delete(userId);
+        // onlineUsers.delete(userId);
+        await pubClient.hdel(ONLINE_USERS_KEY, userId);
+
         signedInUsers.delete(userId);
         socket.broadcast.emit('userOffline', { userId, signedOutUser });
         socket.broadcast.emit('LoggingOut', { signedOutUser: signedOutUser });
