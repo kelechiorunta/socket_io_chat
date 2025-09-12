@@ -11,7 +11,8 @@ const chatMessageSchema = new mongoose.Schema(
     imageFileId: { type: mongoose.Schema.Types.ObjectId, ref: 'ChatPicture', required: false },
     imageUrl: { type: String, required: false },
     placeholderImgId: { type: mongoose.Schema.Types.ObjectId, required: false },
-    placeholderUrl: { type: String, required: false }
+    placeholderUrl: { type: String, required: false },
+    groupId: { type: String, required: false } // group ID (for group chat)
   },
   { timestamps: true }
 );
