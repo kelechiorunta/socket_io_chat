@@ -221,7 +221,7 @@ const Sidebar = ({
         alignItems="center"
         mb={2}
       >
-        <Typography variant="subtitle1">Messages</Typography>
+        {/* <Typography variant="subtitle1">Messages</Typography> */}
         <ChatFilters handleSort={handleSort} />
         {/* <ButtonGroup size="small" variant="outlined">
           <Button variant={tab === 'all' ? 'contained' : 'outlined'} onClick={() => setTab('all')}>
