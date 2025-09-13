@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Select, MenuItem, FormControl, InputLabel, Stack } from '@mui/material';
 
-export default function ChatFilters({ handleSort }) {
+export default function ChatFilters({ handleSort, isDark }) {
   const [filter, setFilter] = useState('all');
   const [sort, setSort] = useState('newest');
   const [tab, setTab] = useState('all');
@@ -14,6 +14,8 @@ export default function ChatFilters({ handleSort }) {
       justifyContent="space-between"
       sx={{ mb: 2 }}
       fontSize={14}
+      bgcolor={isDark ? 'grey.900' : 'white'}
+      color={isDark && 'white'}
     >
       {/* Filter */}
       <FormControl variant="outlined" size="small" sx={{ minWidth: 100 }}>
