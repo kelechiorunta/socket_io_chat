@@ -107,6 +107,13 @@ const ChatInput = ({ isDark, input, setInput, onSend, isMobile }) => {
     setFile(null);
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -137,6 +144,7 @@ const ChatInput = ({ isDark, input, setInput, onSend, isMobile }) => {
         placeholder="Message..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
+        onKeyDown={handleKeyPress}
         variant="outlined"
         size="small"
         sx={{
