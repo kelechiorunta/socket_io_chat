@@ -217,7 +217,7 @@ const Sidebar = ({
       {/* Tabs */}
       <Box
         display={{ xs: 'none', sm: 'flex' }} // 👈 hidden on xs (mobile), flex from sm and up
-        justifyContent="space-between"
+        justifyContent="center"
         alignItems="center"
         mb={2}
         bgcolor={isDark ? 'grey.500' : 'white'}

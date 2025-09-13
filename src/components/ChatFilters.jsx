@@ -12,13 +12,38 @@ export default function ChatFilters({ handleSort, isDark }) {
       spacing={2}
       alignItems="center"
       justifyContent="space-between"
-      sx={{ mb: 2 }}
-      fontSize={14}
-      bgcolor={isDark ? 'grey.900' : 'white'}
-      color={isDark && 'white'}
+      sx={{
+        mb: 2,
+        fontSize: 14,
+        bgcolor: isDark ? 'grey.900' : 'grey.50',
+        color: isDark ? 'grey.100' : 'grey.900',
+        border: 1,
+        borderColor: isDark ? 'grey.700' : 'grey.300',
+        borderRadius: 2,
+        p: 1.5
+      }}
     >
       {/* Filter */}
-      <FormControl variant="outlined" size="small" sx={{ minWidth: 100 }}>
+      <FormControl
+        variant="outlined"
+        size="small"
+        sx={{
+          minWidth: 100,
+          '& .MuiOutlinedInput-root': {
+            color: isDark ? 'grey.100' : 'grey.900',
+            bgcolor: isDark ? 'grey.800' : 'white',
+            '& fieldset': {
+              borderColor: isDark ? 'grey.600' : 'grey.300'
+            },
+            '&:hover fieldset': {
+              borderColor: isDark ? 'grey.400' : 'grey.500'
+            }
+          },
+          '& .MuiInputLabel-root': {
+            color: isDark ? 'grey.300' : 'grey.700'
+          }
+        }}
+      >
         <InputLabel>Filter</InputLabel>
         <Select value={filter} label="Filter" onChange={(e) => setFilter(e.target.value)}>
           <MenuItem value="all">All</MenuItem>
@@ -28,7 +53,25 @@ export default function ChatFilters({ handleSort, isDark }) {
       </FormControl>
 
       {/* Sort */}
-      <FormControl size="small" sx={{ minWidth: 100 }}>
+      <FormControl
+        size="small"
+        sx={{
+          minWidth: 100,
+          '& .MuiOutlinedInput-root': {
+            color: isDark ? 'grey.100' : 'grey.900',
+            bgcolor: isDark ? 'grey.800' : 'white',
+            '& fieldset': {
+              borderColor: isDark ? 'grey.600' : 'grey.300'
+            },
+            '&:hover fieldset': {
+              borderColor: isDark ? 'grey.400' : 'grey.500'
+            }
+          },
+          '& .MuiInputLabel-root': {
+            color: isDark ? 'grey.300' : 'grey.700'
+          }
+        }}
+      >
         <InputLabel>Sort</InputLabel>
         <Select value={sort} label="Sort" onChange={(e) => setSort(e.target.value)}>
           <MenuItem value="newest">Newest</MenuItem>
@@ -36,8 +79,26 @@ export default function ChatFilters({ handleSort, isDark }) {
         </Select>
       </FormControl>
 
-      {/* Tabs replacement */}
-      <FormControl size="small" sx={{ minWidth: 100 }}>
+      {/* View */}
+      <FormControl
+        size="small"
+        sx={{
+          minWidth: 100,
+          '& .MuiOutlinedInput-root': {
+            color: isDark ? 'grey.100' : 'grey.900',
+            bgcolor: isDark ? 'grey.800' : 'white',
+            '& fieldset': {
+              borderColor: isDark ? 'grey.600' : 'grey.300'
+            },
+            '&:hover fieldset': {
+              borderColor: isDark ? 'grey.400' : 'grey.500'
+            }
+          },
+          '& .MuiInputLabel-root': {
+            color: isDark ? 'grey.300' : 'grey.700'
+          }
+        }}
+      >
         <InputLabel>View</InputLabel>
         <Select
           value={tab}
