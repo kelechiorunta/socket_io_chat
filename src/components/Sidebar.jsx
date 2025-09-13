@@ -3,8 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   TextField,
   InputAdornment,
-  Button,
-  ButtonGroup,
+  // Button,
+  // ButtonGroup,
   Card,
   CardContent,
   Skeleton,
@@ -18,6 +18,7 @@ import { Search, Sun, Moon } from 'lucide-react';
 import Avatar from './Avatar';
 import { useTheme } from './ThemeContext';
 import { parseTimestamp } from '../helper/helper';
+import ChatFilters from './ChatFilters';
 // import AnimateText from './AnimateText/AnimateText';
 
 const Sidebar = ({
@@ -39,7 +40,7 @@ const Sidebar = ({
   const { toggleTheme } = useTheme();
   // const isDark = theme === 'dark';
 
-  const [tab, setTab] = useState('all');
+  // const [tab, setTab] = useState('all');
   const [search, setSearch] = useState('');
   const [filteredUsers, setFilteredUsers] = useState(contacts);
   const [focusedIndex, setFocusedIndex] = useState(0);
@@ -79,7 +80,7 @@ const Sidebar = ({
     const offline = contacts.filter((user) => !onlineUsers.has(user._id));
 
     setFilteredUsers([...online, ...offline]);
-  }, [contacts, onlineUsers, tab]);
+  }, [contacts, onlineUsers]);
 
   const handleUserSelect = (user) => {
     onSelectChat(user);
@@ -221,7 +222,8 @@ const Sidebar = ({
         mb={2}
       >
         <Typography variant="subtitle1">Messages</Typography>
-        <ButtonGroup size="small" variant="outlined">
+        <ChatFilters handleSort={handleSort} />
+        {/* <ButtonGroup size="small" variant="outlined">
           <Button variant={tab === 'all' ? 'contained' : 'outlined'} onClick={() => setTab('all')}>
             All Chats
           </Button>
@@ -240,7 +242,7 @@ const Sidebar = ({
           >
             Contacts
           </Button>
-        </ButtonGroup>
+        </ButtonGroup> */}
       </Box>
 
       {/* Contact List */}
