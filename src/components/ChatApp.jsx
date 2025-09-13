@@ -178,7 +178,7 @@ const ChatApp = () => {
 
   useEffect(() => {
     // const host = window.location.hostname;
-    const socketServerURL = 'https://socket-io-chat-zory.onrender.com'//'https://socketiochat-production.up.railway.app';
+    const socketServerURL = 'https://socket-io-chat-zory.onrender.com'; //'https://socketiochat-production.up.railway.app';
     // : 'https://node-chat-app-ecru.vercel.app';
 
     const socketInstance = io(socketServerURL, {
@@ -465,75 +465,135 @@ const ChatApp = () => {
   // const [fetchChats] = useLazyQuery(FETCH_CHATS, {
   //   fetchPolicy: 'network-only' // 👈 ensures fresh fetch
   // });
+  const [chatCache, setChatCache] = useState({});
 
   const handleSelectChat = async (chatUser) => {
+    if (!chatUser) return;
+
     setSelectedChat(chatUser);
+
+    // ✅ Update unread map instantly
     setUnreadMap((prev) => {
       const updated = { ...prev };
-      delete updated[chatUser?._id];
+      delete updated[chatUser._id];
       return updated;
     });
 
     const storedUser = localStorage.getItem('currentUser');
     const onlineIds = onlineUsers && Array.from(onlineUsers);
     const knownOnlineUserId = onlineIds.find((id) => id === currentUser?._id);
-    await clearUnread({
-      variables: {
-        senderId: chatUser?._id,
-        recipientId: storedUser?._id || knownOnlineUserId || currentUser?._id
-      }
-    });
-    if (socket && (storedUser || currentUser) && chatUser) {
-      socket.emit('markAsRead', {
-        senderId: chatUser?._id,
-        receiverId: storedUser?._id || knownOnlineUserId || currentUser?._id
-      });
+    const receiverId = storedUser?._id || knownOnlineUserId || currentUser?._id;
+
+    // ✅ Mark unread as read in background (don’t block UI)
+    clearUnread({
+      variables: { senderId: chatUser._id, recipientId: receiverId }
+    }).catch(console.error);
+
+    if (socket && receiverId) {
+      socket.emit('markAsRead', { senderId: chatUser._id, receiverId });
     }
-    // 🚀 Run GraphQL lazy query instead of fetch()
+
+    // ✅ 1. Show cached messages instantly (if available)
+    if (chatCache[chatUser._id]) {
+      setMessages(chatCache[chatUser._id].messages);
+      setNotifiedUser(chatCache[chatUser._id].notifiedUser);
+    } else {
+      setMessages([]); // placeholder while loading
+    }
+
+    // ✅ 2. Refresh from server in background
     try {
       const { data } = await fetchChats({
-        variables: { userId: chatUser?._id, currentUserId: currentUser?._id },
-        fetchPolicy: 'network-only', // 🚀 always go to server
-        nextFetchPolicy: 'cache-first' // fallback for later renders
+        variables: { userId: chatUser._id, currentUserId: currentUser._id },
+        fetchPolicy: 'cache-and-network' // fast + background refresh
       });
 
       if (data?.fetch_chats) {
-        setMessages(data.fetch_chats.messages);
-        setNotifiedUser(data.fetch_chats.notifiedUser);
+        const { messages, notifiedUser } = data.fetch_chats;
+
+        // Update UI
+        setMessages(messages);
+        setNotifiedUser(notifiedUser);
+
+        // Cache result for instant future loads
+        setChatCache((prev) => ({
+          ...prev,
+          [chatUser._id]: { messages, notifiedUser }
+        }));
       }
     } catch (error) {
       console.error('Error fetching chat history:', error);
     }
-    //   try {
-    //     const res = await fetch(
-    //       `/api/getChatHistory?userId=${chatUser?._id}&currentUserId=${currentUser?._id}`,
-    //       {
-    //         method: 'GET',
-    //         credentials: 'include',
-    //         headers: {
-    //           'Content-Type': 'application/json'
-    //         }
-    //       }
-    //     );
-
-    //     if (!res.ok) {
-    //       throw new Error('Failed to fetch chat history');
-    //     }
-
-    //     const history = await res.json();
-    //     setMessages(history.messages);
-    //     setNotifiedUser(history.notifiedUser);
-    //   } catch (error) {
-    //     console.error('Error fetching chat history:', error);
-    //   }
-    // }
   };
 
-  // const formatDateLabel = (date) => {
-  //   if (isToday(date)) return 'Today';
-  //   if (isYesterday(date)) return 'Yesterday';
-  //   return format(date, 'MMMM d, yyyy');
+  // const handleSelectChat = async (chatUser) => {
+  //   setSelectedChat(chatUser);
+  //   setUnreadMap((prev) => {
+  //     const updated = { ...prev };
+  //     delete updated[chatUser?._id];
+  //     return updated;
+  //   });
+
+  //   const storedUser = localStorage.getItem('currentUser');
+  //   const onlineIds = onlineUsers && Array.from(onlineUsers);
+  //   const knownOnlineUserId = onlineIds.find((id) => id === currentUser?._id);
+  //   await clearUnread({
+  //     variables: {
+  //       senderId: chatUser?._id,
+  //       recipientId: storedUser?._id || knownOnlineUserId || currentUser?._id
+  //     }
+  //   });
+  //   if (socket && (storedUser || currentUser) && chatUser) {
+  //     socket.emit('markAsRead', {
+  //       senderId: chatUser?._id,
+  //       receiverId: storedUser?._id || knownOnlineUserId || currentUser?._id
+  //     });
+  //   }
+  //   // 🚀 Run GraphQL lazy query instead of fetch()
+  //   try {
+  //     const { data } = await fetchChats({
+  //       variables: { userId: chatUser?._id, currentUserId: currentUser?._id },
+  //       fetchPolicy: 'network-only', // 🚀 always go to server
+  //       nextFetchPolicy: 'cache-first' // fallback for later renders
+  //     });
+
+  //     if (data?.fetch_chats) {
+  //       setMessages(data.fetch_chats.messages);
+  //       setNotifiedUser(data.fetch_chats.notifiedUser);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching chat history:', error);
+  //   }
+  //   //   try {
+  //   //     const res = await fetch(
+  //   //       `/api/getChatHistory?userId=${chatUser?._id}&currentUserId=${currentUser?._id}`,
+  //   //       {
+  //   //         method: 'GET',
+  //   //         credentials: 'include',
+  //   //         headers: {
+  //   //           'Content-Type': 'application/json'
+  //   //         }
+  //   //       }
+  //   //     );
+
+  //   //     if (!res.ok) {
+  //   //       throw new Error('Failed to fetch chat history');
+  //   //     }
+
+  //   //     const history = await res.json();
+  //   //     setMessages(history.messages);
+  //   //     setNotifiedUser(history.notifiedUser);
+  //   //   } catch (error) {
+  //   //     console.error('Error fetching chat history:', error);
+  //   //   }
+  //   // }
   // };
+
+  // // const formatDateLabel = (date) => {
+  // //   if (isToday(date)) return 'Today';
+  // //   if (isYesterday(date)) return 'Yesterday';
+  // //   return format(date, 'MMMM d, yyyy');
+  // // };
 
   const [mobileView, setMobileView] = useState('sidebar'); // start on sidebar
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
