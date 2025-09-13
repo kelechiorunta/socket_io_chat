@@ -606,8 +606,8 @@ const ChatApp = () => {
         {/* Sidebar Column */}
         <Col
           xs={mobileView === 'sidebar' ? (isIconBarOpen ? 10 : 12) : 0}
-          sm={mobileView === 'sidebar' ? 10 : 0}
-          md={mobileView === 'sidebar' ? 10 : 0}
+          sm={mobileView === 'sidebar' ? 11 : 0}
+          md={mobileView === 'sidebar' ? 11 : 0}
           // lg=
           lg={4}
           className={`p-0 border-end h-100 chat-sidebar ${
@@ -661,7 +661,7 @@ const ChatApp = () => {
             margin: mobileView === 'sidebar' ? 'auto' : 'auto',
             padding: 0,
             // width: '100%',
-            maxWidth: '120vw'
+            maxWidth: '100vw'
           }}
         >
           {selectedChat && messages ? (
