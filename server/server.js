@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // const numCPUs = process.env.WEB_CONCURRENCY || os.cpus().length;
-const numCPUs = Math.min(os.cpus().length, 2);
+const numCPUs = Math.min(os.cpus().length, 1);
 const PORT = process.env.PORT || 7334;
 
 if (cluster.isPrimary) {
