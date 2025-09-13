@@ -9,13 +9,14 @@ export default function ChatFilters({ handleSort }) {
   return (
     <Stack
       direction="row"
-      spacing={2}
+      spacing={1}
       alignItems="center"
       justifyContent="space-between"
       sx={{ mb: 2 }}
+      fontSize={14}
     >
       {/* Filter */}
-      <FormControl size="small" sx={{ minWidth: 120 }}>
+      <FormControl variant="outlined" size="small" sx={{ minWidth: 100 }}>
         <InputLabel>Filter</InputLabel>
         <Select value={filter} label="Filter" onChange={(e) => setFilter(e.target.value)}>
           <MenuItem value="all">All</MenuItem>
@@ -25,7 +26,7 @@ export default function ChatFilters({ handleSort }) {
       </FormControl>
 
       {/* Sort */}
-      <FormControl size="small" sx={{ minWidth: 120 }}>
+      <FormControl size="small" sx={{ minWidth: 100 }}>
         <InputLabel>Sort</InputLabel>
         <Select value={sort} label="Sort" onChange={(e) => setSort(e.target.value)}>
           <MenuItem value="newest">Newest</MenuItem>
@@ -34,7 +35,7 @@ export default function ChatFilters({ handleSort }) {
       </FormControl>
 
       {/* Tabs replacement */}
-      <FormControl size="small" sx={{ minWidth: 140 }}>
+      <FormControl size="small" sx={{ minWidth: 100 }}>
         <InputLabel>View</InputLabel>
         <Select
           value={tab}
