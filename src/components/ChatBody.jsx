@@ -25,7 +25,7 @@ const ChatBody = memo(({ messages, pic, chat, typingUsers, handleDelete }) => {
 
   const isTyper = typingUsers.has(pic?._id);
 
-  useEffect(scrollToBottom, [isTyper]);
+  useEffect(scrollToBottom, [messages, isTyper]);
 
   // useEffect(() => {
   //   messages.forEach((m) => {
