@@ -59,7 +59,7 @@ export const configureGooglePassport = (passport) => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID_NEW,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET_NEW,
-        callbackURL: 'https://socketiochat-production.up.railway.app/api/oauth2/redirect/google',
+        callbackURL: 'https://socket-io-chat-zory.onrender.com/api/oauth2/redirect/google',
         scope: ['profile', 'email']
       },
       async (accessToken, refreshToken, profile, done) => {

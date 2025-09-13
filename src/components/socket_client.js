@@ -2,9 +2,7 @@ import { io } from 'socket.io-client';
 
 const host = window.location.hostname;
 const socketServerURL =
-  host === 'localhost'
-    ? 'http://localhost:7334'
-    : 'https://socketiochat-production-8edb.up.railway.app';
+  host === 'localhost' ? 'http://localhost:7334' : 'https://socket-io-chat-zory.onrender.com';
 
 const socketInstance = io(socketServerURL, {
   transports: ['websocket'],

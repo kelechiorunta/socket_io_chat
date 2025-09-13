@@ -61,7 +61,8 @@ const ALLOWED_ORIGINS = [
   'http://localhost:3000',
   'http://localhost:3001',
   'https://chatvercelsocketio.vercel.app',
-  'https://socketiochat-production.up.railway.app'
+  'https://socketiochat-production.up.railway.app',
+  'https://socket-io-chat-zory.onrender.com'
 ];
 
 const corsOption = {
