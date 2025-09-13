@@ -302,10 +302,10 @@ const resolvers = {
         const enhancedMessages = messages.map((msg) => ({
           ...msg,
           imageUrl: msg.imageFileId
-            ? `https://socketiochat-production.up.railway.app/chat-pictures/${msg.imageFileId.toString()}?t=${Date.now()}`
+            ? `https://socket-io-chat-zory.onrender.com/chat-pictures/${msg.imageFileId.toString()}?t=${Date.now()}`
             : null,
           placeholderUrl: msg.placeholderImgId
-            ? `https://socketiochat-production.up.railway.app/chat-pictures/${msg.placeholderImgId.toString()}?t=${Date.now()}`
+            ? `https://socket-io-chat-zory.onrender.com/chat-pictures/${msg.placeholderImgId.toString()}?t=${Date.now()}`
             : null
         }));
 
