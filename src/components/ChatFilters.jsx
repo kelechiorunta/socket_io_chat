@@ -9,7 +9,7 @@ export default function ChatFilters({ handleSort, isDark }) {
   return (
     <Stack
       direction="row"
-      spacing={1}
+      spacing={2}
       alignItems="center"
       justifyContent="space-between"
       sx={{ mb: 2 }}

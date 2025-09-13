@@ -220,6 +220,8 @@ const Sidebar = ({
         justifyContent="space-between"
         alignItems="center"
         mb={2}
+        bgcolor={isDark ? 'grey.500' : 'white'}
+        color={isDark && 'white'}
       >
         {/* <Typography variant="subtitle1">Messages</Typography> */}
         <ChatFilters handleSort={handleSort} isDark={isDark} />
@@ -346,6 +348,7 @@ const Sidebar = ({
                       sx={{
                         whiteSpace: 'nowrap',
                         mb: 0.5
+                        // color: 'success.main'
                       }}
                     >
                       {unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.time}
