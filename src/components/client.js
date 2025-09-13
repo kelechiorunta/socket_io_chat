@@ -14,7 +14,7 @@ import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 
 const client = new ApolloClient({
   link: createHttpLink({
-    uri: 'https://socketiochat-production.up.railway.app/graphql',
+    uri: 'https://socket-io-chat-zory.onrender.com/graphql',
     credentials: 'include'
   }),
   cache: new InMemoryCache({

@@ -178,7 +178,7 @@ const ChatApp = () => {
 
   useEffect(() => {
     // const host = window.location.hostname;
-    const socketServerURL = 'https://socketiochat-production.up.railway.app';
+    const socketServerURL = 'https://socket-io-chat-zory.onrender.com'//'https://socketiochat-production.up.railway.app';
     // : 'https://node-chat-app-ecru.vercel.app';
 
     const socketInstance = io(socketServerURL, {
