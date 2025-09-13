@@ -219,9 +219,9 @@ const Sidebar = ({
         display={{ xs: 'none', sm: 'flex' }} // 👈 hidden on xs (mobile), flex from sm and up
         justifyContent="center"
         alignItems="center"
-        mb={2}
-        bgcolor={isDark ? 'grey.500' : 'white'}
-        color={isDark && 'white'}
+        mb={1}
+        // bgcolor={isDark ? 'grey.500' : 'white'}
+        // color={isDark && 'white'}
       >
         {/* <Typography variant="subtitle1">Messages</Typography> */}
         <ChatFilters handleSort={handleSort} isDark={isDark} />
