@@ -222,7 +222,7 @@ const Sidebar = ({
         mb={2}
       >
         {/* <Typography variant="subtitle1">Messages</Typography> */}
-        <ChatFilters handleSort={handleSort} />
+        <ChatFilters handleSort={handleSort} isDark={isDark} />
         {/* <ButtonGroup size="small" variant="outlined">
           <Button variant={tab === 'all' ? 'contained' : 'outlined'} onClick={() => setTab('all')}>
             All Chats
