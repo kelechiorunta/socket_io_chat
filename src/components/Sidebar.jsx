@@ -96,6 +96,337 @@ const Sidebar = ({
   const [isCreateGroupOpen, setIsCreateGroupOpen] = useState(false);
 
   return (
+    // <Box
+    //   sx={{
+    //     maxHeight: '100vh',
+    //     height: '100%',
+    //     minHeight: '100vh',
+    //     display: 'flex',
+    //     flexDirection: 'column',
+    //     bgcolor: isDark ? '#1f1d1d' : '#f7fef2',
+    //     color: isDark ? '#f7fef2' : '#1f1d1d',
+    //     p: 2,
+    //     paddingLeft: 4
+    //   }}
+    // >
+    //   {/* Header */}
+    //   <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+    //     <Box display="flex" alignItems="center" gap={1}>
+    //       {isCollapsible && (
+    //         <IconButton
+    //           size="small"
+    //           onClick={() => setIsIconBarOpen((prev) => !prev)}
+    //           sx={{ color: '#00e575' }}
+    //         >
+    //           {isIconBarOpen ? <Close /> : <MenuIcon />}
+    //         </IconButton>
+    //       )}
+    //       <Typography variant="h6" sx={{ color: '#00e575', fontWeight: 'bold', pl: 1 }}>
+    //         JUSTCHAT
+    //       </Typography>
+    //     </Box>
+
+    //     <Box display="flex" gap={1} alignItems="center">
+    //       {/* More menu */}
+    //       <IconButton
+    //         size="small"
+    //         onClick={(e) => setMenuAnchor(e.currentTarget)}
+    //         sx={{ color: '#00e575' }}
+    //       >
+    //         <MoreVert />
+    //       </IconButton>
+
+    //       <Menu
+    //         anchorEl={menuAnchor}
+    //         open={Boolean(menuAnchor)}
+    //         onClose={() => setMenuAnchor(null)}
+    //       >
+    //         <MenuItem
+    //           onClick={() => {
+    //             setIsCreateGroupOpen(true);
+    //             setMenuAnchor(null);
+    //           }}
+    //         >
+    //           <ListItemIcon>
+    //             <GroupAdd fontSize="small" />
+    //           </ListItemIcon>
+    //           <ListItemText primary="Create Group" />
+    //         </MenuItem>
+
+    //         <MenuItem
+    //           onClick={() => {
+    //             setMenuAnchor(null);
+    //             console.log('Logout clicked'); // hook up logout handler here
+    //           }}
+    //         >
+    //           <ListItemIcon>
+    //             <Logout fontSize="small" />
+    //           </ListItemIcon>
+    //           <ListItemText primary="Log Out" />
+    //         </MenuItem>
+    //       </Menu>
+
+    //       {/* Theme toggle */}
+    //       <Sun
+    //         style={{
+    //           color: !isDark ? '#00e575' : 'white'
+    //         }}
+    //         role="button"
+    //         onClick={isDark ? toggleTheme : undefined}
+    //       />
+    //       <Moon
+    //         role="button"
+    //         style={{
+    //           color: !isDark ? 'black' : '#00e575'
+    //         }}
+    //         onClick={!isDark ? toggleTheme : undefined}
+    //       />
+    //     </Box>
+    //   </Box>
+
+    //   {/* ✅ Create Group Drawer */}
+    //   <CreateGroupDrawer
+    //     open={isCreateGroupOpen}
+    //     onClose={() => setIsCreateGroupOpen(false)}
+    //     isDark={isDark}
+    //   />
+
+    //   {/* Search Bar */}
+    //   <TextField
+    //     inputRef={inputRef}
+    //     size="small"
+    //     fullWidth
+    //     variant="outlined"
+    //     placeholder="Search..."
+    //     value={search}
+    //     onChange={(e) => {
+    //       setSearch(e.target.value);
+    //       setFocusedIndex(0);
+    //     }}
+    //     onKeyDown={(e) => {
+    //       if (e.key === 'ArrowDown') {
+    //         e.preventDefault();
+    //         setFocusedIndex((prev) => (prev + 1) % searchResults.length);
+    //       } else if (e.key === 'ArrowUp') {
+    //         e.preventDefault();
+    //         setFocusedIndex((prev) => (prev === 0 ? searchResults.length - 1 : prev - 1));
+    //       } else if (e.key === 'Enter') {
+    //         e.preventDefault();
+    //         const user = searchResults[focusedIndex];
+    //         if (user) handleUserSelect(user);
+    //       }
+    //     }}
+    //     InputProps={{
+    //       startAdornment: (
+    //         <InputAdornment position="start">
+    //           <Search size={16} />
+    //         </InputAdornment>
+    //       )
+    //     }}
+    //     sx={{
+    //       mb: 2,
+    //       bgcolor: isDark ? 'grey.800' : 'white',
+    //       input: { color: isDark ? 'white' : 'black' }
+    //     }}
+    //   />
+
+    //   {/* Search Results Dropdown */}
+    //   {search.length > 0 && searchResults.length > 0 && (
+    //     <Box
+    //       sx={{
+    //         position: 'absolute',
+    //         top: inputRef.current?.offsetTop + (inputRef.current?.offsetHeight || 0) + 60,
+    //         left: inputRef.current?.offsetLeft || 0,
+    //         zIndex: 10,
+    //         bgcolor: isDark ? 'grey.900' : 'white',
+    //         minWidth: inputRef.current?.offsetWidth || 300,
+    //         maxHeight: 200,
+    //         overflowY: 'auto',
+    //         border: '1px solid #ccc',
+    //         borderRadius: 1,
+    //         boxShadow: 3
+    //       }}
+    //     >
+    //       {searchResults.map((user, index) => (
+    //         <Box
+    //           key={user._id}
+    //           ref={(el) => (itemRefs.current[user._id] = el)}
+    //           onClick={() => handleUserSelect(user)}
+    //           sx={{
+    //             p: 1,
+    //             display: 'flex',
+    //             alignItems: 'center',
+    //             cursor: 'pointer',
+    //             bgcolor: index === focusedIndex ? 'success.main' : 'transparent',
+    //             color: index === focusedIndex ? 'white' : 'inherit',
+    //             borderBottom: '1px solid #eee'
+    //           }}
+    //         >
+    //           <Avatar src={user.picture || './Darshan.png'} size={30} />
+    //           <Typography ml={1}>{user.username}</Typography>
+    //         </Box>
+    //       ))}
+    //     </Box>
+    //   )}
+
+    //   {/* Tabs */}
+    //   <Box
+    //     display={{ xs: 'none', sm: 'flex' }} // 👈 hidden on xs (mobile), flex from sm and up
+    //     justifyContent="space-between"
+    //     alignItems="center"
+    //     mb={1}
+    //   >
+    //     {/* <Typography variant="subtitle1">Messages</Typography> */}
+    //     <ChatFilters handleSort={handleSort} isDark={isDark} />
+    //   </Box>
+
+    //   {/* Contact List */}
+    //   <Box flex={1} overflow="auto" mb={2} minHeight={'100vh'} height={'100%'} maxHeight={'100%'}>
+    //     {loading ? (
+    //       Array.from({ length: 15 }).map((_, idx) => (
+    //         <Card key={idx} sx={{ mb: 1, bgcolor: isDark ? 'grey.900' : 'grey.100' }}>
+    //           <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+    //             <Skeleton variant="circular" width={40} height={40} />
+    //             <Box flex={1}>
+    //               <Skeleton width="60%" />
+    //               <Skeleton width="40%" />
+    //             </Box>
+    //           </CardContent>
+    //         </Card>
+    //       ))
+    //     ) : error ? (
+    //       <Typography color="error">Error fetching contacts</Typography>
+    //     ) : (
+    //       filteredUsers.map((user) => {
+    //         const unreadData = unreadMap[user?._id];
+    //         const isTyping = typingUsers.has(user?._id);
+    //         const isSelected = selectedClient?._id === user?._id;
+    //         // const time = parseTimestamp(unreadData)?.time;
+    //         // const date = parseTimestamp(unreadData)?.date;
+
+    //         return (
+    //           <Card
+    //             key={user._id}
+    //             onClick={() => onSelectChat(user)}
+    //             sx={{
+    //               mb: 1,
+    //               cursor: 'pointer',
+    //               bgcolor: isSelected ? 'GrayText' : isDark ? 'grey.800' : 'grey.200',
+    //               color: isSelected ? 'white' : isDark ? 'white' : 'black'
+    //             }}
+    //           >
+    //             <CardContent
+    //               sx={{
+    //                 display: 'flex',
+    //                 alignItems: 'center',
+    //                 gap: 2,
+    //                 width: '100%',
+    //                 p: 1.5
+    //               }}
+    //             >
+    //               {/* Avatar + online dot */}
+    //               <Box position="relative">
+    //                 <Avatar src={user?.picture || './Darshan.png'} sx={{ width: 40, height: 40 }} />
+    //                 <Box
+    //                   sx={{
+    //                     position: 'absolute',
+    //                     top: '70%',
+    //                     left: '75%',
+    //                     width: 10,
+    //                     height: 10,
+    //                     borderRadius: '50%',
+    //                     bgcolor: onlineUsers.has(user._id) ? '#00e575' : 'grey.400'
+    //                   }}
+    //                 />
+    //               </Box>
+
+    //               {/* Middle (username + last message) */}
+    //               <Box
+    //                 sx={{
+    //                   flex: 1,
+    //                   display: 'flex',
+    //                   flexDirection: 'column',
+    //                   alignItems: 'flex-start',
+    //                   overflow: 'hidden'
+    //                 }}
+    //               >
+    //                 <Typography fontWeight="bold" noWrap>
+    //                   {user.username}
+    //                 </Typography>
+    //                 <Typography
+    //                   variant="body2"
+    //                   color={isTyping ? '#00e575' : isDark ? 'white' : 'grey.800'}
+    //                   noWrap
+    //                   sx={{
+    //                     overflow: 'hidden',
+    //                     textOverflow: 'ellipsis',
+    //                     whiteSpace: 'nowrap'
+    //                   }}
+    //                 >
+    //                   {isTyping ? 'is typing...' : unreadData?.lastMessage || 'No messages'}
+    //                 </Typography>
+    //               </Box>
+
+    //               {/* Right (time + count) */}
+    //               <Box
+    //                 sx={{
+    //                   display: 'flex',
+    //                   flexDirection: 'column',
+    //                   alignItems: 'flex-end',
+    //                   minWidth: 50
+    //                 }}
+    //               >
+    //                 <Typography
+    //                   variant="caption"
+    //                   sx={{
+    //                     whiteSpace: 'nowrap',
+    //                     mb: 0.5
+    //                     // color: 'success.main'
+    //                   }}
+    //                 >
+    //                   {unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.time}
+    //                 </Typography>
+    //                 {unreadData?.count > 0 ? (
+    //                   <Box
+    //                     sx={{
+    //                       bgcolor: 'success.main',
+    //                       borderRadius: '50%',
+    //                       width: 20,
+    //                       height: 20,
+    //                       display: 'flex',
+    //                       alignItems: 'center',
+    //                       justifyContent: 'center',
+    //                       color: 'white',
+    //                       fontSize: 12
+    //                     }}
+    //                   >
+    //                     {unreadData.count}
+    //                   </Box>
+    //                 ) : (
+    //                   <Box
+    //                     color={isDark ? 'white' : 'grey.400'}
+    //                     sx={{
+    //                       // bgcolor: '',
+    //                       // borderRadius: '50%',
+    //                       // width: 20,
+    //                       // height: 20,
+    //                       display: 'flex',
+    //                       alignItems: 'center',
+    //                       justifyContent: 'center',
+    //                       fontSize: 12
+    //                     }}
+    //                   >
+    //                     {unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.date}
+    //                   </Box>
+    //                 )}
+    //               </Box>
+    //             </CardContent>
+    //           </Card>
+    //         );
+    //       })
+    //     )}
+    //   </Box>
+    // </Box>
     <Box
       sx={{
         maxHeight: '100vh',
@@ -109,179 +440,150 @@ const Sidebar = ({
         paddingLeft: 4
       }}
     >
-      {/* Header */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Box display="flex" alignItems="center" gap={1}>
-          {isCollapsible && (
+      {/* 🔥 Sticky Header + Search + Tabs */}
+      <Box
+        sx={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 20,
+          bgcolor: isDark ? '#1f1d1d' : '#f7fef2',
+          pb: 1
+        }}
+      >
+        {/* Header */}
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+          <Box display="flex" alignItems="center" gap={1}>
+            {isCollapsible && (
+              <IconButton
+                size="small"
+                onClick={() => setIsIconBarOpen((prev) => !prev)}
+                sx={{ color: '#00e575' }}
+              >
+                {isIconBarOpen ? <Close /> : <MenuIcon />}
+              </IconButton>
+            )}
+            <Typography variant="h6" sx={{ color: '#00e575', fontWeight: 'bold', pl: 1 }}>
+              JUSTCHAT
+            </Typography>
+          </Box>
+
+          <Box display="flex" gap={1} alignItems="center">
+            {/* More menu */}
             <IconButton
               size="small"
-              onClick={() => setIsIconBarOpen((prev) => !prev)}
+              onClick={(e) => setMenuAnchor(e.currentTarget)}
               sx={{ color: '#00e575' }}
             >
-              {isIconBarOpen ? <Close /> : <MenuIcon />}
+              <MoreVert />
             </IconButton>
-          )}
-          <Typography variant="h6" sx={{ color: '#00e575', fontWeight: 'bold', pl: 1 }}>
-            JUSTCHAT
-          </Typography>
+
+            <Menu
+              anchorEl={menuAnchor}
+              open={Boolean(menuAnchor)}
+              onClose={() => setMenuAnchor(null)}
+            >
+              <MenuItem
+                onClick={() => {
+                  setIsCreateGroupOpen(true);
+                  setMenuAnchor(null);
+                }}
+              >
+                <ListItemIcon>
+                  <GroupAdd fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Create Group" />
+              </MenuItem>
+
+              <MenuItem
+                onClick={() => {
+                  setMenuAnchor(null);
+                  console.log('Logout clicked'); // hook up logout handler here
+                }}
+              >
+                <ListItemIcon>
+                  <Logout fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Log Out" />
+              </MenuItem>
+            </Menu>
+
+            {/* Theme toggle */}
+            <Sun
+              style={{
+                color: !isDark ? '#00e575' : 'white'
+              }}
+              role="button"
+              onClick={isDark ? toggleTheme : undefined}
+            />
+            <Moon
+              role="button"
+              style={{
+                color: !isDark ? 'black' : '#00e575'
+              }}
+              onClick={!isDark ? toggleTheme : undefined}
+            />
+          </Box>
         </Box>
 
-        <Box display="flex" gap={1} alignItems="center">
-          {/* More menu */}
-          <IconButton
-            size="small"
-            onClick={(e) => setMenuAnchor(e.currentTarget)}
-            sx={{ color: '#00e575' }}
-          >
-            <MoreVert />
-          </IconButton>
+        {/* ✅ Create Group Drawer */}
+        <CreateGroupDrawer
+          open={isCreateGroupOpen}
+          onClose={() => setIsCreateGroupOpen(false)}
+          isDark={isDark}
+        />
 
-          <Menu
-            anchorEl={menuAnchor}
-            open={Boolean(menuAnchor)}
-            onClose={() => setMenuAnchor(null)}
-          >
-            <MenuItem
-              onClick={() => {
-                setIsCreateGroupOpen(true);
-                setMenuAnchor(null);
-              }}
-            >
-              <ListItemIcon>
-                <GroupAdd fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Create Group" />
-            </MenuItem>
-
-            <MenuItem
-              onClick={() => {
-                setMenuAnchor(null);
-                console.log('Logout clicked'); // hook up logout handler here
-              }}
-            >
-              <ListItemIcon>
-                <Logout fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Log Out" />
-            </MenuItem>
-          </Menu>
-
-          {/* Theme toggle */}
-          <Sun
-            style={{
-              color: !isDark ? '#00e575' : 'white'
-            }}
-            role="button"
-            onClick={isDark ? toggleTheme : undefined}
-          />
-          <Moon
-            role="button"
-            style={{
-              color: !isDark ? 'black' : '#00e575'
-            }}
-            onClick={!isDark ? toggleTheme : undefined}
-          />
-        </Box>
-      </Box>
-
-      {/* ✅ Create Group Drawer */}
-      <CreateGroupDrawer
-        open={isCreateGroupOpen}
-        onClose={() => setIsCreateGroupOpen(false)}
-        isDark={isDark}
-      />
-
-      {/* Search Bar */}
-      <TextField
-        inputRef={inputRef}
-        size="small"
-        fullWidth
-        variant="outlined"
-        placeholder="Search..."
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value);
-          setFocusedIndex(0);
-        }}
-        onKeyDown={(e) => {
-          if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            setFocusedIndex((prev) => (prev + 1) % searchResults.length);
-          } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            setFocusedIndex((prev) => (prev === 0 ? searchResults.length - 1 : prev - 1));
-          } else if (e.key === 'Enter') {
-            e.preventDefault();
-            const user = searchResults[focusedIndex];
-            if (user) handleUserSelect(user);
-          }
-        }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Search size={16} />
-            </InputAdornment>
-          )
-        }}
-        sx={{
-          mb: 2,
-          bgcolor: isDark ? 'grey.800' : 'white',
-          input: { color: isDark ? 'white' : 'black' }
-        }}
-      />
-
-      {/* Search Results Dropdown */}
-      {search.length > 0 && searchResults.length > 0 && (
-        <Box
-          sx={{
-            position: 'absolute',
-            top: inputRef.current?.offsetTop + (inputRef.current?.offsetHeight || 0) + 60,
-            left: inputRef.current?.offsetLeft || 0,
-            zIndex: 10,
-            bgcolor: isDark ? 'grey.900' : 'white',
-            minWidth: inputRef.current?.offsetWidth || 300,
-            maxHeight: 200,
-            overflowY: 'auto',
-            border: '1px solid #ccc',
-            borderRadius: 1,
-            boxShadow: 3
+        {/* Search Bar */}
+        <TextField
+          inputRef={inputRef}
+          size="small"
+          fullWidth
+          variant="outlined"
+          placeholder="Search..."
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setFocusedIndex(0);
           }}
-        >
-          {searchResults.map((user, index) => (
-            <Box
-              key={user._id}
-              ref={(el) => (itemRefs.current[user._id] = el)}
-              onClick={() => handleUserSelect(user)}
-              sx={{
-                p: 1,
-                display: 'flex',
-                alignItems: 'center',
-                cursor: 'pointer',
-                bgcolor: index === focusedIndex ? 'success.main' : 'transparent',
-                color: index === focusedIndex ? 'white' : 'inherit',
-                borderBottom: '1px solid #eee'
-              }}
-            >
-              <Avatar src={user.picture || './Darshan.png'} size={30} />
-              <Typography ml={1}>{user.username}</Typography>
-            </Box>
-          ))}
-        </Box>
-      )}
+          onKeyDown={(e) => {
+            if (e.key === 'ArrowDown') {
+              e.preventDefault();
+              setFocusedIndex((prev) => (prev + 1) % searchResults.length);
+            } else if (e.key === 'ArrowUp') {
+              e.preventDefault();
+              setFocusedIndex((prev) => (prev === 0 ? searchResults.length - 1 : prev - 1));
+            } else if (e.key === 'Enter') {
+              e.preventDefault();
+              const user = searchResults[focusedIndex];
+              if (user) handleUserSelect(user);
+            }
+          }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search size={16} />
+              </InputAdornment>
+            )
+          }}
+          sx={{
+            mb: 2,
+            bgcolor: isDark ? 'grey.800' : 'white',
+            input: { color: isDark ? 'white' : 'black' }
+          }}
+        />
 
-      {/* Tabs */}
-      <Box
-        display={{ xs: 'none', sm: 'flex' }} // 👈 hidden on xs (mobile), flex from sm and up
-        justifyContent="space-between"
-        alignItems="center"
-        mb={1}
-      >
-        {/* <Typography variant="subtitle1">Messages</Typography> */}
-        <ChatFilters handleSort={handleSort} isDark={isDark} />
+        {/* 🔥 Tabs (now sticky as well) */}
+        <Box
+          display={{ xs: 'none', sm: 'flex' }}
+          justifyContent="space-between"
+          alignItems="center"
+          mb={1}
+        >
+          <ChatFilters handleSort={handleSort} isDark={isDark} />
+        </Box>
       </Box>
 
-      {/* Contact List */}
-      <Box flex={1} overflow="auto" mb={2} minHeight={'100vh'} height={'100%'} maxHeight={'100%'}>
+      {/* 🔽 Contact List stays scrollable */}
+      <Box flex={1} overflow="auto" mb={2}>
         {loading ? (
           Array.from({ length: 15 }).map((_, idx) => (
             <Card key={idx} sx={{ mb: 1, bgcolor: isDark ? 'grey.900' : 'grey.100' }}>
@@ -301,8 +603,6 @@ const Sidebar = ({
             const unreadData = unreadMap[user?._id];
             const isTyping = typingUsers.has(user?._id);
             const isSelected = selectedClient?._id === user?._id;
-            // const time = parseTimestamp(unreadData)?.time;
-            // const date = parseTimestamp(unreadData)?.date;
 
             return (
               <Card
@@ -381,7 +681,6 @@ const Sidebar = ({
                       sx={{
                         whiteSpace: 'nowrap',
                         mb: 0.5
-                        // color: 'success.main'
                       }}
                     >
                       {unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.time}
@@ -406,10 +705,6 @@ const Sidebar = ({
                       <Box
                         color={isDark ? 'white' : 'grey.400'}
                         sx={{
-                          // bgcolor: '',
-                          // borderRadius: '50%',
-                          // width: 20,
-                          // height: 20,
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
