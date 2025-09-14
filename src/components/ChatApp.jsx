@@ -737,7 +737,7 @@ const ChatApp = () => {
                 pic={data?.auth}
                 selectedUser={selectedChat}
                 onlineUsers={onlineUsers}
-                showBackButton={isMobile || window.innerWidth < 992}
+                showBackButton={isMobile || window.innerWidth < 1220}
                 onBack={() => setMobileView('sidebar')}
               />
               <ChatBody
