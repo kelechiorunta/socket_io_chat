@@ -128,9 +128,9 @@ import { useState } from 'react';
 import Profile from './Profile';
 import { Drawer } from '@mui/material';
 
-const IconBar = ({ profile, onUpdateProfile, isMobile, isOpen, onClose }) => {
-  const { theme, toggleTheme } = useTheme();
-  const isDark = theme === 'dark';
+const IconBar = ({ profile, onUpdateProfile, isMobile, isOpen, onClose, isDark }) => {
+  const { toggleTheme } = useTheme();
+  // const isDark = theme === 'dark';
   const navigate = useNavigate();
   const [showProfile, setShowProfile] = useState(false);
 
@@ -166,7 +166,8 @@ const IconBar = ({ profile, onUpdateProfile, isMobile, isOpen, onClose }) => {
       onClose={onClose}
       PaperProps={{
         sx: {
-          width: isMobile ? '70%' : 80,
+          width: 'max-content', //isMobile ? '70%' : 80,
+          maxWidth: '60px',
           bgcolor: bgColor,
           color: textColor,
           borderRight: `1px solid ${borderColor}`,
