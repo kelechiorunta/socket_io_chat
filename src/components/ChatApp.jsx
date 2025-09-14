@@ -602,7 +602,7 @@ const ChatApp = () => {
   // 🔥 Watch window resize and update `isMobile`
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 992);
+      setIsMobile(window.innerWidth < 1129);
       setIsCollapsible(window.innerWidth < 400);
     };
     window.addEventListener('resize', handleResize);
