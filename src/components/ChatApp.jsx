@@ -635,7 +635,7 @@ const ChatApp = () => {
     <Container
       fluid
       className={`${isDark ? 'bg-dark text-light' : 'bg-light text-black'} p-0`}
-      style={{ height: isIconBarOpen ? '100vh' : '90vh', overflow: 'hidden' }}
+      style={{ height: isIconBarOpen ? '100vh' : '97vh', overflow: 'hidden' }}
     >
       <SocketNotifications socketInstance={socket} />
 
@@ -661,6 +661,7 @@ const ChatApp = () => {
               onClose={() => {
                 setIsIconBarOpen(false);
               }}
+              isDark={isDark}
             />
           </Col>
         )}
