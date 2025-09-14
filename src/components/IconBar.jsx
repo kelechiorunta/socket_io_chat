@@ -341,7 +341,7 @@ const IconBar = ({ profile, onUpdateProfile, isMobile, isOpen, onClose, isDark }
             variant="outline-secondary"
             className="d-flex justify-content-center align-items-center"
             style={{ width: 36, height: 36, borderRadius: '50%' }}
-            onClick={toggleTheme}
+            onClick={(prev) => toggleTheme(!prev)}
           >
             {isDark ? <Sun size={18} /> : <Moon size={18} />}
           </Button>
