@@ -298,7 +298,7 @@ const IconBar = ({ profile, onUpdateProfile, isMobile, isOpen, onClose, isDark }
       className="d-flex flex-column justify-content-between align-items-center p-2"
       style={{
         height: '100vh',
-        minWidth: '60px',
+        // minWidth: '60px',
         maxWidth: '80px',
         backgroundColor: bgColor,
         color: textColor,
