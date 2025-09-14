@@ -652,7 +652,16 @@ const ChatApp = () => {
               mobileView === 'chat' ? 'd-none' : 'd-block d-lg-block'
             }`}
           >
-            <IconBar isMobile={isMobile} profile={signedUser} onUpdateProfile={setSignedUser} />
+            {/* <IconBar isMobile={isMobile} profile={signedUser} onUpdateProfile={setSignedUser} /> */}
+            <IconBar
+              profile={signedUser}
+              onUpdateProfile={setSignedUser}
+              isMobile={isMobile}
+              isOpen={isIconBarOpen}
+              onClose={() => {
+                setIsIconBarOpen(false);
+              }}
+            />
           </Col>
         )}
         {/* <Col
