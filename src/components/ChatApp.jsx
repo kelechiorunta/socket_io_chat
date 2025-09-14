@@ -647,8 +647,8 @@ const ChatApp = () => {
             sm={mobileView === 'chat' ? 0 : 1}
             md={1}
             lg={1}
-            style={{ position: 'sticky', maxWidth: 60 }}
-            className={`d-flex flex-column justify-content-center align-items-center p-2 border-end chat-iconbar ${
+            style={{ position: 'sticky', maxWidth: 60, padding: 2 }}
+            className={`d-flex justify-content-center p-2 border-end chat-iconbar ${
               mobileView === 'chat' ? 'd-none' : 'd-block d-lg-block'
             }`}
           >
