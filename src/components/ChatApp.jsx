@@ -656,7 +656,7 @@ const ChatApp = () => {
             <IconBar
               profile={signedUser}
               onUpdateProfile={setSignedUser}
-              isMobile={isMobile}
+              isMobile={isCollapsible}
               isOpen={isIconBarOpen}
               onClose={() => {
                 setIsIconBarOpen(false);
