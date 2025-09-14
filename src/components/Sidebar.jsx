@@ -3,21 +3,19 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   TextField,
   InputAdornment,
-  // Button,
-  // ButtonGroup,
   Card,
   CardContent,
   Skeleton,
   Typography,
   IconButton,
-  // Divider,
-  Box,
+  Menu,
   MenuItem,
+  ListItemIcon,
   ListItemText,
-  ListItemIcon
+  Box
 } from '@mui/material';
-import { Menu, Close, GroupAdd, Logout, MoreVert } from '@mui/icons-material';
-import { Search, Sun, Moon, MenuIcon } from 'lucide-react';
+import { Menu as MenuIcon, Close, MoreVert, GroupAdd, Logout } from '@mui/icons-material';
+import { Search, Sun, Moon } from 'lucide-react';
 import Avatar from './Avatar';
 import { useTheme } from './ThemeContext';
 import { parseTimestamp } from '../helper/helper';
@@ -207,7 +205,7 @@ const Sidebar = ({
           {/* Theme toggle */}
           <Sun
             style={{
-              backgroundColor: !isDark ? 'transparent' : '#00e575',
+              // backgroundColor: !isDark ? 'transparent' : '#00e575',
               color: !isDark ? '#00e575' : 'transparent'
             }}
             role="button"
@@ -216,8 +214,8 @@ const Sidebar = ({
           <Moon
             role="button"
             style={{
-              backgroundColor: !isDark ? 'transparent' : '#00e575',
-              color: !isDark ? '#00e575' : 'transparent'
+              // backgroundColor: !isDark ? 'transparent' : '#00e575',
+              color: !isDark ? 'transparent' : '#00e575'
             }}
             onClick={!isDark ? toggleTheme : undefined}
           />
