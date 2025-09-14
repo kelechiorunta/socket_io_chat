@@ -600,7 +600,7 @@ const ChatApp = () => {
   // // };
 
   const [mobileView, setMobileView] = useState('sidebar'); // start on sidebar
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1129);
   const [isCollapsible, setIsCollapsible] = useState(window.innerWidth < 400);
 
   // 🔥 Watch window resize and update `isMobile`
