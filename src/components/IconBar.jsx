@@ -327,7 +327,7 @@ const IconBar = ({ profile, onUpdateProfile, isMobile, isOpen, onClose, isDark }
                 }`}
               >
                 <Icon size={20} />
-                <small style={{ fontSize: '0.7rem' }}>{!isMobile && label}</small>
+                {/* <small style={{ fontSize: '0.7rem' }}>{!isMobile && label}</small> */}
               </Nav.Link>
             </OverlayTrigger>
           ))}
