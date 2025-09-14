@@ -11,14 +11,18 @@ import {
   Typography,
   IconButton,
   // Divider,
-  Box
+  Box,
+  MenuItem,
+  ListItemText,
+  ListItemIcon
 } from '@mui/material';
-import { Menu, Close } from '@mui/icons-material';
-import { Search, Sun, Moon } from 'lucide-react';
+import { Menu, Close, GroupAdd, Logout, MoreVert } from '@mui/icons-material';
+import { Search, Sun, Moon, MenuIcon } from 'lucide-react';
 import Avatar from './Avatar';
 import { useTheme } from './ThemeContext';
 import { parseTimestamp } from '../helper/helper';
 import ChatFilters from './ChatFilters';
+import CreateGroupDrawer from './CreateGroupDrawer';
 // import AnimateText from './AnimateText/AnimateText';
 
 const Sidebar = ({
@@ -89,6 +93,9 @@ const Sidebar = ({
     const el = itemRefs.current[user._id];
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
+  // menu + drawer state
+  const [menuAnchor, setMenuAnchor] = useState(null);
+  const [isCreateGroupOpen, setIsCreateGroupOpen] = useState(false);
 
   return (
     <Box
@@ -104,7 +111,7 @@ const Sidebar = ({
         paddingLeft: 4
       }}
     >
-      {/* Header */}
+      {/* Header
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
         <Box display="flex" alignItems="center" gap={1}>
           {isCollapsible && (
@@ -122,19 +129,107 @@ const Sidebar = ({
         </Box>
 
         <Box display="flex" gap={1}>
-          <Sun role="button" onClick={isDark ? toggleTheme : undefined} />
-          <Moon role="button" onClick={!isDark ? toggleTheme : undefined} />
-        </Box>
-      </Box>
-      {/* <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="h6" sx={{ color: '#00e575', fontWeight: 'bold', paddingLeft: 2 }}>
-          JUSTCHAT
-        </Typography>
-        <Box display="flex" gap={1}>
-          <Sun role="button" onClick={isDark ? toggleTheme : undefined} />
-          <Moon role="button" onClick={!isDark ? toggleTheme : undefined} />
+          <Sun
+            style={{
+              backgroundColor: !isDark ? 'transparent' : '#00e575',
+              color: !isDark ? '#00e575' : 'transparent'
+            }}
+            role="button"
+            onClick={isDark ? toggleTheme : undefined}
+          />
+          <Moon
+            role="button"
+            style={{
+              backgroundColor: !isDark ? 'transparent' : '#00e575',
+              color: !isDark ? '#00e575' : 'transparent'
+            }}
+            onClick={!isDark ? toggleTheme : undefined}
+          />
         </Box>
       </Box> */}
+      {/* Header */}
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        <Box display="flex" alignItems="center" gap={1}>
+          {isCollapsible && (
+            <IconButton
+              size="small"
+              onClick={() => setIsIconBarOpen((prev) => !prev)}
+              sx={{ color: '#00e575' }}
+            >
+              {isIconBarOpen ? <Close /> : <MenuIcon />}
+            </IconButton>
+          )}
+          <Typography variant="h6" sx={{ color: '#00e575', fontWeight: 'bold', pl: 1 }}>
+            JUSTCHAT
+          </Typography>
+        </Box>
+
+        <Box display="flex" gap={1} alignItems="center">
+          {/* More menu */}
+          <IconButton
+            size="small"
+            onClick={(e) => setMenuAnchor(e.currentTarget)}
+            sx={{ color: '#00e575' }}
+          >
+            <MoreVert />
+          </IconButton>
+
+          <Menu
+            anchorEl={menuAnchor}
+            open={Boolean(menuAnchor)}
+            onClose={() => setMenuAnchor(null)}
+          >
+            <MenuItem
+              onClick={() => {
+                setIsCreateGroupOpen(true);
+                setMenuAnchor(null);
+              }}
+            >
+              <ListItemIcon>
+                <GroupAdd fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Create Group" />
+            </MenuItem>
+
+            <MenuItem
+              onClick={() => {
+                setMenuAnchor(null);
+                console.log('Logout clicked'); // hook up logout handler here
+              }}
+            >
+              <ListItemIcon>
+                <Logout fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Log Out" />
+            </MenuItem>
+          </Menu>
+
+          {/* Theme toggle */}
+          <Sun
+            style={{
+              backgroundColor: !isDark ? 'transparent' : '#00e575',
+              color: !isDark ? '#00e575' : 'transparent'
+            }}
+            role="button"
+            onClick={isDark ? toggleTheme : undefined}
+          />
+          <Moon
+            role="button"
+            style={{
+              backgroundColor: !isDark ? 'transparent' : '#00e575',
+              color: !isDark ? '#00e575' : 'transparent'
+            }}
+            onClick={!isDark ? toggleTheme : undefined}
+          />
+        </Box>
+      </Box>
+
+      {/* ✅ Create Group Drawer */}
+      <CreateGroupDrawer
+        open={isCreateGroupOpen}
+        onClose={() => setIsCreateGroupOpen(false)}
+        isDark={isDark}
+      />
 
       {/* Search Bar */}
       <TextField
@@ -220,31 +315,9 @@ const Sidebar = ({
         justifyContent="space-between"
         alignItems="center"
         mb={1}
-        // bgcolor={isDark ? 'grey.500' : 'white'}
-        // color={isDark && 'white'}
       >
         {/* <Typography variant="subtitle1">Messages</Typography> */}
         <ChatFilters handleSort={handleSort} isDark={isDark} />
-        {/* <ButtonGroup size="small" variant="outlined">
-          <Button variant={tab === 'all' ? 'contained' : 'outlined'} onClick={() => setTab('all')}>
-            All Chats
-          </Button>
-          <Button
-            variant={tab === 'groups' ? 'contained' : 'outlined'}
-            onClick={() => setTab('groups')}
-          >
-            Groups
-          </Button>
-          <Button
-            variant={tab === 'contacts' ? 'contained' : 'outlined'}
-            onClick={() => {
-              setTab('contacts');
-              handleSort();
-            }}
-          >
-            Contacts
-          </Button>
-        </ButtonGroup> */}
       </Box>
 
       {/* Contact List */}
@@ -393,33 +466,6 @@ const Sidebar = ({
           })
         )}
       </Box>
-
-      {/* Calls Section */}
-      {/* <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="subtitle1">Calls</Typography>
-        <Box display="flex" alignItems="center" gap={1} color="text.secondary">
-          <Plus size={16} /> <Typography variant="caption">New Meet</Typography>
-        </Box>
-      </Box>
-
-      <Divider /> */}
-
-      {/* Footer */}
-      {/* <Box mt="auto" pt={2}>
-        <Box display="flex" alignItems="center" gap={2} mb={1}>
-          <Avatar src={pic?.picture} size={32} />
-          <Typography variant="caption" fontStyle="italic">
-            <AnimateText
-              textHeight="auto"
-              textSize="10px"
-              texts={[`Welcome, ${pic.username}`, `Click on the avatar to update profile`]}
-            />
-          </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gap={1} color="text.secondary">
-          <Settings size={16} /> <Typography variant="caption">Settings</Typography>
-        </Box>
-      </Box> */}
     </Box>
   );
 };
