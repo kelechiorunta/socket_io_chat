@@ -724,7 +724,7 @@ const ChatApp = () => {
             maxWidth: '100vw'
           }}
         >
-          {selectedChat && messages && chatCache[selectedChat?._id] ? (
+          {selectedChat ? (
             <>
               <ChatHeader
                 isDark={isDark}
