@@ -12,6 +12,14 @@ type Mutation {
   clearUnread(senderId: ID!, recipientId: ID!): Boolean
   updateProfile(input: UpdateProfileInput!): UpdateProfileResponse!
   deleteMessage(messageId: ID!, senderId: ID!): DeleteMessageResponse!
+  createGroup(name: String!, memberIds: [ID!]!): Group!
+}
+
+type Group {
+  id: ID!
+  name: String!
+  members: [User!]!
+  createdAt: String
 }
 
 type ChatHistoryResponse {
