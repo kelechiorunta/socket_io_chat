@@ -300,7 +300,6 @@ const IconBar = ({ profile, onUpdateProfile, isMobile, isOpen, onClose, isDark }
         height: '100vh',
         // minWidth: '60px',
         // maxWidth: '80px',
-        paddingLeft: 2,
         backgroundColor: bgColor,
         color: textColor,
         borderRight: `1px solid ${borderColor}`
