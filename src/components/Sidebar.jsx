@@ -109,42 +109,6 @@ const Sidebar = ({
         paddingLeft: 4
       }}
     >
-      {/* Header
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Box display="flex" alignItems="center" gap={1}>
-          {isCollapsible && (
-            <IconButton
-              size="small"
-              onClick={() => setIsIconBarOpen((prev) => !prev)}
-              sx={{ color: '#00e575' }}
-            >
-              {isIconBarOpen ? <Close /> : <Menu />}
-            </IconButton>
-          )}
-          <Typography variant="h6" sx={{ color: '#00e575', fontWeight: 'bold', pl: 1 }}>
-            JUSTCHAT
-          </Typography>
-        </Box>
-
-        <Box display="flex" gap={1}>
-          <Sun
-            style={{
-              backgroundColor: !isDark ? 'transparent' : '#00e575',
-              color: !isDark ? '#00e575' : 'transparent'
-            }}
-            role="button"
-            onClick={isDark ? toggleTheme : undefined}
-          />
-          <Moon
-            role="button"
-            style={{
-              backgroundColor: !isDark ? 'transparent' : '#00e575',
-              color: !isDark ? '#00e575' : 'transparent'
-            }}
-            onClick={!isDark ? toggleTheme : undefined}
-          />
-        </Box>
-      </Box> */}
       {/* Header */}
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
         <Box display="flex" alignItems="center" gap={1}>
@@ -205,8 +169,7 @@ const Sidebar = ({
           {/* Theme toggle */}
           <Sun
             style={{
-              // backgroundColor: !isDark ? 'transparent' : '#00e575',
-              color: !isDark ? '#00e575' : 'transparent'
+              color: !isDark ? '#00e575' : 'white'
             }}
             role="button"
             onClick={isDark ? toggleTheme : undefined}
@@ -214,8 +177,7 @@ const Sidebar = ({
           <Moon
             role="button"
             style={{
-              // backgroundColor: !isDark ? 'transparent' : '#00e575',
-              color: !isDark ? 'transparent' : '#00e575'
+              color: !isDark ? 'black' : '#00e575'
             }}
             onClick={!isDark ? toggleTheme : undefined}
           />
