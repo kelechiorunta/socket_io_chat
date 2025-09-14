@@ -444,17 +444,17 @@ const resolvers = {
         console.error('❌ markMessagesAsRead error:', err);
         return false;
       }
+    },
+    createGroup: async (_, { name, memberIds }, { user }) => {
+      if (!user) throw new Error('Unauthorized');
+
+      // Ensure the current user is part of the group
+      const uniqueMemberIds = Array.from(new Set([user.id, ...memberIds]));
+
+      const group = await Group.create({ name, members: uniqueMemberIds });
+
+      return await group.populate('members');
     }
-  },
-  createGroup: async (_, { name, memberIds }, { user }) => {
-    if (!user) throw new Error('Unauthorized');
-
-    // Ensure the current user is part of the group
-    const uniqueMemberIds = Array.from(new Set([user.id, ...memberIds]));
-
-    const group = await Group.create({ name, members: uniqueMemberIds });
-
-    return await group.populate('members');
   }
 };
 
