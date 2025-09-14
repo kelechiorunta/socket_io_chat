@@ -472,7 +472,7 @@ const ChatApp = () => {
 
     setSelectedChat(chatUser);
 
-    // ✅ Clear unread instantly
+    // ✅ Update unread map instantly
     setUnreadMap((prev) => {
       const updated = { ...prev };
       delete updated[chatUser._id];
@@ -484,7 +484,7 @@ const ChatApp = () => {
     const knownOnlineUserId = onlineIds.find((id) => id === currentUser?._id);
     const receiverId = storedUser?._id || knownOnlineUserId || currentUser?._id;
 
-    // ✅ Mark as read (non-blocking)
+    // ✅ Mark unread as read in background (don’t block UI)
     clearUnread({
       variables: { senderId: chatUser._id, recipientId: receiverId }
     }).catch(console.error);
@@ -493,36 +493,37 @@ const ChatApp = () => {
       socket.emit('markAsRead', { senderId: chatUser._id, receiverId });
     }
 
-    // ✅ Show cached messages instantly
+    // ✅ 1. Show cached messages instantly (if available)
     if (chatCache[chatUser._id]) {
       setMessages(chatCache[chatUser._id].messages);
       setNotifiedUser(chatCache[chatUser._id].notifiedUser);
     } else {
-      setMessages([]); // temporary placeholder
+      setMessages([]); // placeholder while loading
     }
 
-    // ✅ Fetch recent messages only (streaming/pagination)
+    // ✅ 2. Refresh from server in background
     try {
       const { data } = await fetchChats({
         variables: {
           userId: chatUser._id,
           currentUserId: currentUser._id,
           limit: 30, // fetch only latest 30
-          cursor: null // null means latest
-        },
-        fetchPolicy: 'cache-and-network'
+          cursor: null
+        }, // null means latest},
+        fetchPolicy: 'cache-and-network' // fast + background refresh
       });
 
       if (data?.fetch_chats) {
-        const { messages, notifiedUser, nextCursor } = data.fetch_chats;
+        const { messages, notifiedUser } = data.fetch_chats;
 
+        // Update UI
         setMessages(messages);
         setNotifiedUser(notifiedUser);
 
-        // Cache for instant reload
+        // Cache result for instant future loads
         setChatCache((prev) => ({
           ...prev,
-          [chatUser._id]: { messages, notifiedUser, nextCursor }
+          [chatUser._id]: { messages, notifiedUser }
         }));
       }
     } catch (error) {
@@ -600,13 +601,13 @@ const ChatApp = () => {
   // // };
 
   const [mobileView, setMobileView] = useState('sidebar'); // start on sidebar
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 1129);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1220);
   const [isCollapsible, setIsCollapsible] = useState(window.innerWidth < 400);
 
   // 🔥 Watch window resize and update `isMobile`
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 1129);
+      setIsMobile(window.innerWidth < 1220);
       setIsCollapsible(window.innerWidth < 400);
     };
     window.addEventListener('resize', handleResize);
