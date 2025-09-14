@@ -91,12 +91,18 @@
 
 import React, { useState } from 'react';
 import { Box, Avatar, Typography, Tooltip, IconButton } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import ProgressiveImage from './ProgressiveImage';
 
 const HoverableMessage = ({ msg, isClient, pic, chat, onDelete, onEdit }) => {
   const [hovered, setHovered] = useState(false);
+  const theme = useTheme();
+
+  // bubble colors
+  const clientColor = theme.palette.primary.main;
+  const otherColor = theme.palette.grey[700];
 
   return (
     <Box
@@ -121,7 +127,7 @@ const HoverableMessage = ({ msg, isClient, pic, chat, onDelete, onEdit }) => {
       <Box
         component="div"
         sx={{
-          bgcolor: isClient ? 'primary.main' : 'grey.700',
+          bgcolor: isClient ? clientColor : otherColor,
           color: 'white',
           borderRadius: 3,
           p: 1.5,
@@ -131,26 +137,28 @@ const HoverableMessage = ({ msg, isClient, pic, chat, onDelete, onEdit }) => {
           '&::before': {
             content: '""',
             position: 'absolute',
-            bottom: 0,
+            bottom: 4, // slight overlap inside
             width: 0,
             height: 0,
-            border: '10px solid transparent',
+            borderStyle: 'solid',
             ...(isClient
               ? {
-                  right: -10,
-                  borderLeftColor: 'primary.main',
-                  borderTop: 0
+                  right: -8,
+                  borderWidth: '8px 0 8px 10px',
+                  borderColor: `transparent transparent transparent ${clientColor}`
                 }
               : {
-                  left: -10,
-                  borderRightColor: '#616161', // grey.700
-                  borderTop: 0
+                  left: -8,
+                  borderWidth: '8px 10px 8px 0',
+                  borderColor: `transparent ${otherColor} transparent transparent`
                 })
           }
         }}
       >
+        {/* Text */}
         {msg.content && <Typography variant="body2">{msg.content}</Typography>}
 
+        {/* Image */}
         {msg.hasImage && (
           <ProgressiveImage
             placeholderSrc={msg.placeholderUrl}
@@ -170,10 +178,13 @@ const HoverableMessage = ({ msg, isClient, pic, chat, onDelete, onEdit }) => {
           <Box
             sx={{
               position: 'absolute',
-              top: -32,
-              right: 0,
+              bottom: -28, // align near bottom like WhatsApp
+              right: 4,
               display: 'flex',
-              gap: 1
+              gap: 0.5,
+              bgcolor: 'rgba(0,0,0,0.4)',
+              borderRadius: 2,
+              p: 0.3
             }}
           >
             <Tooltip title="Edit">
@@ -181,7 +192,6 @@ const HoverableMessage = ({ msg, isClient, pic, chat, onDelete, onEdit }) => {
                 <EditIcon fontSize="small" />
               </IconButton>
             </Tooltip>
-
             <Tooltip title="Delete">
               <IconButton size="small" color="error" onClick={() => onDelete?.(msg._id, pic?._id)}>
                 <DeleteIcon fontSize="small" />
