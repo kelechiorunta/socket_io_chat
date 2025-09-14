@@ -648,7 +648,7 @@ const ChatApp = () => {
             md={1}
             // lg={1}
             lg
-            style={{ position: 'sticky', maxWidth: 60, padding: 2, paddingLeft: 2 }}
+            style={{ position: 'sticky', padding: 2, paddingLeft: 2 }}
             className={`p-2 border-end chat-iconbar ${
               mobileView === 'chat' ? 'd-none' : 'd-block d-lg-block'
             }`}
