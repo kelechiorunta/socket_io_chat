@@ -182,6 +182,7 @@
 
 import Chat from './model/Chat.js';
 import ChatMessage from './model/ChatMessage.js';
+import Group from './model/Group.js';
 import UnreadMsg from './model/UnreadMsg.js';
 import User from './model/User.js';
 
@@ -198,14 +199,6 @@ const resolvers = {
   Query: {
     users: async (_, args, context) => {
       if (!context?.user) return [];
-
-      // if (context.ioInstance && context.user) {
-      //   context.ioInstance.emit('LoggingIn', {
-      //     status: 'ok',
-      //     loggedInUser: context.user
-      //   });
-      //   console.log('loggingin');
-      // }
 
       try {
         const users = await User.find({ _id: { $ne: context.user._id } });
@@ -318,42 +311,6 @@ const resolvers = {
         throw new Error('Failed to fetch chat history');
       }
     }
-    // fetch_chats: async (_, { userId, currentUserId }) => {
-    //   try {
-    //     // ✅ Fetch sender and receiver messages
-    //     const messages = await ChatMessage.find({
-    //       $or: [
-    //         { sender: userId, receiver: currentUserId },
-    //         { sender: currentUserId, receiver: userId }
-    //       ]
-    //     })
-    //       .sort({ createdAt: 1 }) // oldest → newest
-    //       .populate('sender', '_id username picture')
-    //       .populate('receiver', '_id username picture');
-
-    //     // ✅ Optionally fetch "notifiedUser"
-    //     const notifiedUser = await User.findById(userId);
-
-    //     // ✅ Transform messages to include imageUrl from GridFS
-    //     const enhancedMessages = messages.map((msg) => ({
-    //       ...msg.toObject(),
-    //       imageUrl: msg.imageFileId
-    //         ? `https://socketiochat-production.up.railway.app/chat-pictures/${msg.imageFileId.toString()}?t=${Date.now()}`
-    //         : null,
-    //       placeholderUrl: msg.placeholderImgId
-    //         ? `https://socketiochat-production.up.railway.app/chat-pictures/${msg.placeholderImgId.toString()}?t=${Date.now()}`
-    //         : null
-    //     }));
-
-    //     return {
-    //       messages: enhancedMessages,
-    //       notifiedUser
-    //     };
-    //   } catch (err) {
-    //     console.error('❌ fetch_chats error:', err);
-    //     throw new Error('Failed to fetch chat history');
-    //   }
-    // }
   },
 
   Mutation: {
@@ -402,10 +359,6 @@ const resolvers = {
         if (input.email) {
           const existingEmailUser = await User.findOne({ email: input.email });
 
-          // // If the email exists and doesn't belong to the current user, block it
-          // if (existingEmailUser && existingEmailUser._id.toString() !== user._id.toString()) {
-          //   throw new Error("Email is already taken by another user");
-          // }
           if (existingEmailUser) {
             const updated = await User.findByIdAndUpdate(existingEmailUser._id, input, {
               new: true,
@@ -492,6 +445,16 @@ const resolvers = {
         return false;
       }
     }
+  },
+  createGroup: async (_, { name, memberIds }, { user }) => {
+    if (!user) throw new Error('Unauthorized');
+
+    // Ensure the current user is part of the group
+    const uniqueMemberIds = Array.from(new Set([user.id, ...memberIds]));
+
+    const group = await Group.create({ name, members: uniqueMemberIds });
+
+    return await group.populate('members');
   }
 };
 
