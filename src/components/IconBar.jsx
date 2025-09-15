@@ -380,7 +380,12 @@ const IconBar = ({ profile, onUpdateProfile, isMobile, isOpen, onClose, isDark }
 
   // 🔑 Render Drawer for mobile, static sidebar for desktop
   return isMobile ? (
-    <Drawer anchor="left" open={isOpen} onClose={onClose}>
+    <Drawer
+      style={{ maxWidth: 60, padding: 2, display: 'flex', justifyContent: 'center' }}
+      anchor="left"
+      open={isOpen}
+      onClose={onClose}
+    >
       {content}
     </Drawer>
   ) : (
