@@ -299,7 +299,7 @@ const IconBar = ({ profile, onUpdateProfile, isMobile, isOpen, onClose, isDark }
       style={{
         height: '100vh',
         // minWidth: '60px',
-        // maxWidth: '80px',
+        maxWidth: '60px',
         // paddingLeft: 2,
         backgroundColor: bgColor,
         color: textColor,
