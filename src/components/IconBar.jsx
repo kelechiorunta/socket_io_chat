@@ -300,7 +300,7 @@ const IconBar = ({ profile, onUpdateProfile, isMobile, isOpen, onClose, isDark }
         height: '100vh',
         // minWidth: '60px',
         maxWidth: '70px',
-        paddingLeft: 2,
+        paddingLeft: 4,
         backgroundColor: bgColor,
         color: textColor,
         borderRight: `1px solid ${borderColor}`
@@ -312,9 +312,9 @@ const IconBar = ({ profile, onUpdateProfile, isMobile, isOpen, onClose, isDark }
           src={profile?.picture}
           alt="Profile"
           roundedCircle
-          style={{ width: 36, height: 36 }}
+          style={{ width: 36, height: 36, margin: 'auto', display: 'block' }}
         />
-        <Nav className="flex-column text-center">
+        <Nav style={{ margin: 'auto', display: 'block' }} className="flex-column text-center">
           {icons.map(({ icon: Icon, label }) => (
             <OverlayTrigger
               key={label}
@@ -336,7 +336,10 @@ const IconBar = ({ profile, onUpdateProfile, isMobile, isOpen, onClose, isDark }
       </div>
 
       {/* Bottom actions */}
-      <div className="d-flex flex-column align-items-center gap-3">
+      <div
+        style={{ margin: 'auto', display: 'block' }}
+        className="d-flex flex-column align-items-center gap-3"
+      >
         <OverlayTrigger placement="right" overlay={<Tooltip>Toggle Theme</Tooltip>}>
           <Button
             variant="outline-secondary"
@@ -384,7 +387,7 @@ const IconBar = ({ profile, onUpdateProfile, isMobile, isOpen, onClose, isDark }
       style={{
         maxWidth: 70,
         padding: 2,
-        paddingLeft: 2,
+        paddingLeft: 4,
         display: 'flex',
         justifyContent: 'center'
       }}
