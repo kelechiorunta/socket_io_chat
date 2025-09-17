@@ -300,7 +300,7 @@ const IconBar = ({ profile, onUpdateProfile, isMobile, isOpen, onClose, isDark }
         height: '100vh',
         // minWidth: '60px',
         maxWidth: '60px',
-        // paddingLeft: 2,
+        paddingLeft: 2,
         backgroundColor: bgColor,
         color: textColor,
         borderRight: `1px solid ${borderColor}`
@@ -381,7 +381,13 @@ const IconBar = ({ profile, onUpdateProfile, isMobile, isOpen, onClose, isDark }
   // 🔑 Render Drawer for mobile, static sidebar for desktop
   return isMobile ? (
     <Drawer
-      style={{ maxWidth: 60, padding: 2, display: 'flex', justifyContent: 'center' }}
+      style={{
+        maxWidth: 60,
+        padding: 2,
+        paddingLeft: 2,
+        display: 'flex',
+        justifyContent: 'center'
+      }}
       anchor="left"
       open={isOpen}
       onClose={onClose}
