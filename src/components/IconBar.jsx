@@ -299,7 +299,7 @@ const IconBar = ({ profile, onUpdateProfile, isMobile, isOpen, onClose, isDark }
       style={{
         height: '100vh',
         // minWidth: '60px',
-        maxWidth: '60px',
+        maxWidth: '70px',
         paddingLeft: 2,
         backgroundColor: bgColor,
         color: textColor,
@@ -382,7 +382,7 @@ const IconBar = ({ profile, onUpdateProfile, isMobile, isOpen, onClose, isDark }
   return isMobile ? (
     <Drawer
       style={{
-        maxWidth: 60,
+        maxWidth: 70,
         padding: 2,
         paddingLeft: 2,
         display: 'flex',
