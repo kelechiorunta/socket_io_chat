@@ -437,7 +437,7 @@ const Sidebar = ({
         bgcolor: isDark ? '#1f1d1d' : '#f7fef2',
         color: isDark ? '#f7fef2' : '#1f1d1d',
         p: 2,
-        paddingLeft: 2
+        // paddingLeft: 2
       }}
     >
       {/* 🔥 Sticky Header + Search + Tabs */}
