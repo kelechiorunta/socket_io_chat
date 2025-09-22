@@ -273,13 +273,13 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
         <List dense>
           {users.map((user) => (
             <ListItem
-              key={user.id}
+              key={user?._id}
               button
-              onClick={() => handleToggleUser(user.id)}
+              onClick={() => handleToggleUser(user?._id)}
               sx={{
                 borderRadius: 2,
                 mb: 0.5,
-                bgcolor: selectedUsers.includes(user.id)
+                bgcolor: selectedUsers.includes(user?._id)
                   ? isDark
                     ? '#2b2b2b'
                     : '#e6f9f0'
@@ -287,12 +287,12 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
               }}
             >
               <ListItemAvatar>
-                <Avatar src={user.avatar}>{user.name[0]}</Avatar>
+                <Avatar src={user?.picture}>{user?.username[0]}</Avatar>
               </ListItemAvatar>
-              <ListItemText primary={user.name} secondary={user.subtitle} />
+              <ListItemText primary={user?.username} secondary={user?.subtitle} />
               <Checkbox
                 edge="end"
-                checked={selectedUsers.includes(user.id)}
+                checked={selectedUsers.includes(user?._id)}
                 tabIndex={-1}
                 disableRipple
               />
