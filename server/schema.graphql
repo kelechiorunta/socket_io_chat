@@ -12,13 +12,15 @@ type Mutation {
   clearUnread(senderId: ID!, recipientId: ID!): Boolean
   updateProfile(input: UpdateProfileInput!): UpdateProfileResponse!
   deleteMessage(messageId: ID!, senderId: ID!): DeleteMessageResponse!
-  createGroup(name: String!, memberIds: [ID!]!): Group!
+  createGroup(name: String!, logo: ID!, description: String!, memberIds: [ID!]!): Group!
 }
 
 type Group {
   id: ID!
   name: String!
   members: [User!]!
+  description: String
+  logo: ID
   createdAt: String
 }
 
