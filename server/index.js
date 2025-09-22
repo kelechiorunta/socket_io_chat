@@ -571,14 +571,6 @@ io.on('connection', (socket) => {
     }
   });
 
-  // socket.on('typing', ({ receiverId }) => {
-  //     const senderId = socket.data.userId;
-  //     if (!receiverId || !senderId) return;
-
-  //     // Emit 'typing' to the receiver's room
-  //     io.to(receiverId).emit('typing', { from: senderId });
-  // });
-
   socket.on('typing', async ({ receiverId }) => {
     const senderId = socket.data.userId;
     // const receiverSocketId = onlineUsers.get(receiverId);
