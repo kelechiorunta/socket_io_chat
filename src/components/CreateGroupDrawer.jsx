@@ -224,7 +224,14 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
       </Typography>
 
       {/* Group Logo */}
-      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2, position: 'relative' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          mb: 2,
+          position: 'relative'
+        }}
+      >
         <Avatar
           src={groupLogo}
           sx={{
@@ -253,7 +260,32 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
       </Box>
 
       {/* Group Name */}
-      <TextField fullWidth label="Group Name" variant="outlined" sx={{ mb: 2 }} />
+      <TextField
+        fullWidth
+        label="Group Name"
+        variant="outlined"
+        sx={{
+          mb: 2,
+          input: { color: isDark ? '#ffffff' : '#1f1d1d' },
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: isDark ? '#ffffff66' : '#1f1d1d66'
+            },
+            '&:hover fieldset': {
+              borderColor: '#00e575'
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#00e575'
+            }
+          },
+          '& .MuiInputLabel-root': {
+            color: isDark ? '#ffffff99' : '#1f1d1d99'
+          },
+          '& .MuiInputLabel-root.Mui-focused': {
+            color: '#00e575'
+          }
+        }}
+      />
 
       {/* Group Description */}
       <TextField
@@ -262,7 +294,27 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
         multiline
         rows={3}
         variant="outlined"
-        sx={{ mb: 2 }}
+        sx={{
+          mb: 2,
+          input: { color: isDark ? '#ffffff' : '#1f1d1d' },
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: isDark ? '#ffffff66' : '#1f1d1d66'
+            },
+            '&:hover fieldset': {
+              borderColor: '#00e575'
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#00e575'
+            }
+          },
+          '& .MuiInputLabel-root': {
+            color: isDark ? '#ffffff99' : '#1f1d1d99'
+          },
+          '& .MuiInputLabel-root.Mui-focused': {
+            color: '#00e575'
+          }
+        }}
       />
 
       {/* User Selection */}
@@ -283,18 +335,34 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
                   ? isDark
                     ? '#2b2b2b'
                     : '#e6f9f0'
-                  : 'transparent'
+                  : 'transparent',
+                '&:hover': {
+                  bgcolor: isDark ? '#2b2b2b55' : '#e6f9f055'
+                }
               }}
             >
               <ListItemAvatar>
                 <Avatar src={user?.picture}>{user?.username[0]}</Avatar>
               </ListItemAvatar>
-              <ListItemText primary={user?.username} secondary={user?.subtitle} />
+              <ListItemText
+                primary={user?.username}
+                secondary={user?.subtitle}
+                primaryTypographyProps={{
+                  style: { color: isDark ? '#fff' : '#1f1d1d' }
+                }}
+                secondaryTypographyProps={{
+                  style: { color: isDark ? '#ffffff99' : '#666' }
+                }}
+              />
               <Checkbox
                 edge="end"
                 checked={selectedUsers.includes(user?._id)}
                 tabIndex={-1}
                 disableRipple
+                sx={{
+                  color: '#00e575',
+                  '&.Mui-checked': { color: '#00e575' }
+                }}
               />
             </ListItem>
           ))}
