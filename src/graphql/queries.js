@@ -191,3 +191,40 @@ export const DELETE_MESSAGE = gql`
     }
   }
 `;
+
+export const CREATE_GROUP = gql`
+  mutation CreateGroup($name: String!, $description: String, $logo: 1D, $memberIds: [ID!]!) {
+    createGroup(name: $name, description: $description, logo: $logo, memberIds: $memberIds) {
+      id
+      name
+      members {
+        _id
+        username
+        picture
+        gender
+        lastMessage
+        lastMessageCount
+        isOnline
+        unread {
+          sender {
+            _id
+            username
+            picture
+          }
+          count
+          lastMessage
+          updatedAt
+          createdAt
+        }
+      }
+      content
+      createdAt
+      imageUrl
+      placeholderUrl
+      hasImage
+    }
+    description
+    logo
+    createdAt
+  }
+`;
