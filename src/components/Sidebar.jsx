@@ -206,6 +206,7 @@ const Sidebar = ({
         {/* ✅ Create Group Drawer */}
         <CreateGroupDrawer
           open={isCreateGroupOpen}
+          users={filteredUsers}
           onClose={() => setIsCreateGroupOpen(false)}
           isDark={isDark}
         />
