@@ -30,30 +30,29 @@ pictureRouter.get('/:id', async (req, res) => {
 });
 
 // /upload endpoint
-pictureRouter.post('/logo', upload.single('file'), async (req, res) => {
+pictureRouter.post('/logo', upload.single('file'), (req, res) => {
   try {
-    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+    const { file } = req;
+    if (!file) return res.status(400).json({ error: 'No file uploaded' });
 
-    const db = mongoose.connection.db;
-    const bucket = new GridFSBucket(db, { bucketName: 'logos' });
+    const bucket = new GridFSBucket(mongoose.connection.db, { bucketName: 'logos' });
 
-    // create an upload stream
-    const uploadStream = bucket.openUploadStream(req.file.originalname, {
-      contentType: req.file.mimetype
+    const uploadStream = bucket.openUploadStream(file.originalname, {
+      contentType: file.mimetype
     });
 
-    uploadStream.end(req.file.buffer);
+    uploadStream.end(file.buffer);
 
-    uploadStream.on('finish', (file) => {
-      res.json({ fileId: file._id.toString() });
+    uploadStream.on('finish', () => {
+      res.json({ fileId: uploadStream.id.toString() });
     });
 
     uploadStream.on('error', (err) => {
-      console.error('GridFS upload error:', err);
+      console.error('❌ GridFS upload error:', err);
       res.status(500).json({ error: 'Upload failed' });
     });
   } catch (err) {
-    console.error('❌ Upload route error:', err);
+    console.error('❌ Server error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
