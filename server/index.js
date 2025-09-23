@@ -170,15 +170,12 @@ const upload = multer({ storage: multer.memoryStorage() });
 // Middleware to enable GraphQL Introspection and Client Queries and file uploads
 app.use(
   '/graphql',
-  upload.single('logo'),
   graphqlHTTP((req) => {
     const isDev = process.env.NODE_ENV === 'development';
     const ioInstance = req.app.get('io');
     return {
       schema,
       context: {
-        file: req.file,
-        db: mongoose.connection.db,
         isAuthenticated: req.isAuthenticated?.(),
         user: req.user ?? req.session?.user,
         ioInstance: ioInstance
