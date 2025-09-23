@@ -16,6 +16,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import sharp from 'sharp';
 import { GridFSBucket } from 'mongodb';
+import multer from 'multer';
 // import fs from 'fs';
 import typeDefs from './schema.js';
 // import Message from './model/Message.js';
@@ -160,18 +161,24 @@ io.adapter(createAdapter(pubClient, subClient));
 // ✅ Redis-based online users key
 const ONLINE_USERS_KEY = 'online_users';
 
-// app.set('io', io); (this stays as is)
+// app.set('io', io); instance of io as io
 app.set('io', io);
 
-// Middleware to enable GraphQL Introspection and Client Queries
+// keep file in memory buffer
+const upload = multer({ storage: multer.memoryStorage() });
+
+// Middleware to enable GraphQL Introspection and Client Queries and file uploads
 app.use(
   '/graphql',
+  upload.single('logo'),
   graphqlHTTP((req) => {
     const isDev = process.env.NODE_ENV === 'development';
     const ioInstance = req.app.get('io');
     return {
       schema,
       context: {
+        file: req.file,
+        db: mongoose.connection.db,
         isAuthenticated: req.isAuthenticated?.(),
         user: req.user ?? req.session?.user,
         ioInstance: ioInstance
