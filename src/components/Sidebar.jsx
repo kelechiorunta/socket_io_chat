@@ -223,7 +223,7 @@ const Sidebar = ({
         {/* ✅ Create Group Drawer */}
         <CreateGroupDrawer
           open={isCreateGroupOpen}
-          users={tab !== 'groups' ? filteredUsers : []}
+          users={tab === 'contacts' || tab === 'all' ? filteredUsers : []}
           onClose={() => setIsCreateGroupOpen(false)}
           isDark={isDark}
         />
@@ -322,7 +322,14 @@ const Sidebar = ({
                 >
                   {/* Avatar + online dot */}
                   <Box position="relative">
-                    <Avatar src={user?.picture || './Darshan.png'} sx={{ width: 40, height: 40 }} />
+                    <Avatar
+                      src={
+                        tab === 'contacts' || tab === 'all'
+                          ? user?.picture
+                          : `/chat-pictures/logo/${user?.logo}`
+                      }
+                      sx={{ width: 40, height: 40 }}
+                    />
                     <Box
                       sx={{
                         position: 'absolute',
@@ -347,7 +354,7 @@ const Sidebar = ({
                     }}
                   >
                     <Typography fontWeight="bold" noWrap>
-                      {user.username}
+                      {tab === 'contacts' || tab === 'all' ? user?.username : user?.name}
                     </Typography>
                     <Typography
                       variant="body2"
@@ -379,7 +386,9 @@ const Sidebar = ({
                         mb: 0.5
                       }}
                     >
-                      {unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.time}
+                      {tab === 'contacts' || tab === 'all'
+                        ? unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.time
+                        : parseTimestamp(user?.createdAt)}
                     </Typography>
                     {unreadData?.count > 0 ? (
                       <Box
