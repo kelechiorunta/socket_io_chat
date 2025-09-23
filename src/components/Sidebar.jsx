@@ -326,7 +326,7 @@ const Sidebar = ({
                       src={
                         tab === 'contacts' || tab === 'all'
                           ? user?.picture
-                          : `/chat-pictures/logo/${user?.logo}`
+                          : `/chat-pictures/logo/${user?.logo.toString()}` || './Darshan.png'
                       }
                       sx={{ width: 40, height: 40 }}
                     />
@@ -390,7 +390,7 @@ const Sidebar = ({
                         ? unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.time
                         : parseTimestamp(user?.createdAt)}
                     </Typography>
-                    {unreadData?.count > 0 ? (
+                    {(tab === 'contacts' || tab === 'all') && unreadData?.count > 0 ? (
                       <Box
                         sx={{
                           bgcolor: 'success.main',
@@ -404,7 +404,7 @@ const Sidebar = ({
                           fontSize: 12
                         }}
                       >
-                        {unreadData.count}
+                        {(tab === 'contacts' || tab === 'all') && unreadData.count}
                       </Box>
                     ) : (
                       <Box
@@ -416,7 +416,9 @@ const Sidebar = ({
                           fontSize: 12
                         }}
                       >
-                        {unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.date}
+                        {(tab === 'contacts' || tab === 'all') &&
+                          unreadData?.timeStamp &&
+                          parseTimestamp(unreadData.timeStamp)?.date}
                       </Box>
                     )}
                   </Box>
