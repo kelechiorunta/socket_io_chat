@@ -326,7 +326,9 @@ const Sidebar = ({
                       src={
                         tab === 'contacts' || tab === 'all'
                           ? user?.picture
-                          : `/chat-pictures/logo/${user?.logo.toString()}` || './Darshan.png'
+                          : user && user?.logo
+                            ? `/chat-pictures/logo/${user.logo.toString()}`
+                            : './Darshan.png'
                       }
                       sx={{ width: 40, height: 40 }}
                     />
