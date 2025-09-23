@@ -17,7 +17,7 @@ type Mutation {
 }
 
 type Group {
-  id: ID!
+  _id: ID!
   name: String!
   members: [User!]!
   description: String
