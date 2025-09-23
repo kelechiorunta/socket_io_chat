@@ -459,11 +459,11 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
               }}
             >
               <ListItemAvatar>
-                <Avatar src={user?.picture}>{user?.username[0]}</Avatar>
+                <Avatar src={user?.picture || ''}>{user?.username[0] || user?.name}</Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary={user?.username}
-                secondary={user?.subtitle}
+                primary={user?.username || user?.name}
+                secondary={user?.subtitle || ''}
                 primaryTypographyProps={{
                   sx: { color: isDark ? '#fff' : '#1f1d1d' }
                 }}
