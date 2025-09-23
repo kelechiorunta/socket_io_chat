@@ -360,7 +360,13 @@ const Sidebar = ({
                     </Typography>
                     <Typography
                       variant="body2"
-                      color={isTyping ? '#00e575' : isDark ? 'white' : 'grey.800'}
+                      color={
+                        isTyping && (tab === 'contacts' || tab === 'all')
+                          ? '#00e575'
+                          : isDark
+                            ? 'white'
+                            : 'grey.800'
+                      }
                       noWrap
                       sx={{
                         overflow: 'hidden',
@@ -368,7 +374,9 @@ const Sidebar = ({
                         whiteSpace: 'nowrap'
                       }}
                     >
-                      {isTyping ? 'is typing...' : unreadData?.lastMessage || 'No messages'}
+                      {isTyping && (tab === 'contacts' || tab === 'all')
+                        ? 'is typing...'
+                        : unreadData?.lastMessage || 'No messages'}
                     </Typography>
                   </Box>
 
@@ -390,7 +398,7 @@ const Sidebar = ({
                     >
                       {tab === 'contacts' || tab === 'all'
                         ? unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.time
-                        : parseTimestamp(user?.createdAt)}
+                        : ''}
                     </Typography>
                     {(tab === 'contacts' || tab === 'all') && unreadData?.count > 0 ? (
                       <Box
@@ -406,7 +414,7 @@ const Sidebar = ({
                           fontSize: 12
                         }}
                       >
-                        {(tab === 'contacts' || tab === 'all') && unreadData.count}
+                        {tab === 'contacts' || tab === 'all' ? unreadData.count : ''}
                       </Box>
                     ) : (
                       <Box
@@ -418,9 +426,9 @@ const Sidebar = ({
                           fontSize: 12
                         }}
                       >
-                        {(tab === 'contacts' || tab === 'all') &&
-                          unreadData?.timeStamp &&
-                          parseTimestamp(unreadData.timeStamp)?.date}
+                        {(tab === 'contacts' || tab === 'all') && unreadData?.timeStamp
+                          ? parseTimestamp(unreadData.timeStamp)?.date
+                          : ''}
                       </Box>
                     )}
                   </Box>
