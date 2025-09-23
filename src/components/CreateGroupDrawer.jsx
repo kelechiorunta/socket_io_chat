@@ -1,11 +1,60 @@
-// import React from 'react';
-// import { Drawer, Typography, TextField, Box, IconButton, Button } from '@mui/material';
-// import { Close } from '@mui/icons-material';
+// import React, { useState } from 'react';
+// import {
+//   Drawer,
+//   Typography,
+//   TextField,
+//   Box,
+//   IconButton,
+//   Button,
+//   Avatar,
+//   List,
+//   ListItem,
+//   ListItemAvatar,
+//   ListItemText,
+//   Checkbox
+// } from '@mui/material';
+// import { Close, CameraAlt } from '@mui/icons-material';
 
 // const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
+//   const [selectedUsers, setSelectedUsers] = useState([]);
+//   const [groupLogo, setGroupLogo] = useState(null);
+
+//   const handleToggleUser = (id) => {
+//     setSelectedUsers((prev) => (prev.includes(id) ? prev.filter((u) => u !== id) : [...prev, id]));
+//   };
+
+//   const handleLogoChange = (e) => {
+//     if (e.target.files[0]) {
+//       setGroupLogo(URL.createObjectURL(e.target.files[0]));
+//     }
+//   };
+
 //   const handleCreate = () => {
-//     console.log('Group created!'); // hook up your mutation here
+//     console.log('Group created!', { selectedUsers, groupLogo });
 //     onClose();
+//   };
+
+//   // Shared input styles for dark/light mode
+//   const inputStyles = {
+//     input: { color: isDark ? '#ffffff' : '#1f1d1d' },
+//     textarea: { color: isDark ? '#ffffff' : '#1f1d1d' },
+//     '& .MuiOutlinedInput-root': {
+//       '& fieldset': {
+//         borderColor: isDark ? '#ffffff66' : '#1f1d1d66'
+//       },
+//       '&:hover fieldset': {
+//         borderColor: '#00e575'
+//       },
+//       '&.Mui-focused fieldset': {
+//         borderColor: '#00e575'
+//       }
+//     },
+//     '& .MuiInputLabel-root': {
+//       color: isDark ? '#ffffff99' : '#1f1d1d99'
+//     },
+//     '& .MuiInputLabel-root.Mui-focused': {
+//       color: '#00e575'
+//     }
 //   };
 
 //   return (
@@ -46,33 +95,37 @@
 //         Create Group
 //       </Typography>
 
+//       {/* Group Logo */}
+//       <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2, position: 'relative' }}>
+//         <Avatar
+//           src={groupLogo}
+//           sx={{
+//             width: 80,
+//             height: 80,
+//             bgcolor: '#00e575',
+//             fontSize: 28
+//           }}
+//         >
+//           {groupLogo ? '' : 'G'}
+//         </Avatar>
+//         <IconButton
+//           component="label"
+//           sx={{
+//             position: 'absolute',
+//             bottom: 0,
+//             right: 'calc(50% - 40px)',
+//             bgcolor: isDark ? '#333' : '#fff',
+//             boxShadow: 2,
+//             '&:hover': { bgcolor: '#00e575', color: '#fff' }
+//           }}
+//         >
+//           <CameraAlt fontSize="small" />
+//           <input type="file" hidden accept="image/*" onChange={handleLogoChange} />
+//         </IconButton>
+//       </Box>
+
 //       {/* Group Name */}
-//       <TextField
-//         fullWidth
-//         label="Group Name"
-//         variant="outlined"
-//         sx={{
-//           mb: 2,
-//           input: { color: isDark ? '#ffffff' : '#1f1d1d' },
-//           '& .MuiOutlinedInput-root': {
-//             '& fieldset': {
-//               borderColor: isDark ? '#ffffff99' : '#1f1d1d99'
-//             },
-//             '&:hover fieldset': {
-//               borderColor: '#00e575'
-//             },
-//             '&.Mui-focused fieldset': {
-//               borderColor: '#00e575'
-//             }
-//           },
-//           '& .MuiInputLabel-root': {
-//             color: isDark ? '#ffffffcc' : '#1f1d1dcc'
-//           },
-//           '& .MuiInputLabel-root.Mui-focused': {
-//             color: '#00e575'
-//           }
-//         }}
-//       />
+//       <TextField fullWidth label="Group Name" variant="outlined" sx={{ mb: 2, ...inputStyles }} />
 
 //       {/* Group Description */}
 //       <TextField
@@ -81,36 +134,64 @@
 //         multiline
 //         rows={3}
 //         variant="outlined"
-//         sx={{
-//           mb: 2,
-//           input: { color: isDark ? '#ffffff' : '#1f1d1d' },
-//           '& .MuiOutlinedInput-root': {
-//             '& fieldset': {
-//               borderColor: isDark ? '#ffffff99' : '#1f1d1d99'
-//             },
-//             '&:hover fieldset': {
-//               borderColor: '#00e575'
-//             },
-//             '&.Mui-focused fieldset': {
-//               borderColor: '#00e575'
-//             }
-//           },
-//           '& .MuiInputLabel-root': {
-//             color: isDark ? '#ffffffcc' : '#1f1d1dcc'
-//           },
-//           '& .MuiInputLabel-root.Mui-focused': {
-//             color: '#00e575'
-//           }
-//         }}
+//         sx={{ mb: 2, ...inputStyles }}
 //       />
 
-//       <Box flex={1}>
-//         <Typography variant="body2" sx={{ color: isDark ? '#ffffff99' : 'text.secondary' }}>
-//           (Future: Add member selection here)
-//         </Typography>
+//       {/* User Selection */}
+//       <Typography variant="subtitle2" sx={{ mb: 1, color: '#00e575' }}>
+//         Add Members
+//       </Typography>
+//       <Box sx={{ flex: 1, overflowY: 'auto', mb: 2 }}>
+//         <List dense>
+//           {users.map((user) => (
+//             <ListItem
+//               key={user?._id}
+//               button
+//               onClick={() => handleToggleUser(user?._id)}
+//               sx={{
+//                 borderRadius: 2,
+//                 mb: 0.5,
+//                 bgcolor: selectedUsers.includes(user?._id)
+//                   ? isDark
+//                     ? '#2b2b2b'
+//                     : '#e6f9f0'
+//                   : 'transparent',
+//                 '&:hover': {
+//                   bgcolor: isDark ? '#2a2a2a' : '#f0fdf6'
+//                 }
+//               }}
+//             >
+//               <ListItemAvatar>
+//                 <Avatar src={user?.picture}>{user?.username[0]}</Avatar>
+//               </ListItemAvatar>
+//               <ListItemText
+//                 primary={user?.username}
+//                 secondary={user?.subtitle}
+//                 primaryTypographyProps={{
+//                   sx: { color: isDark ? '#fff' : '#1f1d1d' }
+//                 }}
+//                 secondaryTypographyProps={{
+//                   sx: { color: isDark ? '#aaaaaa' : '#555555' }
+//                 }}
+//               />
+//               <Checkbox
+//                 edge="end"
+//                 checked={selectedUsers.includes(user?._id)}
+//                 tabIndex={-1}
+//                 disableRipple
+//                 sx={{
+//                   color: isDark ? '#ffffff99' : '#1f1d1d99',
+//                   '&.Mui-checked': {
+//                     color: '#00e575'
+//                   }
+//                 }}
+//               />
+//             </ListItem>
+//           ))}
+//         </List>
 //       </Box>
 
-//       {/* ✅ Bottom Action Row */}
+//       {/* Bottom Action Row */}
 //       <Box
 //         sx={{
 //           display: 'flex',
@@ -165,10 +246,32 @@ import {
   Checkbox
 } from '@mui/material';
 import { Close, CameraAlt } from '@mui/icons-material';
+import { useMutation } from '@apollo/client';
+import { CREATE_GROUP } from '../graphql/queries';
+import toast from 'react-hot-toast';
 
 const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [groupLogo, setGroupLogo] = useState(null);
+  const [logoFile, setLogoFile] = useState(null);
+  const [groupName, setGroupName] = useState('');
+  const [groupDescription, setGroupDescription] = useState('');
+
+  const [createGroup, { loading }] = useMutation(CREATE_GROUP, {
+    onCompleted: (data) => {
+      toast.success(`✅ Group "${data.createGroup.name}" created successfully!`);
+      onClose();
+      // reset state after success
+      setGroupName('');
+      setGroupDescription('');
+      setSelectedUsers([]);
+      setGroupLogo(null);
+      setLogoFile(null);
+    },
+    onError: (err) => {
+      toast.error(`❌ Failed to create group: ${err.message}`);
+    }
+  });
 
   const handleToggleUser = (id) => {
     setSelectedUsers((prev) => (prev.includes(id) ? prev.filter((u) => u !== id) : [...prev, id]));
@@ -177,12 +280,56 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
   const handleLogoChange = (e) => {
     if (e.target.files[0]) {
       setGroupLogo(URL.createObjectURL(e.target.files[0]));
+      setLogoFile(e.target.files[0]); // keep the file for upload
     }
   };
 
-  const handleCreate = () => {
-    console.log('Group created!', { selectedUsers, groupLogo });
-    onClose();
+  const handleCreate = async () => {
+    if (!groupName.trim()) {
+      toast.error('Group name is required');
+      return;
+    }
+
+    try {
+      // TODO: Upload logoFile -> get ObjectId from backend
+      const logoId = null;
+
+      if (logoFile) {
+        await createGroup({
+          variables: {
+            name: groupName,
+            description: groupDescription,
+            logo: logoId,
+            memberIds: selectedUsers
+          }
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // Shared input styles
+  const inputStyles = {
+    input: { color: isDark ? '#ffffff' : '#1f1d1d' },
+    textarea: { color: isDark ? '#ffffff' : '#1f1d1d' },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: isDark ? '#ffffff66' : '#1f1d1d66'
+      },
+      '&:hover fieldset': {
+        borderColor: '#00e575'
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#00e575'
+      }
+    },
+    '& .MuiInputLabel-root': {
+      color: isDark ? '#ffffff99' : '#1f1d1d99'
+    },
+    '& .MuiInputLabel-root.Mui-focused': {
+      color: '#00e575'
+    }
   };
 
   return (
@@ -224,14 +371,7 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
       </Typography>
 
       {/* Group Logo */}
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          mb: 2,
-          position: 'relative'
-        }}
-      >
+      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2, position: 'relative' }}>
         <Avatar
           src={groupLogo}
           sx={{
@@ -264,27 +404,9 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
         fullWidth
         label="Group Name"
         variant="outlined"
-        sx={{
-          mb: 2,
-          input: { color: isDark ? '#ffffff' : '#1f1d1d' },
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: isDark ? '#ffffff' : '#1f1d1d66'
-            },
-            '&:hover fieldset': {
-              borderColor: '#00e575'
-            },
-            '&.Mui-focused fieldset': {
-              borderColor: '#00e575'
-            }
-          },
-          '& .MuiInputLabel-root': {
-            color: isDark ? '#ffffff' : '#1f1d1d99'
-          },
-          '& .MuiInputLabel-root.Mui-focused': {
-            color: '#00e575'
-          }
-        }}
+        value={groupName}
+        onChange={(e) => setGroupName(e.target.value)}
+        sx={{ mb: 2, ...inputStyles }}
       />
 
       {/* Group Description */}
@@ -294,27 +416,9 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
         multiline
         rows={3}
         variant="outlined"
-        sx={{
-          mb: 2,
-          input: { color: isDark ? '#ffffff' : '#1f1d1d' },
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: isDark ? '#ffffff' : '#1f1d1d66'
-            },
-            '&:hover fieldset': {
-              borderColor: '#00e575'
-            },
-            '&.Mui-focused fieldset': {
-              borderColor: '#00e575'
-            }
-          },
-          '& .MuiInputLabel-root': {
-            color: isDark ? '#ffffff' : '#1f1d1d99'
-          },
-          '& .MuiInputLabel-root.Mui-focused': {
-            color: '#00e575'
-          }
-        }}
+        value={groupDescription}
+        onChange={(e) => setGroupDescription(e.target.value)}
+        sx={{ mb: 2, ...inputStyles }}
       />
 
       {/* User Selection */}
@@ -337,7 +441,7 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
                     : '#e6f9f0'
                   : 'transparent',
                 '&:hover': {
-                  bgcolor: isDark ? '#2b2b2b55' : '#e6f9f055'
+                  bgcolor: isDark ? '#2a2a2a' : '#f0fdf6'
                 }
               }}
             >
@@ -348,10 +452,10 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
                 primary={user?.username}
                 secondary={user?.subtitle}
                 primaryTypographyProps={{
-                  style: { color: isDark ? '#fff' : '#1f1d1d' }
+                  sx: { color: isDark ? '#fff' : '#1f1d1d' }
                 }}
                 secondaryTypographyProps={{
-                  style: { color: isDark ? '#ffffff99' : '#666' }
+                  sx: { color: isDark ? '#aaaaaa' : '#555555' }
                 }}
               />
               <Checkbox
@@ -360,8 +464,10 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
                 tabIndex={-1}
                 disableRipple
                 sx={{
-                  color: '#00e575',
-                  '&.Mui-checked': { color: '#00e575' }
+                  color: isDark ? '#ffffff99' : '#1f1d1d99',
+                  '&.Mui-checked': {
+                    color: '#00e575'
+                  }
                 }}
               />
             </ListItem>
@@ -393,13 +499,14 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
         <Button
           variant="contained"
           onClick={handleCreate}
+          disabled={loading}
           sx={{
             bgcolor: '#00e575',
             color: '#fff',
             '&:hover': { bgcolor: '#00c863' }
           }}
         >
-          Create
+          {loading ? 'Creating...' : 'Create'}
         </Button>
       </Box>
     </Drawer>
