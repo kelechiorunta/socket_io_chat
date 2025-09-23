@@ -193,10 +193,13 @@ export const DELETE_MESSAGE = gql`
 `;
 
 export const CREATE_GROUP = gql`
-  mutation CreateGroup($name: String!, $description: String, $logo: ID, $memberIds: [ID!]!) {
+  mutation CreateGroup($name: String!, $description: String!, $logo: ID!, $memberIds: [ID!]!) {
     createGroup(name: $name, description: $description, logo: $logo, memberIds: $memberIds) {
       id
       name
+      description
+      logo
+      createdAt
       members {
         _id
         username
@@ -217,14 +220,6 @@ export const CREATE_GROUP = gql`
           createdAt
         }
       }
-      content
-      createdAt
-      imageUrl
-      placeholderUrl
-      hasImage
     }
-    description
-    logo
-    createdAt
   }
 `;
