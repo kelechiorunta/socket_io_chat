@@ -448,40 +448,22 @@ const resolvers = {
         return false;
       }
     },
-    createGroup: async (_, { name, memberIds, description }, { user, file, db }) => {
+    createGroup: async (_, { name, memberIds, description, logo }, { user }) => {
       if (!user) throw new Error('Unauthorized');
 
       // Ensure the current user is part of the group
       const uniqueMemberIds = Array.from(new Set([user._id, ...memberIds]));
-
-      let logoId = null;
-
-      if (file) {
-        // ✅ Use GridFS for storing the uploaded file
-        const bucket = new GridFSBucket(db, { bucketName: 'logos' });
-
-        // Open GridFS upload stream
-        const uploadStream = bucket.openUploadStream(file.originalname, {
-          contentType: file.mimetype
-        });
-
-        // Write file buffer to GridFS
-        uploadStream.end(file.buffer);
-
-        // Capture the ID of the uploaded file
-        logoId = uploadStream.id; // This is a MongoDB ObjectId
-      }
 
       // ✅ Create the group document
       const group = await Group.create({
         name,
         description,
         members: uniqueMemberIds.map((id) => new mongoose.Types.ObjectId(id)),
-        logo: logoId, // store GridFS ObjectId reference
+        logo: logo ? new mongoose.Types.ObjectId(logo) : null, // store GridFS ObjectId
         createdAt: new Date().toISOString()
       });
 
-      return await group.populate('members');
+      return group.populate('members');
     }
   }
 };

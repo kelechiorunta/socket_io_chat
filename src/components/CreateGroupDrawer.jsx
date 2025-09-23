@@ -286,26 +286,39 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
 
   const handleCreate = async () => {
     if (!groupName.trim()) {
-      toast.error('Group name is required');
+      alert('Group name is required');
       return;
     }
 
     try {
-      // TODO: Upload logoFile -> get ObjectId from backend
-      const logoId = null;
+      let logoId = null;
 
+      // Step 1: Upload file via REST
       if (logoFile) {
-        await createGroup({
-          variables: {
-            name: groupName,
-            description: groupDescription,
-            logo: logoId,
-            memberIds: selectedUsers
-          }
+        const formData = new FormData();
+        formData.append('file', logoFile);
+
+        const res = await fetch('/chat-pictures/logo', {
+          method: 'POST',
+          body: formData
         });
+
+        if (!res.ok) throw new Error('File upload failed');
+        const { fileId } = await res.json();
+        logoId = fileId;
       }
+
+      // Step 2: Call GraphQL mutation
+      await createGroup({
+        variables: {
+          name: groupName,
+          description: groupDescription,
+          logo: logoId,
+          memberIds: selectedUsers
+        }
+      });
     } catch (err) {
-      console.error(err);
+      console.error('❌ Error creating group:', err);
     }
   };
 
