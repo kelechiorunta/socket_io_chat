@@ -269,7 +269,7 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
           input: { color: isDark ? '#ffffff' : '#1f1d1d' },
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
-              borderColor: isDark ? '#ffffff66' : '#1f1d1d66'
+              borderColor: isDark ? '#ffffff' : '#1f1d1d66'
             },
             '&:hover fieldset': {
               borderColor: '#00e575'
@@ -279,7 +279,7 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
             }
           },
           '& .MuiInputLabel-root': {
-            color: isDark ? '#ffffff99' : '#1f1d1d99'
+            color: isDark ? '#ffffff' : '#1f1d1d99'
           },
           '& .MuiInputLabel-root.Mui-focused': {
             color: '#00e575'
@@ -299,7 +299,7 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
           input: { color: isDark ? '#ffffff' : '#1f1d1d' },
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
-              borderColor: isDark ? '#ffffff66' : '#1f1d1d66'
+              borderColor: isDark ? '#ffffff' : '#1f1d1d66'
             },
             '&:hover fieldset': {
               borderColor: '#00e575'
@@ -309,7 +309,7 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
             }
           },
           '& .MuiInputLabel-root': {
-            color: isDark ? '#ffffff99' : '#1f1d1d99'
+            color: isDark ? '#ffffff' : '#1f1d1d99'
           },
           '& .MuiInputLabel-root.Mui-focused': {
             color: '#00e575'
