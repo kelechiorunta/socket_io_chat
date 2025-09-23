@@ -16,7 +16,6 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import sharp from 'sharp';
 import { GridFSBucket } from 'mongodb';
-import multer from 'multer';
 // import fs from 'fs';
 import typeDefs from './schema.js';
 // import Message from './model/Message.js';
@@ -163,9 +162,6 @@ const ONLINE_USERS_KEY = 'online_users';
 
 // app.set('io', io); instance of io as io
 app.set('io', io);
-
-// keep file in memory buffer
-const upload = multer({ storage: multer.memoryStorage() });
 
 // Middleware to enable GraphQL Introspection and Client Queries and file uploads
 app.use(
