@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Select, MenuItem, FormControl, InputLabel, Stack } from '@mui/material';
 
-export default function ChatFilters({ handleSort, isDark }) {
+export default function ChatFilters({ handleSort, isDark, tab, setTab }) {
   const [filter, setFilter] = useState('all');
   const [sort, setSort] = useState('newest');
-  const [tab, setTab] = useState('all');
+  // const [tab, setTab] = useState('all');
 
   return (
     // <Stack
@@ -230,9 +230,7 @@ export default function ChatFilters({ handleSort, isDark }) {
           label="View"
           onChange={(e) => {
             setTab(e.target.value);
-            if (e.target.value === 'contacts') {
-              handleSort();
-            }
+            if (e.target.value === 'contacts') handleSort();
           }}
           sx={{ fontSize: { xs: 12, sm: 13, md: 14 } }}
         >
