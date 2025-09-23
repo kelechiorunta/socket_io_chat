@@ -440,51 +440,52 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
       </Typography>
       <Box sx={{ flex: 1, overflowY: 'auto', mb: 2 }}>
         <List dense>
-          {users.map((user) => (
-            <ListItem
-              key={user?._id}
-              button
-              onClick={() => handleToggleUser(user?._id)}
-              sx={{
-                borderRadius: 2,
-                mb: 0.5,
-                bgcolor: selectedUsers.includes(user?._id)
-                  ? isDark
-                    ? '#2b2b2b'
-                    : '#e6f9f0'
-                  : 'transparent',
-                '&:hover': {
-                  bgcolor: isDark ? '#2a2a2a' : '#f0fdf6'
-                }
-              }}
-            >
-              <ListItemAvatar>
-                <Avatar src={user?.picture || ''}>{user?.username[0] || user?.name}</Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={user?.username || user?.name}
-                secondary={user?.subtitle || ''}
-                primaryTypographyProps={{
-                  sx: { color: isDark ? '#fff' : '#1f1d1d' }
-                }}
-                secondaryTypographyProps={{
-                  sx: { color: isDark ? '#aaaaaa' : '#555555' }
-                }}
-              />
-              <Checkbox
-                edge="end"
-                checked={selectedUsers.includes(user?._id)}
-                tabIndex={-1}
-                disableRipple
+          {users &&
+            users.map((user) => (
+              <ListItem
+                key={user?._id}
+                button
+                onClick={() => handleToggleUser(user?._id)}
                 sx={{
-                  color: isDark ? '#ffffff99' : '#1f1d1d99',
-                  '&.Mui-checked': {
-                    color: '#00e575'
+                  borderRadius: 2,
+                  mb: 0.5,
+                  bgcolor: selectedUsers.includes(user?._id)
+                    ? isDark
+                      ? '#2b2b2b'
+                      : '#e6f9f0'
+                    : 'transparent',
+                  '&:hover': {
+                    bgcolor: isDark ? '#2a2a2a' : '#f0fdf6'
                   }
                 }}
-              />
-            </ListItem>
-          ))}
+              >
+                <ListItemAvatar>
+                  <Avatar src={user?.picture || ''}>{user?.username[0] || user?.name}</Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={user?.username || user?.name}
+                  secondary={user?.subtitle || ''}
+                  primaryTypographyProps={{
+                    sx: { color: isDark ? '#fff' : '#1f1d1d' }
+                  }}
+                  secondaryTypographyProps={{
+                    sx: { color: isDark ? '#aaaaaa' : '#555555' }
+                  }}
+                />
+                <Checkbox
+                  edge="end"
+                  checked={selectedUsers.includes(user?._id)}
+                  tabIndex={-1}
+                  disableRipple
+                  sx={{
+                    color: isDark ? '#ffffff99' : '#1f1d1d99',
+                    '&.Mui-checked': {
+                      color: '#00e575'
+                    }
+                  }}
+                />
+              </ListItem>
+            ))}
         </List>
       </Box>
 
