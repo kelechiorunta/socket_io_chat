@@ -185,6 +185,9 @@ import ChatMessage from './model/ChatMessage.js';
 import Group from './model/Group.js';
 import UnreadMsg from './model/UnreadMsg.js';
 import User from './model/User.js';
+import mongoose from 'mongoose';
+
+import { GridFSBucket } from 'mongodb';
 
 const formatUnreadCounts = (unreadMap) => {
   if (!(unreadMap instanceof Map)) return [];
@@ -445,13 +448,38 @@ const resolvers = {
         return false;
       }
     },
-    createGroup: async (_, { name, memberIds }, { user }) => {
+    createGroup: async (_, { name, memberIds, description }, { user, file, db }) => {
       if (!user) throw new Error('Unauthorized');
 
       // Ensure the current user is part of the group
-      const uniqueMemberIds = Array.from(new Set([user.id, ...memberIds]));
+      const uniqueMemberIds = Array.from(new Set([user._id, ...memberIds]));
 
-      const group = await Group.create({ name, members: uniqueMemberIds });
+      let logoId = null;
+
+      if (file) {
+        // ✅ Use GridFS for storing the uploaded file
+        const bucket = new GridFSBucket(db, { bucketName: 'logos' });
+
+        // Open GridFS upload stream
+        const uploadStream = bucket.openUploadStream(file.originalname, {
+          contentType: file.mimetype
+        });
+
+        // Write file buffer to GridFS
+        uploadStream.end(file.buffer);
+
+        // Capture the ID of the uploaded file
+        logoId = uploadStream.id; // This is a MongoDB ObjectId
+      }
+
+      // ✅ Create the group document
+      const group = await Group.create({
+        name,
+        description,
+        members: uniqueMemberIds.map((id) => new mongoose.Types.ObjectId(id)),
+        logo: logoId, // store GridFS ObjectId reference
+        createdAt: new Date().toISOString()
+      });
 
       return await group.populate('members');
     }
