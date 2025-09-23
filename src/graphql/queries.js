@@ -192,6 +192,23 @@ export const DELETE_MESSAGE = gql`
   }
 `;
 
+export const FETCH_GROUPS = gql`
+  query FetchGroups {
+    fetchGroups {
+      _id
+      name
+      description
+      logo
+      createdAt
+      members {
+        _id
+        username
+        picture
+      }
+    }
+  }
+`;
+
 export const CREATE_GROUP = gql`
   mutation CreateGroup($name: String!, $description: String!, $logo: ID!, $memberIds: [ID!]!) {
     createGroup(name: $name, description: $description, logo: $logo, memberIds: $memberIds) {

@@ -188,6 +188,7 @@ import User from './model/User.js';
 import mongoose from 'mongoose';
 
 import { GridFSBucket } from 'mongodb';
+import _ from 'lodash';
 
 const formatUnreadCounts = (unreadMap) => {
   if (!(unreadMap instanceof Map)) return [];
@@ -312,6 +313,16 @@ const resolvers = {
       } catch (err) {
         console.error('❌ fetch_chats error:', err);
         throw new Error('Failed to fetch chat history');
+      }
+    },
+    fetchGroups: async (_, __, { user }) => {
+      if (!user) throw new Error('Unauthorized');
+      try {
+        const allGroups = await Group.find().populate('members');
+        return allGroups;
+      } catch (err) {
+        console.error(err);
+        throw new Error('Failed to fetch groups');
       }
     }
   },

@@ -22,6 +22,8 @@ import { useTheme } from './ThemeContext';
 import { parseTimestamp } from '../helper/helper';
 import ChatFilters from './ChatFilters';
 import CreateGroupDrawer from './CreateGroupDrawer';
+import { useQuery } from '@apollo/client';
+import { FETCH_GROUPS } from '../graphql/queries';
 // import AnimateText from './AnimateText/AnimateText';
 
 const Sidebar = ({
@@ -50,11 +52,26 @@ const Sidebar = ({
   const itemRefs = useRef({});
   const [searchResults, setSearchResults] = useState([]);
   const inputRef = useRef(null);
-  // const [isIconBarOpen, setIsIconBarOpen] = useState(!isCollapsible);
+  const [tab, setTab] = useState('all');
 
-  // useEffect(() => {
-  //   setIsIconBarOpen(!isCollapsible); // auto-collapse when window is small
-  // }, [isCollapsible]);
+  // 🔥 Fetch groups when tab = "groups"
+  const {
+    data: groupData,
+    loading: groupLoading,
+    error: groupError
+  } = useQuery(FETCH_GROUPS, {
+    skip: tab !== 'groups' // only fetch when needed
+  });
+
+  useEffect(() => {
+    if (tab === 'all') {
+      setFilteredUsers(contacts);
+    } else if (tab === 'groups' && groupData) {
+      setFilteredUsers(groupData.fetchGroups);
+    } else if (tab === 'contacts') {
+      setFilteredUsers(contacts.filter((c) => !c.isGroup)); // optional filter
+    }
+  }, [tab, contacts, groupData]);
 
   useEffect(() => {
     const el = itemRefs.current[focusedIndex];
@@ -257,13 +274,13 @@ const Sidebar = ({
           alignItems="center"
           mb={1}
         >
-          <ChatFilters handleSort={handleSort} isDark={isDark} />
+          <ChatFilters handleSort={handleSort} isDark={isDark} tab={tab} setTab={setTab} />
         </Box>
       </Box>
 
       {/* 🔽 Contact List stays scrollable */}
       <Box flex={1} overflow="auto" mb={2}>
-        {loading ? (
+        {loading || (tab === 'groups' && groupLoading) ? (
           Array.from({ length: 15 }).map((_, idx) => (
             <Card key={idx} sx={{ mb: 1, bgcolor: isDark ? 'grey.900' : 'grey.100' }}>
               <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -275,7 +292,7 @@ const Sidebar = ({
               </CardContent>
             </Card>
           ))
-        ) : error ? (
+        ) : error || (tab === 'groups' && groupError) ? (
           <Typography color="error">Error fetching contacts</Typography>
         ) : (
           filteredUsers.map((user) => {
