@@ -469,11 +469,11 @@ const CreateGroupDrawer = ({ open, onClose, isDark, tab, users }) => {
                           : './Darshan.png'
                     }
                   >
-                    {tab !== 'groups' ? user?.username[0] : user?.name}
+                    {tab !== 'groups' ? (user?.username ? user.username[0] : '') : user?.name}
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={tab !== 'groups' ? user?.username : user?.name}
+                  primary={tab !== 'groups' ? (user?.username ? user.username : '') : user?.name}
                   secondary={tab !== 'groups' ? '' : ''}
                   primaryTypographyProps={{
                     sx: { color: isDark ? '#fff' : '#1f1d1d' }
