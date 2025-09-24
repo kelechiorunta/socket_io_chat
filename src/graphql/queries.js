@@ -212,7 +212,7 @@ export const FETCH_GROUPS = gql`
 export const CREATE_GROUP = gql`
   mutation CreateGroup($name: String!, $description: String!, $logo: ID!, $memberIds: [ID!]!) {
     createGroup(name: $name, description: $description, logo: $logo, memberIds: $memberIds) {
-      id
+      _id
       name
       description
       logo
