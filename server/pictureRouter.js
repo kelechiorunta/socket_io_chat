@@ -2,6 +2,7 @@ import { Router } from 'express';
 import mongoose from 'mongoose';
 import { GridFSBucket, ObjectId } from 'mongodb';
 import multer from 'multer';
+import sharp from 'sharp';
 
 const upload = multer({ storage: multer.memoryStorage() }); // keep in memory for streaming
 
@@ -57,22 +58,59 @@ pictureRouter.get('/logo/:id', async (req, res) => {
   }
 });
 
-// /upload endpoint
-pictureRouter.post('/logo', upload.single('file'), (req, res) => {
+// // /upload endpoint
+// pictureRouter.post('/logo', upload.single('file'), (req, res) => {
+//   try {
+//     const { file } = req;
+//     if (!file) return res.status(400).json({ error: 'No file uploaded' });
+
+//     const bucket = new GridFSBucket(mongoose.connection.db, { bucketName: 'logos' });
+
+//     const uploadStream = bucket.openUploadStream(file.originalname, {
+//       contentType: file.mimetype
+//     });
+
+//     uploadStream.end(file.buffer);
+
+//     uploadStream.on('finish', () => {
+//       res.json({ fileId: uploadStream.id.toString() });
+//     });
+
+//     uploadStream.on('error', (err) => {
+//       console.error('❌ GridFS upload error:', err);
+//       res.status(500).json({ error: 'Upload failed' });
+//     });
+//   } catch (err) {
+//     console.error('❌ Server error:', err);
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// });
+pictureRouter.post('/logo', upload.single('file'), async (req, res) => {
   try {
     const { file } = req;
     if (!file) return res.status(400).json({ error: 'No file uploaded' });
 
     const bucket = new GridFSBucket(mongoose.connection.db, { bucketName: 'logos' });
 
+    // ✅ Save original image to GridFS
     const uploadStream = bucket.openUploadStream(file.originalname, {
       contentType: file.mimetype
     });
-
     uploadStream.end(file.buffer);
 
+    // ✅ Generate placeholder (small base64 blur image) using sharp
+    const placeholderBuffer = await sharp(file.buffer)
+      .resize(20) // super small version
+      .blur()
+      .toBuffer();
+
+    const placeholderBase64 = `data:image/jpeg;base64,${placeholderBuffer.toString('base64')}`;
+
     uploadStream.on('finish', () => {
-      res.json({ fileId: uploadStream.id.toString() });
+      res.json({
+        fileId: uploadStream.id.toString(),
+        placeholder: placeholderBase64 // 👈 send along with response
+      });
     });
 
     uploadStream.on('error', (err) => {

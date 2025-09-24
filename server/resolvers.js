@@ -459,7 +459,7 @@ const resolvers = {
         return false;
       }
     },
-    createGroup: async (_, { name, memberIds, description, logo }, { user }) => {
+    createGroup: async (_, { name, memberIds, placeholderString, description, logo }, { user }) => {
       if (!user) throw new Error('Unauthorized');
 
       // Ensure the current user is part of the group
@@ -469,6 +469,7 @@ const resolvers = {
       const group = await Group.create({
         name,
         description,
+        placeholderString,
         members: uniqueMemberIds.map((id) => new mongoose.Types.ObjectId(id)),
         logo: logo ? new mongoose.Types.ObjectId(logo) : null, // store GridFS ObjectId
         createdAt: new Date().toISOString()
