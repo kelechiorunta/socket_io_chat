@@ -69,7 +69,8 @@ const Sidebar = ({
     } else if (tab === 'groups' && groupData) {
       setFilteredUsers(groupData.fetchGroups);
     } else if (tab === 'contacts') {
-      setFilteredUsers(contacts.filter((c) => !c.isGroup)); // optional filter
+      setFilteredUsers(contacts);
+      // setFilteredUsers(contacts.filter((c) => !c.isGroup)); // optional filter
     }
   }, [tab, contacts, groupData]);
 
@@ -223,8 +224,9 @@ const Sidebar = ({
         {/* ✅ Create Group Drawer */}
         <CreateGroupDrawer
           open={isCreateGroupOpen}
-          users={tab !== 'groups' ? filteredUsers : []}
+          users={filteredUsers}
           onClose={() => setIsCreateGroupOpen(false)}
+          tab={tab}
           isDark={isDark}
         />
 
