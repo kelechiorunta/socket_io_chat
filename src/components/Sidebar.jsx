@@ -192,6 +192,20 @@ const Sidebar = ({
               <MenuItem
                 onClick={() => {
                   setMenuAnchor(null);
+                  setTab('groups');
+                  // handleLogout();
+                  console.log('Logout clicked'); // hook up logout handler here
+                }}
+              >
+                <ListItemIcon>
+                  <GroupAdd fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="View Group" />
+              </MenuItem>
+
+              <MenuItem
+                onClick={() => {
+                  setMenuAnchor(null);
                   handleLogout();
                   console.log('Logout clicked'); // hook up logout handler here
                 }}
