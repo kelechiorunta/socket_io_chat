@@ -249,6 +249,7 @@ import { Close, CameraAlt } from '@mui/icons-material';
 import { useMutation } from '@apollo/client';
 import { CREATE_GROUP, FETCH_GROUPS } from '../graphql/queries';
 import toast from 'react-hot-toast';
+import BlurAvatar from './BlurAvatar';
 
 const CreateGroupDrawer = ({ open, onClose, isDark, tab, users }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -293,6 +294,7 @@ const CreateGroupDrawer = ({ open, onClose, isDark, tab, users }) => {
 
     try {
       let logoId = null;
+      let placeholderString = null;
 
       // Step 1: Upload file via REST
       if (logoFile) {
@@ -305,8 +307,9 @@ const CreateGroupDrawer = ({ open, onClose, isDark, tab, users }) => {
         });
 
         if (!res.ok) throw new Error('File upload failed');
-        const { fileId } = await res.json();
+        const { fileId, placeholder } = await res.json();
         logoId = fileId;
+        placeholderString = placeholder;
       }
 
       // Step 2: Call GraphQL mutation
@@ -315,6 +318,7 @@ const CreateGroupDrawer = ({ open, onClose, isDark, tab, users }) => {
           name: groupName,
           description: groupDescription,
           logo: logoId,
+          placeholderString: placeholderString,
           memberIds: selectedUsers
         }
       });
@@ -461,7 +465,7 @@ const CreateGroupDrawer = ({ open, onClose, isDark, tab, users }) => {
                 }}
               >
                 <ListItemAvatar>
-                  <Avatar
+                  <BlurAvatar
                     src={
                       tab !== 'groups'
                         ? user?.picture
@@ -469,9 +473,10 @@ const CreateGroupDrawer = ({ open, onClose, isDark, tab, users }) => {
                           ? `/chat-pictures/logo/${user.logo.toString()}`
                           : './Darshan.png'
                     }
+                    placeholder={user?.placeholder ? user.placeholder : ''}
                   >
                     {tab !== 'groups' ? (user?.username ? user.username[0] : '') : user?.name}
-                  </Avatar>
+                  </BlurAvatar>
                 </ListItemAvatar>
                 <ListItemText
                   primary={tab !== 'groups' ? (user?.username ? user.username : '') : user?.name}
