@@ -15,7 +15,16 @@ import {
   ListItemText,
   Box
 } from '@mui/material';
-import { Menu as MenuIcon, Close, MoreVert, GroupAdd, Logout } from '@mui/icons-material';
+import {
+  Menu as MenuIcon,
+  Close,
+  MoreVert,
+  GroupAdd,
+  Logout,
+  Group,
+  Contacts,
+  Groups2
+} from '@mui/icons-material';
 import { Search, Sun, Moon } from 'lucide-react';
 import Avatar from './Avatar';
 import { useTheme } from './ThemeContext';
@@ -24,6 +33,7 @@ import ChatFilters from './ChatFilters';
 import CreateGroupDrawer from './CreateGroupDrawer';
 import { useQuery } from '@apollo/client';
 import { FETCH_GROUPS } from '../graphql/queries';
+import BlurAvatar from './BlurAvatar';
 // import AnimateText from './AnimateText/AnimateText';
 
 const Sidebar = ({
@@ -193,14 +203,24 @@ const Sidebar = ({
                 onClick={() => {
                   setMenuAnchor(null);
                   setTab('groups');
-                  // handleLogout();
-                  console.log('Logout clicked'); // hook up logout handler here
                 }}
               >
                 <ListItemIcon>
-                  <GroupAdd fontSize="small" />
+                  <Groups2 fontSize="small" />
                 </ListItemIcon>
-                <ListItemText primary="View Group" />
+                <ListItemText primary="View Groups" />
+              </MenuItem>
+
+              <MenuItem
+                onClick={() => {
+                  setMenuAnchor(null);
+                  setTab('all');
+                }}
+              >
+                <ListItemIcon>
+                  <Contacts fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="View Contacts" />
               </MenuItem>
 
               <MenuItem
@@ -338,15 +358,16 @@ const Sidebar = ({
                 >
                   {/* Avatar + online dot */}
                   <Box position="relative">
-                    <Avatar
+                    <BlurAvatar
+                      alt={user?.username}
                       src={
                         tab === 'contacts' || tab === 'all'
                           ? user?.picture
-                          : user && user?.logo
+                          : user?.logo
                             ? `/chat-pictures/logo/${user.logo.toString()}`
                             : './Darshan.png'
                       }
-                      sx={{ width: 40, height: 40 }}
+                      placeholder={user?.placeholder ? user.placeholder : ''}
                     />
                     <Box
                       sx={{
