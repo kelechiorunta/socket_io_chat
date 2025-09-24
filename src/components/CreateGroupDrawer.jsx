@@ -250,7 +250,7 @@ import { useMutation } from '@apollo/client';
 import { CREATE_GROUP } from '../graphql/queries';
 import toast from 'react-hot-toast';
 
-const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
+const CreateGroupDrawer = ({ open, onClose, isDark, tab, users }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [groupLogo, setGroupLogo] = useState(null);
   const [logoFile, setLogoFile] = useState(null);
@@ -460,11 +460,21 @@ const CreateGroupDrawer = ({ open, onClose, isDark, users }) => {
                 }}
               >
                 <ListItemAvatar>
-                  <Avatar src={user?.picture || ''}>{user?.username[0] || user?.name}</Avatar>
+                  <Avatar
+                    src={
+                      tab !== 'groups'
+                        ? user?.picture
+                        : user?.logo
+                          ? `/chat-pictures/logo/${user.logo.toString()}`
+                          : './Darshan.png'
+                    }
+                  >
+                    {tab !== 'groups' ? user?.username[0] : user?.name}
+                  </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={user?.username || user?.name}
-                  secondary={user?.subtitle || ''}
+                  primary={tab !== 'groups' ? user?.username : user?.name}
+                  secondary={tab !== 'groups' ? '' : ''}
                   primaryTypographyProps={{
                     sx: { color: isDark ? '#fff' : '#1f1d1d' }
                   }}
