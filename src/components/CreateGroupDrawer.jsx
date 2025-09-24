@@ -247,7 +247,7 @@ import {
 } from '@mui/material';
 import { Close, CameraAlt } from '@mui/icons-material';
 import { useMutation } from '@apollo/client';
-import { CREATE_GROUP } from '../graphql/queries';
+import { CREATE_GROUP, FETCH_GROUPS } from '../graphql/queries';
 import toast from 'react-hot-toast';
 
 const CreateGroupDrawer = ({ open, onClose, isDark, tab, users }) => {
@@ -270,7 +270,8 @@ const CreateGroupDrawer = ({ open, onClose, isDark, tab, users }) => {
     },
     onError: (err) => {
       toast.error(`❌ Failed to create group: ${err.message}`);
-    }
+    },
+    refetchQueries: [{ query: FETCH_GROUPS }]
   });
 
   const handleToggleUser = (id) => {

@@ -43,6 +43,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import client from './components/client.js';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from './components/ThemeContext.js';
+import { Toaster } from 'react-hot-toast';
 
 import { createTheme, ThemeProvider as MaterialProvider } from '@mui/material/styles';
 
@@ -60,6 +61,7 @@ root.render(
         <MaterialProvider theme={theme}>
           <ThemeProvider>
             {/* <ChakraProvider> */}
+            <Toaster position="top-right" reverseOrder={false} />
             <App />
             {/* </ChakraProvider> */}
           </ThemeProvider>
