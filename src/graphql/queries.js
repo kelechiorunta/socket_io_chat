@@ -253,3 +253,20 @@ export const CREATE_GROUP = gql`
     }
   }
 `;
+
+export const FETCH_GROUP_MSGS = gql`
+  query FetchGroupMsgs($groupId: ID!, $limit: Int, $cursor: String) {
+    fetchGroupMsgs(groupId: $groupId, limit: $limit, cursor: $cursor) {
+      messages {
+        _id
+        text
+        sender {
+          _id
+          username
+          picture
+        }
+        createdAt
+      }
+    }
+  }
+`;
