@@ -5,6 +5,7 @@ export default `type Query {
   messages(chatId: ID!): [Message]
   fetch_chats(userId: ID!, currentUserId: ID!): ChatHistoryResponse
   fetchGroups: [Group!]!
+  fetchGroupMsgs(groupId: ID!, limit: Int, cursor: String): GroupMessagesResponse!
 }
 
 type Mutation {
@@ -24,6 +25,10 @@ type Group {
   placeholderString: String
   logo: ID
   createdAt: String
+}
+
+type GroupMessagesResponse {
+  messages: [ChatMessage!]!
 }
 
 type ChatHistoryResponse {
