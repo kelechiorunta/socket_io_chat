@@ -26,7 +26,6 @@ import {
   Groups2
 } from '@mui/icons-material';
 import { Search, Sun, Moon } from 'lucide-react';
-import Avatar from './Avatar';
 import { useTheme } from './ThemeContext';
 import { parseTimestamp } from '../helper/helper';
 import ChatFilters from './ChatFilters';
