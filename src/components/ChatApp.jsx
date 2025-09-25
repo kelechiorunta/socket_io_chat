@@ -7,7 +7,7 @@ import ChatBody from './ChatBody';
 import ChatInput from './ChatInput';
 import IconBar from './IconBar';
 import { useTheme } from './ThemeContext';
-import { AUTH, GET_CONTACTS } from '../graphql/queries';
+import { AUTH, FETCH_GROUP_MSGS, GET_CONTACTS } from '../graphql/queries';
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import debounce from 'lodash.debounce';
 // import { format, isToday, isYesterday } from 'date-fns';
@@ -124,6 +124,8 @@ const ChatApp = () => {
   const [fetchChats] = useLazyQuery(FETCH_CHATS, {
     fetchPolicy: 'cache-first' // 👈 ensures fresh fetch
   });
+
+  const [fetchGroupMsgs, { loading, error }] = useLazyQuery(FETCH_GROUP_MSGS);
 
   useEffect(() => {
     if (!user || !contacts || contacts.length === 0) return;
@@ -531,6 +533,58 @@ const ChatApp = () => {
     }
   };
 
+  const handleGroupChat = async (group) => {
+    if (!group) return;
+
+    setSelectedChat(group);
+
+    // ✅ Reset unread for this group
+    setUnreadMap((prev) => {
+      const updated = { ...prev };
+      delete updated[group._id];
+      return updated;
+    });
+
+    // // ✅ Emit socket event to mark group as read
+    // if (socket) {
+    //   socket.emit('markGroupAsRead', { groupId: group._id, userId: currentUser._id });
+    // }
+
+    // ✅ 1. Show cached messages instantly if available
+    if (chatCache[group._id]) {
+      setMessages(chatCache[group._id].messages);
+      setNotifiedUser(null); // groups don’t have a single “notified user”
+    } else {
+      setMessages([]); // placeholder while loading
+    }
+
+    // ✅ 2. Fetch latest group messages from server
+    try {
+      const { data } = await fetchGroupMsgs({
+        variables: {
+          groupId: group._id,
+          limit: 30,
+          cursor: null
+        },
+        fetchPolicy: 'cache-and-network'
+      });
+
+      if (data?.fetchGroupMsgs) {
+        const { messages } = data.fetchGroupMsgs;
+
+        setMessages(messages);
+
+        // Cache them for instant reload next time
+        setChatCache((prev) => ({
+          ...prev,
+          [group._id]: { messages }
+        }));
+      }
+    } catch (err) {
+      console.error('❌ Error fetching group messages:', err);
+    }
+  };
+
   // const handleSelectChat = async (chatUser) => {
   //   setSelectedChat(chatUser);
   //   setUnreadMap((prev) => {
@@ -717,6 +771,7 @@ const ChatApp = () => {
             isCollapsible={isCollapsible}
             isIconBarOpen={isIconBarOpen}
             setIsIconBarOpen={setIsIconBarOpen}
+            handleGroupChat={handleGroupChat}
             isDark={isDark}
           />
           {/* )} */}
