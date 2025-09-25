@@ -317,11 +317,16 @@ const resolvers = {
     },
     fetchGroups: async (_, __, { user }) => {
       if (!user) throw new Error('Unauthorized');
+
       try {
-        const allGroups = await Group.find().populate('members');
-        return allGroups;
+        // ✅ Query only groups where user._id is in members
+        const userGroups = await Group.find({
+          members: { $in: [user._id] }
+        }).populate('members');
+
+        return userGroups;
       } catch (err) {
-        console.error(err);
+        console.error('❌ Error fetching groups:', err);
         throw new Error('Failed to fetch groups');
       }
     }
