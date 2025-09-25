@@ -546,9 +546,9 @@ const ChatApp = () => {
     });
 
     // // ✅ Emit socket event to mark group as read
-    // if (socket) {
-    //   socket.emit('markGroupAsRead', { groupId: group._id, userId: currentUser._id });
-    // }
+    if (socket) {
+      socket.emit('markGroupAsRead', { groupId: group._id, userId: currentUser._id });
+    }
 
     // ✅ 1. Show cached messages instantly if available
     if (chatCache[group._id]) {
