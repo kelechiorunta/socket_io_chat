@@ -215,10 +215,15 @@ export const CREATE_GROUP = gql`
     $description: String!
     $placeholderString: String!
     $logo: ID!
-    $description: String!
     $memberIds: [ID!]!
   ) {
-    createGroup(name: $name, description: $description, placeholderString: $placeholderString, logo: $logo, memberIds: $memberIds) {
+    createGroup(
+      name: $name
+      description: $description
+      placeholderString: $placeholderString
+      logo: $logo
+      memberIds: $memberIds
+    ) {
       _id
       name
       description
