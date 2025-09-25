@@ -259,7 +259,7 @@ export const FETCH_GROUP_MSGS = gql`
     fetchGroupMsgs(groupId: $groupId, limit: $limit, cursor: $cursor) {
       messages {
         _id
-        text
+        message
         sender {
           _id
           username
