@@ -329,6 +329,28 @@ const resolvers = {
         console.error('❌ Error fetching groups:', err);
         throw new Error('Failed to fetch groups');
       }
+    },
+    fetchGroupMsgs: async (_, { groupId, limit = 30, cursor }, { user }) => {
+      if (!user) throw new Error('Unauthorized');
+
+      try {
+        const query = { groupId };
+
+        if (cursor) {
+          query.createdAt = { $lt: cursor }; // pagination
+        }
+
+        const messages = await ChatMessage.find(query)
+          .sort({ createdAt: -1 })
+          .limit(limit)
+          .populate('sender');
+
+        // reverse so newest is at bottom in UI
+        return { messages: messages.reverse() };
+      } catch (err) {
+        console.error('❌ Error fetching group messages:', err);
+        throw new Error('Failed to fetch group messages');
+      }
     }
   },
 

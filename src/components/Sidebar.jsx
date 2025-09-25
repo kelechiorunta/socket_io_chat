@@ -37,6 +37,7 @@ import BlurAvatar from './BlurAvatar';
 
 const Sidebar = ({
   onSelectChat,
+  handleGroupChat,
   pic,
   loading,
   error,
@@ -257,7 +258,7 @@ const Sidebar = ({
         {/* ✅ Create Group Drawer */}
         <CreateGroupDrawer
           open={isCreateGroupOpen}
-          users={filteredUsers}
+          users={contacts}
           onClose={() => setIsCreateGroupOpen(false)}
           tab={tab}
           isDark={isDark}
@@ -338,7 +339,8 @@ const Sidebar = ({
             return (
               <Card
                 key={user._id}
-                onClick={() => onSelectChat(user)}
+                onClick = {() => tab === 'groups' ? handleGroupChat(user) : onSelectChat(user)}
+                // onClick={() => onSelectChat(user)}
                 sx={{
                   mb: 1,
                   cursor: 'pointer',
