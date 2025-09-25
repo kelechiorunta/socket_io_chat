@@ -309,7 +309,7 @@ const CreateGroupDrawer = ({ open, onClose, isDark, tab, users }) => {
         if (!res.ok) throw new Error('File upload failed');
         const { fileId, placeholder } = await res.json();
         logoId = fileId;
-        placeholderString = placeholder;
+        placeholderString = placeholder.toString();
       }
 
       // Step 2: Call GraphQL mutation
