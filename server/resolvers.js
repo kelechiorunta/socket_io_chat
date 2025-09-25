@@ -333,24 +333,24 @@ const resolvers = {
     fetchGroupMsgs: async (_, { groupId, limit = 30, cursor }, { user }) => {
       if (!user) throw new Error('Unauthorized');
 
-      // ✅ Ensure user is in the group
       const group = await Group.findById(groupId).populate('members');
       if (!group) throw new Error('Group not found');
       if (!group.members.some((m) => m._id.toString() === user._id.toString())) {
         throw new Error('Not a member of this group');
       }
 
-      // ✅ Build query
-      const query = { group: groupId };
+      // Always query with string
+      const query = { groupId: groupId.toString() };
       if (cursor) {
-        query._id = { $lt: cursor }; // pagination
+        query._id = { $lt: cursor };
       }
 
       const messages = await ChatMessage.find(query)
         .populate('sender')
-        .populate('group')
         .sort({ createdAt: -1 })
         .limit(limit);
+
+      console.log('📩 Found group messages:', messages.length, 'for groupId:', groupId);
 
       return { messages: messages.reverse() };
     }
