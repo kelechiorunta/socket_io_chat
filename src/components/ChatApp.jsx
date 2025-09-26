@@ -536,7 +536,7 @@ const ChatApp = () => {
   const handleGroupChat = async (group) => {
     if (!group) return;
 
-    setSelectedChat(group);
+    setSelectedChat(group._id);
 
     // ✅ Reset unread for this group
     setUnreadMap((prev) => {
