@@ -31,6 +31,7 @@ const ChatApp = () => {
   const [input, setInput] = useState('');
   const [socket, setSocket] = useState(null);
   const [selectedChat, setSelectedChat] = useState(null);
+  const [selectedGroup, setSelectedGroup] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState(new Set());
   const [read, setRead] = useState(null);
   const {
@@ -472,6 +473,7 @@ const ChatApp = () => {
   const handleSelectChat = async (chatUser) => {
     if (!chatUser) return;
 
+    setSelectedGroup(null);
     setSelectedChat(chatUser);
 
     // ✅ Update unread map instantly
@@ -536,7 +538,8 @@ const ChatApp = () => {
   const handleGroupChat = async (group) => {
     if (!group) return;
 
-    setSelectedChat(group._id);
+    setSelectedGroup(group);
+    setSelectedChat(null);
 
     // ✅ Reset unread for this group
     setUnreadMap((prev) => {
