@@ -784,7 +784,7 @@ const ChatApp = () => {
             setIsIconBarOpen={setIsIconBarOpen}
             handleGroupChat={handleGroupChat}
             isDark={isDark}
-            groups={groupData && groupData.fetchData}
+            groups={groupData && groupData.fetchGroups}
             groupLoading={groupLoading}
             groupError={groupError}
             tab={tab}
