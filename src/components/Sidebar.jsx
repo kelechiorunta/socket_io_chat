@@ -50,39 +50,43 @@ const Sidebar = ({
   isCollapsible,
   isIconBarOpen,
   setIsIconBarOpen,
-  isDark
+  isDark,
+  groups,
+  groupLoading,
+  groupError,
+  tab,
+  setTab
 }) => {
   const { toggleTheme } = useTheme();
   // const isDark = theme === 'dark';
 
   // const [tab, setTab] = useState('all');
   const [search, setSearch] = useState('');
-  const [filteredUsers, setFilteredUsers] = useState(contacts);
+  const [filteredUsers, setFilteredUsers] = useState(tab !== 'groups' ? contacts : groups);
   const [focusedIndex, setFocusedIndex] = useState(0);
   const itemRefs = useRef({});
   const [searchResults, setSearchResults] = useState([]);
   const inputRef = useRef(null);
-  const [tab, setTab] = useState('all');
 
   // 🔥 Fetch groups when tab = "groups"
-  const {
-    data: groupData,
-    loading: groupLoading,
-    error: groupError
-  } = useQuery(FETCH_GROUPS, {
-    skip: tab !== 'groups' // only fetch when needed
-  });
+  // const {
+  //   data: groupData,
+  //   loading: groupLoading,
+  //   error: groupError
+  // } = useQuery(FETCH_GROUPS, {
+  //   skip: tab !== 'groups' // only fetch when needed
+  // });
 
   useEffect(() => {
     if (tab === 'all') {
       setFilteredUsers(contacts);
-    } else if (tab === 'groups' && groupData) {
-      setFilteredUsers(groupData.fetchGroups);
+    } else if (tab === 'groups' && groups) {
+      setFilteredUsers(groups);
     } else if (tab === 'contacts') {
       setFilteredUsers(contacts);
       // setFilteredUsers(contacts.filter((c) => !c.isGroup)); // optional filter
     }
-  }, [tab, contacts, groupData]);
+  }, [tab, contacts, groups]);
 
   useEffect(() => {
     const el = itemRefs.current[focusedIndex];
@@ -339,7 +343,7 @@ const Sidebar = ({
             return (
               <Card
                 key={user._id}
-                onClick = {() => tab === 'groups' ? handleGroupChat(user) : onSelectChat(user)}
+                onClick={() => (tab === 'groups' ? handleGroupChat(user) : onSelectChat(user))}
                 // onClick={() => onSelectChat(user)}
                 sx={{
                   mb: 1,
