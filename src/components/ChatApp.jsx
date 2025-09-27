@@ -7,7 +7,7 @@ import ChatBody from './ChatBody';
 import ChatInput from './ChatInput';
 import IconBar from './IconBar';
 import { useTheme } from './ThemeContext';
-import { AUTH, FETCH_GROUP_MSGS, GET_CONTACTS } from '../graphql/queries';
+import { AUTH, FETCH_GROUP_MSGS, GET_CONTACTS, FETCH_GROUPS } from '../graphql/queries';
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import debounce from 'lodash.debounce';
 // import { format, isToday, isYesterday } from 'date-fns';
@@ -687,6 +687,14 @@ const ChatApp = () => {
 
   const deferredMsgs = useDeferredValue(messages);
   const deferredTypers = useDeferredValue(typingUsers);
+  const [tab, setTab] = useState('all');
+  const {
+    data: groupData,
+    loading: groupLoading,
+    error: groupError
+  } = useQuery(FETCH_GROUPS, {
+    skip: tab !== 'groups' // only fetch when needed
+  });
 
   return (
     <Container
@@ -776,6 +784,11 @@ const ChatApp = () => {
             setIsIconBarOpen={setIsIconBarOpen}
             handleGroupChat={handleGroupChat}
             isDark={isDark}
+            groups={groupData.fetchData}
+            groupLoading={groupLoading}
+            groupError={groupError}
+            tab={tab}
+            setTab={setTab}
           />
           {/* )} */}
         </Col>
