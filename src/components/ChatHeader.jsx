@@ -4,13 +4,6 @@ import { ArrowLeft, Phone, Video } from 'lucide-react';
 
 const ChatHeader = ({ isDark, showBackButton, onBack, selectedUser, onlineUsers }) => {
   return (
-    // <div
-    //   style={{
-    //     backgroundColor: isDark ? '#1f1d1d' : 'white',
-    //     color: isDark ? 'white' : 'black'
-    //   }}
-    //   className="d-flex align-items-center justify-content-between p-3 border-bottom border-dark"
-    // >
     <Box
       display="flex"
       alignItems="center"
