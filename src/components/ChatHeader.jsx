@@ -66,7 +66,6 @@ const ChatHeader = ({ isDark, showBackButton, onBack, selectedUser, onlineUsers 
         </IconButton>
       </Box>
     </Box>
-    // </div>
   );
 };
 
