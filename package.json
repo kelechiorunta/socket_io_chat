@@ -100,6 +100,7 @@
   "devDependencies": {
     "@craco/craco": "^7.1.0",
     "cssnano": "^5.1.15",
+    "cypress": "^15.3.0",
     "postcss-calc": "^9.0.1",
     "prettier": "^3.6.2"
   }
