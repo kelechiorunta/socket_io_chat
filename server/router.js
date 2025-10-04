@@ -141,7 +141,7 @@ authRouter.post('/paystack/webhook', express.json(), (req, res) => {
 
 authRouter.get('/isAuthenticated', loginSession, (req, res) => {
   // console.log("USER AUTHENTICATED", req.session?.user)
-  res.json({ user: req.user });
+  res.json({ user: req.session?.user });
 });
 
 export var authenticatedUser = {};
