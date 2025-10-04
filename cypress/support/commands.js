@@ -28,7 +28,7 @@ Cypress.Commands.add('login', (username, password) => {
   cy.session(
     [username],
     () => {
-      cy.visit('https://socket-io-chat-zory.onrender.com/');
+      cy.visit('https://socket-io-chat-zory.onrender.com');
 
       // Should be on a new URL which includes '/login'
       cy.url().should('include', '/login');
@@ -43,7 +43,7 @@ Cypress.Commands.add('login', (username, password) => {
       cy.contains('button', 'Login').click();
       cy.contains('button', 'Logging in...').should('be.disabled');
 
-      cy.url().should('include', '/');
+      cy.url().should('include', 'https://socket-io-chat-zory.onrender.com');
     },
     { validate: () => cy.getCookie('auth_session').should('exist') }
   );
