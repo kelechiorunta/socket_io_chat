@@ -9,6 +9,12 @@ export const loginSession = (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) {
     return res.redirect('/login');
   }
+  req.session.save((err) => {
+    if (err) {
+      console.error('Error saving sessions', err);
+    }
+    console.log('Session saved successfully');
+  });
   // if (!req.isAuthenticated() || !req.user) {
   //     return res.status(401).json({ error: 'Unauthorized' }); // ⬅️ return JSON instead of redirect
   //   }
