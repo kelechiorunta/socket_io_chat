@@ -9,6 +9,7 @@ export const loginSession = (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) {
     return res.redirect('/login');
   }
+  req.session.user = req.user;
   req.session.save((err) => {
     if (err) {
       console.error('Error saving sessions', err);
