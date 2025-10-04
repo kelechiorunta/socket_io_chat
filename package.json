@@ -77,7 +77,8 @@
     "bundle:schema": "node server/bundle-schema.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "cy:test": "cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -101,6 +102,7 @@
     "@craco/craco": "^7.1.0",
     "cssnano": "^5.1.15",
     "cypress": "^15.3.0",
+    "eslint-plugin-cypress": "^2.13.3",
     "postcss-calc": "^9.0.1",
     "prettier": "^3.6.2"
   }
