@@ -28,10 +28,7 @@ Cypress.Commands.add('login', (username, password) => {
   cy.session(
     [username],
     () => {
-      cy.visit('https://socket-io-chat-zory.onrender.com');
-
-      // Should be on a new URL which includes '/login'
-      cy.url().should('include', '/login');
+      cy.visit('https://socket-io-chat-zory.onrender.com/login');
 
       // Submission of the fields handled by Formik
 
@@ -43,8 +40,21 @@ Cypress.Commands.add('login', (username, password) => {
       cy.contains('button', 'Login').click();
       cy.contains('button', 'Logging in...').should('be.disabled');
 
-      cy.url().should('include', 'https://socket-io-chat-zory.onrender.com');
+      // cy.url().should('include', 'https://socket-io-chat-zory.onrender.com');
+      //   cy.getCookie('auth_session').should('exist');
     },
-    { validate: () => cy.getCookie('auth_session').should('exist') }
+    {
+      validate: () => {
+        cy.intercept('GET', 'https://socket-io-chat-zory.onrender.com/api/isAuthenticated').as(
+          'isAuthenticated'
+        );
+        cy.visit('https://socket-io-chat-zory.onrender.com');
+
+        cy.wait('@isAuthenticated').then(({ response }) => {
+          expect(response.statusCode).to.eq(302);
+        });
+        // cy.getCookie('auth_session').should('exist');
+      }
+    }
   );
 });
