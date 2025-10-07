@@ -80,9 +80,9 @@ describe('template spec', () => {
       }
     ).as('GoogleOAuthCallback');
 
-    // Intercept the Google token endpoint
     cy.intercept('POST', 'https://oauth2.googleapis.com/token', {
       statusCode: 200,
+
       body: {
         access_token: 'mock_access_token',
         refresh_token: 'mock_refresh_token',
@@ -121,7 +121,7 @@ describe('template spec', () => {
     // Wait for the intercepted redirect and verify successful OAuth
     cy.wait('@GoogleOAuthCallback').then(({ response }) => {
       expect(response.statusCode).to.eq(200);
-      // expect(response.body.success).to.be.true;
+      expect(response.body.success).to.eq(true);
       expect(response.body.user.email).to.eq('mockuser@gmail.com');
     });
   });
