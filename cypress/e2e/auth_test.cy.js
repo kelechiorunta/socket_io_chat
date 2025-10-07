@@ -44,13 +44,14 @@ describe('template spec', () => {
     cy.contains('JUSTCHAT').should('be.visible');
   });
 
-  it('mocks Google OAuth redirect and token exchange', () => {
+  // GOOGLE OAUTH TESTING
+  it('mocks Google OAuth redirect and code exchange for access token', () => {
     // Visit your login page
     cy.visit('https://socket-io-chat-zory.onrender.com/login');
 
     // Intercept the call to Google's authorization endpoint
     cy.intercept('GET', 'https://accounts.google.com/oauth2/v2/auth*', (req) => {
-      // Simulate/Stub Google's redirect with an authorization code
+      // Simulate/Stub Google's response with redirect status code and authorization url with query authorization code
       req.reply({
         statusCode: 302,
         headers: {
@@ -65,6 +66,7 @@ describe('template spec', () => {
       'GET',
       'https://socket-io-chat-zory.onrender.com/api/oauth2/redirect/google',
       (req) => {
+        // Stub the responses for the cy.wait() for testing
         req.reply({
           statusCode: 200,
           headers: {
@@ -93,7 +95,8 @@ describe('template spec', () => {
     // Trigger the simulated link navigation from your frontend to initiate the OAuth redirect
     cy.window().then((win) => {
       const params = new URLSearchParams({
-        client_id: 'mock-client-id',
+        client_id: Cypress.env('JUSTCHAT_CLIENT_ID'), //'mock-client-id',
+        client_secret: Cypress.env('JUSTCHAT_CLIENT_SECRET'), //'mock-client-id',
         redirect_uri: 'https://socket-io-chat-zory.onrender.com/api/oauth2/redirect/google',
         response_type: 'code',
         scope: 'openid email profile',
@@ -106,7 +109,7 @@ describe('template spec', () => {
     // Trigger the browser request that would simulate the redirect request
     cy.window().then((win) => {
       // Simulate your front-end code calling the redirect endpoint
-      return fetch('https://socket-io-chat-zory.onrender.com/api/oauth2/redirect/google');
+      return win.fetch('https://socket-io-chat-zory.onrender.com/api/oauth2/redirect/google');
     });
 
     // Wait for the interception to complete and verify redirect
