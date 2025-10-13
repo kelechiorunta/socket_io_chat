@@ -691,13 +691,10 @@ const ChatApp = () => {
   const deferredMsgs = useDeferredValue(messages);
   const deferredTypers = useDeferredValue(typingUsers);
   const [tab, setTab] = useState('groups');
-  const {
-    data: groupData,
-    loading: groupLoading,
-    error: groupError
-  } = useQuery(FETCH_GROUPS, {
-    skip: tab !== 'groups' // only fetch when needed
-  });
+  const { data: groupData, loading: groupLoading, error: groupError } = useQuery(FETCH_GROUPS); //,
+  //   {
+  //   skip: tab !== 'groups' // only fetch when needed
+  // });
 
   return (
     <Container
