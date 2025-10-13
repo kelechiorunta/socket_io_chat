@@ -540,18 +540,21 @@ const ChatApp = () => {
 
     setSelectedGroup(group);
     setSelectedChat(null);
+    setTab('groups');
 
-    // ✅ Reset unread for this group
-    setUnreadMap((prev) => {
-      const updated = { ...prev };
-      delete updated[group._id];
-      return updated;
-    });
+    console.log('GROUPS SELECTED');
 
-    // // ✅ Emit socket event to mark group as read
-    if (socket) {
-      socket.emit('markGroupAsRead', { groupId: group._id, userId: currentUser._id });
-    }
+    // // ✅ Reset unread for this group
+    // setUnreadMap((prev) => {
+    //   const updated = { ...prev };
+    //   delete updated[group._id];
+    //   return updated;
+    // });
+
+    // // // ✅ Emit socket event to mark group as read
+    // if (socket) {
+    //   socket.emit('markGroupAsRead', { groupId: group._id, userId: currentUser._id });
+    // }
 
     // ✅ 1. Show cached messages instantly if available
     if (chatCache[group._id]) {
