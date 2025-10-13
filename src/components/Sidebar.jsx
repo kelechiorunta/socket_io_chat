@@ -80,7 +80,7 @@ const Sidebar = ({
   useEffect(() => {
     if (tab === 'all') {
       setFilteredUsers(contacts);
-    } else if (tab === 'groups' && groups) {
+    } else if (tab === 'groups') {
       setFilteredUsers(groups);
     } else if (tab === 'contacts') {
       setFilteredUsers(contacts);
