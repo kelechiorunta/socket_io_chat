@@ -400,80 +400,86 @@ const Sidebar = ({
                     <Typography fontWeight="bold" noWrap>
                       {tab === 'contacts' || tab === 'all' ? user?.username : user?.name}
                     </Typography>
-                    <Typography
-                      variant="body2"
-                      color={
-                        isTyping && (tab === 'contacts' || tab === 'all')
-                          ? '#00e575'
-                          : isDark
-                            ? 'white'
-                            : 'grey.800'
-                      }
-                      noWrap
-                      sx={{
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap'
-                      }}
-                    >
-                      {isTyping && (tab === 'contacts' || tab === 'all')
-                        ? 'is typing...'
-                        : unreadData?.lastMessage || 'No messages'}
-                    </Typography>
+                    {tab === 'contacts' ||
+                      (tab === 'all' && (
+                        <Typography
+                          variant="body2"
+                          color={
+                            isTyping && (tab === 'contacts' || tab === 'all')
+                              ? '#00e575'
+                              : isDark
+                                ? 'white'
+                                : 'grey.800'
+                          }
+                          noWrap
+                          sx={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                          }}
+                        >
+                          {isTyping && (tab === 'contacts' || tab === 'all')
+                            ? 'is typing...'
+                            : unreadData?.lastMessage || 'No messages'}
+                        </Typography>
+                      ))}
                   </Box>
 
                   {/* Right (time + count) */}
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-end',
-                      minWidth: 50
-                    }}
-                  >
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        whiteSpace: 'nowrap',
-                        mb: 0.5
-                      }}
-                    >
-                      {tab === 'contacts' || tab === 'all'
-                        ? unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.time
-                        : ''}
-                    </Typography>
-                    {(tab === 'contacts' || tab === 'all') && unreadData?.count > 0 ? (
+                  {tab === 'contacts' ||
+                    (tab === 'all' && (
                       <Box
                         sx={{
-                          bgcolor: 'success.main',
-                          borderRadius: '50%',
-                          width: 20,
-                          height: 20,
                           display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: 'white',
-                          fontSize: 12
+                          flexDirection: 'column',
+                          alignItems: 'flex-end',
+                          minWidth: 50
                         }}
                       >
-                        {tab === 'contacts' || tab === 'all' ? unreadData.count : ''}
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            whiteSpace: 'nowrap',
+                            mb: 0.5
+                          }}
+                        >
+                          {tab === 'contacts' || tab === 'all'
+                            ? unreadData?.timeStamp && parseTimestamp(unreadData.timeStamp)?.time
+                            : ''}
+                        </Typography>
+                        {(tab === 'contacts' || tab === 'all') && unreadData?.count > 0 ? (
+                          <Box
+                            sx={{
+                              bgcolor: 'success.main',
+                              borderRadius: '50%',
+                              width: 20,
+                              height: 20,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              color: 'white',
+                              fontSize: 12
+                            }}
+                          >
+                            {tab === 'contacts' || tab === 'all' ? unreadData.count : ''}
+                          </Box>
+                        ) : (
+                          <Box
+                            color={isDark ? 'white' : 'grey.400'}
+                            sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: 12
+                            }}
+                          >
+                            {(tab === 'contacts' || tab === 'all') && unreadData?.timeStamp
+                              ? parseTimestamp(unreadData.timeStamp)?.date
+                              : ''}
+                          </Box>
+                        )}
                       </Box>
-                    ) : (
-                      <Box
-                        color={isDark ? 'white' : 'grey.400'}
-                        sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: 12
-                        }}
-                      >
-                        {(tab === 'contacts' || tab === 'all') && unreadData?.timeStamp
-                          ? parseTimestamp(unreadData.timeStamp)?.date
-                          : ''}
-                      </Box>
-                    )}
-                  </Box>
+                    ))}
                 </CardContent>
               </Card>
             );
