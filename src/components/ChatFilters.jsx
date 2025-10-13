@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Select, MenuItem, FormControl, InputLabel, Stack } from '@mui/material';
 
 export default function ChatFilters({ handleSort, isDark, tab, setTab }) {
-  const [filter, setFilter] = useState('groups');
+  const [filter, setFilter] = useState('all');
   const [sort, setSort] = useState('newest');
   // const [tab, setTab] = useState('all');
 
