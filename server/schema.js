@@ -28,7 +28,7 @@ type Group {
 }
 
 type GroupMessagesResponse {
-  messages: [ChatMessage!]!
+  messages: [Message!]!
 }
 
 type ChatHistoryResponse {
