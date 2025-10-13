@@ -44,7 +44,7 @@ const ChatApp = () => {
       console.log('Contacts updated!');
     }
   });
-  const [tab, setTab] = useState('groups');
+  const [tab, setTab] = useState('all');
   const { data: groupData, loading: groupLoading, error: groupError } = useQuery(FETCH_GROUPS); //,
   // const [chatId, setChatId] = useState(null);
   // const [triggerUpload, setTriggerUpload] = useState(null);
