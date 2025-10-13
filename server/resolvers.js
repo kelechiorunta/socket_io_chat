@@ -183,6 +183,7 @@
 import Chat from './model/Chat.js';
 import ChatMessage from './model/ChatMessage.js';
 import Group from './model/Group.js';
+import Message from './model/Message.js';
 import UnreadMsg from './model/UnreadMsg.js';
 import User from './model/User.js';
 import mongoose from 'mongoose';
@@ -345,7 +346,7 @@ const resolvers = {
         query._id = { $lt: cursor };
       }
 
-      const messages = await ChatMessage.find(query)
+      const messages = await Message.find(query)
         .populate('sender')
         .sort({ createdAt: -1 })
         .limit(limit);
