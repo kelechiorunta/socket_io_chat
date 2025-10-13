@@ -690,7 +690,7 @@ const ChatApp = () => {
 
   const deferredMsgs = useDeferredValue(messages);
   const deferredTypers = useDeferredValue(typingUsers);
-  const [tab, setTab] = useState('all');
+  const [tab, setTab] = useState('groups');
   const {
     data: groupData,
     loading: groupLoading,
