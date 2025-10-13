@@ -778,7 +778,7 @@ const ChatApp = () => {
             unreadMap={unreadMap}
             typingUsers={typingUsers}
             notificationMap={notificationMap}
-            selectedClient={selectedChat}
+            selectedClient={selectedChat ? selectedChat : selectedGroup}
             onlineUsers={onlineUsers}
             isCollapsible={isCollapsible}
             isIconBarOpen={isIconBarOpen}
