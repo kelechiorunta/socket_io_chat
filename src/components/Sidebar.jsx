@@ -62,7 +62,7 @@ const Sidebar = ({
 
   // const [tab, setTab] = useState('all');
   const [search, setSearch] = useState('');
-  const [filteredUsers, setFilteredUsers] = useState(groups); //useState(tab !== 'groups' && !groups ? contacts : groups);
+  const [filteredUsers, setFilteredUsers] = useState(tab !== 'groups' ? contacts : groups);
   const [focusedIndex, setFocusedIndex] = useState(0);
   const itemRefs = useRef({});
   const [searchResults, setSearchResults] = useState([]);
