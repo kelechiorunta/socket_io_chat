@@ -44,6 +44,8 @@ const ChatApp = () => {
       console.log('Contacts updated!');
     }
   });
+  const [tab, setTab] = useState('groups');
+  const { data: groupData, loading: groupLoading, error: groupError } = useQuery(FETCH_GROUPS); //,
   // const [chatId, setChatId] = useState(null);
   // const [triggerUpload, setTriggerUpload] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
@@ -690,8 +692,7 @@ const ChatApp = () => {
 
   const deferredMsgs = useDeferredValue(messages);
   const deferredTypers = useDeferredValue(typingUsers);
-  const [tab, setTab] = useState('groups');
-  const { data: groupData, loading: groupLoading, error: groupError } = useQuery(FETCH_GROUPS); //,
+
   //   {
   //   skip: tab !== 'groups' // only fetch when needed
   // });
@@ -784,7 +785,7 @@ const ChatApp = () => {
             setIsIconBarOpen={setIsIconBarOpen}
             handleGroupChat={handleGroupChat}
             isDark={isDark}
-            groups={groupData && groupData.fetchGroups}
+            groups={groupData?.fetchGroups}
             groupLoading={groupLoading}
             groupError={groupError}
             tab={tab}
@@ -811,13 +812,13 @@ const ChatApp = () => {
             maxWidth: '100vw'
           }}
         >
-          {selectedChat ? (
+          {selectedChat || selectedGroup ? (
             <>
               <ChatHeader
                 isDark={isDark}
-                chat={selectedChat}
+                chat={selectedChat ? selectedChat : selectedGroup}
                 pic={data?.auth}
-                selectedUser={selectedChat}
+                selectedUser={selectedChat ? selectedChat : selectedGroup}
                 onlineUsers={onlineUsers}
                 showBackButton={isMobile || window.innerWidth < 1220}
                 onBack={() => setMobileView('sidebar')}
