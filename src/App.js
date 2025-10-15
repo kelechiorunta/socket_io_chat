@@ -1,3 +1,4 @@
+import React from 'react';
 import './App.css';
 import ChatApp from './components/ChatApp.jsx';
 import { Routes, Route } from 'react-router-dom';
