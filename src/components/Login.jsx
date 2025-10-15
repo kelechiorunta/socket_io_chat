@@ -220,6 +220,7 @@ export default function Login() {
 
   return (
     <div
+      data-testid="mock-login"
       className="overlay_screenshot"
       style={{
         backgroundAttachment: 'fixed',

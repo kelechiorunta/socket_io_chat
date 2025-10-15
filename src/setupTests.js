@@ -3,3 +3,15 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
+import fetch from '../__mocks__/fetch.js';
+
+const originalWarn = console.warn;
+
+console.warn = (...args) => {
+  if (args[0]?.includes('React Router Future Flag Warning')) {
+    return;
+  }
+  originalWarn(...args);
+};
+
+global.fetch = fetch;
