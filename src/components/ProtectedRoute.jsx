@@ -112,7 +112,7 @@ export default function ProtectedRoute() {
           throw new Error('Unauthorized');
         }
 
-        setCurrentUser(data.user);
+        setTimeout(() => setCurrentUser(data.user), 1000);
         setIsAuthenticated(true);
       } catch (err) {
         console.error('Auth check failed:', err.message);

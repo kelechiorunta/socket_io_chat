@@ -2,8 +2,8 @@
 
 const fetch = jest.fn(() =>
   Promise.resolve({
-    ok: true,
-    json: async () => ({ user: { id: 1, name: 'Mock User' } })
+    ok: true
+    // json: async () => ({ user: { id: 1, name: 'Mock User' } })
   })
 );
 

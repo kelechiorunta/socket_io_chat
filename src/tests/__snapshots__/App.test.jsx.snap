@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Tests App Component renders the App Component and the Login Screen shows up 1`] = `
+exports[`Tests App Component renders the Login Screen as the App component finally mounts 1`] = `
 <DocumentFragment>
   <div
     class="overlay_screenshot"
